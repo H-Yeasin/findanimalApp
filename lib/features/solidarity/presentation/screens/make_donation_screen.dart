@@ -4,7 +4,6 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/donation_provider.dart';
 import 'make_donation/make_donation_styles.dart';
@@ -13,6 +12,7 @@ import 'make_donation/widgets/contact_details_section.dart';
 import 'make_donation/widgets/donation_options_section.dart';
 import 'make_donation/widgets/make_donation_header.dart';
 import 'make_donation/widgets/payment_method_section.dart';
+import 'payment_webview_screen.dart';
 
 
 
@@ -173,49 +173,53 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
     }
 
     if (state.paymentMethod == 'paypal') {
-      await _handlePayPalPayment(notifier);
+      await _handlePayPalPayment(state, notifier);
     }
   }
 
   Future<void> _handleStripePayment(DonationState state, DonationNotifier notifier) async {
-    _showSnackBar("Card payments are currently disabled.");
+    final success = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => PaymentWebviewScreen(
+          paymentMethod: 'stripe',
+          amount: state.amount,
+          donorName: state.donorName.isEmpty ? 'Generous Donor' : state.donorName,
+          donorEmail: state.donorEmail,
+          isCompanyDonation: state.isCompanyDonation,
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+    if (success == true) {
+      ref.invalidate(myDonationsProvider);
+      _showSnackBar('Stripe donation completed successfully!');
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
+    }
   }
 
-    Future<void> _handlePayPalPayment(DonationNotifier notifier) async {
-    final result = await notifier.initiatePayPal();
+  Future<void> _handlePayPalPayment(DonationState state, DonationNotifier notifier) async {
+    final success = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => PaymentWebviewScreen(
+          paymentMethod: 'paypal',
+          amount: state.amount,
+          donorName: state.donorName.isEmpty ? 'Generous Donor' : state.donorName,
+          donorEmail: state.donorEmail,
+          isCompanyDonation: state.isCompanyDonation,
+        ),
+      ),
+    );
+
     if (!mounted) return;
-
-    if (result == null) {
-      final error = ref.read(donationNotifierProvider).error;
-      _showSnackBar(
-        error?.isNotEmpty == true
-            ? error!
-            : 'Could not start PayPal payment. Please try again.',
-      );
-      return;
-    }
-
-    final approvalUrl = result['approvalUrl'] as String?;
-    final orderId = result['orderId'] as String?;
-    if (approvalUrl == null ||
-        approvalUrl.isEmpty ||
-        orderId == null ||
-        orderId.isEmpty) {
-      _showSnackBar('Failed to get PayPal checkout details.');
-      return;
-    }
-
-    _pendingPayPalOrderId = orderId;
-    _awaitingPayPalReturn = true;
-
-    final url = Uri.parse(approvalUrl);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-      _showSnackBar(
-        'Complete PayPal in browser. We will finish capture when you return.',
-      );
-    } else {
-      _showSnackBar('Could not launch PayPal checkout.');
+    if (success == true) {
+      ref.invalidate(myDonationsProvider);
+      _showSnackBar('PayPal donation completed successfully!');
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).pop();
+      }
     }
   }
 
