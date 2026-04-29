@@ -10,7 +10,8 @@ class LocationPickerScreen extends ConsumerStatefulWidget {
   const LocationPickerScreen({super.key});
 
   @override
-  ConsumerState<LocationPickerScreen> createState() => _LocationPickerScreenState();
+  ConsumerState<LocationPickerScreen> createState() =>
+      _LocationPickerScreenState();
 }
 
 class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
@@ -59,7 +60,8 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
       if (placemarks.isNotEmpty) {
         final p = placemarks.first;
         setState(() {
-          _addressLine = '${p.street}, ${p.postalCode} ${p.locality}, ${p.country}';
+          _addressLine =
+              '${p.street}, ${p.postalCode} ${p.locality}, ${p.country}';
         });
       }
     } catch (e) {
@@ -133,7 +135,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
                       ),
                     ],
@@ -161,7 +163,9 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                     onPressed: _isMoving
                         ? null
                         : () {
-                            ref.read(reportFormProvider.notifier).setDescriptionInfo(
+                            ref
+                                .read(reportFormProvider.notifier)
+                                .setDescriptionInfo(
                                   address: _addressLine,
                                   lat: _selectedLocation.latitude,
                                   lng: _selectedLocation.longitude,

@@ -127,7 +127,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
       if (response.statusCode == 200) {
         String? email;
         if (response.data is Map<String, dynamic>) {
-          if (response.data['data'] != null && response.data['data']['supportEmail'] != null) {
+          if (response.data['data'] != null &&
+              response.data['data']['supportEmail'] != null) {
             email = response.data['data']['supportEmail'];
           } else if (response.data['supportEmail'] != null) {
             email = response.data['supportEmail'];
@@ -162,7 +163,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
       path: email,
       query: 'subject=Support Request',
     );
-    
+
     if (await canLaunchUrl(emailUri)) {
       await launchUrl(emailUri);
     } else {
@@ -331,7 +332,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                             borderRadius: BorderRadius.circular(25),
                             boxShadow: [
                               BoxShadow(
-                                color: brandPrimary.withOpacity(0.3),
+                                color: brandPrimary.withValues(alpha: 0.3),
                                 blurRadius: 10,
                                 spreadRadius: 2,
                               ),
@@ -369,7 +370,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: color.withOpacity(0.5), width: 1.5),
+          border: Border.all(color: color.withValues(alpha: 0.5), width: 1.5),
         ),
         child: Row(
           children: [
@@ -447,7 +448,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
             Container(
               height: 180,
               width: double.infinity,
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
             ),
             Text(
               title,
@@ -500,17 +501,19 @@ class _FAQInteractiveCardState extends State<FAQInteractiveCard> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: _isPressed ? widget.color.withOpacity(0.05) : widget.cardBg,
+            color: _isPressed
+                ? widget.color.withValues(alpha: 0.05)
+                : widget.cardBg,
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
-              color: widget.color.withOpacity(_isPressed ? 0.8 : 0.4),
+              color: widget.color.withValues(alpha: _isPressed ? 0.8 : 0.4),
               width: _isPressed ? 2.5 : 1.5,
             ),
             boxShadow: _isPressed
                 ? []
                 : [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),

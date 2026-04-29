@@ -44,6 +44,7 @@ class AuthAccountScreen extends StatelessWidget {
           AuthFilledPillButton(
             label: l10n.partnerAccess,
             onPressed: () => context.push(RouteNames.partnerAccess),
+            isLoading: false,
           ),
         ],
       ),

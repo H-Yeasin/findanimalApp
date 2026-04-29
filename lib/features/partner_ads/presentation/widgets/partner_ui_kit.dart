@@ -385,10 +385,7 @@ class PartnerOutlinedField extends StatelessWidget {
             ? CrossAxisAlignment.center
             : CrossAxisAlignment.start,
         children: [
-          if (leading != null) ...[
-            leading!,
-            const SizedBox(width: 10),
-          ],
+          if (leading != null) ...[leading!, const SizedBox(width: 10)],
           Expanded(
             child: Text(
               hint,
@@ -427,13 +424,16 @@ class PartnerInputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
-          color: PartnerUiColors.brand.withOpacity(0.5),
+          color: PartnerUiColors.brand.withValues(alpha: 0.5),
           fontFamily: 'Impact',
           fontSize: 32 / 2,
         ),
         filled: true,
         fillColor: PartnerUiColors.panel,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 12,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(color: PartnerUiColors.brand, width: 1),
@@ -488,7 +488,8 @@ class PartnerMissionTitleField extends StatefulWidget {
   const PartnerMissionTitleField({super.key});
 
   @override
-  State<PartnerMissionTitleField> createState() => _PartnerMissionTitleFieldState();
+  State<PartnerMissionTitleField> createState() =>
+      _PartnerMissionTitleFieldState();
 }
 
 class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
@@ -570,7 +571,10 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: PartnerUiColors.brand, width: 1),
+                      border: Border.all(
+                        color: PartnerUiColors.brand,
+                        width: 1,
+                      ),
                     ),
                     child: const Text(
                       'Saisir|',

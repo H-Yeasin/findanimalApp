@@ -58,6 +58,7 @@ class AuthPillTextField extends StatelessWidget {
     this.validator,
     this.suffix,
     super.key,
+    required bool readOnly,
   });
 
   final TextEditingController controller;
@@ -185,6 +186,7 @@ class AuthFilledPillButton extends StatelessWidget {
     this.width = 238,
     this.height = 40,
     super.key,
+    required bool isLoading,
   });
 
   final String label;

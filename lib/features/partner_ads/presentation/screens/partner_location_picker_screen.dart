@@ -10,10 +10,12 @@ class PartnerLocationPickerScreen extends StatefulWidget {
   const PartnerLocationPickerScreen({super.key});
 
   @override
-  State<PartnerLocationPickerScreen> createState() => _PartnerLocationPickerScreenState();
+  State<PartnerLocationPickerScreen> createState() =>
+      _PartnerLocationPickerScreenState();
 }
 
-class _PartnerLocationPickerScreenState extends State<PartnerLocationPickerScreen> {
+class _PartnerLocationPickerScreenState
+    extends State<PartnerLocationPickerScreen> {
   GoogleMapController? _mapController;
   LatLng _selectedLocation = const LatLng(48.8566, 2.3522); // Default to Paris
   bool _isMoving = false;
@@ -59,7 +61,8 @@ class _PartnerLocationPickerScreenState extends State<PartnerLocationPickerScree
       if (placemarks.isNotEmpty) {
         final p = placemarks.first;
         setState(() {
-          _addressLine = '${p.street}, ${p.postalCode} ${p.locality}, ${p.country}';
+          _addressLine =
+              '${p.street}, ${p.postalCode} ${p.locality}, ${p.country}';
         });
       }
     } catch (e) {
@@ -121,7 +124,7 @@ class _PartnerLocationPickerScreenState extends State<PartnerLocationPickerScree
                     borderRadius: BorderRadius.circular(15),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 10,
                       ),
                     ],

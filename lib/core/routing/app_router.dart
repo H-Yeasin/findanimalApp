@@ -5,6 +5,7 @@ import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/auth/presentation/screens/account_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/auth/presentation/screens/partner_auth_gateway_screen.dart';
 import '../../features/auth/presentation/screens/partner_register_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
@@ -80,6 +81,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.partnerRegister,
         builder: (context, state) => const PartnerRegisterScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.partnerAuthGateway,
+        builder: (context, state) => const PartnerAuthGatewayScreen(),
       ),
       GoRoute(
         path: RouteNames.forgotPassword,

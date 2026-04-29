@@ -115,6 +115,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
                         AuthPillTextField(
                           controller: _firstNameController,
                           hintText: l10n.firstNameHint,
+                          readOnly: false,
                           validator: (v) => Validators.required(
                             v,
                             requiredMessage: l10n.fieldRequired(
@@ -133,6 +134,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
                         AuthFieldLabel(l10n.lastNameLabel),
                         const SizedBox(height: 8),
                         AuthPillTextField(
+                          readOnly: false,
                           controller: _lastNameController,
                           hintText: l10n.lastNameHint,
                           validator: (v) => Validators.required(
@@ -153,6 +155,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _emailController,
                 hintText: l10n.emailHint,
+                readOnly: false,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => Validators.email(
                   value,
@@ -164,6 +167,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _confirmEmailController,
                 hintText: l10n.confirmEmailHint,
+                readOnly: false,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   final base = Validators.email(
@@ -186,6 +190,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _phoneController,
                 hintText: l10n.phoneHint,
+                readOnly: false,
                 keyboardType: TextInputType.phone,
                 validator: (v) => Validators.required(
                   v,
@@ -198,6 +203,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _addressController,
                 hintText: l10n.addressHint,
+                readOnly: false,
                 validator: (v) => Validators.required(
                   v,
                   requiredMessage: l10n.fieldRequired(l10n.fieldAddress),
@@ -210,6 +216,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
                 controller: _passwordController,
                 hintText: l10n.passwordHint,
                 obscureText: true,
+                readOnly: false,
                 validator: (value) => Validators.required(
                   value,
                   requiredMessage: l10n.fieldRequired(l10n.fieldPassword),
@@ -220,6 +227,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
                 controller: _confirmPasswordController,
                 hintText: l10n.confirmPasswordHint,
                 obscureText: true,
+                readOnly: false,
                 validator: (value) {
                   final base = Validators.required(
                     value,

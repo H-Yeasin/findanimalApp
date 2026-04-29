@@ -28,24 +28,26 @@ class PartnerAdsRepositoryImpl implements PartnerAdsRepository {
     double? radius,
   }) async {
     final queryParameters = {
-      if (page != null) 'page': page,
-      if (limit != null) 'limit': limit,
-      if (status != null) 'status': status,
-      if (search != null) 'search': search,
-      if (company != null) 'company': company,
-      if (sortBy != null) 'sortBy': sortBy,
-      if (sort != null) 'sort': sort,
-      if (lat != null) 'lat': lat,
-      if (lng != null) 'lng': lng,
-      if (radius != null) 'radius': radius,
+      'page': ?page,
+      'limit': ?limit,
+      'status': ?status,
+      'search': ?search,
+      'company': ?company,
+      'sortBy': ?sortBy,
+      'sort': ?sort,
+      'lat': ?lat,
+      'lng': ?lng,
+      'radius': ?radius,
     };
 
-    final response = await _remoteSource.getAllPartnerAds(queryParameters: queryParameters);
+    final response = await _remoteSource.getAllPartnerAds(
+      queryParameters: queryParameters,
+    );
     final payload = response.data as Map<String, dynamic>;
     // Check for both 'data' directly or 'data.docs' based on API response structure
     final data = payload['data'];
     List<dynamic> items = [];
-    
+
     if (data is Map<String, dynamic> && data['docs'] is List) {
       items = data['docs'];
     } else if (data is List) {

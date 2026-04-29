@@ -81,12 +81,13 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 34),
             AppTopBar(),
             const SizedBox(height: 14),
             if (isPartner) ...[
               _buildPartnerDashboard(context, user!),
             ] else ...[
-              _buildPartnerAuthGateway(context),
+              _buildPartnerNotAuthenticated(context),
             ],
           ],
         ),
@@ -94,65 +95,12 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
     );
   }
 
-  Widget _buildPartnerAuthGateway(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 40),
-        const Text(
-          'HESTEKA PARTNER',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: PartnerUiColors.brand,
-            fontFamily: 'Impact',
-            fontSize: 32,
-          ),
-        ),
-        const SizedBox(height: 16),
-        const Text(
-          'Join the network of professionals dedicated to animal welfare.',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Color(0xFF1F2D58), fontSize: 16),
-        ),
-        const SizedBox(height: 60),
-        SizedBox(
-          width: 220,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: PartnerUiColors.brand,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            onPressed: () => context.push(RouteNames.partnerLogin),
-            child: const Text(
-              'LOG IN AS PARTNER',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        SizedBox(
-          width: 220,
-          child: OutlinedButton(
-            style: OutlinedButton.styleFrom(
-              foregroundColor: PartnerUiColors.brand,
-              side: const BorderSide(color: PartnerUiColors.brand, width: 2),
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            onPressed: () => context.push(RouteNames.partnerRegister),
-            child: const Text(
-              'REGISTER AS PARTNER',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-      ],
-    );
+  Widget _buildPartnerNotAuthenticated(BuildContext context) {
+    // Redirect unauthenticated users to the dedicated auth screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.push(RouteNames.partnerAuthGateway);
+    });
+    return const SizedBox.shrink();
   }
 
   Widget _buildPartnerDashboard(BuildContext context, AuthUserModel user) {

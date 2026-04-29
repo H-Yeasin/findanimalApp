@@ -33,27 +33,39 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
     return ReportBaseLayout(
       currentStep: 4,
       stepTitle: 'PERSONAL\nINFORMATION',
-      buttonText: ref.watch(reportFormProvider).submissionState.maybeWhen(
-        loading: () => 'Publishing...',
-        orElse: () => 'Publish my ad',
-      ),
+      buttonText: ref
+          .watch(reportFormProvider)
+          .submissionState
+          .maybeWhen(
+            loading: () => 'Publishing...',
+            orElse: () => 'Publish my ad',
+          ),
       onButtonPressed: () async {
         // Validation — at least one contact method required
         final phone = _phoneController.text.trim();
         final email = _emailController.text.trim();
         if (phone.isEmpty && email.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please provide at least a phone number or email address.')),
+            const SnackBar(
+              content: Text(
+                'Please provide at least a phone number or email address.',
+              ),
+            ),
           );
           return;
         }
-        if (email.isNotEmpty && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+        if (email.isNotEmpty &&
+            !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please enter a valid email address.')),
+            const SnackBar(
+              content: Text('Please enter a valid email address.'),
+            ),
           );
           return;
         }
-        ref.read(reportFormProvider.notifier).setPersonalInfo(
+        ref
+            .read(reportFormProvider.notifier)
+            .setPersonalInfo(
               phoneNumber: _phoneController.text,
               isPhoneVisible: _isPhoneVisible,
               emailAddress: _emailController.text,

@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/utils/validators.dart';
-import '../../../../core/widgets/primary_button.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/auth_screen_scaffold.dart';
+import '../widgets/auth_ui_kit.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({
@@ -42,18 +43,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   Future<void> _submit() async {
     final l10n = AppLocalizations.of(context);
 
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     final email = _emailController.text.trim();
 
     try {
       await ref.read(authActionProvider.notifier).forgetPassword(email: email);
 
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
 
       ScaffoldMessenger.of(
         context,
@@ -63,9 +60,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         '${RouteNames.verifyOtp}?mode=reset&email=${Uri.encodeComponent(email)}',
       );
     } catch (error) {
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
@@ -77,41 +72,63 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final isLoading = ref.watch(authActionProvider).isLoading;
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.forgotPasswordTitle)),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextFormField(
-                  controller: _emailController,
-                  readOnly: widget.lockEmail,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: l10n.fieldEmail,
-                    suffixIcon: widget.lockEmail
-                        ? const Icon(Icons.lock_outline, size: 18)
-                        : null,
-                  ),
-                  validator: (value) => Validators.email(
-                    value,
-                    requiredMessage: l10n.emailRequired,
-                    invalidMessage: l10n.emailInvalid,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                PrimaryButton(
-                  label: l10n.sendOtp,
-                  isLoading: isLoading,
-                  onPressed: isLoading ? null : _submit,
-                ),
-              ],
+    return AuthScreenScaffold(
+      onBack: () {
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go(RouteNames.login);
+        }
+      },
+      onBottomTap: (_) => context.go(RouteNames.root),
+      contentPadding: const EdgeInsets.fromLTRB(34, 20, 34, 24),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 6),
+            AuthMainTitle(l10n.forgotPasswordTitle),
+            const SizedBox(height: 12),
+            Text(
+              'Enter your email address below and we\'ll send you a code to reset your password.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AuthUiColors.brand.withValues(alpha: 0.75),
+                fontSize: 13,
+                height: 1.5,
+              ),
             ),
-          ),
+            const SizedBox(height: 30),
+            AuthFieldLabel(l10n.emailLabel),
+            const SizedBox(height: 8),
+            AuthPillTextField(
+              controller: _emailController,
+              hintText: l10n.emailHint,
+              keyboardType: TextInputType.emailAddress,
+              readOnly: widget.lockEmail,
+              suffix: widget.lockEmail
+                  ? const Icon(
+                      Icons.lock_outline,
+                      size: 18,
+                      color: AuthUiColors.brand,
+                    )
+                  : null,
+              validator: (value) => Validators.email(
+                value,
+                requiredMessage: l10n.emailRequired,
+                invalidMessage: l10n.emailInvalid,
+              ),
+            ),
+            const SizedBox(height: 30),
+            Center(
+              child: AuthFilledPillButton(
+                label: l10n.sendOtp,
+                isLoading: isLoading,
+                onPressed: isLoading ? null : _submit,
+              ),
+            ),
+          ],
         ),
       ),
     );

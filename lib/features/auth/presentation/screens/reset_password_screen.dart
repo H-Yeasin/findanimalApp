@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/utils/validators.dart';
-import '../../../../core/widgets/primary_button.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/auth_screen_scaffold.dart';
+import '../widgets/auth_ui_kit.dart';
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
   const ResetPasswordScreen({required this.token, this.email, super.key});
@@ -37,9 +38,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   Future<void> _submit() async {
     final l10n = AppLocalizations.of(context);
 
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+    if (!_formKey.currentState!.validate()) return;
 
     try {
       await ref
@@ -50,19 +49,14 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
             confirmPassword: _confirmPasswordController.text,
           );
 
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
 
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.passwordResetSuccess)));
       context.go(RouteNames.login);
     } catch (error) {
-      if (!mounted) {
-        return;
-      }
-
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
@@ -74,88 +68,92 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     final isLoading = ref.watch(authActionProvider).isLoading;
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.resetPasswordTitle)),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (widget.email != null && widget.email!.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Text('${l10n.fieldEmail}: ${widget.email}'),
-                  ),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    labelText: l10n.newPasswordLabel,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                      ),
-                    ),
-                  ),
-                  validator: (value) => Validators.required(
-                    value,
-                    requiredMessage: l10n.fieldRequired(l10n.newPasswordLabel),
-                  ),
+    return AuthScreenScaffold(
+      onBack: () {
+        if (context.canPop()) {
+          context.pop();
+        } else {
+          context.go(RouteNames.login);
+        }
+      },
+      onBottomTap: (_) => context.go(RouteNames.root),
+      contentPadding: const EdgeInsets.fromLTRB(34, 20, 34, 24),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 6),
+            AuthMainTitle(l10n.resetPasswordTitle),
+            const SizedBox(height: 12),
+            if (widget.email != null && widget.email!.isNotEmpty) ...[
+              Text(
+                'Resetting password for\n${widget.email}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AuthUiColors.brand.withValues(alpha: 0.75),
+                  fontSize: 13,
+                  height: 1.5,
                 ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    labelText: l10n.fieldConfirmPassword,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscureConfirmPassword = !_obscureConfirmPassword;
-                        });
-                      },
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    final base = Validators.required(
-                      value,
-                      requiredMessage: l10n.fieldRequired(
-                        l10n.fieldConfirmPassword,
-                      ),
-                    );
-                    if (base != null) {
-                      return base;
-                    }
-                    if (value != _passwordController.text) {
-                      return l10n.passwordsDoNotMatch;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                PrimaryButton(
-                  label: l10n.updatePassword,
-                  isLoading: isLoading,
-                  onPressed: isLoading ? null : _submit,
-                ),
-              ],
+              ),
+              const SizedBox(height: 30),
+            ] else ...[
+              const SizedBox(height: 30),
+            ],
+            AuthFieldLabel(l10n.newPasswordLabel),
+            const SizedBox(height: 8),
+            AuthPillTextField(
+              controller: _passwordController,
+              hintText: l10n.passwordHint,
+              obscureText: _obscurePassword,
+              readOnly: false,
+              suffix: AuthPasswordVisibilityToggle(
+                obscureText: _obscurePassword,
+                onPressed: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
+              ),
+              validator: (value) => Validators.required(
+                value,
+                requiredMessage: l10n.fieldRequired(l10n.newPasswordLabel),
+              ),
             ),
-          ),
+            const SizedBox(height: 14),
+            AuthFieldLabel(l10n.fieldConfirmPassword),
+            const SizedBox(height: 8),
+            AuthPillTextField(
+              controller: _confirmPasswordController,
+              hintText: l10n.confirmPasswordHint,
+              readOnly: false,
+              obscureText: _obscureConfirmPassword,
+              suffix: AuthPasswordVisibilityToggle(
+                obscureText: _obscureConfirmPassword,
+                onPressed: () => setState(
+                  () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                ),
+              ),
+              validator: (value) {
+                final base = Validators.required(
+                  value,
+                  requiredMessage: l10n.fieldRequired(
+                    l10n.fieldConfirmPassword,
+                  ),
+                );
+                if (base != null) return base;
+                if (value != _passwordController.text) {
+                  return l10n.passwordsDoNotMatch;
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 36),
+            Center(
+              child: AuthFilledPillButton(
+                label: l10n.updatePassword,
+                isLoading: isLoading,
+                onPressed: isLoading ? null : _submit,
+              ),
+            ),
+          ],
         ),
       ),
     );

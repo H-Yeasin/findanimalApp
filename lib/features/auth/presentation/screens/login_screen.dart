@@ -121,6 +121,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                 requiredMessage: l10n.emailRequired,
                 invalidMessage: l10n.emailInvalid,
               ),
+              readOnly: false,
             ),
             const SizedBox(height: 10),
             AuthFieldLabel(l10n.passwordLabel),
@@ -141,6 +142,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                   });
                 },
               ),
+              readOnly: false,
             ),
             const SizedBox(height: 6),
             Align(

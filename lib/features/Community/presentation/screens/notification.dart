@@ -30,11 +30,7 @@ class NotificationScreen extends ConsumerWidget {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: const Icon(
-                    Icons.undo,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  icon: const Icon(Icons.undo, color: Colors.white, size: 20),
                   onPressed: () => context.go(RouteNames.root),
                 ),
               ),
@@ -109,7 +105,7 @@ class NotificationScreen extends ConsumerWidget {
         children: [
           Icon(
             Icons.notifications_off_outlined,
-            color: brandPrimary.withOpacity(0.3),
+            color: brandPrimary.withValues(alpha: 0.3),
             size: 80,
           ),
           const SizedBox(height: 16),
@@ -169,14 +165,17 @@ class NotificationScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
             ],
             border: notification.isRead
                 ? null
-                : Border.all(color: brandPrimary.withOpacity(0.2), width: 1),
+                : Border.all(
+                    color: brandPrimary.withValues(alpha: 0.2),
+                    width: 1,
+                  ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +183,9 @@ class NotificationScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: _getNotificationColor(notification.type).withOpacity(0.1),
+                  color: _getNotificationColor(
+                    notification.type,
+                  ).withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
