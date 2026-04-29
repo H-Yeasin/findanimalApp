@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 
@@ -29,7 +27,7 @@ class ReportBaseLayout extends ConsumerWidget {
         children: [
           // Background Grid
           Positioned.fill(child: CustomPaint(painter: GridBackgroundPainter())),
-          
+
           SafeArea(
             child: Column(
               children: [
@@ -62,9 +60,7 @@ class ReportBaseLayout extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     return Column(
       children: [
-        const AppTopBar(
-          showBackButton: false,
-        ),
+        const AppTopBar(showBackButton: false),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -96,69 +92,77 @@ class ReportBaseLayout extends ConsumerWidget {
   }
 
   Widget _buildStepIndicator() {
+    const brandColor = Color(0xFFBA4A22);
+    const circleSize = 50.0;
+
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Text(
-              stepTitle.toUpperCase(),
-              textAlign: TextAlign.right,
-              style: const TextStyle(
-                color: Color(0xFFBA4A22),
-                fontSize: 16,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Impact',
-                height: 1.0,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
+        // Title row — perfectly aligned above each circle using spaceBetween
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(4, (index) {
             final stepNum = index + 1;
             final isActive = stepNum == currentStep;
-            final isCompleted = stepNum < currentStep;
-
-            return Expanded(
-              child: Row(
-                children: [
-                  Container(
-                    width: 50,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: isActive ? const Color(0xFFBA4A22) : Colors.transparent,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color(0xFFBA4A22),
-                        width: 2,
+            return SizedBox(
+              width: circleSize,
+              child: isActive
+                  ? Text(
+                      stepTitle.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: brandColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'Impact',
+                        height: 1.0,
                       ),
+                    )
+                  : const SizedBox.shrink(),
+            );
+          }),
+        ),
+        const SizedBox(height: 6),
+        // Circles with a background line connecting them
+        SizedBox(
+          height: circleSize,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Background connector line (from center of first to center of last circle)
+              Positioned(
+                left: circleSize / 2,
+                right: circleSize / 2,
+                child: Container(height: 2, color: brandColor),
+              ),
+              // Circles evenly distributed
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(4, (index) {
+                  final stepNum = index + 1;
+                  final isActive = stepNum == currentStep;
+                  return Container(
+                    width: circleSize,
+                    height: circleSize,
+                    decoration: BoxDecoration(
+                      color: isActive ? brandColor : const Color(0xFFFBF4E9),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: brandColor, width: 2),
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       '$stepNum',
                       style: TextStyle(
-                        color: isActive ? Colors.white : const Color(0xFFBA4A22),
+                        color: isActive ? Colors.white : brandColor,
                         fontSize: 24,
                         fontWeight: FontWeight.w900,
                         fontFamily: 'Impact',
                       ),
                     ),
-                  ),
-                  if (index < 3)
-                    Expanded(
-                      child: Container(
-                        height: 2,
-                        color: const Color(0xFFBA4A22),
-                      ),
-                    ),
-                ],
+                  );
+                }),
               ),
-            );
-          }),
+            ],
+          ),
         ),
       ],
     );

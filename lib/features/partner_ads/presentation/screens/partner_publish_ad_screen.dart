@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../widgets/partner_ui_kit.dart';
 
@@ -60,10 +57,7 @@ class PartnerPublishAdScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Center(
-              child: PartnerPublishButton(
-                label: 'Publish my ad',
-                onTap: () {},
-              ),
+              child: PartnerPublishButton(label: 'Publish my ad', onTap: () {}),
             ),
           ],
         ),

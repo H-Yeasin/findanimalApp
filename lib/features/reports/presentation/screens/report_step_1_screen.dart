@@ -36,6 +36,31 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
       currentStep: 1,
       stepTitle: 'WHAT TYPE OF\nANIMAL?',
       onButtonPressed: () {
+        // Validation
+        if (_selectedPostType == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select a post type.')),
+          );
+          return;
+        }
+        if (_nameController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Please enter your animal's name.")),
+          );
+          return;
+        }
+        if (_selectedSpecies == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select the species.')),
+          );
+          return;
+        }
+        if (_selectedGender == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select the gender.')),
+          );
+          return;
+        }
         ref
             .read(reportFormProvider.notifier)
             .setBasicInfo(

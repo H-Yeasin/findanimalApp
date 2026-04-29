@@ -65,6 +65,19 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
       currentStep: 2,
       stepTitle: 'DESCRIBE THE\nANIMAL',
       onButtonPressed: () {
+        // Validation
+        if (_addressController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please enter the last known location.')),
+          );
+          return;
+        }
+        if (_descriptionController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please add a description of the animal.')),
+          );
+          return;
+        }
         ref
             .read(reportFormProvider.notifier)
             .setDescriptionInfo(

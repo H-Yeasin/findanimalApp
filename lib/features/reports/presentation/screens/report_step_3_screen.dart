@@ -34,6 +34,31 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
       currentStep: 3,
       stepTitle: 'TECHNICAL\nINFORMATION',
       onButtonPressed: () {
+        // Validation
+        if (_hasChip == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please answer: Does it have an electronic chip?')),
+          );
+          return;
+        }
+        if (_hasTattoo == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please answer: Does it have a tattoo?')),
+          );
+          return;
+        }
+        if (_hasCollar == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please answer: Does it have a collar or harness?')),
+          );
+          return;
+        }
+        if (_eventDate == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please select when this happened.')),
+          );
+          return;
+        }
         ref
             .read(reportFormProvider.notifier)
             .setTechnicalInfo(

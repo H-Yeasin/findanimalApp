@@ -94,7 +94,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
               _reverseGeocode(_selectedLocation);
             },
             myLocationEnabled: true,
-            myLocationButtonEnabled: true,
+            myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
           ),
           Center(
@@ -105,6 +105,18 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                 size: 45,
                 color: _isMoving ? Colors.grey : const Color(0xFFBA4A22),
               ),
+            ),
+          ),
+          // Custom "Locate Me" button — sits above the bottom panel
+          Positioned(
+            bottom: 200, // above the address card + confirm button
+            right: 16,
+            child: FloatingActionButton.small(
+              heroTag: 'locate_me',
+              backgroundColor: Colors.white,
+              elevation: 4,
+              onPressed: _determinePosition,
+              child: const Icon(Icons.my_location, color: Color(0xFFBA4A22)),
             ),
           ),
           Positioned(

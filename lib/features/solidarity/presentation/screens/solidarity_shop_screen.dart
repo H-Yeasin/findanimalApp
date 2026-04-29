@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/solidarity_providers.dart';
 import '../../data/models/product_model.dart';
 
@@ -20,31 +17,34 @@ class SolidarityShopScreen extends ConsumerWidget {
       backgroundColor: const Color(0xFFFBF4E9),
       body: CustomPaint(
         painter: _GridPainter(),
-        child: SafeArea(
-          bottom: false,
-          child: DefaultTextStyle(
-            style: const TextStyle(color: Color(0xFFBA4A22)),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const AppTopBar(showBackButton: true),
-                  const SizedBox(height: 10),
-                  _buildHeroSection(),
-                  const SizedBox(height: 40),
-                  _buildBestSellersSection(shopState.products),
-                  const SizedBox(height: 40),
-                  _buildEntireCollectionSection(
-                    ref,
-                    shopState.selectedCategory,
-                    shopNotifier.filteredProducts,
+        child: Column(
+          children: [
+            SafeArea(bottom: false, child: AppTopBar(showBackButton: true)),
+            Expanded(
+              child: DefaultTextStyle(
+                style: const TextStyle(color: Color(0xFFBA4A22)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 10),
+                      _buildHeroSection(),
+                      const SizedBox(height: 40),
+                      _buildBestSellersSection(shopState.products),
+                      const SizedBox(height: 40),
+                      _buildEntireCollectionSection(
+                        ref,
+                        shopState.selectedCategory,
+                        shopNotifier.filteredProducts,
+                      ),
+                      const SizedBox(height: 40),
+                      _buildCommitmentsSection(),
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                  _buildCommitmentsSection(),
-                ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
