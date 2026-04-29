@@ -1,0 +1,349 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'presentation/providers/contact_providers.dart';
+import 'data/models/contact_model.dart';
+import 'presentation/details_shelter_veterinarians.dart';
+
+class SheltersScreen extends ConsumerStatefulWidget {
+  const SheltersScreen({super.key});
+
+  @override
+  ConsumerState<SheltersScreen> createState() => _SheltersScreenState();
+}
+
+class _SheltersScreenState extends ConsumerState<SheltersScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const brandPrimary = Color(0xFFBA4A22);
+    const surface = Color(0xFFFBF4E9);
+    const cardBg = Color(0xFFFFF6E5);
+
+    final sheltersAsync = ref.watch(sheltersProvider);
+
+    return Scaffold(
+      backgroundColor: surface,
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () => ref.read(sheltersProvider.notifier).fetchContacts(),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                // Header
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            color: brandPrimary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.undo,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
+                      const Icon(Icons.person, color: brandPrimary, size: 40),
+                    ],
+                  ),
+                ),
+
+                const Text(
+                  'LIST OF\nSHELTERS',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w900,
+                    color: brandPrimary,
+                    height: 0.9,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    'Here, you can find the entire list of shelters in France\nAll you have to do is find the one that is closest to you',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: brandPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Updated Image
+                Image.asset(
+                  'assets/images/shelter_header.png',
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(height: 20),
+
+                // Search Bar
+                _buildSearchBar(cardBg, brandPrimary),
+                const SizedBox(height: 10),
+
+                // Filter Dropdown
+                _buildFilterDropdown(cardBg, brandPrimary),
+                const SizedBox(height: 30),
+
+                // List Section
+                sheltersAsync.when(
+                  data: (shelters) {
+                    if (shelters.isEmpty) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            'No shelters found',
+                            style: TextStyle(
+                              color: brandPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'ALL SHELTERS',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.w900,
+                                color: brandPrimary,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: shelters.length,
+                          itemBuilder: (context, index) {
+                            final shelter = shelters[index];
+                            return _buildShelterCard(
+                              shelter,
+                              cardBg,
+                              brandPrimary,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CircularProgressIndicator(color: brandPrimary),
+                  ),
+                  error: (err, stack) => Center(
+                    child: Text(
+                      'Error loading shelters',
+                      style: TextStyle(color: brandPrimary),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 100),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(Color cardBg, Color color) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+      ),
+      child: TextField(
+        controller: _searchController,
+        onSubmitted: (value) {
+          ref.read(sheltersProvider.notifier).setSearchQuery(value);
+        },
+        decoration: InputDecoration(
+          icon: Icon(Icons.search, color: color),
+          hintText: 'Search by name',
+          hintStyle: TextStyle(color: color.withValues(alpha: 0.5)),
+          border: InputBorder.none,
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(Icons.clear),
+                  onPressed: () {
+                    _searchController.clear();
+                    ref.read(sheltersProvider.notifier).setSearchQuery('');
+                  },
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterDropdown(Color cardBg, Color color) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Filter by / Sort by',
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
+          ),
+          Icon(Icons.keyboard_arrow_down, color: color),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShelterCard(
+    ContactModel shelter,
+    Color cardBg,
+    Color color,
+  ) {
+    final name = shelter.name;
+    final address = shelter.fullAddress;
+    final imageUrl = shelter.fullImageUrl ??
+        'https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?q=80&w=100';
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Image.network(
+              imageUrl,
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: 60,
+                height: 60,
+                color: color.withValues(alpha: 0.1),
+                child: Icon(Icons.business, color: color),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  address,
+                  style: TextStyle(
+                    color: color.withValues(alpha: 0.7),
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    _buildSmallButton('SEE ON MAP', Colors.white, color, color),
+                    const SizedBox(width: 10),
+                    _buildSmallButton(
+                      'SEE DETAILS',
+                      color,
+                      Colors.white,
+                      color,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                DetailsShelterVeterinariansScreen(
+                              contact: shelter,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSmallButton(
+    String label,
+    Color bgColor,
+    Color textColor,
+    Color borderColor, {
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: borderColor),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 8,
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734272506471",
+    "project_id": "enna-698ff",
+    "storage_bucket": "enna-698ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734272506471:android:e9baa04108e90ed49762c2",
+        "android_client_info": {
+          "package_name": "com.emmafve.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApOyJacz_J9qmgaQPIkLZBz7v_hJMeJv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
