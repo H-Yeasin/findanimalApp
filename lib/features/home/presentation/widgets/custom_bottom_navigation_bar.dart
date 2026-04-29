@@ -17,7 +17,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return SizedBox(
-      height: 104,
+      height: 65,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -26,39 +26,52 @@ class CustomBottomNavigationBar extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: Container(
-              height: 82,
+              height: 65,
               color: const Color(0xFFBA4A22),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _item(index: 0, icon: 'search', label: l10n.navSeek),
-                  ),
-                  Expanded(
-                    child: _item(index: 1, icon: 'report', label: l10n.navReport),
-                  ),
-                  const SizedBox(width: 84),
-                  Expanded(
-                    child: _item(
-                      index: 3,
-                      icon: 'community',
-                      label: l10n.navCommunity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                ), // Adjust this value to bring items closer
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _item(
+                        index: 0,
+                        icon: 'search',
+                        label: l10n.navSeek,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: _item(
-                      index: 4,
-                      icon: 'solidarity',
-                      label: l10n.navSolidarity,
+                    Expanded(
+                      child: _item(
+                        index: 1,
+                        icon: 'report',
+                        label: l10n.navReport,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 54),
+                    Expanded(
+                      child: _item(
+                        index: 3,
+                        icon: 'community',
+                        label: l10n.navCommunity,
+                      ),
+                    ),
+                    Expanded(
+                      child: _item(
+                        index: 4,
+                        icon: 'solidarity',
+                        label: l10n.navSolidarity,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            bottom: 42,
+            bottom: 20,
             child: Center(
               child: GestureDetector(
                 onTap: () => onTap(2),
@@ -70,15 +83,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: const Color(0xFFBA4A22),
-                      width: 3,
+                      width: 6,
                     ),
                   ),
                   child: Center(
-                    child: Image.asset(
-                      'assets/images/Bottom_Navigation_icon/bottom_nav_middle.png',
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.contain,
+                    child: Transform.translate(
+                      offset: const Offset(
+                        -10,
+                        -5,
+                      ), // Adjust this value to move it more/less
+                      child: Image.asset(
+                        'assets/images/Bottom_Navigation_icon/bottom_nav_middle.png',
+                        width: 60,
+                        height: 60,
+                        // fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                 ),
@@ -116,15 +135,21 @@ class CustomBottomNavigationBar extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 7),
-            Text(
-              label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.3,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.3,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
