@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hesteka_frontend/core/widgets/user_avatar.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/Collection_Point/collection_point.dart';
 import 'package:hesteka_frontend/features/Community/presentation/providers/contact_providers.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
@@ -25,9 +25,11 @@ class SolidarityHubScreen extends ConsumerWidget {
       backgroundColor: surface,
       body: CustomPaint(
         painter: _GridPainter(),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
+        child: Stack(
+          children: [
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
               children: [
                 // Header Image with TOGETHER text
                 Stack(
@@ -55,21 +57,6 @@ class SolidarityHubScreen extends ConsumerWidget {
                           letterSpacing: -2,
                           fontFamily: 'Impact',
                         ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 20,
-                      right: 20,
-                      child: GestureDetector(
-                        onTap: () {
-                          final authStatus = ref.read(authStateProvider);
-                          if (authStatus == AuthStatus.authenticated) {
-                            context.push(RouteNames.myProfile);
-                          } else {
-                            context.push(RouteNames.account);
-                          }
-                        },
-                        child: UserAvatar(imageUrl: profileImage, radius: 25),
                       ),
                     ),
                   ],
@@ -428,9 +415,19 @@ class SolidarityHubScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            ), // SingleChildScrollView
+          ), // SafeArea
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: AppTopBar(showBackButton: false),
+            ),
           ),
-        ),
-      ),
+        ], // Stack children
+      ), // Stack
+      ), // CustomPaint
     );
   }
 

@@ -46,25 +46,7 @@ class AppTopBar extends ConsumerWidget {
               else
                 const SizedBox(width: 43),
               if (showUserAvatar)
-                InkWell(
-                  onTap: () {
-                    if (authStatus == AuthStatus.authenticated) {
-                      if (user?.role == 'partners') {
-                        context.push(RouteNames.partnerAccess);
-                      } else {
-                        context.push(RouteNames.myProfile);
-                      }
-                    } else {
-                      context.push(RouteNames.account);
-                    }
-                  },
-                  customBorder: const CircleBorder(),
-                  child: UserAvatar(
-                    imageUrl: imageUrl,
-                    radius: 19,
-                    borderColor: brandColor,
-                  ),
-                )
+                TopBarUserAvatar(imageUrl: imageUrl, brandColor: brandColor)
               else
                 const SizedBox(width: 43),
             ],
@@ -113,8 +95,72 @@ class CustomBackButton extends StatelessWidget {
       child: Container(
         width: 43,
         height: 43,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: Offset(0, 4),
+              blurRadius: 4,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
         child: const Icon(Icons.undo, color: Colors.white, size: 24),
+      ),
+    );
+  }
+}
+
+class TopBarUserAvatar extends ConsumerWidget {
+  final String? imageUrl;
+  final Color brandColor;
+
+  const TopBarUserAvatar({
+    super.key,
+    this.imageUrl,
+    this.brandColor = const Color(0xFFBA4A22),
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authStatus = ref.watch(authStateProvider);
+    final user = ref.watch(currentUserProvider);
+    final finalImageUrl = imageUrl ?? user?.profileImage;
+
+    return InkWell(
+      onTap: () {
+        if (authStatus == AuthStatus.authenticated) {
+          if (user?.role == 'partners') {
+            context.push(RouteNames.partnerAccess);
+          } else {
+            context.push(RouteNames.myProfile);
+          }
+        } else {
+          context.push(RouteNames.account);
+        }
+      },
+      customBorder: const CircleBorder(),
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.25),
+              offset: const Offset(0, 4),
+              blurRadius: 4,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
+        child: UserAvatar(
+          imageUrl: finalImageUrl,
+          radius: 19,
+          borderColor: brandColor,
+          boxShadow: const [],
+        ),
       ),
     );
   }

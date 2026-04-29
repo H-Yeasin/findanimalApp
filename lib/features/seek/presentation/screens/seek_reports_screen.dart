@@ -1,13 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/localization/app_localizations.dart';
-import '../../../../core/routing/route_names.dart';
-import '../../../../core/widgets/user_avatar.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 import '../providers/seek_reports_provider.dart';
 import '../providers/seek_report_filters_provider.dart';
 import 'animal_profile_screen.dart';
@@ -120,7 +119,6 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
           SingleChildScrollView(
             child: Column(
               children: [
-                _buildHeader(context, ref, l10n),
                 _buildMapAndFilters(context, ref, l10n),
                 _buildReportCards(context, ref, l10n),
                 _buildPagination(context, ref),
@@ -128,66 +126,14 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
               ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    WidgetRef ref,
-    AppLocalizations l10n,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            const Color(0xFFBA4A22).withValues(alpha: 0.05),
-            Colors.transparent,
-          ],
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Centered Title
-              Text(
-                l10n.seekViewReports,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'Impact',
-                  letterSpacing: 1.2,
-                ),
-              ),
-              // Profile Icon on the Right
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    final authStatus = ref.read(authStateProvider);
-                    if (authStatus == AuthStatus.authenticated) {
-                      context.push(RouteNames.myProfile);
-                    } else {
-                      context.push(RouteNames.account);
-                    }
-                  },
-                  child: UserAvatar(
-                    imageUrl: ref.watch(currentUserProvider)?.profileImage,
-                    radius: 22,
-                  ),
-                ),
-              ),
-            ],
+          // Custom top bar (no app bar provided by default)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(child: AppTopBar(showBackButton: false)),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -231,6 +177,18 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
 
     return Column(
       children: [
+        const SizedBox(height: 60),
+        Text(
+          l10n.seekViewReports,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Color(0xFFBA4A22),
+            fontSize: 28,
+            fontWeight: FontWeight.w900,
+            fontFamily: 'Impact',
+            letterSpacing: 1.2,
+          ),
+        ),
         Stack(
           alignment: Alignment.bottomCenter,
           clipBehavior: Clip.none,

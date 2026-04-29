@@ -27,7 +27,7 @@ class MyReportsScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(context),
+                const AppTopBar(showBackButton: false),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
@@ -124,10 +124,6 @@ class MyReportsScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return const AppTopBar();
   }
 
   Widget _buildReportCard(

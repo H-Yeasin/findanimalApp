@@ -58,6 +58,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         radius: 68,
                         showBorder: true,
                         borderWidth: 5,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.25),
+                            offset: Offset(0, 4),
+                            blurRadius: 4,
+                            spreadRadius: 0,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 12),

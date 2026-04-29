@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/solidarity_hub_screen.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/solidarity_shop_screen.dart';
 import 'package:intl/intl.dart';
@@ -118,18 +119,30 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
                   _pages[0],
                   _pages[1],
                   // Index 2 is the Home Dashboard feed we built!
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        _buildTopHeader(ref),
-                        _buildInfoBanner(),
-                        _buildMapSection(),
-                        _buildFilters(),
-                        _buildReportedRecently(ref),
-                        _buildCommunityHelped(ref),
-                        _buildSupportSection(),
-                      ],
-                    ),
+                  Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            _buildTopHeader(ref),
+                            _buildInfoBanner(context),
+                            _buildMapSection(),
+                            _buildFilters(),
+                            _buildReportedRecently(ref),
+                            _buildCommunityHelped(ref),
+                            _buildSupportSection(),
+                          ],
+                        ),
+                      ),
+                      const Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: SafeArea(
+                          child: AppTopBar(showBackButton: false),
+                        ),
+                      ),
+                    ],
                   ),
                   _pages[3],
                   _pages[4],
@@ -187,7 +200,7 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
             ),
           ),
         ),
-        const SafeArea(child: AppTopBar(showBackButton: false)),
+        // Removed AppTopBar from here, it's now pinned above the scroll view
         // Logo
         Positioned(
           bottom: 30,
@@ -235,14 +248,14 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
     );
   }
 
-  Widget _buildInfoBanner() {
+  Widget _buildInfoBanner(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
       color: const Color(0xFFC65D3B), // Match brand orange
-      child: const Text(
-        'With Hesteka, you can report a lost or endangered animal near you\nand mobilize a community ready to help quickly.\n\nEvery action counts! Help and join the community, earn points to\nunlock rewards.',
-        style: TextStyle(
+      child: Text(
+        AppLocalizations.of(context).homeInfoBanner,
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 14,
           height: 1.5,

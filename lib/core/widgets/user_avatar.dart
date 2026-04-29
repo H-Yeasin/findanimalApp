@@ -15,6 +15,7 @@ class UserAvatar extends StatelessWidget {
     this.showBorder = true,
     this.borderWidth = 2,
     this.borderColor = const Color(0xFFBA4A22),
+    required List<BoxShadow> boxShadow,
   });
 
   @override

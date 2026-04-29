@@ -256,652 +256,698 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(localStoriesProvider);
-          ref.invalidate(localChatProvider);
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 50),
-              // Header
-              AppTopBar(
-                leftWidget: IconButton(
-                  icon: const Icon(
-                    Icons.notifications_none,
-                    color: brandPrimary,
-                    size: 30,
-                  ),
-                  onPressed: () => context.push(RouteNames.mainNotifications),
-                ),
-                userImageUrl: profileImage,
-              ),
-
-              Text(
-                l10n.communityTitle,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
+      body: Column(
+        children: [
+          SafeArea(
+            bottom: false,
+            child: AppTopBar(
+              showBackButton: false,
+              leftWidget: IconButton(
+                icon: Icon(
+                  Icons.notifications_none,
                   color: brandPrimary,
-                  fontFamily: 'Impact',
+                  shadows: [
+                    BoxShadow(
+                      color: brandPrimary.withValues(alpha: 0.25),
+                      offset: const Offset(0, 4),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                    ),
+                  ],
+                  size: 30,
                 ),
+                onPressed: () => context.push(RouteNames.mainNotifications),
               ),
-              const SizedBox(height: 20),
-
-              // "What's going through your mind?" box
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: boxBg,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: brandPrimary.withValues(alpha: 0.3),
-                  ),
-                ),
+              userImageUrl: profileImage,
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.invalidate(localStoriesProvider);
+                ref.invalidate(localChatProvider);
+              },
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 15,
-                          backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=100',
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: TextField(
-                              controller: _contentController,
-                              decoration: InputDecoration(
-                                hintText: l10n.mindHint,
-                                hintStyle: TextStyle(
-                                  color: brandPrimary.withValues(alpha: 0.5),
-                                  fontSize: 14,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                              style: const TextStyle(
-                                color: brandPrimary,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.send, color: brandPrimary),
-                          onPressed: _submitPost,
-                        ),
-                      ],
-                    ),
-                    if (_selectedMedia.isNotEmpty)
-                      SizedBox(
-                        height: 60,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: _selectedMedia.length,
-                          itemBuilder: (context, index) {
-                            return Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    right: 8.0,
-                                    top: 8.0,
-                                  ),
-                                  child:
-                                      _selectedMedia[index].path
-                                              .toLowerCase()
-                                              .endsWith('.mp4') ||
-                                          _selectedMedia[index].path
-                                              .toLowerCase()
-                                              .endsWith('.mov')
-                                      ? Container(
-                                          width: 50,
-                                          height: 50,
-                                          color: brandPrimary.withValues(
-                                            alpha: 0.1,
-                                          ),
-                                          child: const Icon(
-                                            Icons.videocam,
-                                            color: brandPrimary,
-                                          ),
-                                        )
-                                      : Image.file(
-                                          _selectedMedia[index],
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: GestureDetector(
-                                    onTap: () => setState(
-                                      () => _selectedMedia.removeAt(index),
-                                    ),
-                                    child: const CircleAvatar(
-                                      radius: 8,
-                                      backgroundColor: brandPrimary,
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 10,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildActionItem(
-                          Icons.image,
-                          l10n.picture,
-                          brandPrimary,
-                          onTap: _pickImage,
-                        ),
-                        _buildActionItem(
-                          Icons.videocam,
-                          l10n.video,
-                          brandPrimary,
-                          onTap: _pickVideo,
-                        ),
-                        _buildActionItem(
-                          Icons.folder,
-                          l10n.file,
-                          brandPrimary,
-                          onTap: _pickFile,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Stories
-              SizedBox(
-                height: 110,
-                child: storiesAsync.when(
-                  data: (allStories) {
-                    final now = DateTime.now();
-                    final stories = allStories
-                        .where((s) => s.expiresAt.isAfter(now))
-                        .toList();
-                    final currentUser = ref.watch(currentUserProvider);
-
-                    // Group stories by user
-                    final Map<String, List<StoryModel>> groupedStories = {};
-                    for (var story in stories) {
-                      final userId = story.user.id;
-                      if (!groupedStories.containsKey(userId)) {
-                        groupedStories[userId] = [];
-                      }
-                      groupedStories[userId]!.add(story);
-                    }
-
-                    // Sort userIds: current user's stories should come first
-                    final userIds = groupedStories.keys.toList();
-
-                    if (currentUser != null) {
-                      userIds.sort((a, b) {
-                        if (a == currentUser.id) return -1;
-                        if (b == currentUser.id) return 1;
-                        return 0;
-                      });
-                    }
-
-                    return ListView(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      children: [
-                        _buildStoryItem(
-                          'Share a\nstory',
-                          null,
-                          brandPrimary,
-                          onTap: _shareStory,
-                        ),
-                        ...userIds.map((userId) {
-                          final userStories = groupedStories[userId]!;
-                          final story = userStories
-                              .first; // Use first story for thumbnail
-                          final name =
-                              '${story.user.firstName.toLowerCase()}${story.user.lastName.toLowerCase().substring(0, story.user.lastName.length > 3 ? 3 : story.user.lastName.length)}';
-
-                          return _buildStoryItem(
-                            name,
-                            story.media.url,
-                            brandPrimary,
-                            onTap: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (context) => SeeAllStoryScreen(
-                                    userStoryGroups: userIds
-                                        .map((id) => groupedStories[id]!)
-                                        .toList(),
-                                    initialUserIndex: userIds.indexOf(userId),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                      ],
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    children: [
-                      _buildStoryItem(
-                        'Share a\nstory',
-                        null,
-                        brandPrimary,
-                        onTap: _shareStory,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Center(
-                          child: Text(
-                            _isUnauthorizedError(err)
-                                ? l10n.pleaseLoginToViewLocalChat
-                                : l10n.couldNotLoadStories,
-                            style: const TextStyle(fontSize: 11),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              // Find a friend search bar
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 40),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: brandPrimary,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.search, color: Colors.white, size: 18),
-                    const SizedBox(width: 10),
+                    // Removed AppTopBar from here
                     Text(
-                      l10n.findFriend,
+                      l10n.communityTitle,
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
+                        color: brandPrimary,
+                        fontFamily: 'Impact',
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-              // Posting Indicator (Facebook Style)
-              Builder(
-                builder: (context) {
-                  final actionState = ref.watch(communityActionProvider);
-                  if (actionState is AsyncLoading) {
-                    return Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 12,
-                      ),
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
+                    // "What's going through your mind?" box
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                        color: boxBg,
+                        borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          color: Colors.blue.withValues(alpha: 0.3),
+                          color: brandPrimary.withValues(alpha: 0.3),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blue.withValues(alpha: 0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              const SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.blue,
+                              const CircleAvatar(
+                                radius: 15,
+                                backgroundImage: NetworkImage(
+                                  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=100',
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              Text(
-                                l10n.posting,
-                                style: const TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: TextField(
+                                    controller: _contentController,
+                                    decoration: InputDecoration(
+                                      hintText: l10n.mindHint,
+                                      hintStyle: TextStyle(
+                                        color: brandPrimary.withValues(
+                                          alpha: 0.5,
+                                        ),
+                                        fontSize: 14,
+                                      ),
+                                      border: InputBorder.none,
+                                    ),
+                                    style: const TextStyle(
+                                      color: brandPrimary,
+                                      fontSize: 14,
+                                    ),
+                                  ),
                                 ),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.send,
+                                  color: brandPrimary,
+                                ),
+                                onPressed: _submitPost,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          const ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            child: LinearProgressIndicator(
-                              color: Colors.blue,
-                              backgroundColor: Color(0xFFE0E0E0),
-                              minHeight: 4,
+                          if (_selectedMedia.isNotEmpty)
+                            SizedBox(
+                              height: 60,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _selectedMedia.length,
+                                itemBuilder: (context, index) {
+                                  return Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 8.0,
+                                          top: 8.0,
+                                        ),
+                                        child:
+                                            _selectedMedia[index].path
+                                                    .toLowerCase()
+                                                    .endsWith('.mp4') ||
+                                                _selectedMedia[index].path
+                                                    .toLowerCase()
+                                                    .endsWith('.mov')
+                                            ? Container(
+                                                width: 50,
+                                                height: 50,
+                                                color: brandPrimary.withValues(
+                                                  alpha: 0.1,
+                                                ),
+                                                child: const Icon(
+                                                  Icons.videocam,
+                                                  color: brandPrimary,
+                                                ),
+                                              )
+                                            : Image.file(
+                                                _selectedMedia[index],
+                                                width: 50,
+                                                height: 50,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      ),
+                                      Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: GestureDetector(
+                                          onTap: () => setState(
+                                            () =>
+                                                _selectedMedia.removeAt(index),
+                                          ),
+                                          child: const CircleAvatar(
+                                            radius: 8,
+                                            backgroundColor: brandPrimary,
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 10,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          const SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              _buildActionItem(
+                                Icons.image,
+                                l10n.picture,
+                                brandPrimary,
+                                onTap: _pickImage,
+                              ),
+                              _buildActionItem(
+                                Icons.videocam,
+                                l10n.video,
+                                brandPrimary,
+                                onTap: _pickVideo,
+                              ),
+                              _buildActionItem(
+                                Icons.folder,
+                                l10n.file,
+                                brandPrimary,
+                                onTap: _pickFile,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Stories
+                    SizedBox(
+                      height: 110,
+                      child: storiesAsync.when(
+                        data: (allStories) {
+                          final now = DateTime.now();
+                          final stories = allStories
+                              .where((s) => s.expiresAt.isAfter(now))
+                              .toList();
+                          final currentUser = ref.watch(currentUserProvider);
+
+                          // Group stories by user
+                          final Map<String, List<StoryModel>> groupedStories =
+                              {};
+                          for (var story in stories) {
+                            final userId = story.user.id;
+                            if (!groupedStories.containsKey(userId)) {
+                              groupedStories[userId] = [];
+                            }
+                            groupedStories[userId]!.add(story);
+                          }
+
+                          // Sort userIds: current user's stories should come first
+                          final userIds = groupedStories.keys.toList();
+
+                          if (currentUser != null) {
+                            userIds.sort((a, b) {
+                              if (a == currentUser.id) return -1;
+                              if (b == currentUser.id) return 1;
+                              return 0;
+                            });
+                          }
+
+                          return ListView(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            children: [
+                              _buildStoryItem(
+                                'Share a\nstory',
+                                null,
+                                brandPrimary,
+                                onTap: _shareStory,
+                              ),
+                              ...userIds.map((userId) {
+                                final userStories = groupedStories[userId]!;
+                                final story = userStories
+                                    .first; // Use first story for thumbnail
+                                final name =
+                                    '${story.user.firstName.toLowerCase()}${story.user.lastName.toLowerCase().substring(0, story.user.lastName.length > 3 ? 3 : story.user.lastName.length)}';
+
+                                return _buildStoryItem(
+                                  name,
+                                  story.media.url,
+                                  brandPrimary,
+                                  onTap: () {
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => SeeAllStoryScreen(
+                                          userStoryGroups: userIds
+                                              .map((id) => groupedStories[id]!)
+                                              .toList(),
+                                          initialUserIndex: userIds.indexOf(
+                                            userId,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }),
+                            ],
+                          );
+                        },
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (err, stack) => ListView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          children: [
+                            _buildStoryItem(
+                              'Share a\nstory',
+                              null,
+                              brandPrimary,
+                              onTap: _shareStory,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  _isUnauthorizedError(err)
+                                      ? l10n.pleaseLoginToViewLocalChat
+                                      : l10n.couldNotLoadStories,
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+
+                    // Find a friend search bar
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: brandPrimary,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            l10n.findFriend,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-              ),
-
-              Text(
-                l10n.localCat,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: brandPrimary,
-                ),
-              ),
-              const SizedBox(height: 10),
-
-              // Posts List
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: boxBg,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: brandPrimary.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: chatAsync.when(
-                  data: (chats) {
-                    if (chats.isEmpty) {
-                      return const Center(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            'Aucun message local pour le moment.',
-                            style: TextStyle(
-                              color: brandPrimary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    final posts = chats
-                        .where((chat) => chat.replyTo == null)
-                        .toList();
-
-                    return Column(
-                      children: posts.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final chat = entry.value;
-                        final timeAgo = _formatTimeAgo(chat.createdAt);
-                        return Column(
-                          children: [
-                            _buildPostItem(chat, timeAgo, brandPrimary, chats),
-                            if (index < posts.length - 1)
-                              const Divider(height: 30),
-                          ],
-                        );
-                      }).toList(),
-                    );
-                  },
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      child: Text(
-                        _isUnauthorizedError(err)
-                            ? l10n.pleaseLoginToViewLocalChat
-                            : l10n.couldNotLoadLocalChat,
-                        style: const TextStyle(
-                          color: brandPrimary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                     ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
+                    const SizedBox(height: 20),
 
-              // SEE LOCAL MISSIONS section
-              const Text(
-                'SEE LOCAL\nMISSIONS',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w900,
-                  color: brandPrimary,
-                  height: 0.9,
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // Map section
-              Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Image.asset(
-                    'assets/images/Map/map.png',
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  Positioned(
-                    bottom: -20,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const MissionLocalScreen(),
-                          ),
-                        );
+                    // Posting Indicator (Facebook Style)
+                    Builder(
+                      builder: (context) {
+                        final actionState = ref.watch(communityActionProvider);
+                        if (actionState is AsyncLoading) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 12,
+                            ),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.blue.withValues(alpha: 0.3),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.blue.withValues(alpha: 0.1),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Text(
+                                      l10n.posting,
+                                      style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                const ClipRRect(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  child: LinearProgressIndicator(
+                                    color: Colors.blue,
+                                    backgroundColor: Color(0xFFE0E0E0),
+                                    minHeight: 4,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
                       },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 60,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          color: brandPrimary,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              blurRadius: 5,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: const Text(
-                          'SEE FULL LIST',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 60),
 
-              // FAQ Section
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    const Text(
-                      'HERE THERE ARE NO\nQUESTIONS WITHOUT ANSWERS!',
-                      textAlign: TextAlign.center,
+                    Text(
+                      l10n.localCat,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 20,
                         fontWeight: FontWeight.w900,
                         color: brandPrimary,
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FAQCommunityScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 30,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
+                    const SizedBox(height: 10),
+
+                    // Posts List
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: boxBg,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: brandPrimary.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: chatAsync.when(
+                        data: (chats) {
+                          if (chats.isEmpty) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                child: Text(
+                                  'Aucun message local pour le moment.',
+                                  style: TextStyle(
                                     color: brandPrimary,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: const Text(
-                                    'GO TO FAQ',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
-                            ],
+                            );
+                          }
+                          final posts = chats
+                              .where((chat) => chat.replyTo == null)
+                              .toList();
+
+                          return Column(
+                            children: posts.asMap().entries.map((entry) {
+                              final index = entry.key;
+                              final chat = entry.value;
+                              final timeAgo = _formatTimeAgo(chat.createdAt);
+                              return Column(
+                                children: [
+                                  _buildPostItem(
+                                    chat,
+                                    timeAgo,
+                                    brandPrimary,
+                                    chats,
+                                  ),
+                                  if (index < posts.length - 1)
+                                    const Divider(height: 30),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        },
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        error: (err, stack) => Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            child: Text(
+                              _isUnauthorizedError(err)
+                                  ? l10n.pleaseLoginToViewLocalChat
+                                  : l10n.couldNotLoadLocalChat,
+                              style: const TextStyle(
+                                color: brandPrimary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.network(
-                              'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=200',
-                              height: 120,
-                              fit: BoxFit.cover,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+
+                    // SEE LOCAL MISSIONS section
+                    const Text(
+                      'SEE LOCAL\nMISSIONS',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w900,
+                        color: brandPrimary,
+                        height: 0.9,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Map section
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Image.asset(
+                          'assets/images/Map/map.png',
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        Positioned(
+                          bottom: -20,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const MissionLocalScreen(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 60,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: brandPrimary,
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.2),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: const Text(
+                                'SEE FULL LIST',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 16,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
+                    const SizedBox(height: 60),
 
-              // CONTACTS Section
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.network(
-                    'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=600',
-                    height: 300,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                  Container(
-                    height: 300,
-                    width: double.infinity,
-                    color: Colors.black.withValues(alpha: 0.4),
-                  ),
-                  Column(
-                    children: [
-                      const Text(
-                        'CONTACTS',
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 2,
-                        childAspectRatio: 3,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                    // FAQ Section
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
                         children: [
-                          _buildContactButton(
-                            context,
-                            'SHELTERS',
-                            const SheltersScreen(),
+                          const Text(
+                            'HERE THERE ARE NO\nQUESTIONS WITHOUT ANSWERS!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w900,
+                              color: brandPrimary,
+                            ),
                           ),
-                          _buildContactButton(
-                            context,
-                            'VETERINARIANS',
-                            const VeterinariansScreen(),
-                          ),
-                          _buildContactButton(
-                            context,
-                            'AUTHORITIES',
-                            const AuthoritiesScreen(),
-                          ),
-                          _buildContactButton(
-                            context,
-                            'PARTNERS',
-                            const PartnersScreen(),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const FAQCommunityScreen(),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 30,
+                                          vertical: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: brandPrimary,
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          'GO TO FAQ',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: Image.network(
+                                    'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=200',
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 40),
+
+                    // CONTACTS Section
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.network(
+                          'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=600',
+                          height: 300,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          height: 300,
+                          width: double.infinity,
+                          color: Colors.black.withValues(alpha: 0.4),
+                        ),
+                        Column(
+                          children: [
+                            const Text(
+                              'CONTACTS',
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            GridView.count(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              crossAxisCount: 2,
+                              childAspectRatio: 3,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                              ),
+                              children: [
+                                _buildContactButton(
+                                  context,
+                                  'SHELTERS',
+                                  const SheltersScreen(),
+                                ),
+                                _buildContactButton(
+                                  context,
+                                  'VETERINARIANS',
+                                  const VeterinariansScreen(),
+                                ),
+                                _buildContactButton(
+                                  context,
+                                  'AUTHORITIES',
+                                  const AuthoritiesScreen(),
+                                ),
+                                _buildContactButton(
+                                  context,
+                                  'PARTNERS',
+                                  const PartnersScreen(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 100),
+                  ],
+                ),
               ),
-              const SizedBox(height: 100),
-            ],
-          ),
-        ),
-      ),
+            ),
+          ), // closes Expanded
+        ], // closes Column children
+      ), // closes Column
     );
   }
 

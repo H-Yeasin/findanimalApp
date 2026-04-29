@@ -48,7 +48,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                         label: l10n.navReport,
                       ),
                     ),
-                    const SizedBox(width: 54),
+                    const SizedBox(width: 50),
                     Expanded(
                       child: _item(
                         index: 3,

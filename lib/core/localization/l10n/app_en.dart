@@ -146,4 +146,5 @@ const Map<String, String> appEn = {
   'date': 'DATE',
   'name': 'NAME',
   'reportOneOfMyAnimals': 'Report one of my animals',
+  'homeInfoBanner': 'With Hesteka, you can report a lost or endangered animal near you\nand mobilize a community ready to help quickly.\n\nEvery action counts! Help and join the community, earn points to\nunlock rewards.',
 };

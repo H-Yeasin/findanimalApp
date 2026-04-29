@@ -214,6 +214,7 @@ class AppLocalizations {
   String get date => _text('date');
   String get name => _text('name');
   String get reportOneOfMyAnimals => _text('reportOneOfMyAnimals');
+  String get homeInfoBanner => _text('homeInfoBanner');
 }
 
 class _AppLocalizationsDelegate

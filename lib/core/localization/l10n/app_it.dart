@@ -148,4 +148,5 @@ const Map<String, String> appIt = {
   'date': 'DATA',
   'name': 'NOME',
   'reportOneOfMyAnimals': 'Segnala uno dei miei animali',
+  'homeInfoBanner': 'Con Hesteka, puoi segnalare un animale smarrito o in pericolo vicino a te\ne mobilitare una comunita pronta ad aiutare rapidamente.\n\nOgni azione conta! Aiuta e unisciti alla comunita, guadagna punti per\nsbloccare ricompense.',
 };
