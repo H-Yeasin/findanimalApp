@@ -22,6 +22,10 @@ import '../auth/presentation/providers/auth_provider.dart';
 import 'package:video_player/video_player.dart';
 import 'presentation/screens/see_all_story_screen.dart';
 import 'presentation/screens/comment_show.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import '../home/presentation/providers/home_providers.dart';
+import '../seek/data/models/report_model.dart';
 
 final activeVideoProvider = StateProvider<String?>((ref) => null);
 
@@ -36,6 +40,75 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   final TextEditingController _contentController = TextEditingController();
   final List<File> _selectedMedia = [];
   final ImagePicker _picker = ImagePicker();
+
+  GoogleMapController? _mapController;
+  LatLng _currentPosition = const LatLng(48.8566, 2.3522); // Default Paris
+  bool _isMapLoading = true;
+  BitmapDescriptor? _customPin;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomPin();
+    _initializeLocation();
+  }
+
+  Future<void> _loadCustomPin() async {
+    _customPin = await BitmapDescriptor.fromAssetImage(
+      const ImageConfiguration(size: Size(30, 30)),
+      'assets/images/Map/red_pin.png',
+    );
+    if (mounted) setState(() {});
+  }
+
+  Future<void> _initializeLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return;
+      }
+
+      if (permission == LocationPermission.deniedForever) return;
+
+      final position = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+      
+      setState(() {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+        _isMapLoading = false;
+      });
+      
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(_currentPosition, 13),
+      );
+    } catch (e) {
+      debugPrint('Error initializing location: $e');
+      if (mounted) {
+        setState(() => _isMapLoading = false);
+      }
+    }
+  }
+
+  Future<void> _handleLocateMe() async {
+    try {
+      final position = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+      
+      setState(() {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+      });
+      
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(_currentPosition, 14),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Could not get location: $e')),
+      );
+    }
+  }
 
   bool _isUnauthorizedError(Object err) {
     final message = err.toString().toLowerCase();
@@ -253,6 +326,34 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     final storiesAsync = ref.watch(localStoriesProvider);
     final chatAsync = ref.watch(localChatProvider);
     final profileImage = ref.watch(currentUserProvider)?.profileImage;
+    final reportsAsync = ref.watch(homeReportsProvider);
+
+    Set<Marker> markers = {};
+    if (reportsAsync.hasValue) {
+      for (var report in reportsAsync.value!) {
+        if (report.location.coordinates.length >= 2) {
+          markers.add(
+            Marker(
+              markerId: MarkerId('comm_${report.id}'),
+              position: LatLng(
+                report.location.coordinates[1],
+                report.location.coordinates[0],
+              ),
+              infoWindow: InfoWindow(
+                title: report.animalName.toUpperCase(),
+                snippet: '${report.status} | ${report.breed}',
+              ),
+              icon: _customPin ??
+                  BitmapDescriptor.defaultMarkerWithHue(
+                    report.status.toLowerCase() == 'found'
+                        ? BitmapDescriptor.hueAzure
+                        : BitmapDescriptor.hueOrange,
+                  ),
+            ),
+          );
+        }
+      }
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
@@ -760,11 +861,55 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                       clipBehavior: Clip.none,
                       alignment: Alignment.bottomCenter,
                       children: [
-                        Image.asset(
-                          'assets/images/Map/map.png',
-                          height: 200,
+                        Container(
+                          height: 250,
                           width: double.infinity,
-                          fit: BoxFit.cover,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: brandPrimary.withValues(alpha: 0.1),
+                              width: 1,
+                            ),
+                          ),
+                          child: GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: _currentPosition,
+                              zoom: 12,
+                            ),
+                            onMapCreated: (controller) =>
+                                _mapController = controller,
+                            markers: markers,
+                            myLocationEnabled: true,
+                            myLocationButtonEnabled: false,
+                            zoomControlsEnabled: false,
+                            mapToolbarEnabled: false,
+                          ),
+                        ),
+                        // Locate Me Button
+                        Positioned(
+                          top: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: _handleLocateMe,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.my_location,
+                                color: brandPrimary,
+                                size: 20,
+                              ),
+                            ),
+                          ),
                         ),
                         Positioned(
                           bottom: -20,
