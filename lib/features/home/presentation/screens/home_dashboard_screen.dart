@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/solidarity_hub_screen.dart';
@@ -168,9 +170,7 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
           width: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&q=80&w=1000',
-              ),
+              image: AssetImage('assets/homeHero.png'),
               fit: BoxFit.cover,
             ),
           ),
@@ -180,7 +180,7 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withValues(alpha: 0.35),
+                  Colors.black.withValues(alpha: 0.5),
                   Colors.transparent,
                 ],
               ),
@@ -195,21 +195,13 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
           right: 0,
           child: Center(
             child: SizedBox(
-              height: 180,
+              height: 200,
               child: Stack(
                 children: [
                   Image.asset(
                     'assets/images/Logo/logo.png',
                     height: 180,
                     fit: BoxFit.contain,
-                    // errorBuilder: (context, error, stackTrace) => const Text(
-                    //   'HESTEKA',
-                    //   style: TextStyle(
-                    //     color: Colors.white,
-                    //     fontSize: 24,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
                   ),
                   // "Welcome to" text perfectly nestled above the 'ESTEKA' part of the logo
                   const Align(
