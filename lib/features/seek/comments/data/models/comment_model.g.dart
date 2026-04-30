@@ -47,16 +47,19 @@ _$CommentAuthorImpl _$$CommentAuthorImplFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      profileImage: json['profileImage'] as String?,
+      profileImage: const ProfileImageConverter().fromJson(
+        json['profileImage'],
+      ),
     );
 
-Map<String, dynamic> _$$CommentAuthorImplToJson(_$CommentAuthorImpl instance) =>
-    <String, dynamic>{
-      '_id': instance.id,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'profileImage': instance.profileImage,
-    };
+Map<String, dynamic> _$$CommentAuthorImplToJson(
+  _$CommentAuthorImpl instance,
+) => <String, dynamic>{
+  '_id': instance.id,
+  'firstName': instance.firstName,
+  'lastName': instance.lastName,
+  'profileImage': const ProfileImageConverter().toJson(instance.profileImage),
+};
 
 _$CommentImageImpl _$$CommentImageImplFromJson(Map<String, dynamic> json) =>
     _$CommentImageImpl(

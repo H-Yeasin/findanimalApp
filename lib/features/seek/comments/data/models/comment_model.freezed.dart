@@ -449,6 +449,7 @@ mixin _$CommentAuthor {
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
+  @ProfileImageConverter()
   String? get profileImage => throw _privateConstructorUsedError;
 
   /// Serializes this CommentAuthor to a JSON map.
@@ -472,7 +473,7 @@ abstract class $CommentAuthorCopyWith<$Res> {
     @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
-    String? profileImage,
+    @ProfileImageConverter() String? profileImage,
   });
 }
 
@@ -533,7 +534,7 @@ abstract class _$$CommentAuthorImplCopyWith<$Res>
     @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
-    String? profileImage,
+    @ProfileImageConverter() String? profileImage,
   });
 }
 
@@ -586,7 +587,7 @@ class _$CommentAuthorImpl implements _CommentAuthor {
     @JsonKey(name: '_id') required this.id,
     required this.firstName,
     required this.lastName,
-    this.profileImage,
+    @ProfileImageConverter() this.profileImage,
   });
 
   factory _$CommentAuthorImpl.fromJson(Map<String, dynamic> json) =>
@@ -600,6 +601,7 @@ class _$CommentAuthorImpl implements _CommentAuthor {
   @override
   final String lastName;
   @override
+  @ProfileImageConverter()
   final String? profileImage;
 
   @override
@@ -645,7 +647,7 @@ abstract class _CommentAuthor implements CommentAuthor {
     @JsonKey(name: '_id') required final String id,
     required final String firstName,
     required final String lastName,
-    final String? profileImage,
+    @ProfileImageConverter() final String? profileImage,
   }) = _$CommentAuthorImpl;
 
   factory _CommentAuthor.fromJson(Map<String, dynamic> json) =
@@ -659,6 +661,7 @@ abstract class _CommentAuthor implements CommentAuthor {
   @override
   String get lastName;
   @override
+  @ProfileImageConverter()
   String? get profileImage;
 
   /// Create a copy of CommentAuthor

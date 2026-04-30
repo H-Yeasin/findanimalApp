@@ -24,9 +24,17 @@ class CommentsRemoteSource {
     required String reportId,
     String? parentId,
   }) async {
+    final requestData = <String, dynamic>{
+      'content': content,
+      'reportId': reportId,
+    };
+    if (parentId != null) {
+      requestData['parentId'] = parentId;
+    }
+
     final response = await _apiClient.post(
       '/comments/create-comment',
-      data: {'content': content, 'reportId': reportId, 'parentId': parentId},
+      data: requestData,
     );
     return response.data;
   }

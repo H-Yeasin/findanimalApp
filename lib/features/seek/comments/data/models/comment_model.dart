@@ -23,13 +23,32 @@ class CommentModel with _$CommentModel {
       _$CommentModelFromJson(json);
 }
 
+class ProfileImageConverter implements JsonConverter<String?, Object?> {
+  const ProfileImageConverter();
+
+  @override
+  String? fromJson(Object? json) {
+    if (json == null) return null;
+    if (json is String) return json;
+    if (json is Map<String, dynamic>) {
+      return json['secure_url'] as String?;
+    }
+    return null;
+  }
+
+  @override
+  dynamic toJson(String? object) {
+    return object;
+  }
+}
+
 @freezed
 class CommentAuthor with _$CommentAuthor {
   const factory CommentAuthor({
     @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
-    String? profileImage,
+    @ProfileImageConverter() String? profileImage,
   }) = _CommentAuthor;
 
   factory CommentAuthor.fromJson(Map<String, dynamic> json) =>
