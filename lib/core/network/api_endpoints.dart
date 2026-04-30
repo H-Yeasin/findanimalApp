@@ -58,10 +58,10 @@ class ApiEndpoints {
       '/local-missions/get-my-local-missions';
   static const String createLocalMission =
       '/local-missions/create-local-mission';
-  static String submitMissionInterest(String id) =>
-      '/local-missions/submit-interest/$id';
-  static String getMissionParticipants(String id) =>
-      '/local-missions/get-participants/$id';
+  static String joinLocalMission(String id) =>
+      '/local-missions/join-local-mission/$id';
+  static String getLocalMissionParticipants(String id) =>
+      '/local-missions/get-local-mission-participants/$id';
 
   // Solidarity
   static const String shopifyCollections = '/solidarity/shopify-collections';

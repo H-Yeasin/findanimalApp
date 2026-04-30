@@ -72,14 +72,14 @@ class MissionsRepositoryImpl implements MissionsRepository {
   }
 
   @override
-  Future<void> submitInterest(String missionId) async {
-    await _apiClient.post(ApiEndpoints.submitMissionInterest(missionId));
+  Future<void> joinMission(String missionId) async {
+    await _apiClient.post(ApiEndpoints.joinLocalMission(missionId));
   }
 
   @override
-  Future<List<dynamic>> getParticipants(String missionId) async {
-    final response =
-        await _apiClient.get(ApiEndpoints.getMissionParticipants(missionId));
+  Future<List<dynamic>> getLocalMissionParticipants(String missionId) async {
+    final response = await _apiClient
+        .get(ApiEndpoints.getLocalMissionParticipants(missionId));
     final payload = response.data as Map<String, dynamic>;
     return payload['data'] as List<dynamic>? ?? const [];
   }

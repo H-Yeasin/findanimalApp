@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -549,7 +550,7 @@ class _MissionCard extends ConsumerWidget {
                             try {
                               await ref
                                   .read(missionsRepositoryProvider)
-                                  .submitInterest(mission.id);
+                                  .joinMission(mission.id);
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
@@ -561,10 +562,18 @@ class _MissionCard extends ConsumerWidget {
                                 );
                               }
                             } catch (e) {
+                              String errorMessage = 'Erreur: $e';
+                              if (e is DioException) {
+                                final responseData = e.response?.data;
+                                if (responseData is Map &&
+                                    responseData.containsKey('message')) {
+                                  errorMessage = responseData['message'];
+                                }
+                              }
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('Erreur: $e'),
+                                    content: Text(errorMessage),
                                     backgroundColor: Colors.red,
                                   ),
                                 );

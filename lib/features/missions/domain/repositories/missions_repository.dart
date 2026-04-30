@@ -15,6 +15,6 @@ abstract class MissionsRepository {
     required int points,
     MultipartFile? image,
   });
-  Future<void> submitInterest(String missionId);
-  Future<List<dynamic>> getParticipants(String missionId);
+  Future<void> joinMission(String missionId);
+  Future<List<dynamic>> getLocalMissionParticipants(String missionId);
 }
