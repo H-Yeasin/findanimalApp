@@ -439,6 +439,7 @@ ChatUser _$ChatUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatUser {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -460,7 +461,7 @@ abstract class $ChatUserCopyWith<$Res> {
       _$ChatUserCopyWithImpl<$Res, ChatUser>;
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
     ChatProfileImage? profileImage,
@@ -537,7 +538,7 @@ abstract class _$$ChatUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
     ChatProfileImage? profileImage,
@@ -593,7 +594,7 @@ class __$$ChatUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatUserImpl implements _ChatUser {
   const _$ChatUserImpl({
-    required this.id,
+    @JsonKey(name: '_id') required this.id,
     required this.firstName,
     required this.lastName,
     this.profileImage,
@@ -603,6 +604,7 @@ class _$ChatUserImpl implements _ChatUser {
       _$$ChatUserImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final String firstName;
@@ -651,7 +653,7 @@ class _$ChatUserImpl implements _ChatUser {
 
 abstract class _ChatUser implements ChatUser {
   const factory _ChatUser({
-    required final String id,
+    @JsonKey(name: '_id') required final String id,
     required final String firstName,
     required final String lastName,
     final ChatProfileImage? profileImage,
@@ -661,6 +663,7 @@ abstract class _ChatUser implements ChatUser {
       _$ChatUserImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   String get firstName;

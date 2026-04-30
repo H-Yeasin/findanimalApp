@@ -46,7 +46,7 @@ Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
 
 _$ChatUserImpl _$$ChatUserImplFromJson(Map<String, dynamic> json) =>
     _$ChatUserImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: json['profileImage'] == null
@@ -58,7 +58,7 @@ _$ChatUserImpl _$$ChatUserImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ChatUserImplToJson(_$ChatUserImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'profileImage': instance.profileImage,

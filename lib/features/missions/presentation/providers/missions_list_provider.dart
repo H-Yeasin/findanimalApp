@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../core/network/paginated_response.dart';
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
+import 'missions_filters_provider.dart';
 
 part 'missions_list_provider.g.dart';
 
@@ -12,7 +13,12 @@ class MissionsList extends _$MissionsList {
   @override
   Future<PaginatedResponse<MissionModel>> build() async {
     final repository = ref.watch(missionsRepositoryProvider);
-    return repository.getAllMissions(query: {'page': _currentPage, 'limit': 10});
+    final filters = ref.watch(missionsFiltersProvider);
+    
+    return repository.getAllMissions(query: {
+      ...filters,
+      'page': _currentPage,
+    });
   }
 
   Future<void> goToPage(int page) async {

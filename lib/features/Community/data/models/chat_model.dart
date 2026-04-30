@@ -25,7 +25,7 @@ class ChatModel with _$ChatModel {
 @freezed
 class ChatUser with _$ChatUser {
   const factory ChatUser({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
     ChatProfileImage? profileImage,
