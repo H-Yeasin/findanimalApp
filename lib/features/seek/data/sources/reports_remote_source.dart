@@ -20,4 +20,11 @@ class ReportsRemoteSource {
     );
     return response.data;
   }
+
+  Future<dynamic> getReportById(String id) async {
+    final response = await _apiClient.get(
+      ApiEndpoints.getReportById(id),
+    );
+    return response.data;
+  }
 }

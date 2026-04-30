@@ -36,4 +36,10 @@ class ReportsRepositoryImpl implements ReportsRepository {
       (json) => ReportModel.fromJson(json),
     );
   }
+
+  @override
+  Future<ReportModel> getReportById(String id) async {
+    final response = await _remoteSource.getReportById(id);
+    return ReportModel.fromJson(response['data'] as Map<String, dynamic>);
+  }
 }

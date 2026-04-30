@@ -31,6 +31,7 @@ class ApiEndpoints {
   static const String getMyReports = '/reports/get-my-reports';
   static const String createReport = '/reports/create-report';
   static String updateReport(String id) => '/reports/update-report/$id';
+  static String getReportById(String id) => '/reports/get-single-report/$id';
 
   // Donations
   static const String stripeInitiate = '/donations/stripe/initiate';

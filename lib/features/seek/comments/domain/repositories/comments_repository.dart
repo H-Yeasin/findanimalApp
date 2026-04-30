@@ -8,4 +8,6 @@ abstract class CommentsRepository {
     required String reportId,
     String? parentId,
   });
+
+  Future<void> toggleLike(String commentId);
 }

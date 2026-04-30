@@ -30,4 +30,11 @@ class CommentsRemoteSource {
     );
     return response.data;
   }
+
+  Future<dynamic> toggleLike(String commentId) async {
+    final response = await _apiClient.post(
+      '/comments/toggle-like/$commentId',
+    );
+    return response.data;
+  }
 }

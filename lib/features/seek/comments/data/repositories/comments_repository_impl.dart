@@ -35,4 +35,9 @@ class CommentsRepositoryImpl implements CommentsRepository {
     );
     return CommentModel.fromJson(response['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<void> toggleLike(String commentId) async {
+    await _remoteSource.toggleLike(commentId);
+  }
 }
