@@ -70,4 +70,17 @@ class MissionsRepositoryImpl implements MissionsRepository {
     final payload = response.data as Map<String, dynamic>;
     return MissionModel.fromJson(payload['data'] as Map<String, dynamic>);
   }
+
+  @override
+  Future<void> submitInterest(String missionId) async {
+    await _apiClient.post(ApiEndpoints.submitMissionInterest(missionId));
+  }
+
+  @override
+  Future<List<dynamic>> getParticipants(String missionId) async {
+    final response =
+        await _apiClient.get(ApiEndpoints.getMissionParticipants(missionId));
+    final payload = response.data as Map<String, dynamic>;
+    return payload['data'] as List<dynamic>? ?? const [];
+  }
 }

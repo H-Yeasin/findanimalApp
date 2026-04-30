@@ -59,7 +59,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
       'caption': caption,
       'lat': lat,
       'lng': lng,
-      'address': ?address,
+      'address': address,
       'media': await MultipartFile.fromFile(media.path),
     });
 
@@ -83,8 +83,8 @@ class CommunityRepositoryImpl implements CommunityRepository {
       'content': content,
       'lat': lat,
       'lng': lng,
-      'address': ?address,
-      'replyTo': ?replyTo,
+      'address': address,
+      'replyTo': replyTo,
     };
 
     if (media != null && media.isNotEmpty) {

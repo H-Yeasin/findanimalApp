@@ -44,21 +44,11 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   GoogleMapController? _mapController;
   LatLng _currentPosition = const LatLng(48.8566, 2.3522); // Default Paris
   bool _isMapLoading = true;
-  BitmapDescriptor? _customPin;
 
   @override
   void initState() {
     super.initState();
-    _loadCustomPin();
     _initializeLocation();
-  }
-
-  Future<void> _loadCustomPin() async {
-    _customPin = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(30, 30)),
-      'assets/images/Map/red_pin.png',
-    );
-    if (mounted) setState(() {});
   }
 
   Future<void> _initializeLocation() async {
@@ -73,12 +63,12 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
 
       final position = await Geolocator.getCurrentPosition();
       if (!mounted) return;
-      
+
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
         _isMapLoading = false;
       });
-      
+
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(_currentPosition, 13),
       );
@@ -94,19 +84,19 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
     try {
       final position = await Geolocator.getCurrentPosition();
       if (!mounted) return;
-      
+
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
       });
-      
+
       _mapController?.animateCamera(
         CameraUpdate.newLatLngZoom(_currentPosition, 14),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not get location: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not get location: $e')));
     }
   }
 
@@ -343,12 +333,11 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                 title: report.animalName.toUpperCase(),
                 snippet: '${report.status} | ${report.breed}',
               ),
-              icon: _customPin ??
-                  BitmapDescriptor.defaultMarkerWithHue(
-                    report.status.toLowerCase() == 'found'
-                        ? BitmapDescriptor.hueAzure
-                        : BitmapDescriptor.hueOrange,
-                  ),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                report.status.toLowerCase() == 'found'
+                    ? BitmapDescriptor.hueAzure
+                    : BitmapDescriptor.hueOrange,
+              ),
             ),
           );
         }

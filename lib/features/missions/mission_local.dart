@@ -6,6 +6,9 @@ import 'presentation/providers/missions_list_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../home/presentation/providers/home_providers.dart';
+import 'presentation/providers/missions_filters_provider.dart';
+import 'data/repositories/missions_repository_impl.dart';
+import '../../core/localization/app_localizations.dart';
 
 class MissionLocalScreen extends ConsumerStatefulWidget {
   const MissionLocalScreen({super.key});
@@ -85,6 +88,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     const surface = Color(0xFFFBF4E9);
     final missionsAsync = ref.watch(missionsListProvider);
     final reportsAsync = ref.watch(homeReportsProvider);
+    final filters = ref.watch(missionsFiltersProvider);
+    final l10n = AppLocalizations.of(context);
 
     Set<Marker> markers = {};
     if (reportsAsync.hasValue) {
@@ -232,19 +237,25 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                   children: [
                     Expanded(
                       flex: 2,
-                      child: _buildFilterButton(
-                        'TRIER PAR',
-                        Icons.keyboard_arrow_down,
-                        brandPrimary,
+                      child: GestureDetector(
+                        onTap: () => _showFiltersBottomSheet(context, ref),
+                        child: _buildFilterButton(
+                          'TRIER PAR',
+                          Icons.keyboard_arrow_down,
+                          brandPrimary,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       flex: 3,
-                      child: _buildFilterButton(
-                        'PÉLISSANNE (13330) - 5KM',
-                        Icons.keyboard_arrow_down,
-                        brandPrimary,
+                      child: GestureDetector(
+                        onTap: () => _showFiltersBottomSheet(context, ref),
+                        child: _buildFilterButton(
+                          '${filters['radius']} KM',
+                          Icons.keyboard_arrow_down,
+                          brandPrimary,
+                        ),
                       ),
                     ),
                   ],
@@ -357,6 +368,20 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     );
   }
 
+  void _showFiltersBottomSheet(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) {
+        return const _MissionsFiltersBottomSheet();
+      },
+    );
+  }
+
   Widget _buildFilterButton(String text, IconData icon, Color brandPrimary) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -408,14 +433,14 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
   }
 }
 
-class _MissionCard extends StatelessWidget {
+class _MissionCard extends ConsumerWidget {
   const _MissionCard({required this.mission, required this.brandPrimary});
 
   final MissionModel mission;
   final Color brandPrimary;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final organization = mission.partner?.company ?? 'Organisation';
     final timeAgo = mission.createdAt != null
         ? _formatTimeAgo(mission.createdAt!)
@@ -520,7 +545,32 @@ class _MissionCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+                              await ref
+                                  .read(missionsRepositoryProvider)
+                                  .submitInterest(mission.id);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Intérêt soumis avec succès !',
+                                    ),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Erreur: $e'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: brandPrimary,
                             foregroundColor: Colors.white,
@@ -561,5 +611,227 @@ class _MissionCard extends StatelessWidget {
     } else {
       return 'À l\'instant';
     }
+  }
+}
+
+class _MissionsFiltersBottomSheet extends ConsumerStatefulWidget {
+  const _MissionsFiltersBottomSheet();
+
+  @override
+  ConsumerState<_MissionsFiltersBottomSheet> createState() =>
+      _MissionsFiltersBottomSheetState();
+}
+
+class _MissionsFiltersBottomSheetState
+    extends ConsumerState<_MissionsFiltersBottomSheet> {
+  late TextEditingController _searchController;
+  late double _radius;
+  late String _status;
+  late String _sortBy;
+
+  @override
+  void initState() {
+    super.initState();
+    final currentFilters = ref.read(missionsFiltersProvider);
+    _searchController = TextEditingController(
+      text: currentFilters['search'] ?? '',
+    );
+    _radius = (currentFilters['radius'] as num?)?.toDouble() ?? 5.0;
+    _status = currentFilters['status'] ?? 'active';
+    _sortBy = currentFilters['sortBy'] ?? 'date';
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 10),
+      child: Text(
+        title.toUpperCase(),
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w900,
+          color: Color(0xFFBA4A22),
+          fontFamily: 'Impact',
+          letterSpacing: 1,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    const brandPrimary = Color(0xFFBA4A22);
+
+    return Container(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 30,
+        left: 24,
+        right: 24,
+        top: 20,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.adjustFilters,
+                  style: const TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w900,
+                    color: brandPrimary,
+                    fontFamily: 'Impact',
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: brandPrimary, size: 28),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+            const Divider(height: 30, thickness: 1, color: Color(0xFFF2E6D8)),
+
+            _buildSectionTitle('Search Missions'),
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search by title...',
+                hintStyle: TextStyle(color: Colors.grey[400]),
+                prefixIcon: const Icon(Icons.search, color: brandPrimary),
+                filled: true,
+                fillColor: const Color(0xFFFBF4E9),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 15),
+              ),
+            ),
+
+            _buildSectionTitle('Status'),
+            Wrap(
+              spacing: 10,
+              children: ['active', 'completed', 'expired'].map((s) {
+                final isSelected = _status == s;
+                return ChoiceChip(
+                  label: Text(s.toUpperCase()),
+                  selected: isSelected,
+                  onSelected: (val) {
+                    if (val) setState(() => _status = s);
+                  },
+                  selectedColor: brandPrimary,
+                  labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : brandPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(
+                      color: brandPrimary,
+                      width: isSelected ? 0 : 1,
+                    ),
+                  ),
+                  showCheckmark: false,
+                );
+              }).toList(),
+            ),
+
+            _buildSectionTitle('Search Radius'),
+            Row(
+              children: [
+                const Icon(Icons.location_on, color: brandPrimary, size: 20),
+                const SizedBox(width: 10),
+                Text(
+                  'Radius: ${_radius.toInt()} km',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+            Slider(
+              value: _radius,
+              min: 1,
+              max: 50,
+              activeColor: brandPrimary,
+              inactiveColor: const Color(0xFFF2E6D8),
+              onChanged: (val) {
+                setState(() => _radius = val);
+              },
+            ),
+
+            _buildSectionTitle('Sort By'),
+            DropdownButtonFormField<String>(
+              value: _sortBy,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xFFFBF4E9),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'date', child: Text('Date')),
+                DropdownMenuItem(value: 'title', child: Text('Title')),
+              ],
+              onChanged: (val) {
+                if (val != null) setState(() => _sortBy = val);
+              },
+            ),
+
+            const SizedBox(height: 35),
+            SizedBox(
+              width: double.infinity,
+              height: 55,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: brandPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  final updatedFilters = {
+                    'page': 1,
+                    'limit': 10,
+                    'status': _status,
+                    'sortBy': _sortBy,
+                    'sort': 'descending',
+                    'radius': _radius.toInt(),
+                    'search': _searchController.text.trim(),
+                  };
+                  ref.read(missionsFiltersProvider.notifier).state =
+                      updatedFilters;
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'APPLY FILTERS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Impact',
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
