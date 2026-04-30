@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'comment_model.freezed.dart';
@@ -28,16 +29,24 @@ class ProfileImageConverter implements JsonConverter<String?, Object?> {
 
   @override
   String? fromJson(Object? json) {
-    if (json == null) return null;
-    if (json is String) return json;
-    if (json is Map<String, dynamic>) {
-      return json['secure_url'] as String?;
+    try {
+      if (json == null) return null;
+      if (json is String) return json;
+      if (json is Map) {
+        final secureUrl = json['secure_url'];
+        if (secureUrl is String) return secureUrl;
+      }
+      return null;
+    } catch (e) {
+      if (kDebugMode) {
+        print('ProfileImageConverter error: $e');
+      }
+      return null;
     }
-    return null;
   }
 
   @override
-  dynamic toJson(String? object) {
+  Object? toJson(String? object) {
     return object;
   }
 }
