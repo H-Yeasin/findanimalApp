@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/localization/app_localizations.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -141,12 +142,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   label,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 0.3,
-                  ),
+                  style: AppTextStyles.navLabel,
                   textAlign: TextAlign.center,
                 ),
               ),

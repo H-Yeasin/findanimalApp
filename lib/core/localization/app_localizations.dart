@@ -64,6 +64,13 @@ class AppLocalizations {
     return text('viewProfile', params: {'name': name});
   }
 
+  String homeReportStatusDate(String status, String date) {
+    return text(
+      'homeReportStatusDate',
+      params: {'status': status, 'date': date},
+    );
+  }
+
   String nearbyKm(int radius) {
     return text('nearbyKm', params: {'radius': '$radius'});
   }
@@ -215,6 +222,28 @@ class AppLocalizations {
   String get name => _text('name');
   String get reportOneOfMyAnimals => _text('reportOneOfMyAnimals');
   String get homeInfoBanner => _text('homeInfoBanner');
+  String get homeWelcomePrefix => _text('homeWelcomePrefix');
+  String get homeExploreFullMap => _text('homeExploreFullMap');
+  String get homeReportedRecently => _text('homeReportedRecently');
+  String get homeNearYou => _text('homeNearYou');
+  String get homeSeeMore => _text('homeSeeMore');
+  String get homeCommunityHelped => _text('homeCommunityHelped');
+  String get homeAnimalsFound => _text('homeAnimalsFound');
+  String get homeReports => _text('homeReports');
+  String get homeAnimalsRescued => _text('homeAnimalsRescued');
+  String get homeSupportTitle => _text('homeSupportTitle');
+  String get homeMakeDonation => _text('homeMakeDonation');
+  String get homeSolidarityShop => _text('homeSolidarityShop');
+  String get homeSignUpMission => _text('homeSignUpMission');
+  String get homeSupportBody => _text('homeSupportBody');
+  String get homeSupportPoints => _text('homeSupportPoints');
+  String get homeFilterTitle => _text('homeFilterTitle');
+  String get homeSearchExample => _text('homeSearchExample');
+  String get statusAll => _text('statusAll');
+  String get statusMissing => _text('statusMissing');
+  String get statusFound => _text('statusFound');
+  String get statusRescued => _text('statusRescued');
+  String get communityUser => _text('communityUser');
 }
 
 class _AppLocalizationsDelegate

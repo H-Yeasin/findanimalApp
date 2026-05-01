@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/features/reports/presentation/providers/report_form_provider.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../providers/my_reports_provider.dart';
-import '../widgets/report_base_layout.dart';
 
 class MyReportsScreen extends ConsumerWidget {
   const MyReportsScreen({super.key});
@@ -19,109 +21,113 @@ class MyReportsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF4E9),
-      body: Stack(
-        children: [
-          Positioned.fill(child: CustomPaint(painter: GridBackgroundPainter())),
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const AppTopBar(showBackButton: false),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 10,
-                  ),
-                  child: Text(
-                    l10n.myReportsTitle,
-                    style: const TextStyle(
-                      color: Color(0xFFBA4A22),
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                      fontFamily: 'Impact',
+      backgroundColor: Colors.transparent,
+      body: AppBackground(
+        child: Stack(
+          children: [
+            SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const AppTopBar(showBackButton: false),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 10,
                     ),
-                  ),
-                ),
-                Expanded(
-                  child: reportsAsync.when(
-                    data: (reports) => ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 10,
-                      ),
-                      itemCount: reports.length,
-                      itemBuilder: (context, index) =>
-                          _buildReportCard(context, ref, reports[index], l10n),
-                    ),
-                    loading: () => const Center(
-                      child: CircularProgressIndicator(
-                        color: Color(0xFFBA4A22),
+                    child: Text(
+                      l10n.myReportsTitle,
+                      style: AppTextStyles.heading.copyWith(
+                        color: const Color(0xFFBA4A22),
+                        fontSize: 32,
                       ),
                     ),
-                    error: (err, stack) {
-                      final errorText = err.toString().toLowerCase();
-                      final isUnauthorized =
-                          errorText.contains('401') ||
-                          errorText.contains('unauthorized');
+                  ),
+                  Expanded(
+                    child: reportsAsync.when(
+                      data: (reports) => ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 10,
+                        ),
+                        itemCount: reports.length,
+                        itemBuilder: (context, index) => _buildReportCard(
+                          context,
+                          ref,
+                          reports[index],
+                          l10n,
+                        ),
+                      ),
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(
+                          color: Color(0xFFBA4A22),
+                        ),
+                      ),
+                      error: (err, stack) {
+                        final errorText = err.toString().toLowerCase();
+                        final isUnauthorized =
+                            errorText.contains('401') ||
+                            errorText.contains('unauthorized');
 
-                      if (isUnauthorized) {
-                        return Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  l10n.pleaseLoginToViewReports,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Color(0xFFBA4A22),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                        if (isUnauthorized) {
+                          return Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    l10n.pleaseLoginToViewReports,
+                                    textAlign: TextAlign.center,
+                                    style: AppTextStyles.subtitle.copyWith(
+                                      color: const Color(0xFFBA4A22),
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 12),
-                                ElevatedButton(
-                                  onPressed: () =>
-                                      context.push(RouteNames.account),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFBA4A22),
-                                    foregroundColor: Colors.white,
+                                  const SizedBox(height: 12),
+                                  ElevatedButton(
+                                    onPressed: () =>
+                                        context.push(RouteNames.account),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFFBA4A22),
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    child: Text(l10n.goToLogin),
                                   ),
-                                  child: Text(l10n.goToLogin),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                          );
+                        }
+
+                        return Center(
+                          child: Text(
+                            l10n.couldNotLoadReports,
+                            style: const TextStyle(color: Color(0xFFBA4A22)),
                           ),
                         );
-                      }
-
-                      return Center(
-                        child: Text(
-                          l10n.couldNotLoadReports,
-                          style: const TextStyle(color: Color(0xFFBA4A22)),
-                        ),
-                      );
-                    },
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            right: 24,
-            bottom: 20,
-            child: FloatingActionButton(
-              onPressed: () {
-                ref.read(reportFormProvider.notifier).reset();
-                context.push(RouteNames.reportCreateStep1);
-              },
-              backgroundColor: const Color(0xFFBA4A22),
-              child: const Icon(Icons.add, color: Colors.white, size: 30),
+            Positioned(
+              right: 24,
+              bottom: 20,
+              child: FloatingActionButton(
+                onPressed: () {
+                  ref.read(reportFormProvider.notifier).reset();
+                  context.push(RouteNames.reportCreateStep1);
+                },
+                backgroundColor: const Color(0xFFBA4A22),
+                child: const Icon(Icons.add, color: Colors.white, size: 30),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -172,11 +178,9 @@ class MyReportsScreen extends ConsumerWidget {
                       children: [
                         Text(
                           report.animalName.toUpperCase(),
-                          style: const TextStyle(
-                            color: Color(0xFFBA4A22),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Impact',
+                          style: AppTextStyles.condensedSectionTitle.copyWith(
+                            color: const Color(0xFFBA4A22),
+                            fontSize: 20,
                           ),
                         ),
                         GestureDetector(
@@ -188,10 +192,9 @@ class MyReportsScreen extends ConsumerWidget {
                           },
                           child: Text(
                             l10n.editMyReport,
-                            style: const TextStyle(
-                              color: Color(0xFFBA4A22),
+                            style: AppTextStyles.caption.copyWith(
+                              color: const Color(0xFFBA4A22),
                               fontSize: 10,
-                              fontWeight: FontWeight.w400,
                               decoration: TextDecoration.underline,
                             ),
                           ),
@@ -201,8 +204,8 @@ class MyReportsScreen extends ConsumerWidget {
                     const SizedBox(height: 4),
                     Text(
                       '${report.age} | . ${report.species} | . ${report.breed} | . ${report.status}',
-                      style: const TextStyle(
-                        color: Color(0xFFBA4A22),
+                      style: AppTextStyles.body.copyWith(
+                        color: const Color(0xFFBA4A22),
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
@@ -212,10 +215,13 @@ class MyReportsScreen extends ConsumerWidget {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        _buildSmallButton(l10n.seeOnMap, () {}),
+                        _buildSmallButton(
+                          l10n.seeOnMap,
+                          () => _openMap(context, report),
+                        ),
                         _buildSmallButton(
                           l10n.seeAnimalSheet(report.animalName),
-                          () {},
+                          () => context.push('/reports/${report.id}'),
                         ),
                       ],
                     ),
@@ -245,7 +251,7 @@ class MyReportsScreen extends ConsumerWidget {
                       const SizedBox(width: 4),
                       Text(
                         l10n.found,
-                        style: const TextStyle(
+                        style: AppTextStyles.button.copyWith(
                           color: Colors.white,
                           fontSize: 12,
                           fontWeight: FontWeight.w900,
@@ -261,6 +267,30 @@ class MyReportsScreen extends ConsumerWidget {
     );
   }
 
+  Future<void> _openMap(BuildContext context, ReportModel report) async {
+    final coordinates = report.location.coordinates;
+    if (coordinates.length < 2) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No location is available for this report.'),
+        ),
+      );
+      return;
+    }
+
+    final lat = coordinates[1];
+    final lng = coordinates[0];
+    final uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+    );
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not open the map.')));
+    }
+  }
+
   Widget _buildSmallButton(String label, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -272,7 +302,7 @@ class MyReportsScreen extends ConsumerWidget {
         ),
         child: Text(
           label,
-          style: const TextStyle(
+          style: AppTextStyles.button.copyWith(
             color: Colors.white,
             fontSize: 9,
             fontWeight: FontWeight.w900,

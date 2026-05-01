@@ -151,7 +151,9 @@ class ReportFormNotifier extends Notifier<ReportFormState> {
       lng: report.location.coordinates.isNotEmpty
           ? report.location.coordinates[0]
           : null,
+      phoneNumber: report.contactPhone,
       isPhoneVisible: report.isPhoneVisible,
+      emailAddress: report.contactEmail,
       isEmailVisible: report.isEmailVisible,
       // Note: Images are handled separately since they are URLs,
       // for now we only support adding new images during edit.

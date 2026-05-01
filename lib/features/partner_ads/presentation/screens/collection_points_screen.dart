@@ -6,7 +6,7 @@ import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../../data/models/partner_ad_model.dart';
 import '../providers/partner_collection_points_provider.dart';
-import '../widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class CollectionPointsScreen extends ConsumerWidget {
   const CollectionPointsScreen({super.key});
@@ -85,7 +85,7 @@ class CollectionPointsScreen extends ConsumerWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 20,
                       ),
                     ),
@@ -149,7 +149,7 @@ class _CollectionPointCard extends StatelessWidget {
                   point.title,
                   style: const TextStyle(
                     color: PartnerUiColors.brand,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                     fontSize: 18,
                   ),
                 ),

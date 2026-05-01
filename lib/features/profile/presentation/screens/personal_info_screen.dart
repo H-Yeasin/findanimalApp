@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/profile_model.dart';
 import '../../presentation/providers/profile_providers.dart';
 import '../../presentation/providers/update_profile_provider.dart';
@@ -222,7 +222,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                     _isEditing ? 'Edit my information' : 'My information',
                     style: const TextStyle(
                       color: Color(0xFFD8C89D),
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 18,
                     ),
                   ),
@@ -327,7 +327,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                             borderRadius: BorderRadius.circular(22),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 18,
                           ),
                         ),
@@ -440,7 +440,7 @@ class _PersonalInfoHeader extends StatelessWidget {
                         isEditing ? 'Save' : 'Edit',
                         style: const TextStyle(
                           color: Colors.white,
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 16,
                         ),
                       ),
@@ -454,7 +454,7 @@ class _PersonalInfoHeader extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFFF8F0DC),
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 56 / 2,
                 height: 1.05,
                 fontWeight: FontWeight.w700,
@@ -545,7 +545,7 @@ class _InfoField extends StatelessWidget {
               label,
               style: const TextStyle(
                 color: PartnerUiColors.brand,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 17,
               ),
             ),
@@ -590,7 +590,7 @@ class _InfoField extends StatelessWidget {
                     textAlign: TextAlign.right,
                     style: const TextStyle(
                       color: PartnerUiColors.brand,
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 17,
                       height: 1.2,
                     ),

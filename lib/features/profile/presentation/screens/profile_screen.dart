@@ -47,7 +47,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Color(0xFFBA4A22),
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 28,
                       ),
                     ),
@@ -74,7 +74,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Color(0xFFBA4A22),
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 15,
                       ),
                     ),
@@ -167,7 +167,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             l10n.inviteContacts,
                             style: const TextStyle(
                               color: Color(0xFFBA4A22),
-                              fontFamily: 'Impact',
+                              fontFamily: 'EricaOne',
                               fontSize: 19,
                             ),
                           ),
@@ -226,7 +226,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 label,
                 style: const TextStyle(
                   color: Color(0xFFBA4A22),
-                  fontFamily: 'Impact',
+                  fontFamily: 'EricaOne',
                   fontSize: 19,
                 ),
               ),

@@ -94,7 +94,9 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
           context.pop();
         } else {
           context.go(
-            widget.isPartner ? RouteNames.partnerAccess : RouteNames.account,
+            widget.isPartner
+                ? RouteNames.partnerAuthGateway
+                : RouteNames.account,
           );
         }
       },

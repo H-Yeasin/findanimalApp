@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/widgets/app_top_bar.dart';
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../providers/partner_missions_provider.dart';
@@ -163,7 +163,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 22,
                       ),
                     ),
@@ -298,7 +298,7 @@ class _MissionItemCard extends StatelessWidget {
                   mission.title,
                   style: const TextStyle(
                     color: PartnerUiColors.brand,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                     fontSize: 18,
                   ),
                 ),

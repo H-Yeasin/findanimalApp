@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'animal_profile_data.dart';
 
-class AnimalProfileCard extends StatelessWidget {
+class AnimalProfileCard extends StatefulWidget {
   final AnimalProfileData data;
 
   const AnimalProfileCard({super.key, required this.data});
 
   @override
+  State<AnimalProfileCard> createState() => _AnimalProfileCardState();
+}
+
+class _AnimalProfileCardState extends State<AnimalProfileCard> {
+  bool _showContactInfo = false;
+
+  @override
   Widget build(BuildContext context) {
+    final data = widget.data;
     String buttonText = 'Contact the owner';
     if (data.details.toLowerCase().contains('found')) {
       buttonText = 'I know the owner';
@@ -36,7 +46,7 @@ class AnimalProfileCard extends StatelessWidget {
                       Text(
                         data.name.toUpperCase(),
                         style: const TextStyle(
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 26,
                           color: Color(0xFFBA4A22),
                           letterSpacing: 0.8,
@@ -168,25 +178,48 @@ class AnimalProfileCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // === CONTACT BUTTON ===
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFBA4A22),
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        child: Center(
-                          child: Text(
-                            buttonText,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w700,
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _showContactInfo = !_showContactInfo;
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFBA4A22),
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Center(
+                            child: Text(
+                              _showContactInfo
+                                  ? 'Hide contact info'
+                                  : buttonText,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
                       ),
+                      if (_showContactInfo) ...[
+                        const SizedBox(height: 10),
+                        _OwnerContactInfo(data: data),
+                      ],
+                      if (data.address != null && data.address!.isNotEmpty) ...[
+                        const SizedBox(height: 10),
+                        Text(
+                          data.address!,
+                          style: const TextStyle(
+                            color: Color(0xFFBA4A22),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -194,6 +227,104 @@ class AnimalProfileCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _OwnerContactInfo extends StatelessWidget {
+  const _OwnerContactInfo({required this.data});
+
+  final AnimalProfileData data;
+
+  @override
+  Widget build(BuildContext context) {
+    final visiblePhone = data.isPhoneVisible && _hasText(data.contactPhone);
+    final visibleEmail = data.isEmailVisible && _hasText(data.contactEmail);
+
+    if (!visiblePhone && !visibleEmail) {
+      return const Text(
+        'No public phone or email is available for this report.',
+        style: TextStyle(
+          color: Color(0xFFBA4A22),
+          fontSize: 10.5,
+          height: 1.3,
+          fontWeight: FontWeight.w600,
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (visiblePhone)
+          _ContactLine(
+            icon: Icons.phone,
+            value: data.contactPhone!,
+            onTap: () => _launchContact(context, 'tel', data.contactPhone!),
+          ),
+        if (visibleEmail)
+          _ContactLine(
+            icon: Icons.email_outlined,
+            value: data.contactEmail!,
+            onTap: () => _launchContact(context, 'mailto', data.contactEmail!),
+          ),
+      ],
+    );
+  }
+
+  bool _hasText(String? value) => value != null && value.trim().isNotEmpty;
+
+  Future<void> _launchContact(
+    BuildContext context,
+    String scheme,
+    String value,
+  ) async {
+    final uri = Uri(scheme: scheme, path: value.trim());
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not open contact app.')),
+      );
+    }
+  }
+}
+
+class _ContactLine extends StatelessWidget {
+  const _ContactLine({required this.icon, required this.value, this.onTap});
+
+  final IconData icon;
+  final String value;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(6),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: Row(
+            children: [
+              Icon(icon, color: const Color(0xFFBA4A22), size: 14),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  value,
+                  style: const TextStyle(
+                    color: Color(0xFFBA4A22),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Color(0xFFBA4A22),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

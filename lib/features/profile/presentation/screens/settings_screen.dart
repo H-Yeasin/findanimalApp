@@ -28,7 +28,10 @@ class SettingsScreen extends ConsumerWidget {
                         image: DecorationImage(
                           image: profile.profileImage?.secure_url != null
                               ? NetworkImage(profile.profileImage!.secure_url!)
-                              : const AssetImage('assets/images/profile_myprofile_mock.png') as ImageProvider,
+                              : const AssetImage(
+                                      'assets/images/profile_myprofile_mock.png',
+                                    )
+                                    as ImageProvider,
                           fit: BoxFit.cover,
                           alignment: const Alignment(0, -0.73),
                         ),
@@ -60,7 +63,7 @@ class SettingsScreen extends ConsumerWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 42,
                             height: 0.9,
                           ),
@@ -71,7 +74,10 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 22,
+                      vertical: 10,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -81,7 +87,7 @@ class SettingsScreen extends ConsumerWidget {
                             'Edit my information',
                             style: TextStyle(
                               color: Color(0xFFD8C89D),
-                              fontFamily: 'Impact',
+                              fontFamily: 'EricaOne',
                               fontSize: 16,
                             ),
                           ),
@@ -91,7 +97,10 @@ class SettingsScreen extends ConsumerWidget {
                         const Divider(color: Color(0xFFBA4A22), height: 1),
                         _infoRow('NAME', profile.lastName),
                         const Divider(color: Color(0xFFBA4A22), height: 1),
-                        _infoRow('DATE OF BIRTH', '02/15/2003'), // Mock for now if not in backend
+                        _infoRow(
+                          'DATE OF BIRTH',
+                          '02/15/2003',
+                        ), // Mock for now if not in backend
                         const Divider(color: Color(0xFFBA4A22), height: 1),
                         _infoRow('E-MAIL', profile.email),
                         const Divider(color: Color(0xFFBA4A22), height: 1),
@@ -111,7 +120,7 @@ class SettingsScreen extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(22),
                                 ),
                                 textStyle: const TextStyle(
-                                  fontFamily: 'Impact',
+                                  fontFamily: 'EricaOne',
                                   fontSize: 18,
                                 ),
                               ),
@@ -145,7 +154,7 @@ class SettingsScreen extends ConsumerWidget {
               label,
               style: const TextStyle(
                 color: Color(0xFFBA4A22),
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 16,
               ),
             ),
@@ -157,7 +166,7 @@ class SettingsScreen extends ConsumerWidget {
               textAlign: TextAlign.right,
               style: const TextStyle(
                 color: Color(0xFFBA4A22),
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 16,
               ),
             ),

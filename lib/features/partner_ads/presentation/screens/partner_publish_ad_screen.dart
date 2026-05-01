@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/widgets/app_top_bar.dart';
-import '../widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class PartnerPublishAdScreen extends StatelessWidget {
   const PartnerPublishAdScreen({super.key});

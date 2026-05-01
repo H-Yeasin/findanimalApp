@@ -61,7 +61,7 @@ class _AnimalProfileCommentsSectionState
           const Text(
             'LATEST INFO',
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 26,
               color: Color(0xFFBA4A22),
               letterSpacing: 1.5,

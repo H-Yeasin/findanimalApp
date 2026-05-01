@@ -27,7 +27,7 @@ class ConfirmDonationButton extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: primaryOrange,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 16,
               height: 1.1,
             ),

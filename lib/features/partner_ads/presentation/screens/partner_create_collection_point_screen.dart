@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/widgets/app_top_bar.dart';
-import '../widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/repositories/partner_ads_repository_impl.dart';
 
 class PartnerCreateCollectionPointScreen extends ConsumerStatefulWidget {

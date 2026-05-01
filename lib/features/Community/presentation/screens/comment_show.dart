@@ -70,7 +70,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
           'Comments',
           style: TextStyle(
             color: brandPrimary,
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 20,
           ),
         ),

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/route_names.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class PartnerProfileScreen extends ConsumerWidget {
   const PartnerProfileScreen({super.key});
@@ -14,7 +14,7 @@ class PartnerProfileScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
     final heroImage = (user?.profileImage?.isNotEmpty ?? false)
         ? user!.profileImage!
-        : 'https://images.unsplash.com/photo-1555636222-cae831e670b3?auto=format&fit=crop&w=1200&q=80';
+        : '';
 
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
@@ -29,7 +29,7 @@ class PartnerProfileScreen extends ConsumerWidget {
               'My information',
               style: TextStyle(
                 color: Color(0xFFD8C89D),
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 18,
               ),
             ),
@@ -62,7 +62,7 @@ class PartnerProfileScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(22),
                   ),
                   textStyle: const TextStyle(
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                     fontSize: 18,
                   ),
                 ),

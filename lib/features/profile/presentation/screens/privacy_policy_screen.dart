@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -85,7 +85,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             title,
             style: const TextStyle(
               color: PartnerUiColors.brand,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),

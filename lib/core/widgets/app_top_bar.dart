@@ -59,7 +59,7 @@ class AppTopBar extends ConsumerWidget {
                 color: brandColor,
                 fontSize: 28,
                 fontWeight: FontWeight.w900,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 letterSpacing: 1.2,
               ),
             ),

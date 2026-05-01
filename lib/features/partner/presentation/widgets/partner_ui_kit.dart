@@ -103,7 +103,7 @@ class PartnerHeroHeader extends StatelessWidget {
                 style: const TextStyle(
                   color: PartnerUiColors.lightText,
                   fontSize: 56 / 2,
-                  fontFamily: 'Impact',
+                  fontFamily: 'EricaOne',
                   height: 1.05,
                   fontWeight: FontWeight.w700,
                 ),
@@ -159,7 +159,7 @@ class PartnerPageTitle extends StatelessWidget {
       textAlign: TextAlign.center,
       style: const TextStyle(
         color: PartnerUiColors.brand,
-        fontFamily: 'Impact',
+        fontFamily: 'EricaOne',
         fontSize: 28,
         height: 1.03,
         fontWeight: FontWeight.w700,
@@ -198,7 +198,7 @@ class PartnerCardActionRow extends StatelessWidget {
                 style: const TextStyle(
                   color: PartnerUiColors.brand,
                   fontSize: 38 / 2,
-                  fontFamily: 'Impact',
+                  fontFamily: 'EricaOne',
                 ),
               ),
             ),
@@ -239,7 +239,7 @@ class PartnerInfoRow extends StatelessWidget {
               label,
               style: const TextStyle(
                 color: PartnerUiColors.brand,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 34 / 2,
               ),
             ),
@@ -251,7 +251,7 @@ class PartnerInfoRow extends StatelessWidget {
               textAlign: TextAlign.right,
               style: const TextStyle(
                 color: PartnerUiColors.brand,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 34 / 2,
                 height: 1.15,
               ),
@@ -290,7 +290,7 @@ class PartnerSettingsRow extends StatelessWidget {
                 label,
                 style: const TextStyle(
                   color: PartnerUiColors.brand,
-                  fontFamily: 'Impact',
+                  fontFamily: 'EricaOne',
                   fontSize: 34 / 2,
                 ),
               ),
@@ -300,7 +300,7 @@ class PartnerSettingsRow extends StatelessWidget {
                 valueText,
                 style: const TextStyle(
                   color: PartnerUiColors.brand,
-                  fontFamily: 'Impact',
+                  fontFamily: 'EricaOne',
                   fontSize: 34 / 2,
                 ),
               ),
@@ -327,7 +327,7 @@ class PartnerSectionHeading extends StatelessWidget {
             text,
             style: const TextStyle(
               color: PartnerUiColors.brand,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 20,
             ),
           ),
@@ -349,7 +349,7 @@ class PartnerFieldLabel extends StatelessWidget {
       text,
       style: const TextStyle(
         color: PartnerUiColors.brand,
-        fontFamily: 'Impact',
+        fontFamily: 'EricaOne',
         fontSize: 32 / 2,
       ),
     );
@@ -391,7 +391,7 @@ class PartnerOutlinedField extends StatelessWidget {
               hint,
               style: const TextStyle(
                 color: PartnerUiColors.brand,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 32 / 2,
                 height: 1.2,
               ),
@@ -425,7 +425,7 @@ class PartnerInputField extends StatelessWidget {
         hintText: hint,
         hintStyle: TextStyle(
           color: PartnerUiColors.brand.withValues(alpha: 0.5),
-          fontFamily: 'Impact',
+          fontFamily: 'EricaOne',
           fontSize: 32 / 2,
         ),
         filled: true,
@@ -445,7 +445,7 @@ class PartnerInputField extends StatelessWidget {
       ),
       style: const TextStyle(
         color: PartnerUiColors.brand,
-        fontFamily: 'Impact',
+        fontFamily: 'EricaOne',
         fontSize: 32 / 2,
       ),
     );
@@ -475,7 +475,7 @@ class PartnerPublishButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'Impact', fontSize: 28 / 2),
+          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 28 / 2),
         ),
         onPressed: onTap,
         child: Text(label),
@@ -516,7 +516,7 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                       'Title of the local mission',
                       style: TextStyle(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 32 / 2,
                       ),
                     ),
@@ -559,7 +559,7 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                         'Balader des chiens',
                         style: TextStyle(
                           color: PartnerUiColors.brand,
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 32 / 2,
                         ),
                       ),
@@ -580,7 +580,7 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                       'Saisir|',
                       style: TextStyle(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                         fontSize: 32 / 2,
                       ),
                     ),

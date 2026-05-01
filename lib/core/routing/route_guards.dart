@@ -3,7 +3,11 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import 'route_names.dart';
 
-String? routeGuard(AuthStatus authStatus, GoRouterState state) {
+String? routeGuard(
+  AuthStatus authStatus,
+  GoRouterState state, {
+  String? userRole,
+}) {
   final location = state.uri.path;
 
   const protectedPrefixes = <String>[
@@ -16,6 +20,12 @@ String? routeGuard(AuthStatus authStatus, GoRouterState state) {
     '/collection-points',
   ];
 
+  final isPartnerRoute = location.startsWith('/partner');
+  final isPartnerAuthRoute =
+      location == RouteNames.partnerAuthGateway ||
+      location == RouteNames.partnerLogin ||
+      location == RouteNames.partnerRegister;
+  final isPartner = userRole == 'partners';
   final isAuthRoute = location.startsWith('/auth');
   final isPasswordRecoveryRoute =
       location == RouteNames.forgotPassword ||
@@ -23,9 +33,28 @@ String? routeGuard(AuthStatus authStatus, GoRouterState state) {
       location == RouteNames.resetPassword;
   final requiresAuth = protectedPrefixes.any(location.startsWith);
 
+  if (authStatus == AuthStatus.unknown) {
+    return null;
+  }
+
+  if (authStatus == AuthStatus.unauthenticated && isPartnerRoute) {
+    return RouteNames.partnerAuthGateway;
+  }
+
+  if (authStatus == AuthStatus.authenticated && isPartnerRoute && !isPartner) {
+    return RouteNames.partnerAuthGateway;
+  }
+
+  if (authStatus == AuthStatus.authenticated &&
+      isPartnerAuthRoute &&
+      isPartner) {
+    return RouteNames.partnerAccess;
+  }
+
   if (authStatus == AuthStatus.authenticated &&
       isAuthRoute &&
-      !isPasswordRecoveryRoute) {
+      !isPasswordRecoveryRoute &&
+      !isPartnerAuthRoute) {
     return RouteNames.root;
   }
 

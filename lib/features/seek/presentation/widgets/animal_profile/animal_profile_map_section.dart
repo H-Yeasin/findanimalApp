@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'animal_profile_data.dart';
 import '../../providers/seek_report_detail_provider.dart';
 
@@ -65,21 +67,30 @@ class AnimalProfileMapSection extends ConsumerWidget {
           right: 0,
           bottom: -16,
           child: Center(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: const Color(0xFFBA4A22), width: 1.0),
-              ),
-              child: const Text(
-                'VIEW ON THE MAP ITS LAST LOCATION',
-                style: TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'Impact',
-                  letterSpacing: 0.5,
+            child: GestureDetector(
+              onTap: () => _openMap(context),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(
+                    color: const Color(0xFFBA4A22),
+                    width: 1.0,
+                  ),
+                ),
+                child: const Text(
+                  'VIEW ON THE MAP ITS LAST LOCATION',
+                  style: TextStyle(
+                    color: Color(0xFFBA4A22),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'EricaOne',
+                    letterSpacing: 0.5,
+                  ),
                 ),
               ),
             ),
@@ -87,6 +98,29 @@ class AnimalProfileMapSection extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _openMap(BuildContext context) async {
+    final lat = data.latitude;
+    final lng = data.longitude;
+    if (lat == null || lng == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No location is available for this report.'),
+        ),
+      );
+      return;
+    }
+
+    final uri = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+    );
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Could not open the map.')));
+    }
   }
 }
 
@@ -106,7 +140,11 @@ class _StaticMapPlaceholder extends StatelessWidget {
           colorBlendMode: BlendMode.screen,
         ),
         const Positioned(left: 40, top: 30, child: _MapPin(icon: Icons.pets)),
-        const Positioned(right: 50, bottom: 45, child: _MapPin(icon: Icons.add)),
+        const Positioned(
+          right: 50,
+          bottom: 45,
+          child: _MapPin(icon: Icons.add),
+        ),
       ],
     );
   }

@@ -6,7 +6,7 @@ import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../../../auth/data/models/auth_user_model.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class PartnerAccessScreen extends ConsumerStatefulWidget {
   const PartnerAccessScreen({super.key});
@@ -40,7 +40,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
                   'MY ADS',
                   style: TextStyle(
                     color: PartnerUiColors.brand,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                     fontSize: 22,
                   ),
                 ),
@@ -73,7 +73,6 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
-    final isPartner = user?.role == 'partners';
 
     return PartnerScreenScaffold(
       child: Padding(
@@ -84,23 +83,11 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             const SizedBox(height: 34),
             AppTopBar(),
             const SizedBox(height: 14),
-            if (isPartner) ...[
-              _buildPartnerDashboard(context, user!),
-            ] else ...[
-              _buildPartnerNotAuthenticated(context),
-            ],
+            if (user != null) _buildPartnerDashboard(context, user),
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildPartnerNotAuthenticated(BuildContext context) {
-    // Redirect unauthenticated users to the dedicated auth screen
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.push(RouteNames.partnerAuthGateway);
-    });
-    return const SizedBox.shrink();
   }
 
   Widget _buildPartnerDashboard(BuildContext context, AuthUserModel user) {
@@ -112,7 +99,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: PartnerUiColors.brand,
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 28,
           ),
         ),

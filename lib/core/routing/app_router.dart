@@ -18,11 +18,11 @@ import '../../features/missions/presentation/screens/partner_missions_screen.dar
 
 import '../../features/partner_ads/presentation/screens/collection_point_detail_screen.dart';
 import '../../features/partner_ads/presentation/screens/collection_points_screen.dart';
-import '../../features/partner_ads/presentation/screens/partner_access_screen.dart';
+import '../../features/partner/presentation/screens/partner_access_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_create_collection_point_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_location_picker_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_publish_ad_screen.dart';
-import '../../features/partner_ads/presentation/screens/partner_profile_screen.dart';
+import '../../features/partner/presentation/screens/partner_profile_screen.dart';
 import '../../features/profile/presentation/screens/profile_settings_screen.dart';
 import '../../features/points/presentation/screens/points_screen.dart';
 import '../../features/profile/presentation/screens/myanimals_profile_screen.dart';
@@ -50,6 +50,7 @@ import 'route_names.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authStatus = ref.watch(authStateProvider);
+  final currentUser = ref.watch(currentUserProvider);
 
   return GoRouter(
     initialLocation: RouteNames.root,
@@ -279,6 +280,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const ContactSupportScreen(),
       ),
     ],
-    redirect: (context, state) => routeGuard(authStatus, state),
+    redirect: (context, state) =>
+        routeGuard(authStatus, state, userRole: currentUser?.role),
   );
 });

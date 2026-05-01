@@ -9,7 +9,7 @@ import '../../../../core/localization/app_locale_provider.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class ProfileSettingsScreen extends ConsumerStatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -169,7 +169,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                           language.labelFr,
                           style: const TextStyle(
                             color: PartnerUiColors.brand,
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 28 / 2,
                           ),
                         ),
@@ -280,7 +280,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                         currentLanguage.labelEn,
                         style: const TextStyle(
                           color: PartnerUiColors.brand,
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 18,
                         ),
                       ),
@@ -348,7 +348,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
               l10n.deleteMyAccount,
               style: TextStyle(
                 color: PartnerUiColors.brand,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 38 / 2,
               ),
             ),

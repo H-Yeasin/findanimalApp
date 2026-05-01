@@ -77,9 +77,9 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Could not get location: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Could not get location: $e')));
     }
   }
 
@@ -107,7 +107,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                 title: report.animalName.toUpperCase(),
                 snippet: '${report.status} | ${report.breed}',
               ),
-              icon: _customPin ??
+              icon:
+                  _customPin ??
                   BitmapDescriptor.defaultMarkerWithHue(
                     report.status.toLowerCase() == 'found'
                         ? BitmapDescriptor.hueAzure
@@ -665,7 +666,7 @@ class _MissionsFiltersBottomSheetState
           fontSize: 14,
           fontWeight: FontWeight.w900,
           color: Color(0xFFBA4A22),
-          fontFamily: 'Impact',
+          fontFamily: 'EricaOne',
           letterSpacing: 1,
         ),
       ),
@@ -698,7 +699,7 @@ class _MissionsFiltersBottomSheetState
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
                     color: brandPrimary,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                   ),
                 ),
                 IconButton(
@@ -833,7 +834,7 @@ class _MissionsFiltersBottomSheetState
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                   ),
                 ),
               ),

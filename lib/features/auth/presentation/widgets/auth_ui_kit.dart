@@ -22,7 +22,7 @@ class AuthMainTitle extends StatelessWidget {
       textAlign: center ? TextAlign.center : TextAlign.start,
       style: const TextStyle(
         color: AuthUiColors.brand,
-        fontFamily: 'Impact',
+        fontFamily: 'EricaOne',
         fontSize: 28,
         height: 1.03,
         fontWeight: FontWeight.w700,
@@ -43,7 +43,7 @@ class AuthFieldLabel extends StatelessWidget {
       style: const TextStyle(
         color: AuthUiColors.brand,
         fontSize: 17,
-        fontFamily: 'Impact',
+        fontFamily: 'EricaOne',
       ),
     );
   }
@@ -164,7 +164,7 @@ class AuthOutlinePillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'Impact', fontSize: 17),
+          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 17),
         ),
         onPressed: onPressed,
         child: isLoading
@@ -207,7 +207,7 @@ class AuthFilledPillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'Impact', fontSize: 15),
+          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 15),
         ),
         onPressed: onPressed,
         child: Text(label),
@@ -249,7 +249,7 @@ class AuthSocialPillButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: const TextStyle(fontFamily: 'Impact', fontSize: 18),
+              style: const TextStyle(fontFamily: 'EricaOne', fontSize: 18),
             ),
           ],
         ),
@@ -302,7 +302,7 @@ class AuthOrDivider extends StatelessWidget {
             label,
             style: const TextStyle(
               color: AuthUiColors.brand,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 18,
             ),
           ),

@@ -40,7 +40,7 @@ class PartnerAuthGatewayScreen extends StatelessWidget {
           Center(
             child: AuthOutlinePillButton(
               label: 'LOG IN AS PARTNER',
-              width: 220,
+              width: 250,
               onPressed: () => context.push(RouteNames.partnerLogin),
             ),
           ),

@@ -19,6 +19,8 @@ class ReportsRepository {
   }
 
   Future<void> createReport(ReportFormState state) async {
+    final phoneNumber = state.phoneNumber?.trim();
+    final emailAddress = state.emailAddress?.trim();
     final Map<String, dynamic> data = {
       'animalName': state.animalName,
       'species': ['Dog', 'Cat', 'Bird'].contains(state.species)
@@ -32,7 +34,11 @@ class ReportsRepository {
       'hasMicrochip': _mapYesNoUnknown(state.hasMicrochip),
       'hasTattoo': _mapYesNoUnknown(state.hasTattoo),
       'hasCollarOrHarness': _mapYesNoUnknown(state.hasCollarOrHarness),
+      if (phoneNumber != null && phoneNumber.isNotEmpty)
+        'contactPhone': phoneNumber,
       'isPhoneVisible': state.isPhoneVisible,
+      if (emailAddress != null && emailAddress.isNotEmpty)
+        'contactEmail': emailAddress,
       'isEmailVisible': state.isEmailVisible,
       'eventDate': (state.eventDate ?? DateTime.now())
           .toUtc()
@@ -64,6 +70,8 @@ class ReportsRepository {
   }
 
   Future<void> updateReport(String id, ReportFormState state) async {
+    final phoneNumber = state.phoneNumber?.trim();
+    final emailAddress = state.emailAddress?.trim();
     final Map<String, dynamic> data = {
       'animalName': state.animalName,
       'species': ['Dog', 'Cat', 'Bird'].contains(state.species)
@@ -77,7 +85,11 @@ class ReportsRepository {
       'hasMicrochip': _mapYesNoUnknown(state.hasMicrochip),
       'hasTattoo': _mapYesNoUnknown(state.hasTattoo),
       'hasCollarOrHarness': _mapYesNoUnknown(state.hasCollarOrHarness),
+      if (phoneNumber != null && phoneNumber.isNotEmpty)
+        'contactPhone': phoneNumber,
       'isPhoneVisible': state.isPhoneVisible,
+      if (emailAddress != null && emailAddress.isNotEmpty)
+        'contactEmail': emailAddress,
       'isEmailVisible': state.isEmailVisible,
       'eventDate': (state.eventDate ?? DateTime.now())
           .toUtc()

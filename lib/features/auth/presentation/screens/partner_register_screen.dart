@@ -92,7 +92,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
         if (context.canPop()) {
           context.pop();
         } else {
-          context.go(RouteNames.partnerAccess);
+          context.go(RouteNames.partnerAuthGateway);
         }
       },
       onBottomTap: (_) => context.go(RouteNames.root),

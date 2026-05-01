@@ -105,10 +105,10 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                           fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) =>
                               const Icon(
-                            Icons.store,
-                            color: Color(0xFFBA4A22),
-                            size: 40,
-                          ),
+                                Icons.store,
+                                color: Color(0xFFBA4A22),
+                                size: 40,
+                              ),
                         )
                       : const Icon(
                           Icons.store,
@@ -131,7 +131,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                         color: color,
                         fontSize: 28,
                         fontWeight: FontWeight.w900,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                       ),
                     ),
                     const SizedBox(height: 5),

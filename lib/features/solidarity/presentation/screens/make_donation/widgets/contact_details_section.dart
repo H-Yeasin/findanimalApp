@@ -46,7 +46,7 @@ class ContactDetailsSection extends StatelessWidget {
               'MY CONTACT DETAILS',
               style: TextStyle(
                 color: primaryOrange,
-                fontFamily: 'Impact',
+                fontFamily: 'EricaOne',
                 fontSize: 22,
                 letterSpacing: 1.0,
               ),
@@ -140,7 +140,7 @@ class ContactDetailsSection extends StatelessWidget {
         text,
         style: TextStyle(
           color: primaryOrange,
-          fontFamily: 'Impact',
+          fontFamily: 'EricaOne',
           fontSize: 13,
         ),
       ),

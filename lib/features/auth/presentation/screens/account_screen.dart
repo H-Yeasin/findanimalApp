@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../widgets/auth_screen_scaffold.dart';
@@ -29,7 +28,7 @@ class AuthAccountScreen extends StatelessWidget {
           const SizedBox(height: 70),
           AuthOutlinePillButton(
             label: l10n.login,
-            width: 214,
+            width: 200,
             onPressed: () => context.push(RouteNames.login),
           ),
           const SizedBox(height: 20),
@@ -37,13 +36,13 @@ class AuthAccountScreen extends StatelessWidget {
           const SizedBox(height: 22),
           AuthOutlinePillButton(
             label: l10n.createAccount,
-            width: 214,
+            width: 230,
             onPressed: () => context.push(RouteNames.register),
           ),
           const SizedBox(height: 38),
           AuthFilledPillButton(
             label: l10n.partnerAccess,
-            onPressed: () => context.push(RouteNames.partnerAccess),
+            onPressed: () => context.push(RouteNames.partnerAuthGateway),
             isLoading: false,
           ),
         ],

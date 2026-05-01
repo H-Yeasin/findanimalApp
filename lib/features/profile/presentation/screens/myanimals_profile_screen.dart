@@ -81,7 +81,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                     'My profile',
                     style: TextStyle(
                       color: Color(0xFFBA4A22),
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 30,
                       height: 1.0,
                     ),
@@ -119,7 +119,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                           'My animals',
                           style: TextStyle(
                             color: Color(0xFFBA4A22),
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 30,
                             height: 1.0,
                           ),
@@ -194,7 +194,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Color(0xFFBA4A22),
-                              fontFamily: 'Impact',
+                              fontFamily: 'EricaOne',
                               fontSize: 18,
                             ),
                           ),
@@ -230,7 +230,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                             borderRadius: BorderRadius.circular(22),
                           ),
                           textStyle: const TextStyle(
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 18,
                           ),
                         ),
@@ -299,7 +299,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                     name,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 19,
                     ),
                   ),
@@ -308,7 +308,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                     'Personal information',
                     style: TextStyle(
                       color: Color(0xFFF3DCC8),
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 14,
                     ),
                   ),
@@ -370,7 +370,7 @@ class _AnimalCard extends StatelessWidget {
                         animal.title,
                         style: const TextStyle(
                           color: Color(0xFFBA4A22),
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 20,
                         ),
                       ),
@@ -381,7 +381,7 @@ class _AnimalCard extends StatelessWidget {
                         'Edit',
                         style: TextStyle(
                           color: Color(0xFFD8C89D),
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                           fontSize: 14,
                           decoration: TextDecoration.underline,
                         ),
@@ -396,7 +396,7 @@ class _AnimalCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     color: Color(0xFFBA4A22),
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                     fontSize: 14,
                     height: 1.25,
                   ),

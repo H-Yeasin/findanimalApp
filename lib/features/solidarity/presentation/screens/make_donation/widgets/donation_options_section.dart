@@ -31,7 +31,7 @@ class DonationOptionsSection extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xFFBA4A22),
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 26,
               letterSpacing: 1.5,
               height: 1.1,
@@ -83,7 +83,7 @@ class DonationOptionsSection extends StatelessWidget {
                         keyboardType: TextInputType.number,
                         style: TextStyle(
                           color: primaryOrange,
-                          fontFamily: 'Impact',
+                          fontFamily: 'EricaOne',
                         ),
                         decoration: InputDecoration(
                           hintText: 'Enter amount',
@@ -136,7 +136,7 @@ class DonationOptionsSection extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isSelected ? Colors.white : primaryOrange,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 14,
             ),
           ),
@@ -161,7 +161,7 @@ class DonationOptionsSection extends StatelessWidget {
             '${amount.toInt()}€',
             style: TextStyle(
               color: isSelected ? Colors.white : primaryOrange,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 16,
             ),
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class ContactSupportScreen extends StatelessWidget {
   const ContactSupportScreen({super.key});
@@ -66,7 +66,7 @@ class ContactSupportScreen extends StatelessWidget {
                     l10n.sendMyMessage,
                     style: const TextStyle(
                       color: PartnerUiColors.brand,
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 16,
                     ),
                   ),

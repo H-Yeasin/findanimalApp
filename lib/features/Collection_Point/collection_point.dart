@@ -93,7 +93,7 @@ class CollectionPointScreen extends ConsumerWidget {
               fontWeight: FontWeight.w900,
               color: Color(0xFFBA4A22),
               letterSpacing: -1,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
             ),
           ),
           Align(
@@ -305,7 +305,7 @@ class CollectionPointScreen extends ConsumerWidget {
                     color: color,
                     fontWeight: FontWeight.w900,
                     fontSize: 15,
-                    fontFamily: 'Impact',
+                    fontFamily: 'EricaOne',
                   ),
                 ),
                 Text(

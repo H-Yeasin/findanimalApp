@@ -100,7 +100,7 @@ class PaymentMethodSection extends StatelessWidget {
         text,
         style: TextStyle(
           color: primaryOrange,
-          fontFamily: 'Impact',
+          fontFamily: 'EricaOne',
           fontSize: 13,
         ),
       ),

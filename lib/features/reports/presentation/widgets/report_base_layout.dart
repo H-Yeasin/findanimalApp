@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 
 class ReportBaseLayout extends ConsumerWidget {
   final int currentStep;
@@ -22,42 +23,36 @@ class ReportBaseLayout extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFBF4E9),
-      body: Stack(
-        children: [
-          // Background Grid
-          Positioned.fill(child: CustomPaint(painter: GridBackgroundPainter())),
-
-          SafeArea(
-            child: Column(
-              children: [
-                _buildHeader(context, ref),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        _buildStepIndicator(),
-                        const SizedBox(height: 30),
-                        child,
-                        const SizedBox(height: 40),
-                        _buildMainButton(),
-                        const SizedBox(height: 120), // Bottom nav space
-                      ],
-                    ),
+      backgroundColor: Colors.transparent,
+      body: AppBackground(
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildHeader(context, ref),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      _buildStepIndicator(),
+                      const SizedBox(height: 30),
+                      child,
+                      const SizedBox(height: 40),
+                      _buildMainButton(),
+                      const SizedBox(height: 120), // Bottom nav space
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(currentUserProvider);
     return Column(
       children: [
         const AppTopBar(showBackButton: false),
@@ -65,24 +60,11 @@ class ReportBaseLayout extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const Text(
-                'I REPORT',
-                style: TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontSize: 42,
-                  fontWeight: FontWeight.w900,
-                  fontFamily: 'Impact',
-                  letterSpacing: 1.5,
-                ),
-              ),
+              const Text('I REPORT', style: AppTextStyles.display),
               const Text(
                 'For each report, you earn 10 points on your Hesteka account',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyles.caption,
               ),
             ],
           ),
@@ -109,11 +91,8 @@ class ReportBaseLayout extends ConsumerWidget {
                   ? Text(
                       stepTitle.toUpperCase(),
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: brandColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'Impact',
+                      style: AppTextStyles.caption.copyWith(
+                        fontWeight: FontWeight.w600,
                         height: 1.0,
                       ),
                     )
@@ -154,8 +133,8 @@ class ReportBaseLayout extends ConsumerWidget {
                       style: TextStyle(
                         color: isActive ? Colors.white : brandColor,
                         fontSize: 24,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   );
@@ -181,35 +160,10 @@ class ReportBaseLayout extends ConsumerWidget {
         child: Center(
           child: Text(
             buttonText.toUpperCase(),
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.w900,
-              fontFamily: 'Impact',
-              letterSpacing: 1.0,
-            ),
+            style: AppTextStyles.button.copyWith(fontSize: 18),
           ),
         ),
       ),
     );
   }
-}
-
-class GridBackgroundPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFFFECDB)
-      ..strokeWidth = 1.0;
-    const double step = 60.0;
-    for (double i = 0; i < size.width; i += step) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-    for (double i = 0; i < size.height; i += step) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

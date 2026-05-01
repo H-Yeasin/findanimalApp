@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/payment_method_model.dart';
 import '../providers/payment_provider.dart';
 
@@ -84,7 +84,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
             title,
             style: const TextStyle(
               color: PartnerUiColors.brand,
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 24,
             ),
           ),

@@ -102,3 +102,15 @@ flutter:
     - assets/images/authorities.png
     - assets/images/partner.png
     - assets/images/profile/PrivecyPolicy.png
+
+  fonts:
+    - family: EricaOne
+      fonts:
+        - asset: assets/fonts/EricaOne-Regular.ttf
+          weight: 400
+    - family: BarlowCondensed
+      fonts:
+        - asset: assets/fonts/BarlowCondensed-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/BarlowCondensed-SemiBold.ttf
+          weight: 600

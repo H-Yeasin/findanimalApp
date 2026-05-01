@@ -248,7 +248,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       builder: (context) {
         final controller = TextEditingController();
         return AlertDialog(
-          title: Text(l10n.newStory, style: TextStyle(fontFamily: 'Impact')),
+          title: Text(l10n.newStory, style: TextStyle(fontFamily: 'EricaOne')),
           content: TextField(
             controller: controller,
             decoration: const InputDecoration(hintText: 'Add a caption...'),
@@ -388,7 +388,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                         fontSize: 32,
                         fontWeight: FontWeight.w900,
                         color: brandPrimary,
-                        fontFamily: 'Impact',
+                        fontFamily: 'EricaOne',
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -1353,7 +1353,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         return AlertDialog(
           title: const Text(
             'Reply to Post',
-            style: TextStyle(fontFamily: 'Impact'),
+            style: TextStyle(fontFamily: 'EricaOne'),
           ),
           content: TextField(
             controller: controller,

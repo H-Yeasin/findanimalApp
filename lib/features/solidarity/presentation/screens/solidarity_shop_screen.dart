@@ -57,7 +57,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'Wearing Hesteka\nmeans taking action.',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 34,
             height: 1.1,
             color: Color(0xFFBA4A22),
@@ -68,7 +68,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'Every purchase makes a real\nimpact.',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 18,
             color: Color(0xFFBA4A22),
           ),
@@ -96,7 +96,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'THE COMMUNITY HAS CHOSEN',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 14,
             letterSpacing: 1.0,
             color: Color(0xFFBA4A22),
@@ -107,7 +107,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'Best Sellers',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 36,
             color: Color(0xFFBA4A22),
           ),
@@ -167,7 +167,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'THE ENTIRE COLLECTION',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 14,
             letterSpacing: 1.0,
             color: Color(0xFFBA4A22),
@@ -178,7 +178,7 @@ class SolidarityShopScreen extends ConsumerWidget {
           'The solidarity shop',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontFamily: 'Impact',
+            fontFamily: 'EricaOne',
             fontSize: 36,
             color: Color(0xFFBA4A22),
           ),
@@ -254,7 +254,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             'WHAT WE BELIEVE IN',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 16,
               letterSpacing: 1.0,
               color: Color(0xFFF9EAD4),
@@ -265,7 +265,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             'Our commitments',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 36,
               color: Color(0xFFF9EAD4),
             ),
@@ -383,7 +383,7 @@ class SolidarityShopScreen extends ConsumerWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontFamily: 'Impact',
+                      fontFamily: 'EricaOne',
                       fontSize: 18,
                       color: Colors.white,
                     ),
@@ -407,7 +407,7 @@ class SolidarityShopScreen extends ConsumerWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontFamily: 'Impact',
+                            fontFamily: 'EricaOne',
                             fontSize: 16,
                             color: Colors.white,
                           ),
@@ -454,7 +454,7 @@ class SolidarityShopScreen extends ConsumerWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontFamily: 'Impact',
+          fontFamily: 'EricaOne',
           fontSize: 14,
           color: isSelected ? Colors.white : const Color(0xFFBA4A22),
         ),
@@ -475,7 +475,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             'A portion for the\nanimals',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 18,
               height: 1.1,
               color: Colors.white,
@@ -510,7 +510,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             'Responsible\nmaterials',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 18,
               height: 1.1,
               color: Color(0xFFBA4A22),
@@ -549,7 +549,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             'Ethical\nproduction',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontFamily: 'Impact',
+              fontFamily: 'EricaOne',
               fontSize: 18,
               height: 1.1,
               color: Color(0xFFF9EAD4),

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../partner_ads/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/my_animal_model.dart';
 import '../../data/repositories/my_animals_repository.dart';
 import '../providers/my_animals_provider.dart';
@@ -261,7 +261,10 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                         )
                       : Text(
                           widget.isEditMode ? 'UPDATE ANIMAL' : 'CREATE ANIMAL',
-                          style: TextStyle(fontFamily: 'Impact', fontSize: 18),
+                          style: TextStyle(
+                            fontFamily: 'EricaOne',
+                            fontSize: 18,
+                          ),
                         ),
                 ),
               ),

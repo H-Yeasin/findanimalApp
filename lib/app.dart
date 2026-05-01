@@ -6,10 +6,11 @@ import 'core/localization/app_locale_provider.dart';
 import 'core/localization/app_localizations.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/widgets/app_background.dart';
 
 class HestekaApp extends ConsumerWidget {
   const HestekaApp({super.key});
-//fffffjj
+  //fffffjj
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
@@ -21,6 +22,9 @@ class HestekaApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       routerConfig: router,
+      builder: (context, child) {
+        return AppBackground(child: child ?? const SizedBox.shrink());
+      },
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [

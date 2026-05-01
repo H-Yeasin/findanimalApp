@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/widgets/app_background.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 class AuthScreenScaffold extends StatelessWidget {
@@ -23,25 +24,22 @@ class AuthScreenScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEDEDED),
+      backgroundColor: Colors.transparent,
       body: Column(
         children: [
           _AuthHeroHeader(showBackButton: showBackButton, onBack: onBack),
           Expanded(
-            child: Stack(
-              children: [
-                const Positioned.fill(
-                  child: CustomPaint(painter: _GridPainter()),
+            child: AppBackground(
+              backgroundColor: const Color(0xFFEDEDED),
+              lineColor: const Color(0xFFE7DCCB),
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: SingleChildScrollView(
+                  padding: contentPadding,
+                  child: child,
                 ),
-                SafeArea(
-                  top: false,
-                  bottom: false,
-                  child: SingleChildScrollView(
-                    padding: contentPadding,
-                    child: child,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ],
@@ -84,11 +82,7 @@ class _AuthHeroHeader extends StatelessWidget {
                     color: Color(0xFFB84C24),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.undo,
-                    color: Colors.white,
-                    size: 24,
-                  ),
+                  child: const Icon(Icons.undo, color: Colors.white, size: 24),
                 ),
               ),
             ),
@@ -112,29 +106,4 @@ class _AuthHeroHeader extends StatelessWidget {
       ),
     );
   }
-}
-
-class _GridPainter extends CustomPainter {
-  const _GridPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFE7DCCB)
-      ..strokeWidth = 1;
-
-    const xStep = 92.0;
-    const yStep = 102.0;
-
-    for (double x = 0; x <= size.width; x += xStep) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    for (double y = 0; y <= size.height; y += yStep) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
