@@ -31,7 +31,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
   }
 
   Future<void> _loadCustomPin() async {
-    _customPin = await BitmapDescriptor.fromAssetImage(
+    _customPin = await BitmapDescriptor.asset(
       const ImageConfiguration(size: Size(30, 30)),
       'assets/images/Map/red_pin.png',
     );
@@ -523,7 +523,7 @@ class _MissionCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '${organization} | ${l10n.missionDuration.replaceAll('{duration}', mission.duration)}',
+                    '$organization | ${l10n.missionDuration.replaceAll('{duration}', mission.duration)}',
                     style: TextStyle(
                       fontSize: 12,
                       color: brandPrimary.withValues(alpha: 0.8),
@@ -797,7 +797,7 @@ class _MissionsFiltersBottomSheetState
 
             _buildSectionTitle(l10n.sortBy),
             DropdownButtonFormField<String>(
-              value: _sortBy,
+              initialValue: _sortBy,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFFFBF4E9),

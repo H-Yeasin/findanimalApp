@@ -6,7 +6,7 @@ part 'mission_model.g.dart';
 @freezed
 class MissionModel with _$MissionModel {
   const factory MissionModel({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required String title,
     required String description,
     required String address,
@@ -26,8 +26,8 @@ class MissionModel with _$MissionModel {
 @freezed
 class MissionPhoto with _$MissionPhoto {
   const factory MissionPhoto({
-    @JsonKey(name: 'public_id') required String publicId,
-    @JsonKey(name: 'secure_url') required String secureUrl,
+    required String publicId,
+    required String secureUrl,
   }) = _MissionPhoto;
 
   factory MissionPhoto.fromJson(Map<String, dynamic> json) =>
@@ -37,7 +37,7 @@ class MissionPhoto with _$MissionPhoto {
 @freezed
 class MissionPartner with _$MissionPartner {
   const factory MissionPartner({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required String firstName,
     required String lastName,
     String? company,

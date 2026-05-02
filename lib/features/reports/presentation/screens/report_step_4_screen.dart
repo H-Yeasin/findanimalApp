@@ -77,8 +77,10 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
         if (success) {
           if (mounted) {
             ref.read(reportFormProvider.notifier).reset();
+            // ignore: use_build_context_synchronously
             context.go(RouteNames.root);
 
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Report published successfully!'),
@@ -89,6 +91,7 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
         } else {
           if (mounted) {
             final error = ref.read(reportFormProvider).submissionState.error;
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Error publishing report: $error'),

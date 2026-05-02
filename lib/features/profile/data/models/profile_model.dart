@@ -6,7 +6,7 @@ part 'profile_model.g.dart';
 @freezed
 class ProfileModel with _$ProfileModel {
   const factory ProfileModel({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required String firstName,
     required String lastName,
     required String email,
@@ -29,10 +29,9 @@ class ProfileModel with _$ProfileModel {
 
 @freezed
 class ProfileImage with _$ProfileImage {
-  const factory ProfileImage({
-    String? public_id,
-    String? secure_url,
-  }) = _ProfileImage;
+  // ignore: non_constant_identifier_names
+  const factory ProfileImage({String? public_id, String? secure_url}) =
+      _ProfileImage;
 
   factory ProfileImage.fromJson(Map<String, dynamic> json) =>
       _$ProfileImageFromJson(json);

@@ -27,7 +27,7 @@ class AppTopBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authStatus = ref.watch(authStateProvider);
+    ref.watch(authStateProvider);
     final user = ref.watch(currentUserProvider);
     final imageUrl = userImageUrl ?? user?.profileImage;
 

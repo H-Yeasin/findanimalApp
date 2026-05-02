@@ -54,7 +54,7 @@ class ProfileImageConverter implements JsonConverter<String?, Object?> {
 @freezed
 class CommentAuthor with _$CommentAuthor {
   const factory CommentAuthor({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required String firstName,
     required String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -67,8 +67,8 @@ class CommentAuthor with _$CommentAuthor {
 @freezed
 class CommentImage with _$CommentImage {
   const factory CommentImage({
-    @JsonKey(name: 'public_id') required String publicId,
-    @JsonKey(name: 'secure_url') required String secureUrl,
+    required String publicId,
+    required String secureUrl,
   }) = _CommentImage;
 
   factory CommentImage.fromJson(Map<String, dynamic> json) =>

@@ -6,7 +6,7 @@ part 'chat_model.g.dart';
 @freezed
 class ChatModel with _$ChatModel {
   const factory ChatModel({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required ChatUser user,
     required String content,
     List<ChatMedia>? media,
@@ -25,7 +25,7 @@ class ChatModel with _$ChatModel {
 @freezed
 class ChatUser with _$ChatUser {
   const factory ChatUser({
-    @JsonKey(name: '_id') required String id,
+    required String id,
     required String firstName,
     required String lastName,
     ChatProfileImage? profileImage,
@@ -38,8 +38,8 @@ class ChatUser with _$ChatUser {
 @freezed
 class ChatProfileImage with _$ChatProfileImage {
   const factory ChatProfileImage({
-    @JsonKey(name: 'public_id') required String publicId,
-    @JsonKey(name: 'secure_url') required String secureUrl,
+    required String publicId,
+    required String secureUrl,
   }) = _ChatProfileImage;
 
   factory ChatProfileImage.fromJson(Map<String, dynamic> json) =>

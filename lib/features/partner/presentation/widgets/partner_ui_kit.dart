@@ -32,7 +32,7 @@ class PartnerScreenScaffold extends StatelessWidget {
       backgroundColor: PartnerUiColors.background,
       body: Column(
         children: [
-          if (header != null) header!,
+          ?header,
           Expanded(
             child: Stack(
               children: [
@@ -304,7 +304,7 @@ class PartnerSettingsRow extends StatelessWidget {
                   fontSize: 34 / 2,
                 ),
               ),
-            if (trailing != null) trailing!,
+            ?trailing,
           ],
         ),
       ),
@@ -332,7 +332,7 @@ class PartnerSectionHeading extends StatelessWidget {
             ),
           ),
         ),
-        if (trailing != null) trailing!,
+        ?trailing,
       ],
     );
   }
@@ -397,7 +397,7 @@ class PartnerOutlinedField extends StatelessWidget {
               ),
             ),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ],
       ),
     );
@@ -424,7 +424,7 @@ class PartnerInputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
-          color: PartnerUiColors.brand.withOpacity(0.5),
+          color: PartnerUiColors.brand.withValues(alpha: 0.5),
           fontFamily: 'EricaOne',
           fontSize: 32 / 2,
         ),

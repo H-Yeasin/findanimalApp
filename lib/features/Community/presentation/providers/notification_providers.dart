@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/models/notification_model.dart';
 import '../../data/repositories/notification_repository.dart';
 
 final notificationsProvider =
-    StateNotifierProvider<NotificationsNotifier, AsyncValue<List<NotificationModel>>>((
-  ref,
-) {
-  return NotificationsNotifier(ref);
-});
+    StateNotifierProvider<
+      NotificationsNotifier,
+      AsyncValue<List<NotificationModel>>
+    >((ref) {
+      return NotificationsNotifier(ref);
+    });
 
 class NotificationsNotifier
     extends StateNotifier<AsyncValue<List<NotificationModel>>> {
@@ -29,8 +29,7 @@ class NotificationsNotifier
 
   void removeNotification(String id) {
     state.whenData((notifications) {
-      final updatedList =
-          notifications.where((n) => n.id != id).toList();
+      final updatedList = notifications.where((n) => n.id != id).toList();
       state = AsyncValue.data(updatedList);
     });
   }
@@ -38,8 +37,8 @@ class NotificationsNotifier
 
 final notificationActionProvider =
     StateNotifierProvider<NotificationActionNotifier, AsyncValue<void>>((ref) {
-  return NotificationActionNotifier(ref);
-});
+      return NotificationActionNotifier(ref);
+    });
 
 class NotificationActionNotifier extends StateNotifier<AsyncValue<void>> {
   final Ref _ref;
@@ -66,7 +65,9 @@ class NotificationActionNotifier extends StateNotifier<AsyncValue<void>> {
           }
           return n;
         }).toList();
-        _ref.read(notificationsProvider.notifier).state = AsyncValue.data(updatedList);
+        _ref.read(notificationsProvider.notifier).state = AsyncValue.data(
+          updatedList,
+        );
       });
     });
   }
@@ -74,7 +75,7 @@ class NotificationActionNotifier extends StateNotifier<AsyncValue<void>> {
   Future<void> deleteNotification(String id) async {
     // First remove from UI for smooth experience
     _ref.read(notificationsProvider.notifier).removeNotification(id);
-    
+
     state = await AsyncValue.guard(() async {
       final repository = _ref.read(notificationRepositoryProvider);
       await repository.deleteNotification(id);

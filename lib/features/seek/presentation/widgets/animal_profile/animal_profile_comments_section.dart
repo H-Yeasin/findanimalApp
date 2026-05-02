@@ -345,6 +345,7 @@ class _CommentItem extends StatelessWidget {
                     child: _ReplyItem(reply: reply),
                   ),
                 )
+                // ignore: unnecessary_to_list_in_spreads
                 .toList(),
 
           if (comment.replies.isEmpty)

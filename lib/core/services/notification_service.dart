@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
@@ -69,10 +70,14 @@ class NotificationService {
       final token = await _messaging.getToken();
       if (token != null) {
         await _ref.read(profileRepositoryProvider).updateFcmToken(token);
-        print('FCM Token synced: $token');
+        if (kDebugMode) {
+          print('FCM Token synced: $token');
+        }
       }
     } catch (e) {
-      print('Error syncing FCM token: $e');
+      if (kDebugMode) {
+        print('Error syncing FCM token: $e');
+      }
     }
   }
 

@@ -42,7 +42,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
 
   GoogleMapController? _mapController;
   LatLng _currentPosition = const LatLng(48.8566, 2.3522); // Default Paris
-  bool _isMapLoading = true;
 
   @override
   void initState() {
@@ -65,7 +64,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
 
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
-        _isMapLoading = false;
       });
 
       _mapController?.animateCamera(
@@ -73,9 +71,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       );
     } catch (e) {
       debugPrint('Error initializing location: $e');
-      if (mounted) {
-        setState(() => _isMapLoading = false);
-      }
+      if (mounted) {}
     }
   }
 
@@ -1341,41 +1337,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Future<void> _showReplyDialog(String chatId) async {
-    final controller = TextEditingController();
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text(
-            'Reply to Post',
-            style: TextStyle(fontFamily: 'EricaOne'),
-          ),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(hintText: 'Write a comment...'),
-            maxLines: 3,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                ref
-                    .read(communityActionProvider.notifier)
-                    .createChat(content: controller.text, replyTo: chatId);
-                Navigator.pop(context);
-              },
-              child: const Text('Post'),
-            ),
-          ],
-        );
-      },
     );
   }
 

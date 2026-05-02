@@ -62,6 +62,7 @@ class CommunityAction extends _$CommunityAction {
         lng: 2.3522,
       );
       // Force an immediate refresh and wait for it
+      // ignore: unused_result
       await ref.refresh(localStoriesProvider.future);
     });
   }
@@ -90,6 +91,7 @@ class CommunityAction extends _$CommunityAction {
       await Future.delayed(const Duration(milliseconds: 100));
 
       // Force an immediate refresh and wait for it
+      // ignore: unused_result
       await ref.refresh(localChatProvider.future);
     });
   }
