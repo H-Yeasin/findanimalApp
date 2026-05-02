@@ -299,6 +299,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   @override
   void dispose() {
     _contentController.dispose();
+    _mapController?.dispose();
     super.dispose();
   }
 
@@ -1400,10 +1401,12 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
   @override
   void initState() {
     super.initState();
-    _initializePlayer();
+    // Removed immediate initialization to prevent resource exhaustion
   }
 
   Future<void> _initializePlayer() async {
+    if (_isInitialized) return;
+    
     final cleanUrl = widget.url.trim();
     try {
       _controller = VideoPlayerController.networkUrl(Uri.parse(cleanUrl));
@@ -1413,6 +1416,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
           _isInitialized = true;
           _hasError = false;
         });
+        _controller.play(); // Play immediately after initialization if triggered by tap
       }
     } catch (e) {
       debugPrint("Video Error for $cleanUrl: $e");
@@ -1426,7 +1430,9 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (_isInitialized) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
@@ -1477,6 +1483,12 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
     return GestureDetector(
       onTap: () {
+        if (!_isInitialized) {
+          _initializePlayer();
+          ref.read(activeVideoProvider.notifier).state = widget.url;
+          return;
+        }
+
         setState(() {
           if (_controller.value.isPlaying) {
             _controller.pause();
