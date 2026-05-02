@@ -56,11 +56,9 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
         points == null ||
         points <= 0) {
       final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(l10n.fillAllFields),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.fillAllFields)));
       return;
     }
 
@@ -95,15 +93,19 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
       ref.invalidate(partnerMissionsProvider);
 
       final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.missionCreated)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.missionCreated)));
     } catch (e) {
       if (!mounted) return;
       final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.couldNotCreateMission.replaceAll('{error}', e.toString()))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.couldNotCreateMission.replaceAll('{error}', e.toString()),
+          ),
+        ),
+      );
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);
@@ -143,9 +145,9 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
                 padding: const EdgeInsets.only(top: 20),
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       l10n.couldNotLoadMissions,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: PartnerUiColors.brand,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -161,12 +163,12 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
               ),
               data: (missions) {
                 if (missions.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 20),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 20),
                     child: Text(
                       l10n.noMissionsCreated,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',
                         fontSize: 22,
@@ -225,7 +227,9 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
             hint: l10n.missionAddressHint,
           ),
           const SizedBox(height: 10),
-          PartnerFieldLabel(l10n.categoryMessaging.toUpperCase()), // Or use a proper duration label if available
+          PartnerFieldLabel(
+            l10n.categoryMessaging.toUpperCase(),
+          ), // Or use a proper duration label if available
           const SizedBox(height: 8),
           PartnerInputField(
             controller: _durationController,

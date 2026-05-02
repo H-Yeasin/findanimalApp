@@ -78,9 +78,13 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     } catch (e) {
       if (!mounted) return;
       final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation.replaceAll('{error}', e.toString()))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n.couldNotGetLocation.replaceAll('{error}', e.toString()),
+          ),
+        ),
+      );
     }
   }
 
@@ -255,7 +259,10 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                       child: GestureDetector(
                         onTap: () => _showFiltersBottomSheet(context, ref),
                         child: _buildFilterButton(
-                          l10n.radiusKm.replaceAll('{radius}', filters['radius'].toString()),
+                          l10n.radiusKm.replaceAll(
+                            '{radius}',
+                            filters['radius'].toString(),
+                          ),
                           Icons.keyboard_arrow_down,
                           brandPrimary,
                         ),
@@ -270,11 +277,11 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                 data: (paginatedData) {
                   final missions = paginatedData.data;
                   if (missions.isEmpty) {
-                    return const Padding(
-                      padding: EdgeInsets.all(40),
+                    return Padding(
+                      padding: const EdgeInsets.all(40),
                       child: Text(
                         l10n.noMissionsFound,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: brandPrimary,
                           fontWeight: FontWeight.bold,
                         ),
@@ -537,7 +544,7 @@ class _MissionCard extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             l10n.seeOnMap,
                             style: TextStyle(
                               fontSize: 10,
@@ -556,10 +563,8 @@ class _MissionCard extends ConsumerWidget {
                                   .joinMission(mission.id);
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      l10n.interestSubmitted,
-                                    ),
+                                  SnackBar(
+                                    content: Text(l10n.interestSubmitted),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
@@ -592,7 +597,7 @@ class _MissionCard extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             l10n.seeMission,
                             style: TextStyle(
                               fontSize: 10,
@@ -619,7 +624,10 @@ class _MissionCard extends ConsumerWidget {
     } else if (duration.inHours > 0) {
       return l10n.hoursAgo.replaceAll('{hours}', duration.inHours.toString());
     } else if (duration.inMinutes > 0) {
-      return l10n.minutesAgo.replaceAll('{minutes}', duration.inMinutes.toString());
+      return l10n.minutesAgo.replaceAll(
+        '{minutes}',
+        duration.inMinutes.toString(),
+      );
     } else {
       return l10n.justNow;
     }
@@ -765,7 +773,10 @@ class _MissionsFiltersBottomSheetState
                 const Icon(Icons.location_on, color: brandPrimary, size: 20),
                 const SizedBox(width: 10),
                 Text(
-                  l10n.radiusKm.replaceAll('{radius}', _radius.toInt().toString()),
+                  l10n.radiusKm.replaceAll(
+                    '{radius}',
+                    _radius.toInt().toString(),
+                  ),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -830,7 +841,7 @@ class _MissionsFiltersBottomSheetState
                       updatedFilters;
                   Navigator.pop(context);
                 },
-                child: const Text(
+                child: Text(
                   l10n.applyFilters.toUpperCase(),
                   style: TextStyle(
                     color: Colors.white,

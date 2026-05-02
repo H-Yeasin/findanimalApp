@@ -240,6 +240,8 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
     );
   }
 
+  Widget _buildShelterCard(
+    ContactModel shelter,
     Color cardBg,
     Color color,
     AppLocalizations l10n,

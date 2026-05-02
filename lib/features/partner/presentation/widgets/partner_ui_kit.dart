@@ -32,7 +32,7 @@ class PartnerScreenScaffold extends StatelessWidget {
       backgroundColor: PartnerUiColors.background,
       body: Column(
         children: [
-          ?header,
+          if (header != null) header!,
           Expanded(
             child: Stack(
               children: [
@@ -92,7 +92,7 @@ class PartnerHeroHeader extends StatelessWidget {
                   Container(color: const Color(0xFF8D8D8D)),
             ),
           Container(color: Colors.black.withValues(alpha: 0.28)),
-          Positioned(left: 22, top: 38, child: PartnerBackButton()),
+          Positioned(left: 22, top: 38, child: const PartnerBackButton()),
           Align(
             alignment: const Alignment(0, 0.08),
             child: Padding(
@@ -295,16 +295,16 @@ class PartnerSettingsRow extends StatelessWidget {
                 ),
               ),
             ),
-            if (value case final valueText?)
+            if (value != null)
               Text(
-                valueText,
+                value!,
                 style: const TextStyle(
                   color: PartnerUiColors.brand,
                   fontFamily: 'EricaOne',
                   fontSize: 34 / 2,
                 ),
               ),
-            ?trailing,
+            if (trailing != null) trailing!,
           ],
         ),
       ),
@@ -332,7 +332,7 @@ class PartnerSectionHeading extends StatelessWidget {
             ),
           ),
         ),
-        ?trailing,
+        if (trailing != null) trailing!,
       ],
     );
   }
@@ -357,8 +357,8 @@ class PartnerFieldLabel extends StatelessWidget {
 }
 
 class PartnerOutlinedField extends StatelessWidget {
-  const PartnerOutlinedField({
-    required this.hint,
+  const PartnerOutlinedField(
+    this.hint, {
     this.maxLines = 1,
     this.leading,
     this.trailing,
@@ -397,7 +397,7 @@ class PartnerOutlinedField extends StatelessWidget {
               ),
             ),
           ),
-          ?trailing,
+          if (trailing != null) trailing!,
         ],
       ),
     );
@@ -424,7 +424,7 @@ class PartnerInputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: TextStyle(
-          color: PartnerUiColors.brand.withValues(alpha: 0.5),
+          color: PartnerUiColors.brand.withOpacity(0.5),
           fontFamily: 'EricaOne',
           fontSize: 32 / 2,
         ),

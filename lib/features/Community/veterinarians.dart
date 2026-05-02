@@ -122,12 +122,12 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                 veterinariansAsync.when(
                   data: (veterinarians) {
                     if (veterinarians.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
                             l10n.noReportsFound,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: brandPrimary,
                               fontWeight: FontWeight.bold,
                             ),
@@ -248,6 +248,8 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
     );
   }
 
+  Widget _buildVetCard(
+    ContactModel vet,
     Color cardBg,
     Color color,
     AppLocalizations l10n,
@@ -302,7 +304,12 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    _buildSmallButton(l10n.seeOnMap.toUpperCase(), Colors.white, color, color),
+                    _buildSmallButton(
+                      l10n.seeOnMap.toUpperCase(),
+                      Colors.white,
+                      color,
+                      color,
+                    ),
                     const SizedBox(width: 10),
                     _buildSmallButton(
                       l10n.seeDetails.toUpperCase(),
@@ -314,9 +321,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                DetailsShelterVeterinariansScreen(
-                              contact: vet,
-                            ),
+                                DetailsShelterVeterinariansScreen(contact: vet),
                           ),
                         );
                       },

@@ -155,9 +155,9 @@ class _PartnerCreateCollectionPointScreenState
             InkWell(
               onTap: _pickLocation,
               child: PartnerOutlinedField(
-                l10n.pickLocationOnMap,
-                hint: _addressController.text,
-
+                _addressController.text.isEmpty
+                    ? l10n.pickLocationOnMap
+                    : _addressController.text,
                 trailing: const Icon(
                   Icons.map_outlined,
                   color: PartnerUiColors.brand,
@@ -171,9 +171,7 @@ class _PartnerCreateCollectionPointScreenState
             InkWell(
               onTap: _pickImage,
               child: PartnerOutlinedField(
-                hint: _selectedImage == null
-                    ? l10n.uploadPhoto
-                    : l10n.imageSelected,
+                _selectedImage == null ? l10n.uploadPhoto : l10n.imageSelected,
                 trailing: const Icon(
                   Icons.cloud_upload_outlined,
                   color: PartnerUiColors.brand,
