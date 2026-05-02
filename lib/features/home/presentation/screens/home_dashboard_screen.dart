@@ -32,14 +32,6 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
   final GlobalKey<NavigatorState> _nestedNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  final List<Widget> _pages = [
-    const SeekReportsScreen(),
-    const MyReportsScreen(),
-    const SizedBox.shrink(),
-    const CommunityScreen(),
-    const SolidarityHubScreen(),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -49,41 +41,48 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
   }
 
   Future<void> _initializeLocation() async {
+    final position = await _getCurrentPosition(requestIfNeeded: false);
+    if (position == null || !mounted) return;
+    _updateLocationFilters(position.latitude, position.longitude);
+  }
+
+  Future<Position?> _getCurrentPosition({required bool requestIfNeeded}) async {
     try {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return;
+      if (!serviceEnabled) return null;
 
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
+        if (!requestIfNeeded) return null;
         permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return;
+        if (permission == LocationPermission.denied) return null;
       }
 
-      if (permission == LocationPermission.deniedForever) return;
+      if (permission == LocationPermission.deniedForever) return null;
 
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
-      _updateLocationFilters(position.latitude, position.longitude);
+      return Geolocator.getCurrentPosition();
     } catch (e) {
       debugPrint('Error initializing location: $e');
+      return null;
     }
   }
 
   Future<void> _handleLocateMe() async {
     final l10n = AppLocalizations.of(context);
-    try {
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
-      _updateLocationFilters(position.latitude, position.longitude);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
-    } catch (e) {
-      if (!mounted) return;
+    final position = await _getCurrentPosition(requestIfNeeded: true);
+    if (!mounted) return;
+
+    if (position == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation)));
+      return;
     }
+
+    _updateLocationFilters(position.latitude, position.longitude);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
   }
 
   void _updateLocationFilters(double lat, double lng) {
@@ -125,7 +124,8 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
   }
 
   void _selectTab(int index) {
-    if (_nestedNavigatorKey.currentState!.canPop()) {
+    if (_currentIndex == _homeTabIndex &&
+        (_nestedNavigatorKey.currentState?.canPop() ?? false)) {
       _nestedNavigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
 
@@ -134,41 +134,45 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
     });
   }
 
+  Widget _buildTabBody() {
+    switch (_currentIndex) {
+      case _reportsTabIndex:
+        return const SeekReportsScreen();
+      case 1:
+        return const MyReportsScreen();
+      case 3:
+        return const CommunityScreen();
+      case 4:
+        return const SolidarityHubScreen();
+      case _homeTabIndex:
+      default:
+        return Navigator(
+          key: _nestedNavigatorKey,
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(
+              builder: (context) {
+                return HomeFeed(
+                  onLocateMe: _handleLocateMe,
+                  onShowFilters: _showFiltersBottomSheet,
+                  onOpenReports: _openReportsTab,
+                  onOpenDonation: () => _pushNested(const MakeDonationScreen()),
+                  onOpenShop: () => _pushNested(const SolidarityShopScreen()),
+                  onOpenMission: () => _pushNested(const MissionLocalScreen()),
+                );
+              },
+            );
+          },
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AppBackground(
         //backgroundColor: const Color(0xFFFBF4E9),
-        child: Navigator(
-          key: _nestedNavigatorKey,
-          onGenerateRoute: (settings) {
-            return MaterialPageRoute(
-              builder: (context) {
-                return IndexedStack(
-                  index: _currentIndex,
-                  children: [
-                    _pages[0],
-                    _pages[1],
-                    HomeFeed(
-                      onLocateMe: _handleLocateMe,
-                      onShowFilters: _showFiltersBottomSheet,
-                      onOpenReports: _openReportsTab,
-                      onOpenDonation: () =>
-                          _pushNested(const MakeDonationScreen()),
-                      onOpenShop: () =>
-                          _pushNested(const SolidarityShopScreen()),
-                      onOpenMission: () =>
-                          _pushNested(const MissionLocalScreen()),
-                    ),
-                    _pages[3],
-                    _pages[4],
-                  ],
-                );
-              },
-            );
-          },
-        ),
+        child: _buildTabBody(),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: _currentIndex,

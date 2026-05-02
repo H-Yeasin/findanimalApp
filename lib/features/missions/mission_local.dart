@@ -77,9 +77,10 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
       );
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Could not get location: $e')));
+      ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation.replaceAll('{error}', e.toString()))));
     }
   }
 
@@ -153,8 +154,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                         ),
                       ],
                     ),
-                    const Text(
-                      'MISSIONS\nLOCALES',
+                    Text(
+                      l10n.seeLocalMissions.toUpperCase().replaceAll(' ', '\n'),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 40,
@@ -164,8 +165,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      'Inscris-toi dans une mission locale, accomplis des missions solidaires et gagne des points en faisant avancer de vraies causes !',
+                    Text(
+                      l10n.missionsLocalesDescription,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 12, color: brandPrimary),
                     ),
@@ -242,7 +243,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                       child: GestureDetector(
                         onTap: () => _showFiltersBottomSheet(context, ref),
                         child: _buildFilterButton(
-                          'TRIER PAR',
+                          l10n.sortBy,
                           Icons.keyboard_arrow_down,
                           brandPrimary,
                         ),
@@ -254,7 +255,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                       child: GestureDetector(
                         onTap: () => _showFiltersBottomSheet(context, ref),
                         child: _buildFilterButton(
-                          '${filters['radius']} KM',
+                          l10n.radiusKm.replaceAll('{radius}', filters['radius'].toString()),
                           Icons.keyboard_arrow_down,
                           brandPrimary,
                         ),
@@ -272,7 +273,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                     return const Padding(
                       padding: EdgeInsets.all(40),
                       child: Text(
-                        'Aucune mission trouvée pour le moment.',
+                        l10n.noMissionsFound,
                         style: TextStyle(
                           color: brandPrimary,
                           fontWeight: FontWeight.bold,
@@ -298,7 +299,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                 error: (error, stack) => Padding(
                   padding: EdgeInsets.all(40),
                   child: Text(
-                    'Erreur: $error',
+                    '${l10n.error}: $error',
                     style: const TextStyle(color: Colors.red),
                   ),
                 ),
@@ -443,10 +444,11 @@ class _MissionCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final organization = mission.partner?.company ?? 'Organisation';
+    final l10n = AppLocalizations.of(context);
+    final organization = mission.partner?.company ?? l10n.organization;
     final timeAgo = mission.createdAt != null
-        ? _formatTimeAgo(mission.createdAt!)
-        : 'Récemment';
+        ? _formatTimeAgo(mission.createdAt!, l10n)
+        : l10n.recently;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
@@ -514,7 +516,7 @@ class _MissionCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$organization | Mission de ${mission.duration}',
+                    '${organization} | ${l10n.missionDuration.replaceAll('{duration}', mission.duration)}',
                     style: TextStyle(
                       fontSize: 12,
                       color: brandPrimary.withValues(alpha: 0.8),
@@ -536,7 +538,7 @@ class _MissionCard extends ConsumerWidget {
                             ),
                           ),
                           child: const Text(
-                            'VOIR SUR LA CARTE',
+                            l10n.seeOnMap,
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
@@ -556,14 +558,14 @@ class _MissionCard extends ConsumerWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      'Intérêt soumis avec succès !',
+                                      l10n.interestSubmitted,
                                     ),
                                     backgroundColor: Colors.green,
                                   ),
                                 );
                               }
                             } catch (e) {
-                              String errorMessage = 'Erreur: $e';
+                              String errorMessage = '${l10n.error}: $e';
                               if (e is DioException) {
                                 final responseData = e.response?.data;
                                 if (responseData is Map &&
@@ -591,7 +593,7 @@ class _MissionCard extends ConsumerWidget {
                             ),
                           ),
                           child: const Text(
-                            'VOIR LA MISSION',
+                            l10n.seeMission,
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.bold,
@@ -610,16 +612,16 @@ class _MissionCard extends ConsumerWidget {
     );
   }
 
-  String _formatTimeAgo(DateTime dateTime) {
+  String _formatTimeAgo(DateTime dateTime, AppLocalizations l10n) {
     final duration = DateTime.now().difference(dateTime);
     if (duration.inDays > 0) {
-      return 'Il y a ${duration.inDays} j';
+      return l10n.daysAgo.replaceAll('{days}', duration.inDays.toString());
     } else if (duration.inHours > 0) {
-      return 'Il y a ${duration.inHours} h';
+      return l10n.hoursAgo.replaceAll('{hours}', duration.inHours.toString());
     } else if (duration.inMinutes > 0) {
-      return 'Il y a ${duration.inMinutes} m';
+      return l10n.minutesAgo.replaceAll('{minutes}', duration.inMinutes.toString());
     } else {
-      return 'À l\'instant';
+      return l10n.justNow;
     }
   }
 }
@@ -710,11 +712,11 @@ class _MissionsFiltersBottomSheetState
             ),
             const Divider(height: 30, thickness: 1, color: Color(0xFFF2E6D8)),
 
-            _buildSectionTitle('Search Missions'),
+            _buildSectionTitle(l10n.searchMissions),
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search by title...',
+                hintText: l10n.searchByTitle,
                 hintStyle: TextStyle(color: Colors.grey[400]),
                 prefixIcon: const Icon(Icons.search, color: brandPrimary),
                 filled: true,
@@ -727,7 +729,7 @@ class _MissionsFiltersBottomSheetState
               ),
             ),
 
-            _buildSectionTitle('Status'),
+            _buildSectionTitle(l10n.status),
             Wrap(
               spacing: 10,
               children: ['active', 'completed', 'expired'].map((s) {
@@ -757,13 +759,13 @@ class _MissionsFiltersBottomSheetState
               }).toList(),
             ),
 
-            _buildSectionTitle('Search Radius'),
+            _buildSectionTitle(l10n.searchRadius),
             Row(
               children: [
                 const Icon(Icons.location_on, color: brandPrimary, size: 20),
                 const SizedBox(width: 10),
                 Text(
-                  'Radius: ${_radius.toInt()} km',
+                  l10n.radiusKm.replaceAll('{radius}', _radius.toInt().toString()),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -782,7 +784,7 @@ class _MissionsFiltersBottomSheetState
               },
             ),
 
-            _buildSectionTitle('Sort By'),
+            _buildSectionTitle(l10n.sortBy),
             DropdownButtonFormField<String>(
               value: _sortBy,
               decoration: InputDecoration(
@@ -793,9 +795,9 @@ class _MissionsFiltersBottomSheetState
                   borderSide: BorderSide.none,
                 ),
               ),
-              items: const [
-                DropdownMenuItem(value: 'date', child: Text('Date')),
-                DropdownMenuItem(value: 'title', child: Text('Title')),
+              items: [
+                DropdownMenuItem(value: 'date', child: Text(l10n.dateLabel)),
+                DropdownMenuItem(value: 'title', child: Text(l10n.titleLabel)),
               ],
               onChanged: (val) {
                 if (val != null) setState(() => _sortBy = val);
@@ -829,7 +831,7 @@ class _MissionsFiltersBottomSheetState
                   Navigator.pop(context);
                 },
                 child: const Text(
-                  'APPLY FILTERS',
+                  l10n.applyFilters.toUpperCase(),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,

@@ -8,6 +8,7 @@ import 'package:hesteka_frontend/features/Collection_Point/collection_point.dart
 import 'package:hesteka_frontend/features/Community/presentation/providers/contact_providers.dart';
 import 'package:hesteka_frontend/features/partner_ads/presentation/providers/partner_collection_points_provider.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/make_donation_screen.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 import '../../../../core/routing/route_names.dart';
 
@@ -16,6 +17,7 @@ class SolidarityHubScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
 
@@ -47,7 +49,7 @@ class SolidarityHubScreen extends ConsumerWidget {
                         Positioned(
                           bottom: 40,
                           child: Text(
-                            'TOGETHER',
+                            l10n.together,
                             style: AppTextStyles.display.copyWith(
                               fontSize: 60,
                               color: surface,
@@ -59,12 +61,12 @@ class SolidarityHubScreen extends ConsumerWidget {
 
                     const SizedBox(height: 30),
                     // Donation Description
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Text(
-                        'If you want to support Hesteka and help us continue the adventure, you can make a donation. In addition, you also participate in animal protection.',
+                        l10n.solidarityDescription,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: brandPrimary,
                           fontWeight: FontWeight.bold,
@@ -92,8 +94,8 @@ class SolidarityHubScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
-                          'MAKE A DONATION',
-                          style: TextStyle(
+                          l10n.makeDonation.toUpperCase(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
@@ -106,13 +108,13 @@ class SolidarityHubScreen extends ConsumerWidget {
                     const SizedBox(height: 40),
                     // Collection Points Title
                     Text(
-                      'LES POINTS DE COLLECTE',
+                      l10n.collectionPoints.toUpperCase(),
                       style: AppTextStyles.condensedSectionTitle.copyWith(
                         fontSize: 27,
                       ),
                     ),
                     Text(
-                      'autour de chez toi',
+                      l10n.collectionPointsAround,
                       style: AppTextStyles.caption.copyWith(
                         fontSize: 14,
                         height: 1,
@@ -173,7 +175,7 @@ class SolidarityHubScreen extends ConsumerWidget {
                                         zoom: 14.0,
                                       ),
                                       markers: markers,
-                                      myLocationEnabled: true,
+                                      myLocationEnabled: false,
                                       myLocationButtonEnabled: false,
                                       zoomControlsEnabled: false,
                                       mapToolbarEnabled: false,
@@ -207,9 +209,9 @@ class SolidarityHubScreen extends ConsumerWidget {
                                           width: 1.5,
                                         ),
                                       ),
-                                      child: const Text(
-                                        'SEE MORE',
-                                        style: TextStyle(
+                                      child: Text(
+                                        l10n.homeSeeMore.toUpperCase(),
+                                        style: const TextStyle(
                                           color: brandPrimary,
                                           fontWeight: FontWeight.w900,
                                           fontSize: 14,
@@ -237,23 +239,22 @@ class SolidarityHubScreen extends ConsumerWidget {
 
                     const SizedBox(height: 50),
                     // Collection Description
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 35),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Text.rich(
                         TextSpan(
                           children: [
                             TextSpan(
-                              text:
-                                  'Treats, kibble, leashes, litter... anything that no longer serves you can be useful to them! . If it\'s no longer useful to you, for them it can change everything. ',
+                              text: l10n.collectionPointsDescription,
                             ),
                             TextSpan(
-                              text: 'So think about donating near you.',
-                              style: TextStyle(fontWeight: FontWeight.w900),
+                              text: l10n.donatingNearYou,
+                              style: const TextStyle(fontWeight: FontWeight.w900),
                             ),
                           ],
                         ),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: brandPrimary,
                           fontWeight: FontWeight.w500,
@@ -264,24 +265,22 @@ class SolidarityHubScreen extends ConsumerWidget {
 
                     const SizedBox(height: 40),
                     // BY OUR SIDE Title
-                    const Text(
-                      'Those who are',
-                      style: TextStyle(
+                    Text(
+                      l10n.thoseWhoAre,
+                      style: const TextStyle(
                         fontSize: 14,
                         color: brandPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      'BY OUR SIDE!',
+                      l10n.byOurSide,
                       style: AppTextStyles.heading.copyWith(fontSize: 42),
                     ),
                     const SizedBox(height: 20),
 
                     // Partner Logos (Dynamic)
-                    ref
-                        .watch(partnersProvider)
-                        .when(
+                    ref.watch(partnersProvider).when(
                           data: (partners) {
                             final validPartners = partners
                                 .where(
@@ -343,7 +342,7 @@ class SolidarityHubScreen extends ConsumerWidget {
                         Positioned(
                           top: 10,
                           child: Text(
-                            'THE SOLIDARITY \n SHOP',
+                            l10n.solidarityShopTitle,
                             textAlign: TextAlign.center,
                             style: AppTextStyles.heading.copyWith(fontSize: 38),
                           ),
@@ -351,12 +350,12 @@ class SolidarityHubScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: Text(
-                        'Here you can use your points or make a purchase. And the best part? . Part of the profits are donated to associations that help animals.',
+                        l10n.shopDescription,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: brandPrimary,
                           fontWeight: FontWeight.bold,
@@ -380,9 +379,9 @@ class SolidarityHubScreen extends ConsumerWidget {
                           color: brandPrimary,
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        child: const Text(
-                          'VIEW THE SHOP',
-                          style: TextStyle(
+                        child: Text(
+                          l10n.viewShop.toUpperCase(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
                             fontSize: 14,

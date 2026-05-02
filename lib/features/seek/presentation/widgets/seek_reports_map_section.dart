@@ -148,7 +148,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 },
                 markers: markers,
                 circles: circles,
-                myLocationEnabled: true,
+                myLocationEnabled: false,
                 myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,
                 mapToolbarEnabled: false,

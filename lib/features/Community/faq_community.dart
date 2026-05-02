@@ -2,9 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:dio/dio.dart';
 import '../../core/network/dio_provider.dart';
-import 'presentation/providers/faq_provider.dart';
+import '../../core/localization/app_localizations.dart';
 
 class FAQCommunityScreen extends ConsumerStatefulWidget {
   const FAQCommunityScreen({super.key});
@@ -20,79 +19,6 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   late AnimationController _pulseController;
   late AnimationController _floatController;
   String _searchQuery = '';
-
-  final List<Map<String, dynamic>> _faqData = [
-    {
-      'category': 'INITIAL',
-      'title': '',
-      'image': '',
-      'questions': [
-        'What should I do if I find an injured animal?',
-        '.. How do you know if a found animal belongs to someone?',
-        'What should I do if I cannot keep the found animal?',
-      ],
-    },
-    {
-      'category': 'REPORT',
-      'title': 'REPORT',
-      'image': 'assets/images/faq_image_1.png',
-      'questions': [
-        'Can I modify my report?',
-        'Can I delete my ad?',
-        'Is my report visible everywhere?',
-      ],
-    },
-    {
-      'category': 'LOCAL MISSIONS',
-      'title': 'LOCAL MISSIONS',
-      'image': 'assets/images/faq_image_2.png',
-      'questions': [
-        'How to participate in a mission?',
-        'Is any special experience required?',
-        'How do I find a mission near me?',
-      ],
-    },
-    {
-      'category': 'MY ACCOUNT',
-      'title': 'MY ACCOUNT',
-      'image': 'assets/images/faq_image_3.png',
-      'questions': [
-        'Is my data protected?',
-        'Can I change my information?',
-        'Can I log in on multiple devices?',
-      ],
-    },
-    {
-      'category': 'MESSAGING',
-      'title': 'MESSAGING',
-      'image': 'assets/images/faq_image_4.png',
-      'questions': [
-        'Can I block a user?',
-        'How to start a conversation?',
-        'How to start a conversation?',
-      ],
-    },
-    {
-      'category': 'DONATIONS AND HELP',
-      'title': 'DONATIONS AND HELP',
-      'image': 'assets/images/faq_image_5.png',
-      'questions': [
-        'Who do the donations go to?',
-        'Are donations secure?',
-        'Can I help in other ways?',
-      ],
-    },
-    {
-      'category': 'SECURITY',
-      'title': 'SECURITY',
-      'image': 'assets/images/faq_image_6.png',
-      'questions': [
-        'Is my data protected?',
-        'Does the application verify the content?',
-        'What to do in case of a problem?',
-      ],
-    },
-  ];
 
   String? _supportEmail;
 
@@ -154,7 +80,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     super.dispose();
   }
 
-  Future<void> _contactSupport() async {
+  Future<void> _contactSupport(dynamic l10n) async {
     final email = _supportEmail ?? 'support@emmafve.com'; // Fallback
 
     // Launch email intent
@@ -168,18 +94,92 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
       await launchUrl(emailUri);
     } else {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open email app')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.unknownError)));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
+
+    final List<Map<String, dynamic>> localizedFaqData = [
+      {
+        'category': 'INITIAL',
+        'title': '',
+        'image': '',
+        'questions': [
+          'What should I do if I find an injured animal?',
+          '.. How do you know if a found animal belongs to someone?',
+          'What should I do if I cannot keep the found animal?',
+        ],
+      },
+      {
+        'category': 'REPORT',
+        'title': l10n.categoryReport,
+        'image': 'assets/images/faq_image_1.png',
+        'questions': [
+          'Can I modify my report?',
+          'Can I delete my ad?',
+          'Is my report visible everywhere?',
+        ],
+      },
+      {
+        'category': 'LOCAL MISSIONS',
+        'title': l10n.categoryMissions,
+        'image': 'assets/images/faq_image_2.png',
+        'questions': [
+          'How to participate in a mission?',
+          'Is any special experience required?',
+          'How do I find a mission near me?',
+        ],
+      },
+      {
+        'category': 'MY ACCOUNT',
+        'title': l10n.categoryAccount,
+        'image': 'assets/images/faq_image_3.png',
+        'questions': [
+          'Is my data protected?',
+          'Can I change my information?',
+          'Can I log in on multiple devices?',
+        ],
+      },
+      {
+        'category': 'MESSAGING',
+        'title': l10n.categoryMessaging,
+        'image': 'assets/images/faq_image_4.png',
+        'questions': [
+          'Can I block a user?',
+          'How to start a conversation?',
+          'How to start a conversation?',
+        ],
+      },
+      {
+        'category': 'DONATIONS AND HELP',
+        'title': l10n.categoryDonations,
+        'image': 'assets/images/faq_image_5.png',
+        'questions': [
+          'Who do the donations go to?',
+          'Are donations secure?',
+          'Can I help in other ways?',
+        ],
+      },
+      {
+        'category': 'SECURITY',
+        'title': l10n.categorySecurity,
+        'image': 'assets/images/faq_image_6.png',
+        'questions': [
+          'Is my data protected?',
+          'Does the application verify the content?',
+          'What to do in case of a problem?',
+        ],
+      },
+    ];
 
     return Scaffold(
       backgroundColor: surface,
@@ -217,8 +217,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                       builder: (context, child) {
                         return Transform.translate(
                           offset: Offset(0, 5 * _floatController.value),
-                          child: const Text(
-                            'F.A.Q',
+                          child: Text(
+                            l10n.faqTitleLabel,
                             style: TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.w900,
@@ -248,8 +248,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
 
               // Search Section
               const SizedBox(height: 20),
-              const Text(
-                'How can I help you?',
+              Text(
+                l10n.howCanIHelp,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
@@ -257,11 +257,11 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 ),
               ),
               const SizedBox(height: 10),
-              _buildAnimatedSearchBar(brandPrimary, cardBg),
+              _buildAnimatedSearchBar(brandPrimary, cardBg, l10n),
 
               const SizedBox(height: 20),
-              const Text(
-                'Frequently asked questions',
+              Text(
+                l10n.faqSubtitle,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
@@ -271,7 +271,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
               const SizedBox(height: 15),
 
               // Filtered Content
-              ..._faqData.map((section) {
+              ...localizedFaqData.map((section) {
                 final filteredQuestions = section['questions']
                     .where(
                       (q) => q.toString().toLowerCase().contains(_searchQuery),
@@ -305,8 +305,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 type: AnimationType.bounce,
                 child: Column(
                   children: [
-                    const Text(
-                      'We haven\'t answered your question?\nDon\'t hesitate to contact us',
+                    Text(
+                      l10n.faqContactText,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -323,7 +323,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: _contactSupport,
+                        onTap: () => _contactSupport(l10n),
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 80),
                           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -340,7 +340,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            _supportEmail ?? 'Contact support',
+                            _supportEmail ?? l10n.contactSupport,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -361,7 +361,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     );
   }
 
-  Widget _buildAnimatedSearchBar(Color color, Color bg) {
+  Widget _buildAnimatedSearchBar(Color color, Color bg, AppLocalizations l10n) {
     return ScrollAppearanceWrapper(
       type: AnimationType.fade,
       child: Container(
@@ -384,9 +384,12 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
-                decoration: const InputDecoration(
-                  hintText: 'Search for a topic',
-                  hintStyle: TextStyle(color: Color(0x80BA4A22), fontSize: 16),
+                decoration: InputDecoration(
+                  hintText: l10n.searchTopic,
+                  hintStyle: const TextStyle(
+                    color: Color(0x80BA4A22),
+                    fontSize: 16,
+                  ),
                   border: InputBorder.none,
                 ),
               ),
@@ -637,7 +640,6 @@ class _ScrollAppearanceWrapperState extends State<ScrollAppearanceWrapper>
                   child: Opacity(opacity: _controller.value, child: child),
                 );
               case AnimationType.fade:
-              default:
                 return Transform.translate(
                   offset: Offset(0, 20 * (1 - _controller.value)),
                   child: Opacity(opacity: _controller.value, child: child),

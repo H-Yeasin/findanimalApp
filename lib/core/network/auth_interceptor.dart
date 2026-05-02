@@ -1,5 +1,6 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import '../storage/secure_storage_service.dart';
 
@@ -15,13 +16,6 @@ class AuthInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     final token = await _secureStorageService.readAccessToken();
-    
-    if (kDebugMode) {
-      print('DEBUG: AuthInterceptor - Token found: ${token != null && token.isNotEmpty}');
-      if (token != null && token.isNotEmpty) {
-        print('DEBUG: AuthInterceptor - Adding Token to: ${options.uri}');
-      }
-    }
 
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
@@ -42,11 +36,6 @@ class AuthInterceptor extends Interceptor {
       if (hasToken &&
           !path.contains('/auth/logout') &&
           !path.contains('/auth/generate-access-token')) {
-        if (kDebugMode) {
-          print(
-            'DEBUG: AuthInterceptor - 401 Unauthorized (with token) detected on $path. Triggering logout.',
-          );
-        }
         onUnauthorized?.call();
       }
     }

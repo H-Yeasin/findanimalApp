@@ -244,6 +244,139 @@ class AppLocalizations {
   String get statusFound => _text('statusFound');
   String get statusRescued => _text('statusRescued');
   String get communityUser => _text('communityUser');
+  String get collectionPoints => _text('collectionPoints');
+  String get makeDonation => _text('makeDonation');
+  String get seeDetails => _text('seeDetails');
+  String get seeCollectionPoint => _text('seeCollectionPoint');
+  String get listShelters => _text('listShelters');
+  String get allShelters => _text('allShelters');
+  String get listVeterinarians => _text('listVeterinarians');
+  String get allVeterinarians => _text('allVeterinarians');
+  String get searchByName => _text('searchByName');
+  String get filterBySortBy => _text('filterBySortBy');
+  String get ourPartners => _text('ourPartners');
+  String get viewWebsite => _text('viewWebsite');
+  String get addToCart => _text('addToCart');
+  String get seeLocalMissions => _text('seeLocalMissions');
+  String get seeFullList => _text('seeFullList');
+  String get goToFaq => _text('goToFaq');
+  String get shareStory => _text('shareStory');
+  String get partnersBody => _text('partnersBody');
+  String get sheltersBody => _text('sheltersBody');
+  String get veterinariansBody => _text('veterinariansBody');
+  String get authoritiesTitle => _text('authoritiesTitle');
+  String get authoritiesBody => _text('authoritiesBody');
+  String get gendarmeries => _text('gendarmeries');
+  String get toCall => _text('toCall');
+  String get unknown => _text('unknown');
+  String get noPhone => _text('noPhone');
+  String get faqTitleLabel => _text('faqTitleLabel');
+  String get howCanIHelp => _text('howCanIHelp');
+  String get faqSubtitle => _text('faqSubtitle');
+  String get faqContactText => _text('faqContactText');
+  String get searchTopic => _text('searchTopic');
+  String get categoryReport => _text('categoryReport');
+  String get categoryMissions => _text('categoryMissions');
+  String get categoryAccount => _text('categoryAccount');
+  String get categoryMessaging => _text('categoryMessaging');
+  String get categoryDonations => _text('categoryDonations');
+  String get categorySecurity => _text('categorySecurity');
+  String get together => _text('together');
+  String get solidarityDescription => _text('solidarityDescription');
+  String get collectionPointsAround => _text('collectionPointsAround');
+  String get collectionPointsDescription =>
+      _text('collectionPointsDescription');
+  String get donatingNearYou => _text('donatingNearYou');
+  String get thoseWhoAre => _text('thoseWhoAre');
+  String get byOurSide => _text('byOurSide');
+  String get solidarityShopTitle => _text('solidarityShopTitle');
+  String get shopDescription => _text('shopDescription');
+  String get viewShop => _text('viewShop');
+  String get collectionPointsFullDescription =>
+      _text('collectionPointsFullDescription');
+  String get sortByName => _text('sortByName');
+  String get sortByNewest => _text('sortByNewest');
+  String get collectionPointDetailTemplate =>
+      _text('collectionPointDetailTemplate');
+  String get missionsLocalesDescription => _text('missionsLocalesDescription');
+  String get noMissionsFound => _text('noMissionsFound');
+  String get seeMission => _text('seeMission');
+  String get recently => _text('recently');
+  String get daysAgo => _text('daysAgo');
+  String get hoursAgo => _text('hoursAgo');
+  String get minutesAgo => _text('minutesAgo');
+  String get justNow => _text('justNow');
+  String get searchMissions => _text('searchMissions');
+  String get searchByTitle => _text('searchByTitle');
+  String get radiusKm => _text('radiusKm');
+  String get dateLabel => _text('dateLabel');
+  String get titleLabel => _text('titleLabel');
+  String get interestSubmitted => _text('interestSubmitted');
+  String get couldNotGetLocationDetailed => _text('couldNotGetLocation');
+  String get fillAllFields => _text('fillAllFields');
+  String get missionCreated => _text('missionCreated');
+  String get couldNotCreateMission => _text('couldNotCreateMission');
+  String get myLocalMissions => _text('myLocalMissions');
+  String get myCreatedMissions => _text('myCreatedMissions');
+  String get couldNotLoadMissions => _text('couldNotLoadMissions');
+  String get noMissionsCreated => _text('noMissionsCreated');
+  String get missionTitle => _text('missionTitle');
+  String get missionTitleHint => _text('missionTitleHint');
+  String get missionDescriptionHint => _text('missionDescriptionHint');
+  String get missionAddressHint => _text('missionAddressHint');
+  String get missionDurationHint => _text('missionDurationHint');
+  String get missionImageOptional => _text('missionImageOptional');
+  String get uploadMissionImage => _text('uploadMissionImage');
+  String get imageSelected => _text('imageSelected');
+  String get createLocalMission => _text('createLocalMission');
+  String get durationPoints => _text('durationPoints');
+  String get missionDuration => _text('missionDuration');
+  String get organization => _text('organization');
+  String get error => _text('error');
+  String get myCollectionPoints => _text('myCollectionPoints');
+  String get addPoint => _text('addPoint');
+  String get couldNotLoadCollectionPoints =>
+      _text('couldNotLoadCollectionPoints');
+  String get noCollectionPointsYet => _text('noCollectionPointsYet');
+  String get fillAllFieldsAndLocation => _text('fillAllFieldsAndLocation');
+  String get collectionPointCreated => _text('collectionPointCreated');
+  String get createCollectionPointTitle => _text('createCollectionPointTitle');
+  String get postAdCollectionPoint => _text('postAdCollectionPoint');
+  String get collectionPointName => _text('collectionPointName');
+  String get collectionPointNameHint => _text('collectionPointNameHint');
+  String get collectionPointDescription => _text('collectionPointDescription');
+  String get collectionPointDescriptionHint =>
+      _text('collectionPointDescriptionHint');
+  String get collectionPointAddress => _text('collectionPointAddress');
+  String get pickLocationOnMap => _text('pickLocationOnMap');
+  String get photoOfCollectionPoint => _text('photoOfCollectionPoint');
+  String get uploadPhoto => _text('uploadPhoto');
+  String get createCollectionPointButton =>
+      _text('createCollectionPointButton');
+  String get publishAdTitle => _text('publishAdTitle');
+  String get placeAdLocalMission => _text('placeAdLocalMission');
+  String get titleOfLocalMission => _text('titleOfLocalMission');
+  String get addressOfLocalMission => _text('addressOfLocalMission');
+  String get durationOfLocalMission => _text('durationOfLocalMission');
+  String get photoOfLocalMission => _text('photoOfLocalMission');
+  String get publishMyAd => _text('publishMyAd');
+  String get donateTodayTitle => _text('donateTodayTitle');
+  String get helpingTomorrowSubtitle => _text('helpingTomorrowSubtitle');
+  String get myDonationsTitle => _text('myDonationsTitle');
+  String get noDonationsMade => _text('noDonationsMade');
+  String donationAmount(String amount) =>
+      text('donationAmount', params: {'amount': amount});
+  String donationMethodStatus(String method, String status) => text(
+    'donationMethodStatus',
+    params: {'method': method, 'status': status},
+  );
+  String get thanksCommunityText => _text('thanksCommunityText');
+  String get myAdsTitle => _text('myAdsTitle');
+  String get myAds => _text('myAds');
+  String get myProfile => _text('myProfile');
+  String get partnerLabel => _text('partnerLabel');
+  String welcomeName(String name) =>
+      text('welcomeName', params: {'name': name});
 }
 
 class _AppLocalizationsDelegate

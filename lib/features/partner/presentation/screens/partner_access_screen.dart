@@ -7,6 +7,7 @@ import '../../../../core/widgets/app_top_bar.dart';
 import '../../../auth/data/models/auth_user_model.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class PartnerAccessScreen extends ConsumerStatefulWidget {
   const PartnerAccessScreen({super.key});
@@ -20,6 +21,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
   bool _notificationsEnabled = true;
 
   Future<void> _openMyAdsDrawer(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
     await showModalBottomSheet<void>(
       context: context,
       backgroundColor: Colors.transparent,
@@ -36,8 +38,8 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'MY ADS',
+                Text(
+                  l10n.myAdsTitle,
                   style: TextStyle(
                     color: PartnerUiColors.brand,
                     fontFamily: 'EricaOne',
@@ -47,7 +49,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
                 const SizedBox(height: 8),
                 PartnerCardActionRow(
                   icon: Icons.location_on_rounded,
-                  label: 'Collection points',
+                  label: l10n.collectionPoints,
                   onTap: () {
                     Navigator.of(sheetContext).pop();
                     context.push(RouteNames.partnerCollectionPoints);
@@ -56,7 +58,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
                 const Divider(color: PartnerUiColors.brand),
                 PartnerCardActionRow(
                   icon: Icons.flag_outlined,
-                  label: 'Missions',
+                  label: l10n.categoryMissions,
                   onTap: () {
                     Navigator.of(sheetContext).pop();
                     context.push(RouteNames.partnerMissions);
@@ -72,6 +74,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final user = ref.watch(currentUserProvider);
 
     return PartnerScreenScaffold(
@@ -83,19 +86,23 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             const SizedBox(height: 34),
             AppTopBar(),
             const SizedBox(height: 14),
-            if (user != null) _buildPartnerDashboard(context, user),
+            if (user != null) _buildPartnerDashboard(context, user, l10n),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPartnerDashboard(BuildContext context, AuthUserModel user) {
+  Widget _buildPartnerDashboard(
+    BuildContext context,
+    AuthUserModel user,
+    AppLocalizations l10n,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          user.company?.toUpperCase() ?? 'PARTNER',
+          user.company?.toUpperCase() ?? l10n.partnerLabel,
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: PartnerUiColors.brand,
@@ -105,7 +112,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Welcome, ${user.firstName}',
+          l10n.welcomeName(user.firstName),
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Color(0xFF1F2D58),
@@ -126,25 +133,25 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             children: [
               PartnerCardActionRow(
                 icon: Icons.person,
-                label: 'My profile',
+                label: l10n.myProfile,
                 onTap: () => context.push(RouteNames.partnerProfile),
               ),
               const Divider(color: PartnerUiColors.brand),
               PartnerCardActionRow(
                 icon: Icons.campaign_outlined,
-                label: 'My ads',
+                label: l10n.myAds,
                 onTap: () => _openMyAdsDrawer(context),
               ),
               const Divider(color: PartnerUiColors.brand),
               PartnerCardActionRow(
                 icon: Icons.settings,
-                label: 'Settings',
+                label: l10n.settings,
                 onTap: () => context.push(RouteNames.partnerSettings),
               ),
               const Divider(color: PartnerUiColors.brand),
               PartnerCardActionRow(
                 icon: Icons.notifications_none_rounded,
-                label: 'Notifications',
+                label: l10n.notifications,
                 trailing: PartnerToggle(
                   value: _notificationsEnabled,
                   onChanged: (value) {
@@ -163,7 +170,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
               const SizedBox(height: 30),
               PartnerCardActionRow(
                 icon: Icons.logout,
-                label: 'LOGOUT',
+                label: l10n.logout.toUpperCase(),
                 onTap: () async {
                   await ref.read(authSessionProvider.notifier).logout();
                   if (context.mounted) {

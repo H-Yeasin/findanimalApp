@@ -73,7 +73,7 @@ class HomeMapSection extends ConsumerWidget {
                 zoom: 11,
               ),
               markers: markers,
-              myLocationEnabled: true,
+              myLocationEnabled: false,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
+import '../../core/localization/app_localizations.dart';
 
 class VeterinariansScreen extends ConsumerStatefulWidget {
   const VeterinariansScreen({super.key});
@@ -28,6 +29,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
     const cardBg = Color(0xFFFFF6E5);
 
     final veterinariansAsync = ref.watch(veterinariansProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: surface,
@@ -68,8 +70,8 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                   ),
                 ),
 
-                const Text(
-                  'LIST OF\nVETERINARIANS',
+                Text(
+                  l10n.listVeterinarians.toUpperCase().replaceAll(' ', '\n'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
@@ -79,10 +81,10 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    'Find here all the veterinarians in France,\nyou can easily identify the one near you',
+                    l10n.veterinariansBody,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12,
@@ -109,11 +111,11 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                 const SizedBox(height: 20),
 
                 // Search Bar
-                _buildSearchBar(cardBg, brandPrimary),
+                _buildSearchBar(cardBg, brandPrimary, l10n),
                 const SizedBox(height: 10),
 
                 // Filter Dropdown
-                _buildFilterDropdown(cardBg, brandPrimary),
+                _buildFilterDropdown(cardBg, brandPrimary, l10n),
                 const SizedBox(height: 30),
 
                 // List Section
@@ -124,7 +126,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Text(
-                            'No veterinarians found',
+                            l10n.noReportsFound,
                             style: TextStyle(
                               color: brandPrimary,
                               fontWeight: FontWeight.bold,
@@ -135,12 +137,12 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                     }
                     return Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'ALL VETERINARIANS',
+                              l10n.allVeterinarians.toUpperCase(),
                               style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w900,
@@ -160,6 +162,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                               vet,
                               cardBg,
                               brandPrimary,
+                              l10n,
                             );
                           },
                         ),
@@ -171,7 +174,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                   ),
                   error: (err, stack) => Center(
                     child: Text(
-                      'Error loading veterinarians',
+                      l10n.unknownError,
                       style: TextStyle(color: brandPrimary),
                     ),
                   ),
@@ -186,7 +189,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
     );
   }
 
-  Widget _buildSearchBar(Color cardBg, Color color) {
+  Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -202,7 +205,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
         },
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
-          hintText: 'Search by name',
+          hintText: l10n.searchByName,
           hintStyle: TextStyle(color: color.withValues(alpha: 0.5)),
           border: InputBorder.none,
           suffixIcon: _searchController.text.isNotEmpty
@@ -219,7 +222,11 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
     );
   }
 
-  Widget _buildFilterDropdown(Color cardBg, Color color) {
+  Widget _buildFilterDropdown(
+    Color cardBg,
+    Color color,
+    AppLocalizations l10n,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -232,7 +239,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Filter by / Sort by',
+            l10n.filterBySortBy,
             style: TextStyle(color: color, fontWeight: FontWeight.bold),
           ),
           Icon(Icons.keyboard_arrow_down, color: color),
@@ -241,10 +248,9 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
     );
   }
 
-  Widget _buildVetCard(
-    ContactModel vet,
     Color cardBg,
     Color color,
+    AppLocalizations l10n,
   ) {
     final name = vet.name;
     final address = vet.fullAddress;
@@ -296,10 +302,10 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    _buildSmallButton('SEE ON MAP', Colors.white, color, color),
+                    _buildSmallButton(l10n.seeOnMap.toUpperCase(), Colors.white, color, color),
                     const SizedBox(width: 10),
                     _buildSmallButton(
-                      'SEE DETAILS',
+                      l10n.seeDetails.toUpperCase(),
                       color,
                       Colors.white,
                       color,

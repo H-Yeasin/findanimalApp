@@ -31,42 +31,48 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
   }
 
   Future<void> _initializeLocation() async {
+    final position = await _getCurrentPosition(requestIfNeeded: false);
+    if (position == null || !mounted) return;
+    _updateLocationFilters(position.latitude, position.longitude);
+  }
+
+  Future<Position?> _getCurrentPosition({required bool requestIfNeeded}) async {
     try {
       final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return;
+      if (!serviceEnabled) return null;
 
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
+        if (!requestIfNeeded) return null;
         permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return;
+        if (permission == LocationPermission.denied) return null;
       }
 
-      if (permission == LocationPermission.deniedForever) return;
+      if (permission == LocationPermission.deniedForever) return null;
 
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
-      _updateLocationFilters(position.latitude, position.longitude);
+      return Geolocator.getCurrentPosition();
     } catch (e) {
       debugPrint('Error initializing location: $e');
+      return null;
     }
   }
 
   Future<void> _handleLocateMe() async {
     final l10n = AppLocalizations.of(context);
+    final position = await _getCurrentPosition(requestIfNeeded: true);
+    if (!mounted) return;
 
-    try {
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
-      _updateLocationFilters(position.latitude, position.longitude);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
-    } catch (_) {
-      if (!mounted) return;
+    if (position == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation)));
+      return;
     }
+
+    _updateLocationFilters(position.latitude, position.longitude);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
   }
 
   void _updateLocationFilters(double lat, double lng) {

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class PartnerPublishAdScreen extends StatelessWidget {
   const PartnerPublishAdScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return PartnerScreenScaffold(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 36),
@@ -15,10 +17,10 @@ class PartnerPublishAdScreen extends StatelessWidget {
           children: [
             const AppTopBar(showBackButton: false),
             const SizedBox(height: 6),
-            const PartnerPageTitle('PUBLISH\nAN ADVERTISEMENT'),
+            PartnerPageTitle(l10n.publishAdTitle),
             const SizedBox(height: 20),
             PartnerSectionHeading(
-              'PLACE AN ADVERTISEMENT - LOCAL MISSION',
+              l10n.placeAdLocalMission,
               trailing: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
@@ -33,23 +35,23 @@ class PartnerPublishAdScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const PartnerFieldLabel('TITLE OF THE LOCAL MISSION'),
+            PartnerFieldLabel(l10n.titleOfLocalMission),
             const SizedBox(height: 10),
             const PartnerMissionTitleField(),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('ADDRESS OF THE LOCAL MISSION'),
+            PartnerFieldLabel(l10n.addressOfLocalMission),
             const SizedBox(height: 10),
-            const PartnerOutlinedField(hint: 'Address of local mission'),
+            PartnerOutlinedField(hint: l10n.missionAddressHint),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('DURATION OF THE LOCAL MISSION'),
+            PartnerFieldLabel(l10n.durationOfLocalMission),
             const SizedBox(height: 10),
-            const PartnerOutlinedField(hint: 'Duration of local mission'),
+            PartnerOutlinedField(hint: l10n.missionDurationHint),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('PHOTO OF THE LOCAL MISSION'),
+            PartnerFieldLabel(l10n.photoOfLocalMission),
             const SizedBox(height: 10),
-            const PartnerOutlinedField(
-              hint: 'Upload a photo',
-              leading: Icon(
+            PartnerOutlinedField(
+              hint: l10n.uploadPhoto,
+              leading: const Icon(
                 Icons.cloud_upload,
                 color: PartnerUiColors.brand,
                 size: 24,
@@ -57,7 +59,10 @@ class PartnerPublishAdScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Center(
-              child: PartnerPublishButton(label: 'Publish my ad', onTap: () {}),
+              child: PartnerPublishButton(
+                label: l10n.publishMyAd,
+                onTap: () {},
+              ),
             ),
           ],
         ),

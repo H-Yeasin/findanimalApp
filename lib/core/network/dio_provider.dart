@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../config/app_constants.dart';
@@ -22,7 +23,7 @@ final dioProvider = Provider<Dio>((ref) {
     ),
   );
 
-  dio.interceptors.addAll([
+  dio.interceptors.add(
     AuthInterceptor(
       secureStorage,
       onUnauthorized: () {
@@ -31,14 +32,19 @@ final dioProvider = Provider<Dio>((ref) {
         }
       },
     ),
-    LogInterceptor(
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ),
-  ]);
+  );
+
+  if (kDebugMode) {
+    dio.interceptors.add(
+      LogInterceptor(
+        requestHeader: false,
+        requestBody: false,
+        responseHeader: false,
+        responseBody: false,
+        error: true,
+      ),
+    );
+  }
 
   return dio;
 });

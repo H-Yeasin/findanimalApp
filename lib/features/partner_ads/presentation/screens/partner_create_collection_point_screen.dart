@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/repositories/partner_ads_repository_impl.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class PartnerCreateCollectionPointScreen extends ConsumerStatefulWidget {
   const PartnerCreateCollectionPointScreen({super.key});
@@ -65,16 +66,15 @@ class _PartnerCreateCollectionPointScreenState
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context);
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _addressController.text.isEmpty ||
         _latitude == null ||
         _longitude == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill all fields and select location'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.fillAllFieldsAndLocation)));
       return;
     }
 
@@ -97,18 +97,16 @@ class _PartnerCreateCollectionPointScreenState
           );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Collection point created successfully'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.collectionPointCreated)));
         context.pop(true);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ).showSnackBar(SnackBar(content: Text('${l10n.error}: $e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -117,6 +115,7 @@ class _PartnerCreateCollectionPointScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return PartnerScreenScaffold(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 36),
@@ -125,10 +124,10 @@ class _PartnerCreateCollectionPointScreenState
           children: [
             const AppTopBar(showBackButton: false),
             const SizedBox(height: 6),
-            const PartnerPageTitle('CREATE\nCOLLECTION POINT'),
+            PartnerPageTitle(l10n.createCollectionPointTitle),
             const SizedBox(height: 20),
-            const PartnerSectionHeading(
-              'POST AN ADVERTISEMENT - COLLECTION POINT',
+            PartnerSectionHeading(
+              l10n.postAdCollectionPoint,
               trailing: Icon(
                 Icons.location_on_rounded,
                 color: PartnerUiColors.brand,
@@ -136,29 +135,29 @@ class _PartnerCreateCollectionPointScreenState
               ),
             ),
             const SizedBox(height: 20),
-            const PartnerFieldLabel('COLLECTION POINT NAME'),
+            PartnerFieldLabel(l10n.collectionPointName),
             const SizedBox(height: 10),
             PartnerInputField(
               controller: _titleController,
-              hint: 'Collection point name',
+              hint: l10n.collectionPointNameHint,
             ),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('DESCRIPTION OF THE COLLECTION POINT'),
+            PartnerFieldLabel(l10n.collectionPointDescription),
             const SizedBox(height: 10),
             PartnerInputField(
               controller: _descriptionController,
-              hint: 'Description of the collection point',
+              hint: l10n.collectionPointDescriptionHint,
               maxLines: 4,
             ),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('COLLECTION POINT ADDRESS'),
+            PartnerFieldLabel(l10n.collectionPointAddress),
             const SizedBox(height: 10),
             InkWell(
               onTap: _pickLocation,
               child: PartnerOutlinedField(
-                hint: _addressController.text.isEmpty
-                    ? 'Pick location on map'
-                    : _addressController.text,
+                l10n.pickLocationOnMap,
+                hint: _addressController.text,
+
                 trailing: const Icon(
                   Icons.map_outlined,
                   color: PartnerUiColors.brand,
@@ -167,14 +166,14 @@ class _PartnerCreateCollectionPointScreenState
               ),
             ),
             const SizedBox(height: 14),
-            const PartnerFieldLabel('PHOTO OF COLLECTION POINT'),
+            PartnerFieldLabel(l10n.photoOfCollectionPoint),
             const SizedBox(height: 10),
             InkWell(
               onTap: _pickImage,
               child: PartnerOutlinedField(
                 hint: _selectedImage == null
-                    ? 'Upload a photo'
-                    : 'Image selected',
+                    ? l10n.uploadPhoto
+                    : l10n.imageSelected,
                 trailing: const Icon(
                   Icons.cloud_upload_outlined,
                   color: PartnerUiColors.brand,
@@ -189,7 +188,7 @@ class _PartnerCreateCollectionPointScreenState
                       color: PartnerUiColors.brand,
                     )
                   : PartnerPublishButton(
-                      label: 'CREATE COLLECTION POINT',
+                      label: l10n.createCollectionPointButton,
                       onTap: _submit,
                     ),
             ),

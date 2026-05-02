@@ -8,6 +8,7 @@ import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_u
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../providers/partner_missions_provider.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class PartnerMissionsScreen extends ConsumerStatefulWidget {
   const PartnerMissionsScreen({super.key});
@@ -54,9 +55,10 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
         _durationController.text.trim().isEmpty ||
         points == null ||
         points <= 0) {
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill all fields with valid values.'),
+        SnackBar(
+          content: Text(l10n.fillAllFields),
         ),
       );
       return;
@@ -92,14 +94,16 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
 
       ref.invalidate(partnerMissionsProvider);
 
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Local mission created successfully.')),
+        SnackBar(content: Text(l10n.missionCreated)),
       );
     } catch (e) {
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Could not create mission: $e')));
+      ).showSnackBar(SnackBar(content: Text(l10n.couldNotCreateMission.replaceAll('{error}', e.toString()))));
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);
@@ -109,6 +113,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final missionsAsync = ref.watch(partnerMissionsProvider);
 
     return PartnerScreenScaffold(
@@ -119,11 +124,11 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
           children: [
             const AppTopBar(showBackButton: false),
             const SizedBox(height: 14),
-            const PartnerPageTitle('MY\nLOCAL MISSIONS'),
+            PartnerPageTitle(l10n.myLocalMissions),
             const SizedBox(height: 16),
-            _buildCreateCard(),
+            _buildCreateCard(l10n),
             const SizedBox(height: 16),
-            const PartnerSectionHeading('MY CREATED MISSIONS'),
+            PartnerSectionHeading(l10n.myCreatedMissions),
             const SizedBox(height: 10),
             missionsAsync.when(
               loading: () => const Padding(
@@ -139,7 +144,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
                 child: Column(
                   children: [
                     const Text(
-                      'Could not load your missions.',
+                      l10n.couldNotLoadMissions,
                       style: TextStyle(
                         color: PartnerUiColors.brand,
                         fontSize: 16,
@@ -149,7 +154,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
                     const SizedBox(height: 8),
                     OutlinedButton(
                       onPressed: () => ref.invalidate(partnerMissionsProvider),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),
@@ -159,7 +164,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
                   return const Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Text(
-                      'No missions created yet.',
+                      l10n.noMissionsCreated,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: PartnerUiColors.brand,
@@ -187,7 +192,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
     );
   }
 
-  Widget _buildCreateCard() {
+  Widget _buildCreateCard(AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -198,47 +203,47 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const PartnerFieldLabel('MISSION TITLE'),
+          PartnerFieldLabel(l10n.missionTitle),
           const SizedBox(height: 8),
           PartnerInputField(
             controller: _titleController,
-            hint: 'Title of local mission',
+            hint: l10n.missionTitleHint,
           ),
           const SizedBox(height: 10),
-          const PartnerFieldLabel('DESCRIPTION'),
+          PartnerFieldLabel(l10n.message.toUpperCase()),
           const SizedBox(height: 8),
           PartnerInputField(
             controller: _descriptionController,
-            hint: 'Mission description',
+            hint: l10n.missionDescriptionHint,
             maxLines: 3,
           ),
           const SizedBox(height: 10),
-          const PartnerFieldLabel('ADDRESS'),
+          PartnerFieldLabel(l10n.fieldAddress.toUpperCase()),
           const SizedBox(height: 8),
           PartnerInputField(
             controller: _addressController,
-            hint: 'Address of local mission',
+            hint: l10n.missionAddressHint,
           ),
           const SizedBox(height: 10),
-          const PartnerFieldLabel('DURATION'),
+          PartnerFieldLabel(l10n.categoryMessaging.toUpperCase()), // Or use a proper duration label if available
           const SizedBox(height: 8),
           PartnerInputField(
             controller: _durationController,
-            hint: 'Duration of local mission',
+            hint: l10n.missionDurationHint,
           ),
           const SizedBox(height: 10),
-          const PartnerFieldLabel('POINTS'),
+          PartnerFieldLabel(l10n.myPoints.toUpperCase()),
           const SizedBox(height: 8),
           PartnerInputField(controller: _pointsController, hint: 'e.g. 250'),
           const SizedBox(height: 10),
-          const PartnerFieldLabel('MISSION IMAGE (OPTIONAL)'),
+          PartnerFieldLabel(l10n.missionImageOptional),
           const SizedBox(height: 8),
           InkWell(
             onTap: _pickImage,
             child: PartnerOutlinedField(
-              hint: _selectedImage == null
-                  ? 'Upload mission image'
-                  : 'Image selected',
+              _selectedImage == null
+                  ? l10n.uploadMissionImage
+                  : l10n.imageSelected,
               trailing: const Icon(
                 Icons.cloud_upload_outlined,
                 color: PartnerUiColors.brand,
@@ -250,7 +255,7 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
             child: _isSubmitting
                 ? const CircularProgressIndicator(color: PartnerUiColors.brand)
                 : PartnerPublishButton(
-                    label: 'CREATE LOCAL MISSION',
+                    label: l10n.createLocalMission,
                     onTap: _createMission,
                   ),
           ),
@@ -267,6 +272,7 @@ class _MissionItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -314,7 +320,9 @@ class _MissionItemCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'Duration: ${mission.duration} | Points: ${mission.points ?? 0}',
+                  l10n.durationPoints
+                      .replaceAll('{duration}', mission.duration)
+                      .replaceAll('{points}', (mission.points ?? 0).toString()),
                   style: const TextStyle(
                     color: PartnerUiColors.brand,
                     fontSize: 12,

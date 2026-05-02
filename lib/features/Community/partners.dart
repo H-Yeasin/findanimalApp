@@ -1,7 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
-import 'data/models/contact_model.dart';
+import '../../core/localization/app_localizations.dart';
 
 class PartnersScreen extends ConsumerStatefulWidget {
   const PartnersScreen({super.key});
@@ -26,6 +28,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
     const cardBg = Color(0xFFFFF6E5);
 
     final partnersAsync = ref.watch(partnersProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: surface,
@@ -65,8 +68,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   ),
                 ),
 
-                const Text(
-                  'OUR PARTNERS',
+                Text(
+                  l10n.ourPartners.toUpperCase(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 40,
@@ -76,10 +79,10 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    'Find here all of our committed partners, trusted contacts closest to you.',
+                    l10n.partnersBody,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12,
@@ -106,19 +109,19 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                 const SizedBox(height: 20),
 
                 // Search Bar
-                _buildSearchBar(cardBg, brandPrimary),
+                _buildSearchBar(cardBg, brandPrimary, l10n),
                 const SizedBox(height: 30),
 
                 // List Section
                 partnersAsync.when(
                   data: (partners) {
                     if (partners.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
-                            'No partners found',
-                            style: TextStyle(
+                            l10n.noReportsFound,
+                            style: const TextStyle(
                               color: brandPrimary,
                               fontWeight: FontWeight.bold,
                             ),
@@ -138,6 +141,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                           partner.fullImageUrl,
                           cardBg,
                           brandPrimary,
+                          l10n,
                         );
                       },
                     );
@@ -147,7 +151,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   ),
                   error: (err, stack) => Center(
                     child: Text(
-                      'Error loading partners',
+                      l10n.unknownError,
                       style: TextStyle(color: brandPrimary),
                     ),
                   ),
@@ -162,7 +166,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
     );
   }
 
-  Widget _buildSearchBar(Color cardBg, Color color) {
+  Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -178,7 +182,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
         },
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
-          hintText: 'Search by name',
+          hintText: l10n.searchByName,
           hintStyle: TextStyle(
             color: color.withValues(alpha: 0.5),
             fontSize: 12,
@@ -204,6 +208,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
     String? imageUrl,
     Color cardBg,
     Color color,
+    AppLocalizations l10n,
   ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -267,8 +272,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                     color: color,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: const Text(
-                    'VIEW WEBSITE',
+                  child: Text(
+                    l10n.viewWebsite.toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

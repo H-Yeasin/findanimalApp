@@ -25,7 +25,6 @@ import 'presentation/screens/comment_show.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import '../home/presentation/providers/home_providers.dart';
-import '../seek/data/models/report_model.dart';
 
 final activeVideoProvider = StateProvider<String?>((ref) => null);
 

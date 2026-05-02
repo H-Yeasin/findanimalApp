@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
+import '../../core/localization/app_localizations.dart';
 
 class AuthoritiesScreen extends ConsumerStatefulWidget {
   const AuthoritiesScreen({super.key});
@@ -27,12 +28,14 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
     const cardBg = Color(0xFFFFF6E5);
 
     final authoritiesAsync = ref.watch(authoritiesProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: surface,
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () => ref.read(authoritiesProvider.notifier).fetchContacts(),
+          onRefresh: () =>
+              ref.read(authoritiesProvider.notifier).fetchContacts(),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
@@ -66,8 +69,8 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   ),
                 ),
 
-                const Text(
-                  'THEY ARE HERE\nTO HELP YOU!',
+                Text(
+                  l10n.authoritiesTitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 36,
@@ -77,10 +80,10 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
                   child: Text(
-                    'Find useful contacts here – local gendarmerie, animal protection\nassociations and other competent people!\nTo act quickly near you',
+                    l10n.authoritiesBody,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 10,
@@ -106,8 +109,8 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                const Text(
-                  'GENDARMERIES',
+                Text(
+                  l10n.gendarmeries,
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
@@ -117,23 +120,23 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                 const SizedBox(height: 10),
 
                 // Search Bar
-                _buildSearchBar(cardBg, brandPrimary),
+                _buildSearchBar(cardBg, brandPrimary, l10n),
                 const SizedBox(height: 10),
 
                 // Filter Dropdown
-                _buildFilterDropdown(cardBg, brandPrimary),
+                _buildFilterDropdown(cardBg, brandPrimary, l10n),
                 const SizedBox(height: 20),
 
                 // List Section
                 authoritiesAsync.when(
                   data: (authorities) {
                     if (authorities.isEmpty) {
-                      return const Center(
+                      return Center(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: Text(
-                            'No authorities found',
-                            style: TextStyle(
+                            l10n.noReportsFound,
+                            style: const TextStyle(
                               color: brandPrimary,
                               fontWeight: FontWeight.bold,
                             ),
@@ -141,14 +144,19 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                         ),
                       );
                     }
-                    return _buildAuthorityGrid(authorities, cardBg, brandPrimary);
+                    return _buildAuthorityGrid(
+                      authorities,
+                      cardBg,
+                      brandPrimary,
+                      l10n,
+                    );
                   },
                   loading: () => const Center(
                     child: CircularProgressIndicator(color: brandPrimary),
                   ),
                   error: (err, stack) => Center(
                     child: Text(
-                      'Error loading authorities',
+                      l10n.unknownError,
                       style: TextStyle(color: brandPrimary),
                     ),
                   ),
@@ -163,7 +171,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
     );
   }
 
-  Widget _buildSearchBar(Color cardBg, Color color) {
+  Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -179,7 +187,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
         },
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
-          hintText: 'Search by name',
+          hintText: l10n.searchByName,
           hintStyle: TextStyle(
             color: color.withValues(alpha: 0.5),
             fontSize: 12,
@@ -199,7 +207,11 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
     );
   }
 
-  Widget _buildFilterDropdown(Color cardBg, Color color) {
+  Widget _buildFilterDropdown(
+    Color cardBg,
+    Color color,
+    AppLocalizations l10n,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -212,7 +224,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Filter by / Sort by',
+            l10n.filterBySortBy,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.bold,
@@ -229,6 +241,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
     List<ContactModel> authorities,
     Color cardBg,
     Color color,
+    AppLocalizations l10n,
   ) {
     return GridView.count(
       shrinkWrap: true,
@@ -239,7 +252,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
       crossAxisSpacing: 10,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: authorities
-          .map((a) => _buildAuthorityCard(a, cardBg, color))
+          .map((a) => _buildAuthorityCard(a, cardBg, color, l10n))
           .toList(),
     );
   }
@@ -248,6 +261,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
     ContactModel contact,
     Color cardBg,
     Color color,
+    AppLocalizations l10n,
   ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
@@ -275,7 +289,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               ),
               const SizedBox(height: 2),
               Text(
-                contact.city ?? 'Unknown',
+                contact.city ?? l10n.unknown,
                 style: TextStyle(
                   color: color.withValues(alpha: 0.8),
                   fontSize: 9,
@@ -283,7 +297,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               ),
               const SizedBox(height: 6),
               Text(
-                contact.phone ?? 'No Phone',
+                contact.phone ?? l10n.noPhone,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.bold,
@@ -304,8 +318,8 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                 color: color,
                 borderRadius: BorderRadius.circular(15),
               ),
-              child: const Text(
-                'TO CALL',
+              child: Text(
+                l10n.toCall.toUpperCase(),
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 10,
@@ -324,7 +338,11 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   contact.country ?? 'New Aquitaine',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: color, fontSize: 9, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 9,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],

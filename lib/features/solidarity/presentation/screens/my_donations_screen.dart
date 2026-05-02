@@ -5,12 +5,14 @@ import '../../../../core/routing/route_names.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/donation_provider.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class MyDonationsScreen extends ConsumerWidget {
   const MyDonationsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     const brandPrimary = Color(0xFFBA4A22);
     const _ = Color(0xFFFFF6E5);
 
@@ -67,21 +69,21 @@ class MyDonationsScreen extends ConsumerWidget {
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(height: 40),
+                      children: [
+                        const SizedBox(height: 40),
                         Text(
-                          'DONATE TODAY',
-                          style: TextStyle(
+                          l10n.donateTodayTitle,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 36,
                             fontWeight: FontWeight.w900,
                             fontFamily: 'EricaOne',
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
-                          'THIS IS HELPING TOMORROW!',
-                          style: TextStyle(
+                          l10n.helpingTomorrowSubtitle,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -97,11 +99,11 @@ class MyDonationsScreen extends ConsumerWidget {
             const SizedBox(height: 30),
 
             // "My donations" title
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                'My donations',
-                style: TextStyle(
+                l10n.myDonationsTitle,
+                style: const TextStyle(
                   color: brandPrimary,
                   fontSize: 32,
                   fontWeight: FontWeight.w900,
@@ -118,10 +120,10 @@ class MyDonationsScreen extends ConsumerWidget {
                 .when(
                   data: (donations) {
                     if (donations.isEmpty) {
-                      return const Padding(
+                      return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 40),
                         child: Text(
-                          'You have not made any donations recently',
+                          l10n.noDonationsMade,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: brandPrimary,
@@ -140,14 +142,17 @@ class MyDonationsScreen extends ConsumerWidget {
                         final donation = donations[index];
                         return ListTile(
                           title: Text(
-                            'Amount: ${donation['amount']}€',
+                            l10n.donationAmount(donation['amount'].toString()),
                             style: const TextStyle(
                               color: brandPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           subtitle: Text(
-                            'Method: ${donation['method']} - Status: ${donation['status']}',
+                            l10n.donationMethodStatus(
+                              donation['method'].toString(),
+                              donation['status'].toString(),
+                            ),
                           ),
                           trailing: Text(
                             donation['createdAt'] != null
@@ -165,7 +170,7 @@ class MyDonationsScreen extends ConsumerWidget {
                   ),
                   error: (err, stack) => Center(
                     child: Text(
-                      'Failed to load donations: $err',
+                      '${l10n.unknownError}: $err',
                       style: const TextStyle(color: Colors.red),
                     ),
                   ),
@@ -192,9 +197,9 @@ class MyDonationsScreen extends ConsumerWidget {
                     color: brandPrimary,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: const Text(
-                    'MAKE A DONATION',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.makeDonation.toUpperCase(),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w900,
                       fontSize: 16,
@@ -222,12 +227,12 @@ class MyDonationsScreen extends ConsumerWidget {
             const SizedBox(height: 20),
 
             // Bottom descriptive text
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Text(
-                'Thanks to the community,\nanimals were able to be fed, cared for and brought to safety.',
+                l10n.thanksCommunityText,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   color: brandPrimary,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

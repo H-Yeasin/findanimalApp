@@ -7,12 +7,14 @@ import '../../../../core/widgets/app_top_bar.dart';
 import '../../data/models/partner_ad_model.dart';
 import '../providers/partner_collection_points_provider.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class CollectionPointsScreen extends ConsumerWidget {
   const CollectionPointsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final pointsAsync = ref.watch(partnerCollectionPointsProvider);
 
     return PartnerScreenScaffold(
@@ -23,7 +25,7 @@ class CollectionPointsScreen extends ConsumerWidget {
           children: [
             const AppTopBar(showBackButton: false),
             const SizedBox(height: 14),
-            const PartnerPageTitle('MY\nCOLLECTION POINTS'),
+            PartnerPageTitle(l10n.myCollectionPoints),
             const SizedBox(height: 14),
             Align(
               alignment: Alignment.centerRight,
@@ -41,7 +43,7 @@ class CollectionPointsScreen extends ConsumerWidget {
                   }
                 },
                 icon: const Icon(Icons.add),
-                label: const Text('ADD POINT'),
+                label: Text(l10n.addPoint),
               ),
             ),
             const SizedBox(height: 14),
@@ -59,7 +61,7 @@ class CollectionPointsScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Could not load your collection points.',
+                      l10n.couldNotLoadCollectionPoints,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: PartnerUiColors.brand,
@@ -71,19 +73,19 @@ class CollectionPointsScreen extends ConsumerWidget {
                     OutlinedButton(
                       onPressed: () =>
                           ref.invalidate(partnerCollectionPointsProvider),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),
               ),
               data: (points) {
                 if (points.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.only(top: 40),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 40),
                     child: Text(
-                      'No collection points yet.\nCreate your first one.',
+                      l10n.noCollectionPointsYet,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',
                         fontSize: 20,

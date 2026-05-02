@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/localization/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/features/partner_ads/data/models/partner_ad_model.dart';
 import 'package:hesteka_frontend/features/partner_ads/presentation/providers/partner_ads_filters_provider.dart';
@@ -15,6 +16,7 @@ class CollectionPointScreen extends ConsumerWidget {
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
 
+    final l10n = AppLocalizations.of(context);
     final pointsAsync = ref.watch(allCollectionPointsProvider);
     final filters = ref.watch(partnerAdsFiltersProvider);
     final filterNotifier = ref.read(partnerAdsFiltersProvider.notifier);
@@ -26,21 +28,21 @@ class CollectionPointScreen extends ConsumerWidget {
         child: SafeArea(
           child: Column(
             children: [
-              _buildHeader(brandPrimary),
+              _buildHeader(brandPrimary, l10n),
               Expanded(
                 child: pointsAsync.when(
                   data: (points) => SingleChildScrollView(
                     child: Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 25,
                             vertical: 15,
                           ),
                           child: Text(
-                            'Discover the collection points near you to drop off what you no longer use or make a donation. Make a donation send proof and earn 50 points',
+                            l10n.collectionPointsFullDescription,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13,
                               color: brandPrimary,
                               fontWeight: FontWeight.w600,
@@ -50,13 +52,14 @@ class CollectionPointScreen extends ConsumerWidget {
                         ),
                         _buildMapSection(brandPrimary, points),
                         const SizedBox(height: 20),
-                        _buildFilters(brandPrimary, filterNotifier),
+                        _buildFilters(brandPrimary, filterNotifier, l10n),
                         const SizedBox(height: 20),
                         _buildCollectionPointsList(
                           context,
                           brandPrimary,
                           cardBg,
                           points,
+                          l10n,
                         ),
                         const SizedBox(height: 20),
                         _buildPagination(
@@ -70,7 +73,7 @@ class CollectionPointScreen extends ConsumerWidget {
                   ),
                   loading: () =>
                       const Center(child: CircularProgressIndicator()),
-                  error: (err, stack) => Center(child: Text('Error: $err')),
+                  error: (err, stack) => Center(child: Text('${l10n.error}: $err')),
                 ),
               ),
             ],
@@ -80,14 +83,14 @@ class CollectionPointScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(Color color) {
+  Widget _buildHeader(Color color, AppLocalizations l10n) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          const Text(
-            'COLLECTION POINTS',
+          Text(
+            l10n.collectionPoints.toUpperCase(),
             style: TextStyle(
               fontSize: 34,
               fontWeight: FontWeight.w900,
@@ -152,7 +155,11 @@ class CollectionPointScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildFilters(Color color, PartnerAdsFiltersNotifier filterNotifier) {
+  Widget _buildFilters(
+    Color color,
+    PartnerAdsFiltersNotifier filterNotifier,
+    AppLocalizations l10n,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -167,10 +174,10 @@ class CollectionPointScreen extends ConsumerWidget {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(value: 'name', child: Text('Name')),
-                const PopupMenuItem(value: 'newest', child: Text('Newest')),
+                PopupMenuItem(value: 'name', child: Text(l10n.sortByName)),
+                PopupMenuItem(value: 'newest', child: Text(l10n.sortByNewest)),
               ],
-              child: _buildFilterButton('SORT BY', color),
+              child: _buildFilterButton(l10n.sortBy, color),
             ),
           ),
           const SizedBox(width: 8),
@@ -181,13 +188,13 @@ class CollectionPointScreen extends ConsumerWidget {
                 filterNotifier.setLocation(43.5333, 5.4331, radius);
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(value: 1, child: Text('1 KM')),
-                const PopupMenuItem(value: 5, child: Text('5 KM')),
-                const PopupMenuItem(value: 10, child: Text('10 KM')),
-                const PopupMenuItem(value: 50, child: Text('50 KM')),
-                const PopupMenuItem(value: 0, child: Text('Clear Location')),
+                PopupMenuItem(value: 1, child: Text(l10n.radiusValue(1))),
+                PopupMenuItem(value: 5, child: Text(l10n.radiusValue(5))),
+                PopupMenuItem(value: 10, child: Text(l10n.radiusValue(10))),
+                PopupMenuItem(value: 50, child: Text(l10n.radiusValue(50))),
+                PopupMenuItem(value: 0, child: Text(l10n.statusAll)),
               ],
-              child: _buildFilterButton('PÉLISSANNE (13330) - 5KM', color),
+              child: _buildFilterButton(l10n.nearbyKm(5), color),
             ),
           ),
         ],
@@ -227,6 +234,7 @@ class CollectionPointScreen extends ConsumerWidget {
     Color color,
     Color cardBg,
     List<PartnerAdModel> points,
+    AppLocalizations l10n,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -243,6 +251,7 @@ class CollectionPointScreen extends ConsumerWidget {
               cardBg,
               point.latitude,
               point.longitude,
+              l10n,
             ),
           );
         }).toList(),
@@ -259,6 +268,7 @@ class CollectionPointScreen extends ConsumerWidget {
     Color cardBg,
     double? latitude,
     double? longitude,
+    AppLocalizations l10n,
   ) {
     return Container(
       padding: const EdgeInsets.all(12),
@@ -331,7 +341,7 @@ class CollectionPointScreen extends ConsumerWidget {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          'SEE ON MAP',
+                          l10n.seeOnMap.toUpperCase(),
                           style: TextStyle(
                             color: color,
                             fontSize: 10,
@@ -350,8 +360,7 @@ class CollectionPointScreen extends ConsumerWidget {
                                 title: title,
                                 subtitle: subtitle,
                                 logoUrl: logoUrl,
-                                description:
-                                    'Come drop off your donations at the $subtitle collection point! . Food, accessories or whatever you want to offer: every gesture counts. All donations will then be donated to local associations that help animals.',
+                                description: l10n.collectionPointDetailTemplate.replaceAll('{subtitle}', subtitle),
                                 latitude: latitude,
                                 longitude: longitude,
                               ),
@@ -365,9 +374,9 @@ class CollectionPointScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           alignment: Alignment.center,
-                          child: const Text(
-                            'SEE COLLECTION POINT',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.seeCollectionPoint.toUpperCase(),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 9,
                               fontWeight: FontWeight.bold,
