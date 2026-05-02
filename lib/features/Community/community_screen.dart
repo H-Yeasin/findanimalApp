@@ -41,7 +41,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   final ImagePicker _picker = ImagePicker();
 
   GoogleMapController? _mapController;
-  LatLng _currentPosition = const LatLng(48.8566, 2.3522); // Default Paris
+  LatLng _currentPosition = const LatLng(0, 0); // Default to 0,0 until location is loaded
 
   @override
   void initState() {
@@ -71,7 +71,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       );
     } catch (e) {
       debugPrint('Error initializing location: $e');
-      if (mounted) {}
     }
   }
 
@@ -144,7 +143,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       return;
     }
 
-    // If content is empty but media is present, send a dot to satisfy backend
     final content =
         _contentController.text.trim().isEmpty && _selectedMedia.isNotEmpty
         ? "."
@@ -176,7 +174,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       return;
     }
 
-    // Refresh the list after successful post
     ref.invalidate(localChatProvider);
 
     _contentController.clear();
@@ -204,7 +201,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       return;
     }
 
-    // Show a choice between image and video
     final XFile? media = await showModalBottomSheet<XFile>(
       context: context,
       builder: (context) => SafeArea(
@@ -243,7 +239,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       builder: (context) {
         final controller = TextEditingController();
         return AlertDialog(
-          title: Text(l10n.newStory, style: TextStyle(fontFamily: 'EricaOne')),
+          title: Text(l10n.newStory, style: const TextStyle(fontFamily: 'EricaOne')),
           content: TextField(
             controller: controller,
             decoration: const InputDecoration(hintText: 'Add a caption...'),
@@ -286,7 +282,6 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
         return;
       }
 
-      // Refresh the list after successful story
       ref.invalidate(localStoriesProvider);
       if (mounted) {
         ScaffoldMessenger.of(
@@ -342,277 +337,236 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
-      body: Column(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: AppTopBar(
-              showBackButton: false,
-              leftWidget: IconButton(
-                icon: Icon(
-                  Icons.notifications_none,
-                  color: brandPrimary,
-                  shadows: [
-                    BoxShadow(
-                      color: brandPrimary.withValues(alpha: 0.25),
-                      offset: const Offset(0, 4),
-                      blurRadius: 4,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                  size: 30,
-                ),
-                onPressed: () => context.push(RouteNames.mainNotifications),
-              ),
-              userImageUrl: profileImage,
-            ),
-          ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                ref.invalidate(localStoriesProvider);
-                ref.invalidate(localChatProvider);
-              },
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  children: [
-                    // Removed AppTopBar from here
-                    Text(
-                      l10n.communityTitle,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
-                        color: brandPrimary,
-                        fontFamily: 'EricaOne',
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // "What's going through your mind?" box
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: boxBg,
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: brandPrimary.withValues(alpha: 0.3),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await _initializeLocation(); // Re-fetch location on refresh
+          ref.invalidate(localStoriesProvider);
+          ref.invalidate(localChatProvider);
+          ref.invalidate(homeReportsProvider);
+        },
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            // Top Bar
+            SliverToBoxAdapter(
+              child: SafeArea(
+                bottom: false,
+                child: AppTopBar(
+                  showBackButton: false,
+                  leftWidget: IconButton(
+                    icon: Icon(
+                      Icons.notifications_none,
+                      color: brandPrimary,
+                      shadows: [
+                        BoxShadow(
+                          color: brandPrimary.withValues(alpha: 0.25),
+                          offset: const Offset(0, 4),
+                          blurRadius: 4,
+                          spreadRadius: 0,
                         ),
+                      ],
+                      size: 30,
+                    ),
+                    onPressed: () => context.push(RouteNames.mainNotifications),
+                  ),
+                  userImageUrl: profileImage,
+                ),
+              ),
+            ),
+
+            // Header Section
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Text(
+                    l10n.communityTitle,
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      color: brandPrimary,
+                      fontFamily: 'EricaOne',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // "What's going through your mind?" box
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: boxBg,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: brandPrimary.withValues(alpha: 0.3),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              const CircleAvatar(
-                                radius: 15,
-                                backgroundImage: NetworkImage(
-                                  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=100',
-                                ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 15,
+                              backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=100',
                               ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: TextField(
-                                    controller: _contentController,
-                                    decoration: InputDecoration(
-                                      hintText: l10n.mindHint,
-                                      hintStyle: TextStyle(
-                                        color: brandPrimary.withValues(
-                                          alpha: 0.5,
-                                        ),
-                                        fontSize: 14,
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: TextField(
+                                  controller: _contentController,
+                                  decoration: InputDecoration(
+                                    hintText: l10n.mindHint,
+                                    hintStyle: TextStyle(
+                                      color: brandPrimary.withValues(
+                                        alpha: 0.5,
                                       ),
-                                      border: InputBorder.none,
-                                    ),
-                                    style: const TextStyle(
-                                      color: brandPrimary,
                                       fontSize: 14,
                                     ),
+                                    border: InputBorder.none,
+                                  ),
+                                  style: const TextStyle(
+                                    color: brandPrimary,
+                                    fontSize: 14,
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.send,
-                                  color: brandPrimary,
-                                ),
-                                onPressed: _submitPost,
-                              ),
-                            ],
-                          ),
-                          if (_selectedMedia.isNotEmpty)
-                            SizedBox(
-                              height: 60,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: _selectedMedia.length,
-                                itemBuilder: (context, index) {
-                                  return Stack(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: 8.0,
-                                          top: 8.0,
-                                        ),
-                                        child:
-                                            _selectedMedia[index].path
-                                                    .toLowerCase()
-                                                    .endsWith('.mp4') ||
-                                                _selectedMedia[index].path
-                                                    .toLowerCase()
-                                                    .endsWith('.mov')
-                                            ? Container(
-                                                width: 50,
-                                                height: 50,
-                                                color: brandPrimary.withValues(
-                                                  alpha: 0.1,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.videocam,
-                                                  color: brandPrimary,
-                                                ),
-                                              )
-                                            : Image.file(
-                                                _selectedMedia[index],
-                                                width: 50,
-                                                height: 50,
-                                                fit: BoxFit.cover,
-                                              ),
-                                      ),
-                                      Positioned(
-                                        right: 0,
-                                        top: 0,
-                                        child: GestureDetector(
-                                          onTap: () => setState(
-                                            () =>
-                                                _selectedMedia.removeAt(index),
-                                          ),
-                                          child: const CircleAvatar(
-                                            radius: 8,
-                                            backgroundColor: brandPrimary,
-                                            child: Icon(
-                                              Icons.close,
-                                              size: 10,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
                             ),
-                          const SizedBox(height: 15),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              _buildActionItem(
-                                Icons.image,
-                                l10n.picture,
-                                brandPrimary,
-                                onTap: _pickImage,
+                            IconButton(
+                              icon: const Icon(
+                                Icons.send,
+                                color: brandPrimary,
                               ),
-                              _buildActionItem(
-                                Icons.videocam,
-                                l10n.video,
-                                brandPrimary,
-                                onTap: _pickVideo,
-                              ),
-                              _buildActionItem(
-                                Icons.folder,
-                                l10n.file,
-                                brandPrimary,
-                                onTap: _pickFile,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Stories
-                    SizedBox(
-                      height: 110,
-                      child: storiesAsync.when(
-                        data: (allStories) {
-                          final now = DateTime.now();
-                          final stories = allStories
-                              .where((s) => s.expiresAt.isAfter(now))
-                              .toList();
-                          final currentUser = ref.watch(currentUserProvider);
-
-                          // Group stories by user
-                          final Map<String, List<StoryModel>> groupedStories =
-                              {};
-                          for (var story in stories) {
-                            final userId = story.user.id;
-                            if (!groupedStories.containsKey(userId)) {
-                              groupedStories[userId] = [];
-                            }
-                            groupedStories[userId]!.add(story);
-                          }
-
-                          // Sort userIds: current user's stories should come first
-                          final userIds = groupedStories.keys.toList();
-
-                          if (currentUser != null) {
-                            userIds.sort((a, b) {
-                              if (a == currentUser.id) return -1;
-                              if (b == currentUser.id) return 1;
-                              return 0;
-                            });
-                          }
-
-                          return ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            children: [
-                              _buildStoryItem(
-                                'Share a\nstory',
-                                null,
-                                brandPrimary,
-                                onTap: _shareStory,
-                              ),
-                              ...userIds.map((userId) {
-                                final userStories = groupedStories[userId]!;
-                                final story = userStories
-                                    .first; // Use first story for thumbnail
-                                final name =
-                                    '${story.user.firstName.toLowerCase()}${story.user.lastName.toLowerCase().substring(0, story.user.lastName.length > 3 ? 3 : story.user.lastName.length)}';
-
-                                return _buildStoryItem(
-                                  name,
-                                  story.media.url,
-                                  brandPrimary,
-                                  onTap: () {
-                                    Navigator.of(
-                                      context,
-                                      rootNavigator: true,
-                                    ).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => SeeAllStoryScreen(
-                                          userStoryGroups: userIds
-                                              .map((id) => groupedStories[id]!)
-                                              .toList(),
-                                          initialUserIndex: userIds.indexOf(
-                                            userId,
+                              onPressed: _submitPost,
+                            ),
+                          ],
+                        ),
+                        if (_selectedMedia.isNotEmpty)
+                          SizedBox(
+                            height: 60,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _selectedMedia.length,
+                              itemBuilder: (context, index) {
+                                return Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        right: 8.0,
+                                        top: 8.0,
+                                      ),
+                                      child: _selectedMedia[index]
+                                              .path
+                                              .toLowerCase()
+                                              .endsWith('.mp4') ||
+                                          _selectedMedia[index]
+                                              .path
+                                              .toLowerCase()
+                                              .endsWith('.mov')
+                                          ? Container(
+                                              width: 50,
+                                              height: 50,
+                                              color: brandPrimary.withValues(
+                                                alpha: 0.1,
+                                              ),
+                                              child: const Icon(
+                                                Icons.videocam,
+                                                color: brandPrimary,
+                                              ),
+                                            )
+                                          : Image.file(
+                                              _selectedMedia[index],
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      top: 0,
+                                      child: GestureDetector(
+                                        onTap: () => setState(
+                                          () => _selectedMedia.removeAt(index),
+                                        ),
+                                        child: const CircleAvatar(
+                                          radius: 8,
+                                          backgroundColor: brandPrimary,
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 10,
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
+                                    ),
+                                  ],
                                 );
-                              }),
-                            ],
-                          );
-                        },
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (err, stack) => ListView(
+                              },
+                            ),
+                          ),
+                        const SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            _buildActionItem(
+                              Icons.image,
+                              l10n.picture,
+                              brandPrimary,
+                              onTap: _pickImage,
+                            ),
+                            _buildActionItem(
+                              Icons.videocam,
+                              l10n.video,
+                              brandPrimary,
+                              onTap: _pickVideo,
+                            ),
+                            _buildActionItem(
+                              Icons.folder,
+                              l10n.file,
+                              brandPrimary,
+                              onTap: _pickFile,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Stories
+                  SizedBox(
+                    height: 110,
+                    child: storiesAsync.when(
+                      data: (allStories) {
+                        final now = DateTime.now();
+                        final stories = allStories
+                            .where((s) => s.expiresAt.isAfter(now))
+                            .toList();
+                        final currentUser = ref.watch(currentUserProvider);
+
+                        // Group stories by user
+                        final Map<String, List<StoryModel>> groupedStories = {};
+                        for (var story in stories) {
+                          final userId = story.user.id;
+                          if (!groupedStories.containsKey(userId)) {
+                            groupedStories[userId] = [];
+                          }
+                          groupedStories[userId]!.add(story);
+                        }
+
+                        // Sort userIds: current user's stories should come first
+                        final userIds = groupedStories.keys.toList();
+
+                        if (currentUser != null) {
+                          userIds.sort((a, b) {
+                            if (a == currentUser.id) return -1;
+                            if (b == currentUser.id) return 1;
+                            return 0;
+                          });
+                        }
+
+                        return ListView(
                           scrollDirection: Axis.horizontal,
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           children: [
@@ -622,462 +576,528 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                               brandPrimary,
                               onTap: _shareStory,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  _isUnauthorizedError(err)
-                                      ? l10n.pleaseLoginToViewLocalChat
-                                      : l10n.couldNotLoadStories,
-                                  style: const TextStyle(fontSize: 11),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
+                            ...userIds.map((userId) {
+                              final userStories = groupedStories[userId]!;
+                              final story =
+                                  userStories.first; // Use first for thumbnail
+                              final name =
+                                  '${story.user.firstName.toLowerCase()}${story.user.lastName.toLowerCase().substring(0, story.user.lastName.length > 3 ? 3 : story.user.lastName.length)}';
 
-                    // Find a friend search bar
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 40),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: brandPrimary,
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                              return _buildStoryItem(
+                                name,
+                                story.media.url,
+                                brandPrimary,
+                                onTap: () {
+                                  Navigator.of(
+                                    context,
+                                    rootNavigator: true,
+                                  ).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => SeeAllStoryScreen(
+                                        userStoryGroups: userIds
+                                            .map((id) => groupedStories[id]!)
+                                            .toList(),
+                                        initialUserIndex: userIds.indexOf(
+                                          userId,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+                          ],
+                        );
+                      },
+                      loading: () =>
+                          const Center(child: CircularProgressIndicator()),
+                      error: (err, stack) => ListView(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
                         children: [
-                          const Icon(
-                            Icons.search,
-                            color: Colors.white,
-                            size: 18,
+                          _buildStoryItem(
+                            'Share a\nstory',
+                            null,
+                            brandPrimary,
+                            onTap: _shareStory,
                           ),
-                          const SizedBox(width: 10),
-                          Text(
-                            l10n.findFriend,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                            ),
+                            child: Center(
+                              child: Text(
+                                _isUnauthorizedError(err)
+                                    ? l10n.pleaseLoginToViewLocalChat
+                                    : l10n.couldNotLoadStories,
+                                style: const TextStyle(fontSize: 11),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                  ),
+                  const SizedBox(height: 15),
 
-                    // Posting Indicator (Facebook Style)
-                    Builder(
-                      builder: (context) {
-                        final actionState = ref.watch(communityActionProvider);
-                        if (actionState is AsyncLoading) {
-                          return Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 12,
-                            ),
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.blue.withValues(alpha: 0.3),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.blue.withValues(alpha: 0.1),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 15,
-                                      height: 15,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                    SizedBox(width: 12),
-                                    Text(
-                                      l10n.posting,
-                                      style: const TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                const ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  child: LinearProgressIndicator(
-                                    color: Colors.blue,
-                                    backgroundColor: Color(0xFFE0E0E0),
-                                    minHeight: 4,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
+                  // Find a friend search bar
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 8,
                     ),
-
-                    Text(
-                      l10n.localCat,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w900,
-                        color: brandPrimary,
-                      ),
+                    decoration: BoxDecoration(
+                      color: brandPrimary,
+                      borderRadius: BorderRadius.circular(25),
                     ),
-                    const SizedBox(height: 10),
-
-                    // Posts List
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: boxBg,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: brandPrimary.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: chatAsync.when(
-                        data: (chats) {
-                          if (chats.isEmpty) {
-                            return const Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                child: Text(
-                                  'Aucun message local pour le moment.',
-                                  style: TextStyle(
-                                    color: brandPrimary,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          final posts = chats
-                              .where((chat) => chat.replyTo == null)
-                              .toList();
-
-                          return Column(
-                            children: posts.asMap().entries.map((entry) {
-                              final index = entry.key;
-                              final chat = entry.value;
-                              final timeAgo = _formatTimeAgo(chat.createdAt);
-                              return Column(
-                                children: [
-                                  _buildPostItem(
-                                    chat,
-                                    timeAgo,
-                                    brandPrimary,
-                                    chats,
-                                  ),
-                                  if (index < posts.length - 1)
-                                    const Divider(height: 30),
-                                ],
-                              );
-                            }).toList(),
-                          );
-                        },
-                        loading: () =>
-                            const Center(child: CircularProgressIndicator()),
-                        error: (err, stack) => Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            child: Text(
-                              _isUnauthorizedError(err)
-                                  ? l10n.pleaseLoginToViewLocalChat
-                                  : l10n.couldNotLoadLocalChat,
-                              style: const TextStyle(
-                                color: brandPrimary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-
-                    // SEE LOCAL MISSIONS section
-                    const Text(
-                      'SEE LOCAL\nMISSIONS',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
-                        color: brandPrimary,
-                        height: 0.9,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Map section
-                    Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          height: 250,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: brandPrimary.withValues(alpha: 0.1),
-                              width: 1,
-                            ),
-                          ),
-                          child: GoogleMap(
-                            initialCameraPosition: CameraPosition(
-                              target: _currentPosition,
-                              zoom: 12,
-                            ),
-                            onMapCreated: (controller) =>
-                                _mapController = controller,
-                            markers: markers,
-                            myLocationEnabled: true,
-                            myLocationButtonEnabled: false,
-                            zoomControlsEnabled: false,
-                            mapToolbarEnabled: false,
-                          ),
+                        const Icon(
+                          Icons.search,
+                          color: Colors.white,
+                          size: 18,
                         ),
-                        // Locate Me Button
-                        Positioned(
-                          top: 10,
-                          right: 10,
-                          child: GestureDetector(
-                            onTap: _handleLocateMe,
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.1),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(
-                                Icons.my_location,
-                                color: brandPrimary,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: -20,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MissionLocalScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 60,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                color: brandPrimary,
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.2),
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: const Text(
-                                'SEE FULL LIST',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
+                        const SizedBox(width: 10),
+                        Text(
+                          l10n.findFriend,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 60),
+                  ),
+                  const SizedBox(height: 20),
 
-                    // FAQ Section
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'HERE THERE ARE NO\nQUESTIONS WITHOUT ANSWERS!',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: brandPrimary,
-                            ),
+                  // Posting Indicator
+                  Builder(
+                    builder: (context) {
+                      final actionState = ref.watch(communityActionProvider);
+                      if (actionState is AsyncLoading) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 12,
                           ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const FAQCommunityScreen(),
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 30,
-                                          vertical: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: brandPrimary,
-                                          borderRadius: BorderRadius.circular(
-                                            20,
-                                          ),
-                                        ),
-                                        child: const Text(
-                                          'GO TO FAQ',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.blue.withValues(alpha: 0.3),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blue.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
                               ),
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(15),
-                                  child: Image.network(
-                                    'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=200',
-                                    height: 120,
-                                    fit: BoxFit.cover,
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: Colors.blue,
+                                    ),
                                   ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    l10n.posting,
+                                    style: const TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              const ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                child: LinearProgressIndicator(
+                                  color: Colors.blue,
+                                  backgroundColor: Color(0xFFE0E0E0),
+                                  minHeight: 4,
                                 ),
                               ),
                             ],
                           ),
-                        ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+
+                  Text(
+                    l10n.localCat,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: brandPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+            ),
+
+            // Chat List (SliverList for lazy loading)
+            chatAsync.when(
+              data: (chats) {
+                final posts = chats.where((chat) => chat.replyTo == null).toList();
+                if (posts.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: boxBg,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: brandPrimary.withValues(alpha: 0.3)),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Aucun message local pour le moment.',
+                          style: TextStyle(
+                            color: brandPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 40),
+                  );
+                }
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final chat = posts[index];
+                        final timeAgo = _formatTimeAgo(chat.createdAt);
+                        final isFirst = index == 0;
+                        final isLast = index == posts.length - 1;
 
-                    // CONTACTS Section
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.network(
-                          'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=600',
-                          height: 300,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                        Container(
-                          height: 300,
-                          width: double.infinity,
-                          color: Colors.black.withValues(alpha: 0.4),
-                        ),
-                        Column(
-                          children: [
-                            const Text(
-                              'CONTACTS',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.w900,
-                                color: Colors.white,
-                              ),
+                        return Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: boxBg,
+                            borderRadius: BorderRadius.vertical(
+                              top: isFirst ? const Radius.circular(20) : Radius.zero,
+                              bottom: isLast ? const Radius.circular(20) : Radius.zero,
                             ),
-                            const SizedBox(height: 20),
-                            GridView.count(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              crossAxisCount: 2,
-                              childAspectRatio: 3,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 40,
+                            border: Border(
+                              left: BorderSide(color: brandPrimary.withValues(alpha: 0.3)),
+                              right: BorderSide(color: brandPrimary.withValues(alpha: 0.3)),
+                              top: isFirst 
+                                  ? BorderSide(color: brandPrimary.withValues(alpha: 0.3)) 
+                                  : BorderSide.none,
+                              bottom: isLast 
+                                  ? BorderSide(color: brandPrimary.withValues(alpha: 0.3)) 
+                                  : BorderSide.none,
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              _buildPostItem(chat, timeAgo, brandPrimary, chats),
+                              if (!isLast)
+                                const Divider(height: 30),
+                            ],
+                          ),
+                        );
+                      },
+                      childCount: posts.length,
+                    ),
+                  ),
+                );
+              },
+              loading: () => const SliverToBoxAdapter(
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (err, stack) => SliverToBoxAdapter(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(
+                      _isUnauthorizedError(err)
+                          ? l10n.pleaseLoginToViewLocalChat
+                          : l10n.couldNotLoadLocalChat,
+                      style: const TextStyle(
+                        color: brandPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            // Bottom Sections
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  const Text(
+                    'SEE LOCAL\nMISSIONS',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                      color: brandPrimary,
+                      height: 0.9,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Map section
+                  Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Container(
+                        height: 250,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: brandPrimary.withValues(alpha: 0.1),
+                            width: 1,
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              initialCameraPosition: CameraPosition(
+                                target: _currentPosition,
+                                zoom: 12,
                               ),
-                              children: [
-                                _buildContactButton(
-                                  context,
-                                  'SHELTERS',
-                                  const SheltersScreen(),
+                              onMapCreated: (controller) => _mapController = controller,
+                              markers: markers,
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: false,
+                              zoomControlsEnabled: false,
+                              mapToolbarEnabled: false,
+                              onCameraMove: (position) {
+                                _currentPosition = position.target;
+                              },
+                            ),
+                            if (reportsAsync.hasError)
+                              Positioned.fill(
+                                child: Container(
+                                  color: Colors.black12,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.error_outline,
+                                      color: Colors.red,
+                                      size: 40,
+                                    ),
+                                  ),
                                 ),
-                                _buildContactButton(
-                                  context,
-                                  'VETERINARIANS',
-                                  const VeterinariansScreen(),
-                                ),
-                                _buildContactButton(
-                                  context,
-                                  'AUTHORITIES',
-                                  const AuthoritiesScreen(),
-                                ),
-                                _buildContactButton(
-                                  context,
-                                  'PARTNERS',
-                                  const PartnersScreen(),
+                              ),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: GestureDetector(
+                          onTap: _handleLocateMe,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
+                            ),
+                            child: const Icon(
+                              Icons.my_location,
+                              color: brandPrimary,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: -20,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const MissionLocalScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 60,
+                              vertical: 12,
+                            ),
+                            decoration: BoxDecoration(
+                              color: brandPrimary,
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.2),
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: const Text(
+                              'SEE FULL LIST',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 60),
+
+                  // FAQ Section
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'HERE THERE ARE NO\nQUESTIONS WITHOUT ANSWERS!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            color: brandPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => const FAQCommunityScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 30,
+                                        vertical: 10,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: brandPrimary,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Text(
+                                        'GO TO FAQ',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                  'https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=200',
+                                  height: 120,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    const SizedBox(height: 100),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 40),
+
+                  // CONTACTS Section
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.network(
+                        'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=600',
+                        height: 300,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        height: 300,
+                        width: double.infinity,
+                        color: Colors.black.withValues(alpha: 0.4),
+                      ),
+                      Column(
+                        children: [
+                          const Text(
+                            'CONTACTS',
+                            style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          GridView.count(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 2,
+                            childAspectRatio: 3,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            children: [
+                              _buildContactButton(context, 'SHELTERS', const SheltersScreen()),
+                              _buildContactButton(context, 'VETERINARIANS', const VeterinariansScreen()),
+                              _buildContactButton(context, 'AUTHORITIES', const AuthoritiesScreen()),
+                              _buildContactButton(context, 'PARTNERS', const PartnersScreen()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 100),
+                ],
               ),
             ),
-          ), // closes Expanded
-        ], // closes Column children
-      ), // closes Column
+          ],
+        ),
+      ),
     );
   }
 
@@ -1394,7 +1414,7 @@ class VideoPlayerWidget extends ConsumerStatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _isInitialized = false;
   bool _hasError = false;
 
@@ -1410,13 +1430,13 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
     final cleanUrl = widget.url.trim();
     try {
       _controller = VideoPlayerController.networkUrl(Uri.parse(cleanUrl));
-      await _controller.initialize();
+      await _controller!.initialize();
       if (mounted) {
         setState(() {
           _isInitialized = true;
           _hasError = false;
         });
-        _controller.play(); // Play immediately after initialization if triggered by tap
+        _controller!.play(); // Play immediately after initialization if triggered by tap
       }
     } catch (e) {
       debugPrint("Video Error for $cleanUrl: $e");
@@ -1430,9 +1450,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
   @override
   void dispose() {
-    if (_isInitialized) {
-      _controller.dispose();
-    }
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -1469,34 +1487,31 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
         height: 150,
         width: double.infinity,
         color: const Color(0xFFBA4A22).withValues(alpha: 0.1),
-        child: const Center(
-          child: CircularProgressIndicator(color: Color(0xFFBA4A22)),
+        child: InkWell(
+          onTap: _initializePlayer,
+          child: const Center(
+            child: Icon(Icons.play_circle_fill, color: Color(0xFFBA4A22), size: 50),
+          ),
         ),
       );
     }
 
     // Listen to active video changes
     final activeVideoUrl = ref.watch(activeVideoProvider);
-    if (activeVideoUrl != widget.url && _controller.value.isPlaying) {
-      _controller.pause();
+    if (activeVideoUrl != widget.url && _controller!.value.isPlaying) {
+      _controller!.pause();
     }
 
     return GestureDetector(
       onTap: () {
-        if (!_isInitialized) {
-          _initializePlayer();
-          ref.read(activeVideoProvider.notifier).state = widget.url;
-          return;
-        }
-
         setState(() {
-          if (_controller.value.isPlaying) {
-            _controller.pause();
+          if (_controller!.value.isPlaying) {
+            _controller!.pause();
             ref.read(activeVideoProvider.notifier).state = null;
           } else {
             // Set this as the active video
             ref.read(activeVideoProvider.notifier).state = widget.url;
-            _controller.play();
+            _controller!.play();
           }
         });
       },
@@ -1504,16 +1519,16 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
         alignment: Alignment.center,
         children: [
           AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: VideoPlayer(_controller),
+            aspectRatio: _controller!.value.aspectRatio,
+            child: VideoPlayer(_controller!),
           ),
-          if (!_controller.value.isPlaying)
+          if (!_controller!.value.isPlaying)
             const Icon(Icons.play_circle_fill, color: Colors.white70, size: 50),
           Positioned(
             bottom: 5,
             right: 5,
             child: Icon(
-              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+              _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
               color: Colors.white,
               size: 20,
             ),

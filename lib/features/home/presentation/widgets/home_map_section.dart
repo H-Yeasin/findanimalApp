@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
 
 class HomeMapSection extends ConsumerWidget {
@@ -19,18 +20,23 @@ class HomeMapSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final reportsAsync = ref.watch(homeReportsProvider);
-    const initialLocation = LatLng(48.8566, 2.3522);
+    final userLocAsync = ref.watch(userLocationProvider);
+
+    // Default to Paris only if location detection fails completely
+    const fallBackLocation = LatLng(48.8566, 2.3522);
+    final initialLocation = userLocAsync.value ?? fallBackLocation;
 
     final markers = <Marker>{};
     if (reportsAsync.hasValue) {
       for (final report in reportsAsync.value!) {
-        if (report.location.coordinates.length >= 2) {
+        if (report.location != null &&
+            report.location!.coordinates.length >= 2) {
           markers.add(
             Marker(
               markerId: MarkerId('home_${report.id}'),
               position: LatLng(
-                report.location.coordinates[1],
-                report.location.coordinates[0],
+                report.location!.coordinates[1],
+                report.location!.coordinates[0],
               ),
               infoWindow: InfoWindow(
                 title: report.animalName.toUpperCase(),
@@ -68,7 +74,7 @@ class HomeMapSection extends ConsumerWidget {
           ),
           child: ClipRect(
             child: GoogleMap(
-              initialCameraPosition: const CameraPosition(
+              initialCameraPosition: CameraPosition(
                 target: initialLocation,
                 zoom: 11,
               ),

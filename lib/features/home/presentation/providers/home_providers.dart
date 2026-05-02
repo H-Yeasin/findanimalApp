@@ -9,6 +9,7 @@ final homeReportFiltersProvider = StateProvider<Map<String, dynamic>>((ref) {
     'status': 'all',
     'sortBy': 'date',
     'sort': 'descending',
+    'radius': 50,
   };
 });
 
@@ -16,8 +17,14 @@ final homeReportsProvider = FutureProvider<List<ReportModel>>((ref) async {
   final repository = ref.watch(reportsRepositoryProvider);
   final filters = ref.watch(homeReportFiltersProvider);
   
-  final response = await repository.getAllReports(query: filters);
-  return response.data;
+  try {
+    final response = await repository.getAllReports(query: filters);
+    return response.data;
+  } catch (e, stack) {
+    print('Error fetching reports: $e');
+    print(stack);
+    rethrow;
+  }
 });
 
 final homeStatsProvider = FutureProvider<Map<String, String>>((ref) async {

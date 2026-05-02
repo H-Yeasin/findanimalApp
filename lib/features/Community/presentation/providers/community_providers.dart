@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hesteka_frontend/core/providers/location_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/models/chat_model.dart';
@@ -16,9 +17,14 @@ Future<List<StoryModel>> localStories(LocalStoriesRef ref) async {
   }
 
   final repository = ref.watch(communityRepositoryProvider);
-  // Using default coordinates (Paris) for now
+  final userLocation = ref.watch(userLocationProvider).value;
+
+  // Using user location if available, otherwise fallback to Paris
+  final lat = userLocation?.latitude ?? 48.8566;
+  final lng = userLocation?.longitude ?? 2.3522;
+
   final response = await repository.getLocalStories(
-    query: {'lat': 48.8566, 'lng': 2.3522, 'radiusKm': 50, 'limit': 10},
+    query: {'lat': lat, 'lng': lng, 'radiusKm': 50, 'limit': 10},
   );
   return response.data;
 }
@@ -32,9 +38,14 @@ Future<List<ChatModel>> localChat(LocalChatRef ref) async {
   }
 
   final repository = ref.watch(communityRepositoryProvider);
-  // Using default coordinates (Paris) for now
+  final userLocation = ref.watch(userLocationProvider).value;
+
+  // Using user location if available, otherwise fallback to Paris
+  final lat = userLocation?.latitude ?? 48.8566;
+  final lng = userLocation?.longitude ?? 2.3522;
+
   final response = await repository.getLocalChat(
-    query: {'lat': 48.8566, 'lng': 2.3522, 'radiusKm': 50, 'limit': 100},
+    query: {'lat': lat, 'lng': lng, 'radiusKm': 50, 'limit': 100},
   );
   return response.data;
 }

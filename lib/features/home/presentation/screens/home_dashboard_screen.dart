@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/solidarity_hub_screen.dart';
@@ -11,6 +10,7 @@ import '../../../reports/presentation/screens/my_reports_screen.dart';
 import '../../../seek/presentation/screens/seek_reports_screen.dart';
 import '../../../solidarity/presentation/screens/make_donation_screen.dart';
 import '../../../solidarity/presentation/screens/solidarity_shop_screen.dart';
+import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/home_feed.dart';
@@ -41,45 +41,27 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
   }
 
   Future<void> _initializeLocation() async {
-    final position = await _getCurrentPosition(requestIfNeeded: false);
-    if (position == null || !mounted) return;
-    _updateLocationFilters(position.latitude, position.longitude);
-  }
-
-  Future<Position?> _getCurrentPosition({required bool requestIfNeeded}) async {
-    try {
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return null;
-
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        if (!requestIfNeeded) return null;
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return null;
-      }
-
-      if (permission == LocationPermission.deniedForever) return null;
-
-      return Geolocator.getCurrentPosition();
-    } catch (e) {
-      debugPrint('Error initializing location: $e');
-      return null;
-    }
+    final userLoc = await ref.read(userLocationProvider.future);
+    if (userLoc == null || !mounted) return;
+    _updateLocationFilters(userLoc.latitude, userLoc.longitude);
   }
 
   Future<void> _handleLocateMe() async {
     final l10n = AppLocalizations.of(context);
-    final position = await _getCurrentPosition(requestIfNeeded: true);
+    // Invalidate the provider to force a re-fetch of the current position
+    ref.invalidate(userLocationProvider);
+    final userLoc = await ref.read(userLocationProvider.future);
+
     if (!mounted) return;
 
-    if (position == null) {
+    if (userLoc == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation)));
       return;
     }
 
-    _updateLocationFilters(position.latitude, position.longitude);
+    _updateLocationFilters(userLoc.latitude, userLoc.longitude);
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
@@ -92,7 +74,7 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
       ...currentFilters,
       'lat': lat,
       'lng': lng,
-      'radius': 10,
+      'radius': currentFilters['radius'] ?? 10,
       'page': 1,
     };
   }
