@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/providers/location_provider.dart';
 import '../../core/localization/app_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/features/partner_ads/data/models/partner_ad_model.dart';
@@ -7,11 +8,70 @@ import 'package:hesteka_frontend/features/partner_ads/presentation/providers/par
 import 'package:hesteka_frontend/features/partner_ads/presentation/providers/partner_collection_points_provider.dart';
 import 'collections_points_details.dart';
 
-class CollectionPointScreen extends ConsumerWidget {
+class CollectionPointScreen extends ConsumerStatefulWidget {
   const CollectionPointScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CollectionPointScreen> createState() =>
+      _CollectionPointScreenState();
+}
+
+class _CollectionPointScreenState extends ConsumerState<CollectionPointScreen> {
+  GoogleMapController? _mapController;
+  LatLng? _currentLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeLocation();
+    });
+  }
+
+  Future<void> _initializeLocation() async {
+    final location = await ref.read(userLocationProvider.future);
+    if (location == null || !mounted) return;
+
+    _currentLocation = location;
+    final filters = ref.read(partnerAdsFiltersProvider);
+    if (filters.lat == null || filters.lng == null) {
+      ref
+          .read(partnerAdsFiltersProvider.notifier)
+          .setLocation(location.latitude, location.longitude, 50);
+    }
+    _moveCameraTo(location);
+  }
+
+  Future<void> _handleRadiusSelected(double radius) async {
+    final notifier = ref.read(partnerAdsFiltersProvider.notifier);
+    if (radius == 0) {
+      notifier.setLocation(null, null, 0);
+      return;
+    }
+
+    var location = _currentLocation;
+    location ??= await ref.read(userLocationProvider.future);
+    if (location == null || !mounted) return;
+
+    _currentLocation = location;
+    notifier.setLocation(location.latitude, location.longitude, radius);
+    _moveCameraTo(location);
+  }
+
+  Future<void> _moveCameraTo(LatLng location, {double zoom = 13}) async {
+    final controller = _mapController;
+    if (controller == null) return;
+    await controller.animateCamera(CameraUpdate.newLatLngZoom(location, zoom));
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
@@ -20,6 +80,12 @@ class CollectionPointScreen extends ConsumerWidget {
     final pointsAsync = ref.watch(allCollectionPointsProvider);
     final filters = ref.watch(partnerAdsFiltersProvider);
     final filterNotifier = ref.read(partnerAdsFiltersProvider.notifier);
+
+    ref.listen<PartnerAdsFilters>(partnerAdsFiltersProvider, (_, next) {
+      if (next.lat != null && next.lng != null) {
+        _moveCameraTo(LatLng(next.lat!, next.lng!));
+      }
+    });
 
     return Scaffold(
       backgroundColor: surface,
@@ -50,7 +116,7 @@ class CollectionPointScreen extends ConsumerWidget {
                             ),
                           ),
                         ),
-                        _buildMapSection(brandPrimary, points),
+                        _buildMapSection(brandPrimary, points, filters),
                         const SizedBox(height: 20),
                         _buildFilters(brandPrimary, filterNotifier, l10n),
                         const SizedBox(height: 20),
@@ -116,7 +182,11 @@ class CollectionPointScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMapSection(Color color, List<PartnerAdModel> points) {
+  Widget _buildMapSection(
+    Color color,
+    List<PartnerAdModel> points,
+    PartnerAdsFilters filters,
+  ) {
     final markers = points
         .where((p) => p.latitude != null && p.longitude != null)
         .map(
@@ -127,6 +197,15 @@ class CollectionPointScreen extends ConsumerWidget {
           ),
         )
         .toSet();
+    final filterLocation = filters.lat != null && filters.lng != null
+        ? LatLng(filters.lat!, filters.lng!)
+        : null;
+    final mapTarget =
+        filterLocation ??
+        _currentLocation ??
+        (markers.isNotEmpty
+            ? markers.first.position
+            : const LatLng(48.8566, 2.3522));
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -139,11 +218,13 @@ class CollectionPointScreen extends ConsumerWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(15),
         child: GoogleMap(
+          onMapCreated: (controller) {
+            _mapController = controller;
+            _moveCameraTo(mapTarget);
+          },
           mapType: MapType.normal,
           initialCameraPosition: CameraPosition(
-            target: markers.isNotEmpty
-                ? markers.first.position
-                : const LatLng(43.6047, 1.4442),
+            target: mapTarget,
             zoom: 13.0,
           ),
           markers: markers,
@@ -183,10 +264,7 @@ class CollectionPointScreen extends ConsumerWidget {
           const SizedBox(width: 8),
           Expanded(
             child: PopupMenuButton<double>(
-              onSelected: (radius) {
-                // Using Pélissanne coordinates from user's example
-                filterNotifier.setLocation(43.5333, 5.4331, radius);
-              },
+              onSelected: _handleRadiusSelected,
               itemBuilder: (context) => [
                 PopupMenuItem(value: 1, child: Text(l10n.radiusValue(1))),
                 PopupMenuItem(value: 5, child: Text(l10n.radiusValue(5))),
@@ -330,22 +408,30 @@ class CollectionPointScreen extends ConsumerWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: color.withValues(alpha: 0.5),
+                      child: GestureDetector(
+                        onTap: latitude != null && longitude != null
+                            ? () => _moveCameraTo(
+                                LatLng(latitude!, longitude!),
+                                zoom: 15,
+                              )
+                            : null,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: color.withValues(alpha: 0.5),
+                            ),
                           ),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          l10n.seeOnMap.toUpperCase(),
-                          style: TextStyle(
-                            color: color,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                          alignment: Alignment.center,
+                          child: Text(
+                            l10n.seeOnMap.toUpperCase(),
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

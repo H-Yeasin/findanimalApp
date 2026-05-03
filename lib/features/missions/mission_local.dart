@@ -5,11 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'data/models/mission_model.dart';
 import 'presentation/providers/missions_list_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import '../home/presentation/providers/home_providers.dart';
 import 'presentation/providers/missions_filters_provider.dart';
 import 'data/repositories/missions_repository_impl.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/providers/location_provider.dart';
 
 class MissionLocalScreen extends ConsumerStatefulWidget {
   const MissionLocalScreen({super.key});
@@ -20,7 +20,7 @@ class MissionLocalScreen extends ConsumerStatefulWidget {
 
 class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
   GoogleMapController? _mapController;
-  LatLng _currentPosition = const LatLng(48.8566, 2.3522); // Default Paris
+  LatLng _currentPosition = const LatLng(48.8566, 2.3522);
   BitmapDescriptor? _customPin;
 
   @override
@@ -39,53 +39,54 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
   }
 
   Future<void> _initializeLocation() async {
-    try {
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return;
-      }
+    final location = await ref.read(userLocationProvider.future);
+    if (location == null || !mounted) return;
 
-      if (permission == LocationPermission.deniedForever) return;
+    setState(() {
+      _currentPosition = location;
+    });
 
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
+    final currentFilters = ref.read(missionsFiltersProvider);
+    ref.read(missionsFiltersProvider.notifier).state = {
+      ...currentFilters,
+      'lat': location.latitude,
+      'lng': location.longitude,
+      'page': 1,
+    };
 
-      setState(() {
-        _currentPosition = LatLng(position.latitude, position.longitude);
-      });
-
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(_currentPosition, 13),
-      );
-    } catch (e) {
-      debugPrint('Error initializing location: $e');
-    }
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(_currentPosition, 13),
+    );
   }
 
   Future<void> _handleLocateMe() async {
-    try {
-      final position = await Geolocator.getCurrentPosition();
-      if (!mounted) return;
+    ref.invalidate(userLocationProvider);
+    final location = await ref.read(userLocationProvider.future);
+    if (!mounted) return;
 
-      setState(() {
-        _currentPosition = LatLng(position.latitude, position.longitude);
-      });
-
-      _mapController?.animateCamera(
-        CameraUpdate.newLatLngZoom(_currentPosition, 14),
-      );
-    } catch (e) {
-      if (!mounted) return;
+    if (location == null) {
       final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.couldNotGetLocation.replaceAll('{error}', e.toString()),
-          ),
-        ),
+        SnackBar(content: Text(l10n.couldNotGetLocation)),
       );
+      return;
     }
+
+    setState(() {
+      _currentPosition = location;
+    });
+
+    final currentFilters = ref.read(missionsFiltersProvider);
+    ref.read(missionsFiltersProvider.notifier).state = {
+      ...currentFilters,
+      'lat': location.latitude,
+      'lng': location.longitude,
+      'page': 1,
+    };
+
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(_currentPosition, 14),
+    );
   }
 
   @override
@@ -827,16 +828,35 @@ class _MissionsFiltersBottomSheetState
                   ),
                   elevation: 0,
                 ),
-                onPressed: () {
-                  final updatedFilters = {
+                onPressed: () async {
+                  final currentFilters = ref.read(missionsFiltersProvider);
+                  final updatedFilters = <String, dynamic>{
+                    ...currentFilters,
                     'page': 1,
                     'limit': 10,
                     'status': _status,
                     'sortBy': _sortBy,
                     'sort': 'descending',
                     'radius': _radius.toInt(),
-                    'search': _searchController.text.trim(),
                   };
+
+                  final search = _searchController.text.trim();
+                  if (search.isEmpty) {
+                    updatedFilters.remove('search');
+                  } else {
+                    updatedFilters['search'] = search;
+                  }
+
+                  if (!updatedFilters.containsKey('lat') ||
+                      !updatedFilters.containsKey('lng')) {
+                    final location = await ref.read(userLocationProvider.future);
+                    if (location != null) {
+                      updatedFilters['lat'] = location.latitude;
+                      updatedFilters['lng'] = location.longitude;
+                    }
+                  }
+
+                  if (!mounted) return;
                   ref.read(missionsFiltersProvider.notifier).state =
                       updatedFilters;
                   Navigator.pop(context);

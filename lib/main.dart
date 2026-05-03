@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,9 @@ void main() async {
     await Firebase.initializeApp();
     debugPrint("Firebase initialized successfully");
   } catch (e) {
-    debugPrint("Firebase initialization failed: $e");
+    if (kDebugMode) {
+      print("Firebase initialization failed: $e");
+    }
   }
 
   final container = ProviderContainer();

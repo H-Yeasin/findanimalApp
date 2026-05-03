@@ -8,28 +8,27 @@ part 'missions_list_provider.g.dart';
 
 @riverpod
 class MissionsList extends _$MissionsList {
-  int _currentPage = 1;
-
   @override
   Future<PaginatedResponse<MissionModel>> build() async {
     final repository = ref.watch(missionsRepositoryProvider);
     final filters = ref.watch(missionsFiltersProvider);
-    
-    return repository.getAllMissions(query: {
-      ...filters,
-      'page': _currentPage,
-    });
+
+    return repository.getAllMissions(query: filters);
   }
 
   Future<void> goToPage(int page) async {
-    _currentPage = page;
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(build);
+    final currentFilters = ref.read(missionsFiltersProvider);
+    ref.read(missionsFiltersProvider.notifier).state = {
+      ...currentFilters,
+      'page': page,
+    };
   }
 
   Future<void> refresh() async {
-    _currentPage = 1;
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(build);
+    final currentFilters = ref.read(missionsFiltersProvider);
+    ref.read(missionsFiltersProvider.notifier).state = {
+      ...currentFilters,
+      'page': 1,
+    };
   }
 }

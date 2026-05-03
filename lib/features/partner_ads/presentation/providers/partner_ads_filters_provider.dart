@@ -52,21 +52,37 @@ class PartnerAdsFiltersNotifier extends StateNotifier<PartnerAdsFilters> {
   PartnerAdsFiltersNotifier() : super(PartnerAdsFilters());
 
   void setPage(int page) => state = state.copyWith(page: page);
-  void setSearch(String? search) => state = state.copyWith(search: search, page: 1);
-  void setSort(String? sortBy, String? sort) => state = state.copyWith(sortBy: sortBy, sort: sort, page: 1);
-  void setStatus(String? status) => state = state.copyWith(status: status, page: 1);
+  void setSearch(String? search) =>
+      state = state.copyWith(search: search, page: 1);
+  void setSort(String? sortBy, String? sort) =>
+      state = state.copyWith(sortBy: sortBy, sort: sort, page: 1);
+  void setStatus(String? status) =>
+      state = state.copyWith(status: status, page: 1);
+
   void setLocation(double? lat, double? lng, double? radius) {
     if (radius == 0) {
-      state = state.copyWith(lat: null, lng: null, radius: null, page: 1);
+      state = PartnerAdsFilters(
+        page: 1,
+        limit: state.limit,
+        search: state.search,
+        sortBy: state.sortBy,
+        sort: state.sort,
+        status: state.status,
+      );
     } else {
-      state = state.copyWith(lat: lat, lng: lng, radius: radius, page: 1);
+      state = state.copyWith(
+        lat: lat,
+        lng: lng,
+        radius: radius,
+        page: 1,
+      );
     }
   }
-  
+
   void reset() => state = PartnerAdsFilters();
 }
 
-final partnerAdsFiltersProvider = 
+final partnerAdsFiltersProvider =
     StateNotifierProvider<PartnerAdsFiltersNotifier, PartnerAdsFilters>((ref) {
-  return PartnerAdsFiltersNotifier();
-});
+      return PartnerAdsFiltersNotifier();
+    });

@@ -13,12 +13,16 @@ class PaginatedResponse<T> {
     required this.totalPages,
   });
 
-  factory PaginatedResponse.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
+  factory PaginatedResponse.fromJson(
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic>) fromJsonT,
+  ) {
     final meta = json['meta'] ?? {};
     return PaginatedResponse(
-      data: (json['data'] as List<dynamic>?)
-              ?.where((item) => item is Map<String, dynamic>)
-              .map((item) => fromJsonT(item as Map<String, dynamic>))
+      data:
+          (json['data'] as List<dynamic>?)
+              ?.whereType<Map<String, dynamic>>()
+              .map((item) => fromJsonT(item))
               .toList() ??
           [],
       total: meta['total'] ?? 0,

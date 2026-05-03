@@ -6,7 +6,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
 
-class HomeMapSection extends ConsumerWidget {
+class HomeMapSection extends ConsumerStatefulWidget {
   const HomeMapSection({
     super.key,
     required this.onLocateMe,
@@ -17,7 +17,33 @@ class HomeMapSection extends ConsumerWidget {
   final VoidCallback onExploreFullMap;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeMapSection> createState() => _HomeMapSectionState();
+}
+
+class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
+  GoogleMapController? _mapController;
+  LatLng? _lastCameraTarget;
+
+  Future<void> _moveCameraTo(LatLng target) async {
+    final controller = _mapController;
+    if (controller == null || _lastCameraTarget == target) return;
+
+    _lastCameraTarget = target;
+    await controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: target, zoom: 11),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _mapController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final reportsAsync = ref.watch(homeReportsProvider);
     final userLocAsync = ref.watch(userLocationProvider);
@@ -26,17 +52,23 @@ class HomeMapSection extends ConsumerWidget {
     const fallBackLocation = LatLng(48.8566, 2.3522);
     final initialLocation = userLocAsync.value ?? fallBackLocation;
 
+    ref.listen<AsyncValue<LatLng?>>(userLocationProvider, (_, next) {
+      final userLocation = next.value;
+      if (userLocation != null) {
+        _moveCameraTo(userLocation);
+      }
+    });
+
     final markers = <Marker>{};
     if (reportsAsync.hasValue) {
       for (final report in reportsAsync.value!) {
-        if (report.location != null &&
-            report.location!.coordinates.length >= 2) {
+        if (report.location.coordinates.length >= 2) {
           markers.add(
             Marker(
               markerId: MarkerId('home_${report.id}'),
               position: LatLng(
-                report.location!.coordinates[1],
-                report.location!.coordinates[0],
+                report.location.coordinates[1],
+                report.location.coordinates[0],
               ),
               infoWindow: InfoWindow(
                 title: report.animalName.toUpperCase(),
@@ -74,6 +106,13 @@ class HomeMapSection extends ConsumerWidget {
           ),
           child: ClipRect(
             child: GoogleMap(
+              onMapCreated: (controller) {
+                _mapController = controller;
+                _lastCameraTarget = initialLocation;
+                if (userLocAsync.value != null) {
+                  _moveCameraTo(userLocAsync.value!);
+                }
+              },
               initialCameraPosition: CameraPosition(
                 target: initialLocation,
                 zoom: 11,
@@ -90,7 +129,7 @@ class HomeMapSection extends ConsumerWidget {
           top: 15,
           right: 16,
           child: GestureDetector(
-            onTap: onLocateMe,
+            onTap: widget.onLocateMe,
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -115,7 +154,7 @@ class HomeMapSection extends ConsumerWidget {
         Positioned(
           bottom: -15,
           child: GestureDetector(
-            onTap: onExploreFullMap,
+            onTap: widget.onExploreFullMap,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
               decoration: BoxDecoration(

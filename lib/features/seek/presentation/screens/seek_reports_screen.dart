@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/providers/location_provider.dart';
 import '../providers/seek_report_filters_provider.dart';
 import '../widgets/seek_reports_filter_sheet.dart';
 import '../widgets/seek_reports_list.dart';
@@ -31,45 +31,25 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
   }
 
   Future<void> _initializeLocation() async {
-    final position = await _getCurrentPosition(requestIfNeeded: false);
-    if (position == null || !mounted) return;
-    _updateLocationFilters(position.latitude, position.longitude);
-  }
-
-  Future<Position?> _getCurrentPosition({required bool requestIfNeeded}) async {
-    try {
-      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) return null;
-
-      var permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        if (!requestIfNeeded) return null;
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) return null;
-      }
-
-      if (permission == LocationPermission.deniedForever) return null;
-
-      return Geolocator.getCurrentPosition();
-    } catch (e) {
-      debugPrint('Error initializing location: $e');
-      return null;
-    }
+    final location = await ref.read(userLocationProvider.future);
+    if (location == null || !mounted) return;
+    _updateLocationFilters(location.latitude, location.longitude);
   }
 
   Future<void> _handleLocateMe() async {
     final l10n = AppLocalizations.of(context);
-    final position = await _getCurrentPosition(requestIfNeeded: true);
+    ref.invalidate(userLocationProvider);
+    final location = await ref.read(userLocationProvider.future);
     if (!mounted) return;
 
-    if (position == null) {
+    if (location == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.couldNotGetLocation)));
       return;
     }
 
-    _updateLocationFilters(position.latitude, position.longitude);
+    _updateLocationFilters(location.latitude, location.longitude);
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(l10n.locationUpdated)));
@@ -85,7 +65,7 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
       ...currentFilters,
       'lat': lat,
       'lng': lng,
-      'radius': 10,
+      'radius': currentFilters['radius'] ?? 10,
       'page': 1,
     };
   }
