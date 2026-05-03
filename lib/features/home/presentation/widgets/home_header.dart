@@ -81,19 +81,46 @@ class HomeInfoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bannerText = AppLocalizations.of(context).homeInfoBanner;
+    const boldPhrases = ['Chaque action compte !', 'Every action counts!'];
+    String? boldPhrase;
+    for (final phrase in boldPhrases) {
+      if (bannerText.contains(phrase)) {
+        boldPhrase = phrase;
+        break;
+      }
+    }
+    final baseStyle = const TextStyle(
+      color: Colors.white,
+      fontFamily: 'BarlowCondensed',
+      fontSize: 18,
+      height: 1.16,
+      fontWeight: FontWeight.w400,
+      letterSpacing: 0,
+    );
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      color: const Color(0xFFC65D3B),
-      child: Text(
-        AppLocalizations.of(context).homeInfoBanner,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-          height: 1.5,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
+      padding: const EdgeInsets.fromLTRB(16, 36, 16, 34),
+      color: const Color(0xFFC64F2A),
+      child: boldPhrase == null
+          ? Text(bannerText, style: baseStyle)
+          : RichText(
+              text: TextSpan(
+                style: baseStyle,
+                children: [
+                  TextSpan(
+                    text:
+                        '${bannerText.split(boldPhrase).first.trimRight()}\n\n',
+                  ),
+                  TextSpan(
+                    text: boldPhrase,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  TextSpan(text: bannerText.split(boldPhrase).last),
+                ],
+              ),
+            ),
     );
   }
 }

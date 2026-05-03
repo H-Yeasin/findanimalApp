@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_fr.dart';
 import 'l10n/app_en.dart';
-import 'l10n/app_de.dart';
-import 'l10n/app_es.dart';
-import 'l10n/app_it.dart';
 
 class AppLocalizations {
   const AppLocalizations(this.locale);
@@ -33,9 +30,6 @@ class AppLocalizations {
   static final Map<String, Map<String, String>> _localizedValues = {
     'fr': appFr,
     'en': appEn,
-    'de': appDe,
-    'es': appEs,
-    'it': appIt,
   };
 
   String _text(String key) {

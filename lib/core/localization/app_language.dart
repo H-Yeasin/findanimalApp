@@ -1,9 +1,6 @@
 enum AppLanguage {
   french('fr', 'FRENCH', 'FRANCAIS'),
-  english('en', 'ENGLISH', 'ANGLAIS'),
-  german('de', 'GERMAN', 'ALLEMAND'),
-  spanish('es', 'SPANISH', 'ESPAGNOL'),
-  italian('it', 'ITALIAN', 'ITALIEN');
+  english('en', 'ENGLISH', 'ANGLAIS');
 
   const AppLanguage(this.code, this.labelEn, this.labelFr);
 
