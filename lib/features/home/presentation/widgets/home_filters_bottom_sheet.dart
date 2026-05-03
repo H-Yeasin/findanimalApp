@@ -93,10 +93,14 @@ class _HomeFiltersBottomSheetState
             items: [
               DropdownMenuItem(value: 'all', child: Text(l10n.statusAll)),
               DropdownMenuItem(
-                value: 'missing',
+                value: 'lost',
                 child: Text(l10n.statusMissing),
               ),
               DropdownMenuItem(value: 'found', child: Text(l10n.statusFound)),
+              DropdownMenuItem(
+                value: 'sighted',
+                child: Text(l10n.filterSightedAnimals),
+              ),
               DropdownMenuItem(
                 value: 'rescued',
                 child: Text(l10n.statusRescued),

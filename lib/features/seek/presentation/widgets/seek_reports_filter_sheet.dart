@@ -116,10 +116,10 @@ class _SeekReportsFilterSheetState
             _buildSectionTitle(l10n.status),
             Wrap(
               spacing: 10,
-              children: ['all', 'missing', 'found', 'rescued'].map((s) {
+              children: ['all', 'lost', 'found', 'sighted', 'rescued'].map((s) {
                 final isSelected = _status == s;
                 return ChoiceChip(
-                  label: Text(s.toUpperCase()),
+                  label: Text(_statusLabel(l10n, s).toUpperCase()),
                   selected: isSelected,
                   onSelected: (val) {
                     if (val) setState(() => _status = s);
@@ -254,5 +254,21 @@ class _SeekReportsFilterSheetState
     if (!mounted) return;
     ref.read(seekReportFiltersProvider.notifier).state = updatedFilters;
     Navigator.pop(context);
+  }
+
+  String _statusLabel(AppLocalizations l10n, String status) {
+    switch (status) {
+      case 'lost':
+        return l10n.statusMissing;
+      case 'found':
+        return l10n.statusFound;
+      case 'sighted':
+        return l10n.filterSightedAnimals;
+      case 'rescued':
+        return l10n.statusRescued;
+      case 'all':
+      default:
+        return l10n.statusAll;
+    }
   }
 }

@@ -12,7 +12,6 @@ class HomeFeed extends StatelessWidget {
   const HomeFeed({
     super.key,
     required this.onLocateMe,
-    required this.onShowFilters,
     required this.onOpenReports,
     required this.onOpenDonation,
     required this.onOpenShop,
@@ -20,7 +19,6 @@ class HomeFeed extends StatelessWidget {
   });
 
   final VoidCallback onLocateMe;
-  final VoidCallback onShowFilters;
   final VoidCallback onOpenReports;
   final VoidCallback onOpenDonation;
   final VoidCallback onOpenShop;
@@ -39,7 +37,7 @@ class HomeFeed extends StatelessWidget {
                 onLocateMe: onLocateMe,
                 onExploreFullMap: onOpenReports,
               ),
-              HomeFiltersButton(onTap: onShowFilters),
+              const HomeInlineFilters(),
               HomeReportedRecentlySection(onOpenReports: onOpenReports),
               const HomeCommunityHelpedSection(),
               HomeSupportSection(

@@ -237,6 +237,10 @@ class AppLocalizations {
   String get statusMissing => _text('statusMissing');
   String get statusFound => _text('statusFound');
   String get statusRescued => _text('statusRescued');
+  String get filterLostAnimals => _text('filterLostAnimals');
+  String get filterFoundAnimals => _text('filterFoundAnimals');
+  String get filterSightedAnimals => _text('filterSightedAnimals');
+  String get filterInjuredAnimals => _text('filterInjuredAnimals');
   String get communityUser => _text('communityUser');
   String get collectionPoints => _text('collectionPoints');
   String get makeDonation => _text('makeDonation');
@@ -290,6 +294,7 @@ class AppLocalizations {
       _text('collectionPointsFullDescription');
   String get sortByName => _text('sortByName');
   String get sortByNewest => _text('sortByNewest');
+  String get sortByOldest => _text('sortByOldest');
   String get collectionPointDetailTemplate =>
       _text('collectionPointDetailTemplate');
   String get missionsLocalesDescription => _text('missionsLocalesDescription');

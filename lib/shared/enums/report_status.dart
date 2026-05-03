@@ -1,1 +1,1 @@
-enum ReportStatus { lost, found, endangered, rescued }
+enum ReportStatus { lost, found, sighted, rescued }

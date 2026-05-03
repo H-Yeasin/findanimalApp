@@ -249,7 +249,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
                 child: AuthOutlinePillButton(
                   label: l10n.createMyAccount,
                   isLoading: isLoading,
-                  width: 220,
+                  width: 250,
                   onPressed: isLoading ? null : _submit,
                 ),
               ),

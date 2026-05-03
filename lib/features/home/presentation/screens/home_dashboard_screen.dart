@@ -14,7 +14,7 @@ import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
 import '../widgets/custom_bottom_navigation_bar.dart';
 import '../widgets/home_feed.dart';
-import '../widgets/home_filters_bottom_sheet.dart';
+
 
 class HomeDashboard extends ConsumerStatefulWidget {
   const HomeDashboard({super.key});
@@ -91,19 +91,7 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
     );
   }
 
-  void _showFiltersBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return const HomeFiltersBottomSheet();
-      },
-    );
-  }
+
 
   void _selectTab(int index) {
     if (_currentIndex == _homeTabIndex &&
@@ -134,13 +122,12 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
             return MaterialPageRoute(
               builder: (context) {
                 return HomeFeed(
-                  onLocateMe: _handleLocateMe,
-                  onShowFilters: _showFiltersBottomSheet,
-                  onOpenReports: _openReportsTab,
-                  onOpenDonation: () => _pushNested(const MakeDonationScreen()),
-                  onOpenShop: () => _pushNested(const SolidarityShopScreen()),
-                  onOpenMission: () => _pushNested(const MissionLocalScreen()),
-                );
+                   onLocateMe: _handleLocateMe,
+                   onOpenReports: _openReportsTab,
+                   onOpenDonation: () => _pushNested(const MakeDonationScreen()),
+                   onOpenShop: () => _pushNested(const SolidarityShopScreen()),
+                   onOpenMission: () => _pushNested(const MissionLocalScreen()),
+                 );
               },
             );
           },

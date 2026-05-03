@@ -244,12 +244,12 @@ class SolidarityHubScreen extends ConsumerWidget {
                       child: Text.rich(
                         TextSpan(
                           children: [
-                            TextSpan(
-                              text: l10n.collectionPointsDescription,
-                            ),
+                            TextSpan(text: l10n.collectionPointsDescription),
                             TextSpan(
                               text: l10n.donatingNearYou,
-                              style: const TextStyle(fontWeight: FontWeight.w900),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ],
                         ),
@@ -280,7 +280,9 @@ class SolidarityHubScreen extends ConsumerWidget {
                     const SizedBox(height: 20),
 
                     // Partner Logos (Dynamic)
-                    ref.watch(partnersProvider).when(
+                    ref
+                        .watch(partnersProvider)
+                        .when(
                           data: (partners) {
                             final validPartners = partners
                                 .where(
@@ -337,14 +339,6 @@ class SolidarityHubScreen extends ConsumerWidget {
                                     color: brandPrimary,
                                   ),
                                 ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 10,
-                          child: Text(
-                            l10n.solidarityShopTitle,
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.heading.copyWith(fontSize: 38),
                           ),
                         ),
                       ],

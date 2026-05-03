@@ -16,96 +16,101 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final bottomInset = MediaQuery.of(context).viewPadding.bottom;
 
-    return SizedBox(
-      height: 65,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 65,
-              color: const Color(0xFFBA4A22),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                ), // Adjust this value to bring items closer
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: _item(
-                        index: 0,
-                        icon: 'search',
-                        label: l10n.navSeek,
+    return Container(
+      color: const Color(0xFFBA4A22),
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: SizedBox(
+        height: 65,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 65,
+                color: const Color(0xFFBA4A22),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ), // Adjust this value to bring items closer
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _item(
+                          index: 0,
+                          icon: 'search',
+                          label: l10n.navSeek,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: _item(
-                        index: 1,
-                        icon: 'report',
-                        label: l10n.navReport,
+                      Expanded(
+                        child: _item(
+                          index: 1,
+                          icon: 'report',
+                          label: l10n.navReport,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 50),
-                    Expanded(
-                      child: _item(
-                        index: 3,
-                        icon: 'community',
-                        label: l10n.navCommunity,
+                      const SizedBox(width: 50),
+                      Expanded(
+                        child: _item(
+                          index: 3,
+                          icon: 'community',
+                          label: l10n.navCommunity,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: _item(
-                        index: 4,
-                        icon: 'solidarity',
-                        label: l10n.navSolidarity,
+                      Expanded(
+                        child: _item(
+                          index: 4,
+                          icon: 'solidarity',
+                          label: l10n.navSolidarity,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 20,
-            child: Center(
-              child: GestureDetector(
-                onTap: () => onTap(2),
-                child: Container(
-                  width: 76,
-                  height: 76,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFBF4E9),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: const Color(0xFFBA4A22),
-                      width: 6,
-                    ),
-                  ),
-                  child: Center(
-                    child: Transform.translate(
-                      offset: const Offset(
-                        -10,
-                        -5,
-                      ), // Adjust this value to move it more/less
-                      child: Image.asset(
-                        'assets/images/Bottom_Navigation_icon/bottom_nav_middle.png',
-                        width: 60,
-                        height: 60,
-                        // fit: BoxFit.contain,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 20,
+              child: Center(
+                child: GestureDetector(
+                  onTap: () => onTap(2),
+                  child: Container(
+                    width: 76,
+                    height: 76,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFBF4E9),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: const Color(0xFFBA4A22),
+                        width: 6,
+                      ),
+                    ),
+                    child: Center(
+                      child: Transform.translate(
+                        offset: const Offset(
+                          -10,
+                          -5,
+                        ), // Adjust this value to move it more/less
+                        child: Image.asset(
+                          'assets/images/Bottom_Navigation_icon/bottom_nav_middle.png',
+                          width: 60,
+                          height: 60,
+                          // fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
