@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 
 class ConfirmDonationButton extends StatelessWidget {
   const ConfirmDonationButton({
@@ -12,22 +13,24 @@ class ConfirmDonationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Center(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
           decoration: BoxDecoration(
-            color: const Color(0xFFFDF8F2),
+            color: const Color(0xFFFBF4E9),
             borderRadius: BorderRadius.circular(25),
-            border: Border.all(color: primaryOrange, width: 1.5),
+            border: Border.all(color: primaryOrange.withValues(alpha: 0.5)),
           ),
           child: Text(
-            'CONFIRM MY\nDONATION',
+            l10n.validateMySupport.toUpperCase(),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: primaryOrange,
-              fontFamily: 'EricaOne',
+              fontWeight: FontWeight.w900,
               fontSize: 16,
               height: 1.1,
             ),

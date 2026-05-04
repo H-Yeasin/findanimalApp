@@ -303,7 +303,7 @@ const Map<String, String> appEn = {
   'durationOfLocalMission': 'DURATION OF LOCAL MISSION',
   'photoOfLocalMission': 'PHOTO OF LOCAL MISSION',
   'publishMyAd': 'Publish my ad',
-  'donateTodayTitle': 'SUPPORT TODAY',
+  'donateTodayTitle': 'SUPPORT\nTODAY',
   'helpingTomorrowSubtitle': 'THIS IS HELPING TOMORROW!',
   'myDonationsTitle': 'My contributions',
   'noDonationsMade': 'You have not made any contributions recently',
@@ -344,4 +344,14 @@ const Map<String, String> appEn = {
   'shopCommitment3Title': 'Ethical\nproduction',
   'shopCommitment3Description':
       'Certified workshops, workers\' rights respected, strict environmental standards at every stage.',
+  'mySupport': 'MY SUPPORT',
+  'oneTimeSupport': 'ONE-TIME SUPPORT',
+  'monthlySupport': 'MONTHLY SUPPORT',
+  'enterAmount': 'Enter an amount',
+  'myDetails': 'MY DETAILS',
+  'orEnterDetails': 'or I enter my details',
+  'payment': 'Payment',
+  'cardNumber': 'Card number',
+  'expiryDate': 'Expiry date',
+  'validateMySupport': 'VALIDATE MY SUPPORT',
 };

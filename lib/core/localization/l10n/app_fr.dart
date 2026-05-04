@@ -208,7 +208,7 @@ const Map<String, String> appFr = {
   'durationOfLocalMission': 'DURÉE DE LA MISSION LOCALE',
   'photoOfLocalMission': 'PHOTO DE LA MISSION LOCALE',
   'publishMyAd': 'Publier mon annonce',
-  'donateTodayTitle': 'SOUTENIR AUJOURD\'HUI',
+  'donateTodayTitle': 'SOUTENIR\nAUJOURD\'HUI',
   'helpingTomorrowSubtitle': 'C’EST AIDER DEMAIN !',
   'myDonationsTitle': 'Mes contributions',
   'noDonationsMade': 'Vous n’avez pas apporté de soutien récemment',
@@ -346,4 +346,14 @@ const Map<String, String> appFr = {
   'shopCommitment3Title': 'Production\néthique',
   'shopCommitment3Description':
       'Ateliers certifiés, droits des travailleurs respectés, normes environnementales strictes à chaque étape.',
+  'mySupport': 'MON SOUTIEN',
+  'oneTimeSupport': 'SOUTIEN UNIQUE',
+  'monthlySupport': 'SOUTIEN MENSUEL',
+  'enterAmount': 'Saisir un montant',
+  'myDetails': 'MES COORDONNÉES',
+  'orEnterDetails': 'ou je saisis mes coordonnées',
+  'payment': 'Paiement',
+  'cardNumber': 'Numéro de carte',
+  'expiryDate': 'Date d’expiration',
+  'validateMySupport': 'VALIDER MON SOUTIEN',
 };

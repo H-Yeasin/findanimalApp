@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import '../../../providers/donation_provider.dart';
 
 class DonationOptionsSection extends StatelessWidget {
@@ -22,28 +23,27 @@ class DonationOptionsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Column(
         children: [
-          const Text(
-            'MY\nDONATION',
+          Text(
+            l10n.mySupport,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFFBA4A22),
-              fontFamily: 'EricaOne',
-              fontSize: 26,
-              letterSpacing: 1.5,
-              height: 1.1,
+            style: AppTextStyles.condensedSectionTitle.copyWith(
+              fontSize: 27,
+              color: primaryOrange,
             ),
           ),
           const SizedBox(height: 15),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFFF6E7D1),
+              color: const Color(0xFFFBF4E9),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: primaryOrange),
+              border: Border.all(color: primaryOrange.withValues(alpha: 0.5)),
             ),
             child: Column(
               children: [
@@ -51,62 +51,55 @@ class DonationOptionsSection extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _typeButton(
-                        title: 'ONE-TIME\nDONATION',
+                        title: l10n.oneTimeSupport,
                         value: 'one-time',
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     Expanded(
                       child: _typeButton(
-                        title: 'MONTHLY\nDONATION',
+                        title: l10n.monthlySupport,
                         value: 'monthly',
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Row(
                   children: [
                     Expanded(child: _amountButton(5.0)),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     Expanded(child: _amountButton(10.0)),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(child: _amountButton(20.0)),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 15),
                     Expanded(
-                      child: TextFormField(
-                        controller: amountController,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          color: primaryOrange,
-                          fontFamily: 'EricaOne',
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Enter amount',
-                          hintStyle: TextStyle(
-                            color: primaryOrange.withValues(alpha: 0.5),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 14,
-                          ),
-                          enabledBorder: OutlineInputBorder(
+                      child: GestureDetector(
+                        onTap: () {
+                          // Trigger custom amount entry logic if needed
+                          // For now, we just let the user type in the field
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: primaryOrange),
+                            border: Border.all(color: primaryOrange),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                              color: primaryOrange,
-                              width: 2,
+                          child: Center(
+                            child: Text(
+                              l10n.enterAmount,
+                              style: TextStyle(
+                                color: primaryOrange,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
                             ),
                           ),
                         ),
-                        onChanged: onCustomAmountChanged,
                       ),
                     ),
                   ],
@@ -124,7 +117,7 @@ class DonationOptionsSection extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTypeChanged(value),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected ? primaryOrange : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
@@ -136,8 +129,9 @@ class DonationOptionsSection extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isSelected ? Colors.white : primaryOrange,
-              fontFamily: 'EricaOne',
-              fontSize: 14,
+              fontWeight: FontWeight.w900,
+              fontSize: 11,
+              height: 1.0,
             ),
           ),
         ),
@@ -150,7 +144,7 @@ class DonationOptionsSection extends StatelessWidget {
     return GestureDetector(
       onTap: () => onAmountSelected(amount),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           color: isSelected ? primaryOrange : Colors.transparent,
           borderRadius: BorderRadius.circular(30),
@@ -161,7 +155,7 @@ class DonationOptionsSection extends StatelessWidget {
             '${amount.toInt()}€',
             style: TextStyle(
               color: isSelected ? Colors.white : primaryOrange,
-              fontFamily: 'EricaOne',
+              fontWeight: FontWeight.w900,
               fontSize: 16,
             ),
           ),

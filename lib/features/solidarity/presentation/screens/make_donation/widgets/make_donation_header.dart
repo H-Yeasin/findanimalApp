@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../make_donation_styles.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class MakeDonationHeader extends StatelessWidget {
   const MakeDonationHeader({super.key, required this.onBack});
@@ -9,50 +9,38 @@ class MakeDonationHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final heroHeight = screenWidth * 235 / 413;
+    const surface = Color(0xFFFBF4E9);
+
     return Stack(
       children: [
         Container(
-          height: 280,
+          height: heroHeight,
           width: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                'https://images.unsplash.com/photo-1544568100-847a948585b9?auto=format&fit=crop&q=80&w=1000',
-              ),
+              image: AssetImage('assets/soliderityHeader.png'),
               fit: BoxFit.cover,
             ),
           ),
           child: Container(
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withValues(alpha: 0.3),
-                  Colors.black.withValues(alpha: 0.1),
-                ],
-              ),
+              color: Colors.black.withValues(alpha: 0.1),
             ),
           ),
         ),
         Positioned.fill(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Transform.translate(
-                  offset: const Offset(-20, 50),
-                  child: const Text('MAKE', style: makeDonationHeaderStyle),
-                ),
-                Transform.translate(
-                  offset: const Offset(5, 35),
-                  child: const Text('A', style: makeDonationHeaderStyle),
-                ),
-                Transform.translate(
-                  offset: const Offset(15, 20),
-                  child: const Text('DONATION', style: makeDonationHeaderStyle),
-                ),
-              ],
+            child: Text(
+              l10n.makeDonation.toUpperCase().replaceAll(' ', '\n'),
+              textAlign: TextAlign.center,
+              style: AppTextStyles.display.copyWith(
+                fontSize: 32,
+                color: surface,
+                height: 1.1,
+              ),
             ),
           ),
         ),
@@ -61,14 +49,13 @@ class MakeDonationHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
                   onTap: onBack,
                   child: Container(
                     padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.3),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFBA4A22),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -76,6 +63,18 @@ class MakeDonationHeader extends StatelessWidget {
                       color: Colors.white,
                       size: 20,
                     ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFBA4A22),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.person_outline,
+                    color: Colors.white,
+                    size: 28,
                   ),
                 ),
               ],

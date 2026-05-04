@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import '../../../providers/donation_provider.dart';
 
 class ContactDetailsSection extends StatelessWidget {
@@ -36,34 +37,77 @@ class ContactDetailsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          const SizedBox(height: 20),
           Center(
             child: Text(
-              'MY CONTACT DETAILS',
-              style: TextStyle(
+              l10n.myDetails,
+              style: AppTextStyles.condensedSectionTitle.copyWith(
+                fontSize: 27,
                 color: primaryOrange,
-                fontFamily: 'EricaOne',
-                fontSize: 22,
-                letterSpacing: 1.0,
               ),
             ),
           ),
           const SizedBox(height: 15),
-          _inputLabel('First & last name *'),
-          _textField(
-            controller: nameController,
-            hint: 'Enter my first & last name',
-            onChanged: onNameChanged,
-            validator: (val) => val!.isEmpty ? 'Name is required' : null,
+          // PayPal Button Placeholder
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFC439), // PayPal Yellow
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Image.asset(
+                'assets/images/payment/paypal_logo.png', // Assuming this exists or using a generic icon
+                height: 30,
+                errorBuilder: (context, error, stackTrace) => const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.payment, color: Color(0xFF003087)),
+                    SizedBox(width: 5),
+                    Text(
+                      'PayPal',
+                      style: TextStyle(
+                        color: Color(0xFF003087),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-          _inputLabel('Email *'),
+          const SizedBox(height: 15),
+          Row(
+            children: [
+              const Expanded(child: Divider(thickness: 1.5)),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  l10n.orEnterDetails,
+                  style: TextStyle(
+                    color: primaryOrange,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Expanded(child: Divider(thickness: 1.5)),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _inputLabel(l10n.emailLabel),
           _textField(
             controller: emailController,
-            hint: 'Enter my email',
+            hint: l10n.emailHint,
             keyboardType: TextInputType.emailAddress,
             onChanged: onEmailChanged,
             validator: (val) {
@@ -73,6 +117,13 @@ class ContactDetailsSection extends StatelessWidget {
               if (!emailRegex.hasMatch(email)) return 'Invalid email';
               return null;
             },
+          ),
+          _inputLabel('${l10n.nameAndFirstName}*'),
+          _textField(
+            controller: nameController,
+            hint: l10n.enterMyFirstAndLastName,
+            onChanged: onNameChanged,
+            validator: (val) => val!.isEmpty ? 'Name is required' : null,
           ),
           const SizedBox(height: 10),
           GestureDetector(
@@ -108,8 +159,8 @@ class ContactDetailsSection extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 15),
           if (state.isCompanyDonation) ...[
+            const SizedBox(height: 15),
             _textField(
               controller: companyNameController,
               hint: 'Company name',
@@ -135,13 +186,13 @@ class ContactDetailsSection extends StatelessWidget {
 
   Widget _inputLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0, top: 8.0, left: 4.0),
+      padding: const EdgeInsets.only(bottom: 6.0, top: 4.0, left: 4.0),
       child: Text(
         text,
         style: TextStyle(
           color: primaryOrange,
-          fontFamily: 'EricaOne',
-          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
         ),
       ),
     );
@@ -161,20 +212,18 @@ class ContactDetailsSection extends StatelessWidget {
         keyboardType: keyboardType,
         onChanged: onChanged,
         validator: validator,
-        style: const TextStyle(color: Color(0xFFF6E7D1), fontSize: 13),
+        style: const TextStyle(color: Colors.white, fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(
-            color: const Color(0xFFF6E7D1).withValues(alpha: 0.7),
-          ),
+          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
+            horizontal: 20,
+            vertical: 14,
           ),
           filled: true,
           fillColor: primaryOrange,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
           errorStyle: const TextStyle(color: Colors.red),

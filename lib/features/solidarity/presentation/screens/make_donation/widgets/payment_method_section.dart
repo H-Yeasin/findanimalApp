@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import '../../../providers/donation_provider.dart';
 
 class PaymentMethodSection extends StatelessWidget {
@@ -16,67 +17,51 @@ class PaymentMethodSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _inputLabel('Payment Method *'),
+          const SizedBox(height: 20),
+          Text(
+            l10n.payment,
+            style: AppTextStyles.condensedSectionTitle.copyWith(
+              fontSize: 27,
+              color: primaryOrange,
+            ),
+          ),
+          const SizedBox(height: 15),
+          _inputLabel(l10n.cardNumber),
+          _textField(
+            hint: '1234 1234 1234 1234',
+            keyboardType: TextInputType.number,
+          ),
           Row(
             children: [
               Expanded(
-                child: GestureDetector(
-                  onTap: () => onMethodChanged('stripe'),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: state.paymentMethod == 'stripe'
-                          ? primaryOrange
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: primaryOrange),
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _inputLabel(l10n.expiryDate),
+                    _textField(
+                      hint: 'MM / AA',
+                      keyboardType: TextInputType.datetime,
                     ),
-                    child: Center(
-                      child: Text(
-                        'Credit Card (Stripe)',
-                        style: TextStyle(
-                          color: state.paymentMethod == 'stripe'
-                              ? Colors.white
-                              : primaryOrange,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 15),
               Expanded(
-                child: GestureDetector(
-                  onTap: () => onMethodChanged('paypal'),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    decoration: BoxDecoration(
-                      color: state.paymentMethod == 'paypal'
-                          ? const Color(0xFFFFC439)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xFFFFC439)),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'PayPal',
-                        style: TextStyle(
-                          color: state.paymentMethod == 'paypal'
-                              ? const Color(0xFF003087)
-                              : Colors.grey,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _inputLabel('CCV'),
+                    _textField(hint: 'CCV', keyboardType: TextInputType.number),
+                  ],
                 ),
               ),
             ],
@@ -95,13 +80,37 @@ class PaymentMethodSection extends StatelessWidget {
 
   Widget _inputLabel(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0, top: 8.0, left: 4.0),
+      padding: const EdgeInsets.only(bottom: 6.0, top: 4.0, left: 4.0),
       child: Text(
         text,
         style: TextStyle(
           color: primaryOrange,
-          fontFamily: 'EricaOne',
-          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _textField({required String hint, TextInputType? keyboardType}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0),
+      child: TextFormField(
+        keyboardType: keyboardType,
+        style: const TextStyle(color: Colors.white, fontSize: 14),
+        decoration: InputDecoration(
+          hintText: hint,
+          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 14,
+          ),
+          filled: true,
+          fillColor: primaryOrange,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
