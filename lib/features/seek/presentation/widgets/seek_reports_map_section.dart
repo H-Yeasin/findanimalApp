@@ -47,7 +47,11 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final filters = ref.watch(seekReportFiltersProvider);
-    final status = filters['status'] ?? 'all';
+    final statusList = (filters['status'] is List)
+        ? List<String>.from(filters['status'])
+        : (filters['status'] == 'all'
+            ? <String>[]
+            : [filters['status'].toString()]);
     final radius = filters['radius'] ?? 5;
     final sort = filters['sort']?.toString() ?? 'descending';
     final hasLocation = filters.containsKey('lat');
@@ -191,7 +195,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
           offset: const Offset(0, -28),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: _buildInlineFilters(l10n, status.toString()),
+            child: _buildInlineFilters(l10n, statusList),
           ),
         ),
         _buildSortAndRadiusControls(
@@ -313,7 +317,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     );
   }
 
-  Widget _buildInlineFilters(AppLocalizations l10n, String currentStatus) {
+  Widget _buildInlineFilters(AppLocalizations l10n, List<String> currentStatuses) {
     final options = _statusFilterOptions(l10n);
 
     return AnimatedSize(
@@ -375,11 +379,11 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
               const Divider(height: 1, color: Color(0xFFF2E6D8)),
               const SizedBox(height: 10),
               ...options.map((option) {
-                final isSelected = currentStatus == option.value;
+                final isSelected = currentStatuses.contains(option.value);
                 return _FilterOptionRow(
                   label: option.label,
                   isSelected: isSelected,
-                  onTap: () => _toggleStatus(option.value, currentStatus),
+                  onTap: () => _toggleStatus(option.value, currentStatuses),
                 );
               }),
               const SizedBox(height: 12),
@@ -399,11 +403,19 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     ];
   }
 
-  void _toggleStatus(String status, String currentStatus) {
+  void _toggleStatus(String status, List<String> currentStatuses) {
     final currentFilters = ref.read(seekReportFiltersProvider);
+    final nextStatuses = List<String>.from(currentStatuses);
+
+    if (nextStatuses.contains(status)) {
+      nextStatuses.remove(status);
+    } else {
+      nextStatuses.add(status);
+    }
+
     ref.read(seekReportFiltersProvider.notifier).state = {
       ...currentFilters,
-      'status': currentStatus == status ? 'all' : status,
+      'status': nextStatuses,
       'page': 1,
     };
   }

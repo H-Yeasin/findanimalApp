@@ -19,6 +19,7 @@ class ContactDetailsSection extends StatelessWidget {
     required this.onCompanyNameChanged,
     required this.onCompanySirenChanged,
     required this.onCompanyLegalFormChanged,
+    required this.onPayPalTap,
   });
 
   final DonationState state;
@@ -34,6 +35,7 @@ class ContactDetailsSection extends StatelessWidget {
   final ValueChanged<String> onCompanyNameChanged;
   final ValueChanged<String> onCompanySirenChanged;
   final ValueChanged<String> onCompanyLegalFormChanged;
+  final VoidCallback onPayPalTap;
 
   @override
   Widget build(BuildContext context) {
@@ -56,31 +58,34 @@ class ContactDetailsSection extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           // PayPal Button Placeholder
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFC439), // PayPal Yellow
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Image.asset(
-                'assets/images/payment/paypal_logo.png', // Assuming this exists or using a generic icon
-                height: 30,
-                errorBuilder: (context, error, stackTrace) => const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.payment, color: Color(0xFF003087)),
-                    SizedBox(width: 5),
-                    Text(
-                      'PayPal',
-                      style: TextStyle(
-                        color: Color(0xFF003087),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        fontStyle: FontStyle.italic,
+          GestureDetector(
+            onTap: onPayPalTap,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFC439), // PayPal Yellow
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/payment/paypal_logo.png', // Assuming this exists or using a generic icon
+                  height: 30,
+                  errorBuilder: (context, error, stackTrace) => const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.payment, color: Color(0xFF003087)),
+                      SizedBox(width: 5),
+                      Text(
+                        'PayPal',
+                        style: TextStyle(
+                          color: Color(0xFF003087),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -148,7 +153,7 @@ class ContactDetailsSection extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    'I am making a donation on behalf of a company, a liberal\nprofession, or an association',
+                    l10n.onBehalfOfCompany,
                     style: TextStyle(
                       color: primaryOrange,
                       fontSize: 11,

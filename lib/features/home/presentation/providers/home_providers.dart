@@ -7,7 +7,7 @@ final homeReportFiltersProvider = StateProvider<Map<String, dynamic>>((ref) {
   return {
     'page': 1,
     'limit': 10,
-    'status': 'all',
+    'status': <String>[],
     'sortBy': 'date',
     'sort': 'descending',
     'radius': 50,

@@ -25,7 +25,11 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final filters = ref.watch(homeReportFiltersProvider);
-    final status = (filters['status'] ?? 'all').toString();
+    final statusList = (filters['status'] is List)
+        ? List<String>.from(filters['status'])
+        : (filters['status'] == 'all'
+            ? <String>[]
+            : [filters['status'].toString()]);
     final sort = (filters['sort'] ?? 'descending').toString();
     final radius = (filters['radius'] as num?)?.toInt() ?? 5;
     final hasLocation = filters.containsKey('lat');
@@ -38,7 +42,7 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
           // ── Status filter card ──
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: _buildStatusFilter(l10n, status),
+            child: _buildStatusFilter(l10n, statusList),
           ),
           const SizedBox(height: 8),
           // ── Sort & Radius pills ──
@@ -54,7 +58,7 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
   }
 
   // ─────────────────── Status filter ───────────────────────
-  Widget _buildStatusFilter(AppLocalizations l10n, String currentStatus) {
+  Widget _buildStatusFilter(AppLocalizations l10n, List<String> currentStatuses) {
     final options = _statusFilterOptions(l10n);
 
     return AnimatedSize(
@@ -116,11 +120,11 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
               const Divider(height: 1, color: Color(0xFFF2E6D8)),
               const SizedBox(height: 10),
               ...options.map((option) {
-                final isSelected = currentStatus == option.value;
+                final isSelected = currentStatuses.contains(option.value);
                 return _FilterOptionRow(
                   label: option.label,
                   isSelected: isSelected,
-                  onTap: () => _toggleStatus(option.value, currentStatus),
+                  onTap: () => _toggleStatus(option.value, currentStatuses),
                 );
               }),
               const SizedBox(height: 12),
@@ -250,11 +254,19 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
     ];
   }
 
-  void _toggleStatus(String status, String currentStatus) {
+  void _toggleStatus(String status, List<String> currentStatuses) {
     final currentFilters = ref.read(homeReportFiltersProvider);
+    final nextStatuses = List<String>.from(currentStatuses);
+
+    if (nextStatuses.contains(status)) {
+      nextStatuses.remove(status);
+    } else {
+      nextStatuses.add(status);
+    }
+
     ref.read(homeReportFiltersProvider.notifier).state = {
       ...currentFilters,
-      'status': currentStatus == status ? 'all' : status,
+      'status': nextStatuses,
       'page': 1,
     };
   }

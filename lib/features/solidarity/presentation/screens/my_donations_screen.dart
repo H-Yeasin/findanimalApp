@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
-import 'package:hesteka_frontend/core/widgets/app_text_field.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/make_donation_screen.dart';
 import '../../../../core/routing/route_names.dart';

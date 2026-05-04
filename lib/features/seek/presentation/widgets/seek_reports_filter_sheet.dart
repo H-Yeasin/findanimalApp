@@ -19,7 +19,7 @@ class _SeekReportsFilterSheetState
     extends ConsumerState<SeekReportsFilterSheet> {
   late TextEditingController _searchController;
   late double _radius;
-  late String _status;
+  late List<String> _statuses;
   late String _sortBy;
   late String _sort;
 
@@ -31,7 +31,16 @@ class _SeekReportsFilterSheetState
       text: currentFilters['search'] ?? '',
     );
     _radius = (currentFilters['radius'] as num?)?.toDouble() ?? 5.0;
-    _status = currentFilters['status'] ?? 'all';
+
+    final statusData = currentFilters['status'];
+    if (statusData is List) {
+      _statuses = List<String>.from(statusData);
+    } else if (statusData == 'all' || statusData == null) {
+      _statuses = [];
+    } else {
+      _statuses = [statusData.toString()];
+    }
+
     _sortBy = currentFilters['sortBy'] ?? 'date';
     _sort = currentFilters['sort'] ?? 'descending';
   }
@@ -116,13 +125,20 @@ class _SeekReportsFilterSheetState
             _buildSectionTitle(l10n.status),
             Wrap(
               spacing: 10,
-              children: ['all', 'lost', 'found', 'sighted', 'rescued'].map((s) {
-                final isSelected = _status == s;
+              runSpacing: 5,
+              children: ['lost', 'found', 'sighted', 'rescued'].map((s) {
+                final isSelected = _statuses.contains(s);
                 return ChoiceChip(
                   label: Text(_statusLabel(l10n, s).toUpperCase()),
                   selected: isSelected,
                   onSelected: (val) {
-                    if (val) setState(() => _status = s);
+                    setState(() {
+                      if (val) {
+                        _statuses.add(s);
+                      } else {
+                        _statuses.remove(s);
+                      }
+                    });
                   },
                   selectedColor: const Color(0xFFBA4A22),
                   labelStyle: TextStyle(
@@ -172,7 +188,7 @@ class _SeekReportsFilterSheetState
             ),
             _buildSectionTitle(l10n.sortBy),
             DropdownButtonFormField<String>(
-              initialValue: _sortBy,
+              value: _sortBy,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFFFBF4E9),
@@ -223,7 +239,7 @@ class _SeekReportsFilterSheetState
     final updatedFilters = <String, dynamic>{
       'page': 1,
       'limit': 10,
-      'status': _status,
+      'status': _statuses,
       'sortBy': _sortBy,
       'sort': _sort,
     };

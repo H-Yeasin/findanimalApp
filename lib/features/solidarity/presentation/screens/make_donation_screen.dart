@@ -4,6 +4,8 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
@@ -154,34 +156,33 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
   }
 
   Future<void> _onConfirm() async {
-    if (!_formKey.currentState!.validate()) return;
-
     final state = ref.read(donationNotifierProvider);
-    if (state.amount <= 0) {
-      _showSnackBar('Please select or enter an amount');
+
+    if (!_formKey.currentState!.validate()) {
+      _showSnackBar(AppLocalizations.of(context).fillAllFields);
       return;
     }
-    if (state.paymentMethod.isEmpty) {
-      _showSnackBar('Please select a payment method');
+
+    if (state.amount <= 0) {
+      _showSnackBar('Please select or enter an amount');
       return;
     }
 
     final notifier = ref.read(donationNotifierProvider.notifier);
 
-    if (state.paymentMethod == 'stripe') {
-      await _handleStripePayment(state, notifier);
-      return;
-    }
-
-    if (state.paymentMethod == 'paypal') {
-      await _handlePayPalPayment(state, notifier);
-    }
+    // Default to stripe if using the main Validate button
+    await _handleStripePayment(state, notifier);
   }
 
   Future<void> _handleStripePayment(
     DonationState state,
     DonationNotifier notifier,
   ) async {
+    if (state.amount <= 0) {
+      _showSnackBar('Please select or enter an amount');
+      return;
+    }
+
     final success = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => PaymentWebviewScreen(
@@ -210,6 +211,20 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
     DonationState state,
     DonationNotifier notifier,
   ) async {
+    if (state.amount <= 0) {
+      _showSnackBar(
+        'Please select or enter an amount before paying with PayPal',
+      );
+      return;
+    }
+
+    // For PayPal, we might want to allow it even if form isn't fully valid if we expect
+    // PayPal to provide the info, but currently the backend needs it.
+    if (state.donorEmail.isEmpty) {
+      _showSnackBar('Please enter your email for the receipt');
+      return;
+    }
+
     final success = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
         builder: (_) => PaymentWebviewScreen(
@@ -240,103 +255,114 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
-      body: AppBackground(
-        child: state.isLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: makeDonationPrimaryOrange,
-                ),
-              )
-            : SingleChildScrollView(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      MakeDonationHeader(
-                        onBack: () => Navigator.of(context).pop(),
-                      ),
-                      DonationOptionsSection(
-                        state: state,
-                        primaryOrange: makeDonationPrimaryOrange,
-                        amountController: _amountController,
-                        onTypeChanged: (type) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateType(type);
-                        },
-                        onAmountSelected: (amount) {
-                          _amountController.clear();
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateAmount(amount);
-                        },
-                        onCustomAmountChanged: (value) {
-                          final amount = double.tryParse(value) ?? 0.0;
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateAmount(amount);
-                        },
-                      ),
-                      ContactDetailsSection(
-                        state: state,
-                        primaryOrange: makeDonationPrimaryOrange,
-                        nameController: _nameController,
-                        emailController: _emailController,
-                        companyNameController: _companyNameController,
-                        companySirenController: _companySirenController,
-                        companyLegalFormController: _companyLegalFormController,
-                        onNameChanged: (name) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateDonorInfo(name: name.trim());
-                        },
-                        onEmailChanged: (email) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateDonorInfo(email: email.trim());
-                        },
-                        onToggleCompanyDonation: () {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateCompanyInfo(
-                                isCompany: !state.isCompanyDonation,
-                              );
-                        },
-                        onCompanyNameChanged: (name) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateCompanyInfo(name: name);
-                        },
-                        onCompanySirenChanged: (siren) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateCompanyInfo(siren: siren);
-                        },
-                        onCompanyLegalFormChanged: (legalForm) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updateCompanyInfo(legalForm: legalForm);
-                        },
-                      ),
-                      PaymentMethodSection(
-                        state: state,
-                        primaryOrange: makeDonationPrimaryOrange,
-                        onMethodChanged: (method) {
-                          ref
-                              .read(donationNotifierProvider.notifier)
-                              .updatePaymentMethod(method);
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      ConfirmDonationButton(
-                        primaryOrange: makeDonationPrimaryOrange,
-                        onTap: _onConfirm,
-                      ),
-                      const SizedBox(height: 100),
-                    ],
-                  ),
+      // appBar: AppTopBar(),
+      body: Stack(
+        children: [
+          AppBackground(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    MakeDonationHeader(
+                      onBack: () => Navigator.of(context).pop(),
+                    ),
+                    DonationOptionsSection(
+                      state: state,
+                      primaryOrange: makeDonationPrimaryOrange,
+                      amountController: _amountController,
+                      onTypeChanged: (type) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateType(type);
+                      },
+                      onAmountSelected: (amount) {
+                        _amountController.clear();
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateAmount(amount);
+                      },
+                      onCustomAmountChanged: (value) {
+                        final amount = double.tryParse(value) ?? 0.0;
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateAmount(amount);
+                      },
+                    ),
+                    ContactDetailsSection(
+                      state: state,
+                      primaryOrange: makeDonationPrimaryOrange,
+                      nameController: _nameController,
+                      emailController: _emailController,
+                      companyNameController: _companyNameController,
+                      companySirenController: _companySirenController,
+                      companyLegalFormController: _companyLegalFormController,
+                      onNameChanged: (name) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateDonorInfo(name: name.trim());
+                      },
+                      onEmailChanged: (email) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateDonorInfo(email: email.trim());
+                      },
+                      onToggleCompanyDonation: () {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateCompanyInfo(
+                              isCompany: !state.isCompanyDonation,
+                            );
+                      },
+                      onCompanyNameChanged: (name) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateCompanyInfo(name: name);
+                      },
+                      onCompanySirenChanged: (siren) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateCompanyInfo(siren: siren);
+                      },
+                      onCompanyLegalFormChanged: (legalForm) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updateCompanyInfo(legalForm: legalForm);
+                      },
+                      onPayPalTap: () {
+                        _handlePayPalPayment(
+                          state,
+                          ref.read(donationNotifierProvider.notifier),
+                        );
+                      },
+                    ),
+                    PaymentMethodSection(
+                      state: state,
+                      primaryOrange: makeDonationPrimaryOrange,
+                      onMethodChanged: (method) {
+                        ref
+                            .read(donationNotifierProvider.notifier)
+                            .updatePaymentMethod(method);
+                      },
+                    ),
+                    const SizedBox(height: 30),
+                    ConfirmDonationButton(
+                      primaryOrange: makeDonationPrimaryOrange,
+                      onTap: _onConfirm,
+                    ),
+                    const SizedBox(height: 100),
+                  ],
                 ),
               ),
+            ),
+          ),
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(child: AppTopBar(showUserAvatar: false)),
+          ),
+        ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 4,

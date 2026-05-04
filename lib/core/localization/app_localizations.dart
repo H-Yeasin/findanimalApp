@@ -400,6 +400,18 @@ class AppLocalizations {
   String get shopCommitment2Description => _text('shopCommitment2Description');
   String get shopCommitment3Title => _text('shopCommitment3Title');
   String get shopCommitment3Description => _text('shopCommitment3Description');
+
+  String get mySupport => _text('mySupport');
+  String get oneTimeSupport => _text('oneTimeSupport');
+  String get monthlySupport => _text('monthlySupport');
+  String get enterAmount => _text('enterAmount');
+  String get myDetails => _text('myDetails');
+  String get orEnterDetails => _text('orEnterDetails');
+  String get payment => _text('payment');
+  String get cardNumber => _text('cardNumber');
+  String get expiryDate => _text('expiryDate');
+  String get validateMySupport => _text('validateMySupport');
+  String get onBehalfOfCompany => _text('onBehalfOfCompany');
 }
 
 class _AppLocalizationsDelegate

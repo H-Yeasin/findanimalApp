@@ -356,4 +356,6 @@ const Map<String, String> appFr = {
   'cardNumber': 'Numéro de carte',
   'expiryDate': 'Date d’expiration',
   'validateMySupport': 'VALIDER MON SOUTIEN',
+  'onBehalfOfCompany':
+      'Je fais un don au nom d’une entreprise, d’une profession\nlibérale ou d’une association',
 };

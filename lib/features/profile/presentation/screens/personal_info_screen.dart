@@ -300,19 +300,6 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                     isEditing: _isEditing,
                   ),
                   const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'LATITUDE',
-                    controller: _latitudeController,
-                    isEditing: _isEditing,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'LONGITUDE',
-                    controller: _longitudeController,
-                    isEditing: _isEditing,
-                    keyboardType: TextInputType.number,
-                  ),
                   const SizedBox(height: 24),
                   if (_isEditing)
                     SizedBox(
@@ -397,11 +384,6 @@ class _PersonalInfoHeader extends StatelessWidget {
               imageUrl!,
               fit: BoxFit.cover,
               alignment: const Alignment(0, -0.9),
-              errorBuilder: (context, error, stackTrace) => Image.asset(
-                'assets/images/profile/personal_information_mock.png',
-                fit: BoxFit.cover,
-                alignment: const Alignment(0, -0.9),
-              ),
             )
           else
             Image.asset(

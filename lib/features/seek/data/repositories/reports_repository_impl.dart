@@ -17,7 +17,8 @@ class ReportsRepositoryImpl implements ReportsRepository {
   @override
   Future<PaginatedResponse<ReportModel>> getAllReports({Map<String, dynamic>? query}) async {
     final cleanedQuery = Map<String, dynamic>.from(query ?? {});
-    if (cleanedQuery['status'] == 'all') {
+    final status = cleanedQuery['status'];
+    if (status == 'all' || (status is List && status.isEmpty)) {
       cleanedQuery.remove('status');
     }
     
@@ -63,7 +64,8 @@ class ReportsRepositoryImpl implements ReportsRepository {
   @override
   Future<PaginatedResponse<ReportModel>> getMyReports({Map<String, dynamic>? query}) async {
     final cleanedQuery = Map<String, dynamic>.from(query ?? {});
-    if (cleanedQuery['status'] == 'all') {
+    final status = cleanedQuery['status'];
+    if (status == 'all' || (status is List && status.isEmpty)) {
       cleanedQuery.remove('status');
     }
     cleanedQuery['author'] = 'me';
