@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
+import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/Collection_Point/collection_point.dart';
 import 'package:hesteka_frontend/features/Community/presentation/providers/contact_providers.dart';
@@ -20,11 +21,12 @@ class SolidarityHubScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final heroHeight = screenWidth * 271 / 402;
 
     return Scaffold(
       backgroundColor: surface,
-      body: CustomPaint(
-        painter: _GridPainter(),
+      body: AppBackground(
         child: Stack(
           children: [
             SafeArea(
@@ -47,11 +49,11 @@ class SolidarityHubScreen extends ConsumerWidget {
                           color: Colors.black.withValues(alpha: 0.1),
                         ),
                         Positioned(
-                          bottom: 40,
+                          bottom: 100,
                           child: Text(
                             l10n.together,
                             style: AppTextStyles.display.copyWith(
-                              fontSize: 60,
+                              fontSize: 32,
                               color: surface,
                             ),
                           ),
@@ -168,10 +170,7 @@ class SolidarityHubScreen extends ConsumerWidget {
                                       initialCameraPosition: CameraPosition(
                                         target: markers.isNotEmpty
                                             ? markers.first.position
-                                            : const LatLng(
-                                                43.6047,
-                                                1.4442,
-                                              ), // Default to France
+                                            : const LatLng(0, 0),
                                         zoom: 14.0,
                                       ),
                                       markers: markers,
@@ -324,21 +323,9 @@ class SolidarityHubScreen extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(25),
                           child: Image.asset(
                             'assets/images/solidarity_shop.png',
-                            height: 280,
+                            height: 200,
                             width: MediaQuery.of(context).size.width * 0.9,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Container(
-                                  height: 280,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  color: brandPrimary.withValues(alpha: 0.1),
-                                  child: const Icon(
-                                    Icons.shopping_bag,
-                                    size: 50,
-                                    color: brandPrimary,
-                                  ),
-                                ),
                           ),
                         ),
                       ],
@@ -426,25 +413,4 @@ class SolidarityHubScreen extends ConsumerWidget {
       ),
     );
   }
-}
-
-class _GridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFBA4A22).withValues(alpha: 0.05)
-      ..strokeWidth = 1.0;
-
-    double step = 25;
-
-    for (double i = 0; i < size.width; i += step) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-    for (double i = 0; i < size.height; i += step) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

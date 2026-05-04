@@ -318,4 +318,32 @@ const Map<String, String> appFr = {
   'missionDuration': 'Mission de {duration}',
   'organization': 'Organisation',
   'error': 'Erreur',
+  'shopHeroTitle': 'Porter Hesteka\nc’est agir.',
+  'shopHeroSubtitle': 'Chaque achat a un impact\nréel.',
+  'shopHeroDescription':
+      'T-shirts, sweats, casquettes, chaussettes, stickers — des pièces pensées\npour les amoureux des animaux, fabriquées de manière responsable.',
+  'shopHeroCommitment': 'Parce que le style et l’engagement vont de pair.',
+  'shopBestSellersLabel': 'LA COMMUNAUTÉ A CHOISI',
+  'shopBestSellersTitle': 'Best Sellers',
+  'shopBestSellersDescription':
+      'Les pièces que la communauté Hesteka s’arrache.\nLes essentiels de la boutique solidaire.',
+  'shopEntireCollectionLabel': 'TOUTE LA COLLECTION',
+  'shopEntireCollectionTitle': 'La boutique solidaire',
+  'shopEntireCollectionDescription':
+      'Des pièces pour passionnés, fabriquées avec soin, au service d’une\ncause qui compte.',
+  'shopSeeAll': 'TOUT VOIR',
+  'shopClothing': 'VÊTEMENTS',
+  'shopAccessories': 'ACCESSOIRES',
+  'shopNoProducts': 'Aucun produit dans cette catégorie.',
+  'shopCommitmentsLabel': 'CE EN QUOI NOUS CROYONS',
+  'shopCommitmentsTitle': 'Nos engagements',
+  'shopCommitment1Title': 'Une part pour les\nanimaux',
+  'shopCommitment1Description':
+      'Une partie de chaque vente est\nreversée à nos associations\npartenaires pour les soins,\nles refuges et les adoptions.',
+  'shopCommitment2Title': 'Matières\nresponsables',
+  'shopCommitment2Description':
+      'Coton bio, packaging 100%\nrecyclable. Nous portons une\nattention à chaque détail.',
+  'shopCommitment3Title': 'Production\néthique',
+  'shopCommitment3Description':
+      'Ateliers certifiés, droits des travailleurs respectés, normes environnementales strictes à chaque étape.',
 };

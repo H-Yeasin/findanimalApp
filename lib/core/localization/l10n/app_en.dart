@@ -316,4 +316,32 @@ const Map<String, String> appEn = {
   'myProfile': 'My profile',
   'partnerLabel': 'PARTNER',
   'welcomeName': 'Welcome, {name}',
+  'shopHeroTitle': 'Wearing Hesteka\nmeans taking action.',
+  'shopHeroSubtitle': 'Every purchase makes a real\nimpact.',
+  'shopHeroDescription':
+      'T-shirts, sweaters, caps, socks, stickers — pieces designed\nfor animal lovers, made responsibly.',
+  'shopHeroCommitment': 'Because style and commitment go hand in hand.',
+  'shopBestSellersLabel': 'THE COMMUNITY HAS CHOSEN',
+  'shopBestSellersTitle': 'Best Sellers',
+  'shopBestSellersDescription':
+      'The pieces the Hesteka community is snapping up.\nThe essentials of the solidarity shop.',
+  'shopEntireCollectionLabel': 'THE ENTIRE COLLECTION',
+  'shopEntireCollectionTitle': 'The solidarity shop',
+  'shopEntireCollectionDescription':
+      'Pieces for enthusiasts, carefully made, serving a\ncause that matters.',
+  'shopSeeAll': 'SEE ALL',
+  'shopClothing': 'CLOTHING',
+  'shopAccessories': 'ACCESSORIES',
+  'shopNoProducts': 'No products in this category.',
+  'shopCommitmentsLabel': 'WHAT WE BELIEVE IN',
+  'shopCommitmentsTitle': 'Our commitments',
+  'shopCommitment1Title': 'A portion for the\nanimals',
+  'shopCommitment1Description':
+      'A part of every sale is\ndonated to our partner\norganizations for care,\nshelters, and adoptions.',
+  'shopCommitment2Title': 'Responsible\nmaterials',
+  'shopCommitment2Description':
+      'Organic cotton, 100%\nrecyclable packaging. We\npay attention to every detail.',
+  'shopCommitment3Title': 'Ethical\nproduction',
+  'shopCommitment3Description':
+      'Certified workshops, workers\' rights respected, strict environmental standards at every stage.',
 };

@@ -376,6 +376,30 @@ class AppLocalizations {
   String get partnerLabel => _text('partnerLabel');
   String welcomeName(String name) =>
       text('welcomeName', params: {'name': name});
+
+  String get shopHeroTitle => _text('shopHeroTitle');
+  String get shopHeroSubtitle => _text('shopHeroSubtitle');
+  String get shopHeroDescription => _text('shopHeroDescription');
+  String get shopHeroCommitment => _text('shopHeroCommitment');
+  String get shopBestSellersLabel => _text('shopBestSellersLabel');
+  String get shopBestSellersTitle => _text('shopBestSellersTitle');
+  String get shopBestSellersDescription => _text('shopBestSellersDescription');
+  String get shopEntireCollectionLabel => _text('shopEntireCollectionLabel');
+  String get shopEntireCollectionTitle => _text('shopEntireCollectionTitle');
+  String get shopEntireCollectionDescription =>
+      _text('shopEntireCollectionDescription');
+  String get shopSeeAll => _text('shopSeeAll');
+  String get shopClothing => _text('shopClothing');
+  String get shopAccessories => _text('shopAccessories');
+  String get shopNoProducts => _text('shopNoProducts');
+  String get shopCommitmentsLabel => _text('shopCommitmentsLabel');
+  String get shopCommitmentsTitle => _text('shopCommitmentsTitle');
+  String get shopCommitment1Title => _text('shopCommitment1Title');
+  String get shopCommitment1Description => _text('shopCommitment1Description');
+  String get shopCommitment2Title => _text('shopCommitment2Title');
+  String get shopCommitment2Description => _text('shopCommitment2Description');
+  String get shopCommitment3Title => _text('shopCommitment3Title');
+  String get shopCommitment3Description => _text('shopCommitment3Description');
 }
 
 class _AppLocalizationsDelegate
