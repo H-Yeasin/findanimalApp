@@ -150,6 +150,7 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
           Row(
             children: [
               Expanded(
+                flex: 2,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -167,7 +168,6 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                flex: 2,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {

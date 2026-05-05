@@ -73,6 +73,11 @@ class AppLocalizations {
     return text('radiusValue', params: {'radius': '$radius'});
   }
 
+  String updateFailed(String error) =>
+      text('updateFailed', params: {'error': error});
+  String errorParam(String error) =>
+      text('errorParam', params: {'error': error});
+
   String get appName => _text('appName');
   String get settingsTitle => _text('settingsTitle');
   String get changePassword => _text('changePassword');
@@ -412,6 +417,27 @@ class AppLocalizations {
   String get expiryDate => _text('expiryDate');
   String get validateMySupport => _text('validateMySupport');
   String get onBehalfOfCompany => _text('onBehalfOfCompany');
+
+  String get profileUpdated => _text('profileUpdated');
+  String get editMyInformation => _text('editMyInformation');
+  String get myInformation => _text('myInformation');
+  String get firstName => _text('firstName');
+  String get lastName => _text('lastName');
+  String get email => _text('email');
+  String get phone => _text('phone');
+  String get address => _text('address');
+  String get city => _text('city');
+  String get country => _text('country');
+  String get company => _text('company');
+  String get profession => _text('profession');
+  String get selfIntro => _text('selfIntro');
+  String get locationAddress => _text('locationAddress');
+  String get saveChanges => _text('saveChanges');
+  String get save => _text('save');
+  String get edit => _text('edit');
+  String get personalInformation => _text('personalInformation');
+  String get changeCover => _text('changeCover');
+  String get required => _text('required');
 }
 
 class _AppLocalizationsDelegate

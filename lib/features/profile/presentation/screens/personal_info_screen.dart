@@ -1,15 +1,18 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
-import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_background.dart';
+import '../../../../features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/profile_model.dart';
 import '../../presentation/providers/profile_providers.dart';
 import '../../presentation/providers/update_profile_provider.dart';
+import '../widgets/personal_info_field.dart';
+import '../widgets/personal_info_header.dart';
 
 class PersonalInfoScreen extends ConsumerStatefulWidget {
   const PersonalInfoScreen({super.key});
@@ -124,14 +127,16 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
       ref.invalidate(currentUserProvider);
       _setEditMode(false);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-    } catch (error) {
-      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Update failed: $error')));
+      ).showSnackBar(SnackBar(content: Text(l10n.profileUpdated)));
+    } catch (error) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.updateFailed(error.toString()))),
+      );
     }
   }
 
@@ -177,406 +182,175 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final profileAsync = ref.watch(myProfileProvider);
     final isSaving = ref.watch(updateProfileProvider).isLoading;
 
-    return PartnerScreenScaffold(
-      header: _PersonalInfoHeader(
-        isEditing: _isEditing,
-        isSaving: isSaving,
-        onEditTap: () => _setEditMode(!_isEditing),
-        onSaveTap: _save,
-        onCancelTap: _cancelEditing,
-        imageUrl: _currentImageUrl,
-        selectedImage: _selectedImage,
-        onPickImage: _pickProfileImage,
-      ),
-      child: profileAsync.when(
-        loading: () => const Padding(
-          padding: EdgeInsets.only(top: 80),
-          child: Center(child: CircularProgressIndicator()),
-        ),
-        error: (error, stack) => Padding(
-          padding: const EdgeInsets.fromLTRB(24, 40, 24, 30),
-          child: Text(
-            'Error: $error',
-            style: const TextStyle(
-              color: PartnerUiColors.brand,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+    return AppBackgroundScaffold(
+      body: Column(
+        children: [
+          PersonalInfoHeader(
+            isEditing: _isEditing,
+            isSaving: isSaving,
+            onEditTap: () => _setEditMode(!_isEditing),
+            onSaveTap: _save,
+            onCancelTap: _cancelEditing,
+            imageUrl: _currentImageUrl,
+            selectedImage: _selectedImage,
+            onPickImage: _pickProfileImage,
           ),
-        ),
-        data: (profile) {
-          _hydrateForm(profile);
-          final isPartner = (profile.role ?? '').toLowerCase().contains(
-            'partner',
-          );
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(26, 20, 26, 30),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Text(
-                    _isEditing ? 'Edit my information' : 'My information',
-                    style: const TextStyle(
-                      color: Color(0xFFD8C89D),
-                      fontFamily: 'EricaOne',
-                      fontSize: 18,
+          Expanded(
+            child: AppBackground(
+              showGridFromTop: false,
+              child: profileAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text(
+                    l10n.errorParam(error.toString()),
+                    style: AppTextStyles.body.copyWith(
+                      color: PartnerUiColors.brand,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 14),
-                  _InfoField(
-                    label: 'FIRST NAME',
-                    controller: _firstNameController,
-                    isEditing: _isEditing,
-                    required: true,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'LAST NAME',
-                    controller: _lastNameController,
-                    isEditing: _isEditing,
-                    required: true,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'E-MAIL',
-                    controller: _emailController,
-                    isEditing: false,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'PHONE',
-                    controller: _phoneController,
-                    isEditing: _isEditing,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'ADDRESS',
-                    controller: _addressController,
-                    isEditing: _isEditing,
-                    maxLines: 2,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'CITY',
-                    controller: _cityController,
-                    isEditing: _isEditing,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'COUNTRY',
-                    controller: _countryController,
-                    isEditing: _isEditing,
-                  ),
-                  if (isPartner ||
-                      _companyController.text.trim().isNotEmpty) ...[
-                    const Divider(color: PartnerUiColors.brand),
-                    _InfoField(
-                      label: 'COMPANY',
-                      controller: _companyController,
-                      isEditing: _isEditing,
-                    ),
-                  ],
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'PROFESSION',
-                    controller: _professionController,
-                    isEditing: _isEditing,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'SELF INTRO',
-                    controller: _selfIntroductionController,
-                    isEditing: _isEditing,
-                    maxLines: 3,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  _InfoField(
-                    label: 'LOCATION ADDRESS',
-                    controller: _locationAddressController,
-                    isEditing: _isEditing,
-                  ),
-                  const Divider(color: PartnerUiColors.brand),
-                  const SizedBox(height: 24),
-                  if (_isEditing)
-                    SizedBox(
-                      width: 240,
-                      height: 42,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: PartnerUiColors.brand,
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22),
+                ),
+                data: (profile) {
+                  _hydrateForm(profile);
+                  final isPartner = (profile.role ?? '').toLowerCase().contains(
+                    'partner',
+                  );
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(26, 20, 26, 30),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          Text(
+                            _isEditing
+                                ? l10n.editMyInformation
+                                : l10n.myInformation,
+                            style: AppTextStyles.sectionTitle.copyWith(
+                              color: const Color(0xFFD8C89D),
+                              fontSize: 18,
+                            ),
                           ),
-                          textStyle: const TextStyle(
-                            fontFamily: 'EricaOne',
-                            fontSize: 18,
+                          const SizedBox(height: 14),
+                          PersonalInfoField(
+                            label: l10n.firstName,
+                            controller: _firstNameController,
+                            isEditing: _isEditing,
+                            required: true,
                           ),
-                        ),
-                        onPressed: isSaving ? null : _save,
-                        child: isSaving
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.lastName,
+                            controller: _lastNameController,
+                            isEditing: _isEditing,
+                            required: true,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.email,
+                            controller: _emailController,
+                            isEditing: false,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.phone,
+                            controller: _phoneController,
+                            isEditing: _isEditing,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.address,
+                            controller: _addressController,
+                            isEditing: _isEditing,
+                            maxLines: 2,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.city,
+                            controller: _cityController,
+                            isEditing: _isEditing,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.country,
+                            controller: _countryController,
+                            isEditing: _isEditing,
+                          ),
+                          if (isPartner ||
+                              _companyController.text.trim().isNotEmpty) ...[
+                            const Divider(color: PartnerUiColors.brand),
+                            PersonalInfoField(
+                              label: l10n.company,
+                              controller: _companyController,
+                              isEditing: _isEditing,
+                            ),
+                          ],
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.profession,
+                            controller: _professionController,
+                            isEditing: _isEditing,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.selfIntro,
+                            controller: _selfIntroductionController,
+                            isEditing: _isEditing,
+                            maxLines: 3,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.locationAddress,
+                            controller: _locationAddressController,
+                            isEditing: _isEditing,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          const SizedBox(height: 24),
+                          if (_isEditing)
+                            SizedBox(
+                              width: 240,
+                              height: 42,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: PartnerUiColors.brand,
+                                  foregroundColor: Colors.white,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(22),
                                   ),
                                 ),
-                              )
-                            : const Text('Save changes'),
+                                onPressed: isSaving ? null : _save,
+                                child: isSaving
+                                    ? const SizedBox(
+                                        width: 18,
+                                        height: 18,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          valueColor:
+                                              AlwaysStoppedAnimation<Color>(
+                                                Colors.white,
+                                              ),
+                                        ),
+                                      )
+                                    : Text(
+                                      l10n.saveChanges,
+                                      style: AppTextStyles.button.copyWith(
+                                        fontFamily: AppTextStyles.titleFont,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                ],
+                  );
+                },
               ),
             ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _PersonalInfoHeader extends StatelessWidget {
-  const _PersonalInfoHeader({
-    required this.isEditing,
-    required this.isSaving,
-    required this.onEditTap,
-    required this.onSaveTap,
-    required this.onCancelTap,
-    required this.imageUrl,
-    required this.selectedImage,
-    required this.onPickImage,
-  });
-
-  final bool isEditing;
-  final bool isSaving;
-  final VoidCallback onEditTap;
-  final VoidCallback onSaveTap;
-  final VoidCallback onCancelTap;
-  final String? imageUrl;
-  final XFile? selectedImage;
-  final VoidCallback onPickImage;
-
-  @override
-  Widget build(BuildContext context) {
-    final hasNetwork = imageUrl != null && imageUrl!.trim().isNotEmpty;
-    return SizedBox(
-      height: 252,
-      width: double.infinity,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          if (selectedImage != null)
-            Image.file(
-              File(selectedImage!.path),
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, -0.9),
-            )
-          else if (hasNetwork)
-            Image.network(
-              imageUrl!,
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, -0.9),
-            )
-          else
-            Image.asset(
-              'assets/images/profile/personal_information_mock.png',
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, -0.9),
-            ),
-          Container(color: Colors.black.withValues(alpha: 0.10)),
-          const Positioned(left: 22, top: 38, child: PartnerBackButton()),
-          Positioned(
-            right: 22,
-            top: 38,
-            child: InkWell(
-              onTap: isSaving ? null : (isEditing ? onSaveTap : onEditTap),
-              customBorder: const StadiumBorder(),
-              child: Container(
-                height: 38,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: PartnerUiColors.brand,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: isSaving
-                    ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        ),
-                      )
-                    : Text(
-                        isEditing ? 'Save' : 'Edit',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'EricaOne',
-                          fontSize: 16,
-                        ),
-                      ),
-              ),
-            ),
-          ),
-          const Align(
-            alignment: Alignment(0, 0.1),
-            child: Text(
-              'PERSONAL\nINFORMATION',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFFF8F0DC),
-                fontFamily: 'EricaOne',
-                fontSize: 56 / 2,
-                height: 1.05,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          if (isEditing && !isSaving)
-            Positioned(
-              right: 22,
-              top: 82,
-              child: TextButton(
-                onPressed: onCancelTap,
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-          if (isEditing && !isSaving)
-            Positioned(
-              right: 22,
-              bottom: 14,
-              child: InkWell(
-                onTap: onPickImage,
-                borderRadius: BorderRadius.circular(18),
-                child: Container(
-                  height: 34,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.55),
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: Colors.white70),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.image_outlined, color: Colors.white, size: 16),
-                      SizedBox(width: 6),
-                      Text(
-                        'Change cover',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoField extends StatelessWidget {
-  const _InfoField({
-    required this.label,
-    required this.controller,
-    required this.isEditing,
-    this.required = false,
-    this.maxLines = 1,
-    this.keyboardType,
-  });
-
-  final String label;
-  final TextEditingController controller;
-  final bool isEditing;
-  final bool required;
-  final int maxLines;
-  final TextInputType? keyboardType;
-
-  @override
-  Widget build(BuildContext context) {
-    final value = controller.text.trim().isEmpty ? '-' : controller.text.trim();
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
-                fontSize: 17,
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: isEditing
-                ? TextFormField(
-                    controller: controller,
-                    maxLines: maxLines,
-                    keyboardType: keyboardType,
-                    textAlign: TextAlign.right,
-                    decoration: const InputDecoration(
-                      isDense: true,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 8,
-                      ),
-                      border: OutlineInputBorder(),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: PartnerUiColors.grid),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: PartnerUiColors.brand),
-                      ),
-                    ),
-                    style: const TextStyle(
-                      color: PartnerUiColors.brand,
-                      fontSize: 15,
-                    ),
-                    validator: required
-                        ? (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Required';
-                            }
-                            return null;
-                          }
-                        : null,
-                  )
-                : Text(
-                    value,
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      color: PartnerUiColors.brand,
-                      fontFamily: 'EricaOne',
-                      fontSize: 17,
-                      height: 1.2,
-                    ),
-                  ),
           ),
         ],
       ),

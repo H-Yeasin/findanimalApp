@@ -50,8 +50,8 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     final statusList = (filters['status'] is List)
         ? List<String>.from(filters['status'])
         : (filters['status'] == 'all'
-            ? <String>[]
-            : [filters['status'].toString()]);
+              ? <String>[]
+              : [filters['status'].toString()]);
     final radius = filters['radius'] ?? 5;
     final sort = filters['sort']?.toString() ?? 'descending';
     final hasLocation = filters.containsKey('lat');
@@ -223,6 +223,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
           Row(
             children: [
               Expanded(
+                flex: 2,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -240,7 +241,6 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                flex: 2,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -317,7 +317,10 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     );
   }
 
-  Widget _buildInlineFilters(AppLocalizations l10n, List<String> currentStatuses) {
+  Widget _buildInlineFilters(
+    AppLocalizations l10n,
+    List<String> currentStatuses,
+  ) {
     final options = _statusFilterOptions(l10n);
 
     return AnimatedSize(
