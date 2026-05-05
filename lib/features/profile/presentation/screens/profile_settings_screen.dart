@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-
 import 'package:go_router/go_router.dart';
-
+import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 import '../../../../core/localization/app_language.dart';
 import '../../../../core/localization/app_locale_provider.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
 class ProfileSettingsScreen extends ConsumerStatefulWidget {
@@ -48,29 +46,20 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
 
   Future<void> _onLocationToggleChanged(bool value) async {
     if (_locationToggleBusy) return;
-
     setState(() => _locationToggleBusy = true);
+
     try {
       if (value) {
-        final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-        if (!serviceEnabled) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Location service is off. Please enable it in phone settings.',
-                ),
-              ),
-            );
-          }
-          await Geolocator.openLocationSettings();
-          await _syncLocationAuthorization();
-          return;
-        }
-
-        var permission = await Geolocator.checkPermission();
+        LocationPermission permission = await Geolocator.checkPermission();
         if (permission == LocationPermission.denied) {
           permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.denied) {
+            setState(() {
+              _locationEnabled = false;
+              _locationToggleBusy = false;
+            });
+            return;
+          }
         }
 
         if (permission == LocationPermission.deniedForever) {
@@ -78,129 +67,108 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
-                  'Location permission is permanently denied. Open app settings to allow it.',
+                  'Location permissions are permanently denied, we cannot request permissions.',
                 ),
               ),
             );
           }
-          await Geolocator.openAppSettings();
-          await _syncLocationAuthorization();
+          setState(() {
+            _locationEnabled = false;
+            _locationToggleBusy = false;
+          });
           return;
         }
 
-        if (!mounted) return;
+        final enabled = await Geolocator.isLocationServiceEnabled();
         setState(() {
-          _locationEnabled =
-              permission == LocationPermission.whileInUse ||
-              permission == LocationPermission.always;
+          _locationEnabled = enabled;
         });
-        return;
+      } else {
+        // App cannot actually revoke system permissions,
+        // but we can "disable" it in our local state if we had a backend flag.
+        // For now, we just sync with system.
+        await _syncLocationAuthorization();
       }
-
-      if (!mounted) return;
-      final shouldOpenSettings = await showDialog<bool>(
-        context: context,
-        builder: (dialogContext) {
-          return AlertDialog(
-            title: const Text('Disable location access'),
-            content: const Text(
-              'To disable location permission, open your app settings and set location to "Never".',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: const Text('Cancel'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(true),
-                child: const Text('Open settings'),
-              ),
-            ],
-          );
-        },
-      );
-
-      if (shouldOpenSettings == true) {
-        await Geolocator.openAppSettings();
-      }
-
-      await _syncLocationAuthorization();
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not update location setting: $error')),
-        );
-      }
+    } catch (e) {
+      debugPrint('Error toggling location: $e');
     } finally {
-      if (mounted) {
-        setState(() => _locationToggleBusy = false);
-      }
+      if (mounted) setState(() => _locationToggleBusy = false);
     }
   }
 
-  Future<void> _openLanguageSheet(AppLanguage selectedLanguage) async {
+  Future<void> _openLanguageSheet(AppLanguage current) async {
     final pickedLanguage = await showModalBottomSheet<AppLanguage>(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: PartnerUiColors.panel,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
       builder: (context) {
         return Container(
-          margin: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: PartnerUiColors.panel,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: PartnerUiColors.grid),
-          ),
+          padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: AppLanguage.values.map((language) {
-              final isSelected = language == selectedLanguage;
-              return InkWell(
-                onTap: () => Navigator.of(context).pop(language),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          language.labelFr,
-                          style: const TextStyle(
-                            color: PartnerUiColors.brand,
-                            fontFamily: 'EricaOne',
-                            fontSize: 28 / 2,
+            children: [
+              Container(
+                width: 38,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: PartnerUiColors.brand.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'SELECT LANGUAGE',
+                style: const TextStyle(
+                  color: PartnerUiColors.brand,
+                  fontFamily: 'EricaOne',
+                  fontSize: 24,
+                ),
+              ),
+              const SizedBox(height: 24),
+              ...AppLanguage.values.map((lang) {
+                final isSelected = lang == current;
+                return InkWell(
+                  onTap: () => Navigator.pop(context, lang),
+                  child: Container(
+                    height: 56,
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? PartnerUiColors.brand
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: PartnerUiColors.brand,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(lang.flag, style: const TextStyle(fontSize: 24)),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            lang.name.toUpperCase(),
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : PartnerUiColors.brand,
+                              fontFamily: 'EricaOne',
+                              fontSize: 18,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? PartnerUiColors.brand
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: PartnerUiColors.brand),
-                        ),
-                        alignment: Alignment.center,
-                        child: isSelected
-                            ? Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              )
-                            : null,
-                      ),
-                    ],
+                        if (isSelected)
+                          const Icon(Icons.check, color: Colors.white),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }),
+            ],
           ),
         );
       },
@@ -221,140 +189,155 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: l10n.settingsTitle,
-        imageUrl:
-            'https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=1200&q=80',
+        imageUrl: "assets/settingsHeader.png",
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(38, 20, 38, 34),
-        child: Column(
-          children: [
-            PartnerSettingsRow(
-              label: l10n.changePassword,
-              value: '************',
-              onTap: () {
-                final email = currentUser?.email.trim() ?? '';
-                if (email.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Could not find account email. Please login again.',
+          padding: const EdgeInsets.fromLTRB(38, 20, 38, 34),
+          child: Column(
+            children: [
+              PartnerSettingsRow(
+                label: l10n.changePassword,
+                value: '************',
+                onTap: () {
+                  final email = currentUser?.email.trim() ?? '';
+                  if (email.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Could not find account email. Please login again.',
+                        ),
                       ),
-                    ),
-                  );
-                  return;
-                }
+                    );
+                    return;
+                  }
 
-                context.push(
-                  '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
-                );
-              },
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.registeredPaymentMethods,
-              onTap: () => context.push(RouteNames.profilePaymentMethods),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: PartnerUiColors.brand,
-                size: 36,
+                  context.push(
+                    '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
+                  );
+                },
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.language,
-              onTap: () => _openLanguageSheet(currentLanguage),
-              trailing: GestureDetector(
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.registeredPaymentMethods,
+                onTap: () => context.push(RouteNames.profilePaymentMethods),
+                trailing: const Icon(
+                  Icons.chevron_right_rounded,
+                  color: PartnerUiColors.brand,
+                  size: 36,
+                ),
+              ),
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.language,
                 onTap: () => _openLanguageSheet(currentLanguage),
-                child: Container(
-                  width: 150,
-                  height: 46,
-                  decoration: BoxDecoration(
-                    color: PartnerUiColors.panel,
-                    borderRadius: BorderRadius.circular(22),
-                    border: Border.all(color: PartnerUiColors.grid),
-                  ),
+                trailing: GestureDetector(
+                  onTap: () => _openLanguageSheet(currentLanguage),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        currentLanguage.labelEn,
+                        currentLanguage.flag,
+                        style: const TextStyle(fontSize: 22),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        currentLanguage.name.toUpperCase(),
                         style: const TextStyle(
                           color: PartnerUiColors.brand,
                           fontFamily: 'EricaOne',
-                          fontSize: 18,
+                          fontSize: 34 / 2,
                         ),
                       ),
                       const SizedBox(width: 4),
                       const Icon(
-                        Icons.keyboard_arrow_down,
+                        Icons.keyboard_arrow_down_rounded,
                         color: PartnerUiColors.brand,
-                        size: 26,
+                        size: 24,
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.darkLightMode,
-              trailing: Icon(
-                Icons.wb_sunny_outlined,
-                color: PartnerUiColors.brand,
-                size: 32,
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.locationLabel,
+                trailing: PartnerToggle(
+                  value: _locationEnabled,
+                  onChanged: _onLocationToggleChanged,
+                ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.locationAuthorization,
-              trailing: PartnerToggle(
-                value: _locationEnabled,
-                onChanged: _onLocationToggleChanged,
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.darkLightMode,
+                trailing: IconButton(
+                  onPressed: () {
+                    // TODO: Implement theme toggle
+                  },
+                  icon: const Icon(
+                    Icons.wb_sunny_rounded,
+                    color: PartnerUiColors.brand,
+                    size: 28,
+                  ),
+                ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.privacyPolicy,
-              onTap: () => context.push(RouteNames.privacyPolicy),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: PartnerUiColors.brand,
-                size: 36,
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.privacyPolicy,
+                onTap: () => context.push(RouteNames.privacyPolicy),
+                trailing: const Icon(
+                  Icons.chevron_right_rounded,
+                  color: PartnerUiColors.brand,
+                  size: 36,
+                ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.legalNotices,
-              onTap: () => context.push(RouteNames.legalNotices),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: PartnerUiColors.brand,
-                size: 36,
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.legalNotices,
+                onTap: () => context.push(RouteNames.legalNotices),
+                trailing: const Icon(
+                  Icons.chevron_right_rounded,
+                  color: PartnerUiColors.brand,
+                  size: 36,
+                ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.contactSupport,
-              onTap: () => context.push(RouteNames.contactSupport),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: PartnerUiColors.brand,
-                size: 36,
+              const Divider(color: PartnerUiColors.brand),
+              PartnerSettingsRow(
+                label: l10n.contactSupport,
+                onTap: () => context.push(RouteNames.contactSupport),
+                trailing: const Icon(
+                  Icons.chevron_right_rounded,
+                  color: PartnerUiColors.brand,
+                  size: 36,
+                ),
               ),
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            const SizedBox(height: 86),
-            Text(
-              l10n.deleteMyAccount,
-              style: TextStyle(
-                color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
-                fontSize: 38 / 2,
+              const Divider(color: PartnerUiColors.brand),
+              // const SizedBox(height: 34),
+              // PartnerPublishButton(
+              //   label: l10n.logoutLabel,
+              //   onTap: () async {
+              //     await ref.read(authSessionProvider.notifier).logout();
+              //     if (context.mounted) context.go(RouteNames.login);
+              //   },
+              // ),
+              const SizedBox(height: 30),
+              GestureDetector(
+                onTap: () {
+                  // TODO: Implement account deletion
+                },
+                child: Text(
+                  l10n.deleteMyAccount,
+                  style: const TextStyle(
+                    color: PartnerUiColors.brand,
+                    fontFamily: 'EricaOne',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }

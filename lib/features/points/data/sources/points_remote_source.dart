@@ -33,4 +33,14 @@ class PointsRemoteSource {
     );
     return response.data;
   }
+
+  Future<Map<String, dynamic>> redeemReward(String rewardId) async {
+    final response = await _apiClient.post('/rewards/redeem-reward/$rewardId');
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> getMyRedemptions() async {
+    final response = await _apiClient.get('/rewards/get-my-redemptions');
+    return response.data;
+  }
 }

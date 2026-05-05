@@ -14,4 +14,6 @@ enum AppLanguage {
       orElse: () => AppLanguage.french,
     );
   }
+
+  String get flag => this == AppLanguage.french ? '🇫🇷' : '🇬🇧';
 }

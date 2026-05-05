@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/widgets/app_background.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 class PartnerUiColors {
@@ -28,30 +29,25 @@ class PartnerScreenScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PartnerUiColors.background,
-      body: Column(
-        children: [
-          ?header,
-          Expanded(
-            child: Stack(
-              children: [
-                const Positioned.fill(
-                  child: CustomPaint(painter: _PartnerGridPainter()),
-                ),
-                SafeArea(
-                  top: false,
-                  bottom: false,
-                  child: SingleChildScrollView(child: child),
-                ),
-              ],
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Column(
+          children: [
+            ?header,
+            Expanded(
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: SingleChildScrollView(child: child),
+              ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: bottomNavIndex,
-        onTap: (_) => context.go(RouteNames.root),
+          ],
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
+          currentIndex: bottomNavIndex,
+          onTap: (_) => context.go(RouteNames.root),
+        ),
       ),
     );
   }
@@ -69,6 +65,31 @@ class PartnerHeroHeader extends StatelessWidget {
   final String imageUrl;
   final double height;
 
+  bool get _isNetworkImage =>
+      imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
+
+  Widget _buildImage() {
+    const fallback = ColoredBox(color: Color(0xFF8D8D8D));
+
+    if (imageUrl.isEmpty) return fallback;
+
+    if (_isNetworkImage) {
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, progress) =>
+            progress == null ? child : fallback,
+        errorBuilder: (context, error, stackTrace) => fallback,
+      );
+    }
+
+    return Image.asset(
+      imageUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => fallback,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -77,20 +98,8 @@ class PartnerHeroHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (imageUrl.startsWith('http'))
-            Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  Container(color: const Color(0xFF8D8D8D)),
-            )
-          else
-            Image.asset(
-              imageUrl,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) =>
-                  Container(color: const Color(0xFF8D8D8D)),
-            ),
+          const ColoredBox(color: Colors.black),
+          _buildImage(),
           Container(color: Colors.black.withValues(alpha: 0.28)),
           Positioned(left: 22, top: 38, child: const PartnerBackButton()),
           Align(
@@ -115,6 +124,7 @@ class PartnerHeroHeader extends StatelessWidget {
     );
   }
 }
+
 
 class PartnerBackButton extends StatelessWidget {
   const PartnerBackButton({this.onPressed, super.key});
@@ -621,27 +631,3 @@ class PartnerToggle extends StatelessWidget {
   }
 }
 
-class _PartnerGridPainter extends CustomPainter {
-  const _PartnerGridPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = PartnerUiColors.grid
-      ..strokeWidth = 1;
-
-    const xStep = 92.0;
-    const yStep = 102.0;
-
-    for (double x = 0; x <= size.width; x += xStep) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    for (double y = 0; y <= size.height; y += yStep) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}

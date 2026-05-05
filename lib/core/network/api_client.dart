@@ -10,7 +10,7 @@ class ApiClient {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) {
-    return _dio.get(path, options: options);
+    return _dio.get(path, queryParameters: queryParameters, options: options);
   }
 
   Future<Response<dynamic>> post(

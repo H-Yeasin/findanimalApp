@@ -164,6 +164,8 @@ class AppLocalizations {
   String get settings => _text('settings');
   String get notifications => _text('notifications');
   String get logout => _text('logout');
+  String get logoutLabel => logout;
+  String get locationLabel => locationAuthorization;
   String get inviteContacts => _text('inviteContacts');
   String get contactUs => _text('contactUs');
   String get nameAndFirstName => _text('nameAndFirstName');

@@ -51,7 +51,7 @@ class ContactSupportScreen extends StatelessWidget {
             const SizedBox(height: 40),
             Center(
               child: SizedBox(
-                width: 220,
+                width: 280,
                 height: 40,
                 child: OutlinedButton(
                   onPressed: () {},

@@ -4,6 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/network/dio_provider.dart';
 import '../../core/localization/app_localizations.dart';
+import 'domain/faq_model.dart';
+import 'presentation/providers/faq_data_provider.dart';
+import 'presentation/widgets/faq_flip_card.dart';
+import 'presentation/widgets/scroll_appearance_wrapper.dart';
+import 'presentation/widgets/faq_search_bar.dart';
 
 class FAQCommunityScreen extends ConsumerStatefulWidget {
   const FAQCommunityScreen({super.key});
@@ -81,9 +86,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   }
 
   Future<void> _contactSupport(dynamic l10n) async {
-    final email = _supportEmail ?? 'support@emmafve.com'; // Fallback
+    final email = _supportEmail ?? 'support@emmafve.com';
 
-    // Launch email intent
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
@@ -108,78 +112,9 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
 
-    final List<Map<String, dynamic>> localizedFaqData = [
-      {
-        'category': 'INITIAL',
-        'title': '',
-        'image': '',
-        'questions': [
-          'What should I do if I find an injured animal?',
-          '.. How do you know if a found animal belongs to someone?',
-          'What should I do if I cannot keep the found animal?',
-        ],
-      },
-      {
-        'category': 'REPORT',
-        'title': l10n.categoryReport,
-        'image': 'assets/images/faq_image_1.png',
-        'questions': [
-          'Can I modify my report?',
-          'Can I delete my ad?',
-          'Is my report visible everywhere?',
-        ],
-      },
-      {
-        'category': 'LOCAL MISSIONS',
-        'title': l10n.categoryMissions,
-        'image': 'assets/images/faq_image_2.png',
-        'questions': [
-          'How to participate in a mission?',
-          'Is any special experience required?',
-          'How do I find a mission near me?',
-        ],
-      },
-      {
-        'category': 'MY ACCOUNT',
-        'title': l10n.categoryAccount,
-        'image': 'assets/images/faq_image_3.png',
-        'questions': [
-          'Is my data protected?',
-          'Can I change my information?',
-          'Can I log in on multiple devices?',
-        ],
-      },
-      {
-        'category': 'MESSAGING',
-        'title': l10n.categoryMessaging,
-        'image': 'assets/images/faq_image_4.png',
-        'questions': [
-          'Can I block a user?',
-          'How to start a conversation?',
-          'How to start a conversation?',
-        ],
-      },
-      {
-        'category': 'DONATIONS AND HELP',
-        'title': l10n.categoryDonations,
-        'image': 'assets/images/faq_image_5.png',
-        'questions': [
-          'Who do the donations go to?',
-          'Are donations secure?',
-          'Can I help in other ways?',
-        ],
-      },
-      {
-        'category': 'SECURITY',
-        'title': l10n.categorySecurity,
-        'image': 'assets/images/faq_image_6.png',
-        'questions': [
-          'Is my data protected?',
-          'Does the application verify the content?',
-          'What to do in case of a problem?',
-        ],
-      },
-    ];
+    final List<FAQSection> faqData = FAQDataProvider.getLocalizedFaqData(
+      context,
+    );
 
     return Scaffold(
       backgroundColor: surface,
@@ -188,81 +123,29 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
           controller: _scrollController,
           child: Column(
             children: [
-              // Header
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                          color: brandPrimary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.undo,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                    AnimatedBuilder(
-                      animation: _floatController,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Offset(0, 5 * _floatController.value),
-                          child: Text(
-                            l10n.faqTitleLabel,
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.w900,
-                              color: brandPrimary,
-                              fontFamily: 'EricaOne',
-                              letterSpacing: 1.5,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: const BoxDecoration(
-                        color: brandPrimary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const CircleAvatar(
-                        radius: 20,
-                        backgroundColor: brandPrimary,
-                        child: Icon(Icons.person, color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildHeader(context, l10n, brandPrimary),
 
-              // Search Section
               const SizedBox(height: 20),
               Text(
                 l10n.howCanIHelp,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w900,
                   color: brandPrimary,
                 ),
               ),
               const SizedBox(height: 10),
-              _buildAnimatedSearchBar(brandPrimary, cardBg, l10n),
+              FAQSearchBar(
+                controller: _searchController,
+                brandPrimary: brandPrimary,
+                cardBg: cardBg,
+                l10n: l10n,
+              ),
 
               const SizedBox(height: 20),
               Text(
                 l10n.faqSubtitle,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w900,
                   color: brandPrimary,
@@ -270,21 +153,22 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
               ),
               const SizedBox(height: 15),
 
-              // Filtered Content
-              ...localizedFaqData.map((section) {
-                final filteredQuestions = section['questions']
+              ...faqData.map((section) {
+                final filteredQuestions = section.questions
                     .where(
-                      (q) => q.toString().toLowerCase().contains(_searchQuery),
+                      (q) =>
+                          q.question.toLowerCase().contains(_searchQuery) ||
+                          q.answer.toLowerCase().contains(_searchQuery),
                     )
                     .toList();
 
                 if (filteredQuestions.isEmpty) return const SizedBox.shrink();
 
-                if (section['category'] == 'INITIAL') {
+                if (section.category == 'INITIAL') {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: _buildFAQGrid(
-                      List<String>.from(filteredQuestions),
+                      filteredQuestions,
                       cardBg,
                       brandPrimary,
                     ),
@@ -292,67 +176,16 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 }
 
                 return _buildCategorySection(
-                  section['title'],
-                  section['image'],
-                  List<String>.from(filteredQuestions),
+                  section.title,
+                  section.image,
+                  filteredQuestions,
                   cardBg,
                   brandPrimary,
                 );
               }),
 
               const SizedBox(height: 40),
-              ScrollAppearanceWrapper(
-                type: AnimationType.bounce,
-                child: Column(
-                  children: [
-                    Text(
-                      l10n.faqContactText,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w900,
-                        color: brandPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    ScaleTransition(
-                      scale: Tween<double>(begin: 1.0, end: 1.05).animate(
-                        CurvedAnimation(
-                          parent: _pulseController,
-                          curve: Curves.easeInOut,
-                        ),
-                      ),
-                      child: GestureDetector(
-                        onTap: () => _contactSupport(l10n),
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 80),
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                            color: brandPrimary,
-                            borderRadius: BorderRadius.circular(25),
-                            boxShadow: [
-                              BoxShadow(
-                                color: brandPrimary.withValues(alpha: 0.3),
-                                blurRadius: 10,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            _supportEmail ?? l10n.contactSupport,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildContactSection(l10n, brandPrimary),
               const SizedBox(height: 100),
             ],
           ),
@@ -361,60 +194,133 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     );
   }
 
-  Widget _buildAnimatedSearchBar(Color color, Color bg, AppLocalizations l10n) {
-    return ScrollAppearanceWrapper(
-      type: AnimationType.fade,
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: color.withValues(alpha: 0.5), width: 1.5),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.search, color: Color(0xFFBA4A22), size: 24),
-            const SizedBox(width: 10),
-            Expanded(
-              child: TextField(
-                controller: _searchController,
-                style: const TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-                decoration: InputDecoration(
-                  hintText: l10n.searchTopic,
-                  hintStyle: const TextStyle(
-                    color: Color(0x80BA4A22),
-                    fontSize: 16,
-                  ),
-                  border: InputBorder.none,
-                ),
+  Widget _buildHeader(
+    BuildContext context,
+    AppLocalizations l10n,
+    Color brandPrimary,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: brandPrimary,
+                shape: BoxShape.circle,
               ),
+              child: const Icon(Icons.undo, color: Colors.white, size: 20),
             ),
-          ],
-        ),
+          ),
+          AnimatedBuilder(
+            animation: _floatController,
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(0, 5 * _floatController.value),
+                child: Text(
+                  l10n.faqTitleLabel,
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.w900,
+                    color: brandPrimary,
+                    fontFamily: 'EricaOne',
+                    letterSpacing: 1.5,
+                  ),
+                ),
+              );
+            },
+          ),
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: brandPrimary,
+              shape: BoxShape.circle,
+            ),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: brandPrimary,
+              child: Icon(Icons.person, color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildFAQGrid(List<String> questions, Color cardBg, Color color) {
+  Widget _buildContactSection(AppLocalizations l10n, Color brandPrimary) {
+    return ScrollAppearanceWrapper(
+      type: AnimationType.bounce,
+      child: Column(
+        children: [
+          Text(
+            l10n.faqContactText,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w900,
+              color: brandPrimary,
+            ),
+          ),
+          const SizedBox(height: 15),
+          ScaleTransition(
+            scale: Tween<double>(begin: 1.0, end: 1.05).animate(
+              CurvedAnimation(
+                parent: _pulseController,
+                curve: Curves.easeInOut,
+              ),
+            ),
+            child: GestureDetector(
+              onTap: () => _contactSupport(l10n),
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 80),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: brandPrimary,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: brandPrimary.withValues(alpha: 0.3),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  _supportEmail ?? l10n.contactSupport,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFAQGrid(List<FAQItem> questions, Color cardBg, Color color) {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 3,
-      childAspectRatio: 0.75,
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
+      crossAxisCount: 2,
+      childAspectRatio: 0.85,
+      mainAxisSpacing: 15,
+      crossAxisSpacing: 15,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: List.generate(questions.length, (index) {
         return ScrollAppearanceWrapper(
           type: AnimationType.flip,
           delay: Duration(milliseconds: index * 100),
-          child: FAQInteractiveCard(
-            text: questions[index],
+          child: FAQFlipCard(
+            question: questions[index].question,
+            answer: questions[index].answer,
             cardBg: cardBg,
             color: color,
           ),
@@ -426,7 +332,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   Widget _buildCategorySection(
     String title,
     String imageUrl,
-    List<String> questions,
+    List<FAQItem> questions,
     Color cardBg,
     Color color,
   ) {
@@ -468,187 +374,6 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
         const SizedBox(height: 15),
         _buildFAQGrid(questions, cardBg, color),
       ],
-    );
-  }
-}
-
-class FAQInteractiveCard extends StatefulWidget {
-  final String text;
-  final Color cardBg;
-  final Color color;
-
-  const FAQInteractiveCard({
-    super.key,
-    required this.text,
-    required this.cardBg,
-    required this.color,
-  });
-
-  @override
-  State<FAQInteractiveCard> createState() => _FAQInteractiveCardState();
-}
-
-class _FAQInteractiveCardState extends State<FAQInteractiveCard> {
-  bool _isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) => setState(() => _isPressed = false),
-      onTapCancel: () => setState(() => _isPressed = false),
-      child: AnimatedScale(
-        scale: _isPressed ? 0.90 : 1.0,
-        duration: const Duration(milliseconds: 100),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: _isPressed
-                ? widget.color.withValues(alpha: 0.05)
-                : widget.cardBg,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: widget.color.withValues(alpha: _isPressed ? 0.8 : 0.4),
-              width: _isPressed ? 2.5 : 1.5,
-            ),
-            boxShadow: _isPressed
-                ? []
-                : [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.08),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            widget.text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w900,
-              color: widget.color,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-enum AnimationType { fade, flip, bounce }
-
-class ScrollAppearanceWrapper extends StatefulWidget {
-  final Widget child;
-  final Duration duration;
-  final Duration delay;
-  final AnimationType type;
-
-  const ScrollAppearanceWrapper({
-    super.key,
-    required this.child,
-    this.duration = const Duration(milliseconds: 800),
-    this.delay = Duration.zero,
-    this.type = AnimationType.fade,
-  });
-
-  @override
-  State<ScrollAppearanceWrapper> createState() =>
-      _ScrollAppearanceWrapperState();
-}
-
-class _ScrollAppearanceWrapperState extends State<ScrollAppearanceWrapper>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  bool _isVisible = false;
-  final GlobalKey _key = GlobalKey();
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this, duration: widget.duration);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkVisibility();
-      _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
-        _checkVisibility();
-      });
-    });
-  }
-
-  void _checkVisibility() {
-    if (!mounted) return;
-
-    final renderObject = _key.currentContext?.findRenderObject() as RenderBox?;
-    if (renderObject == null) return;
-
-    final position = renderObject.localToGlobal(Offset.zero);
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    bool currentlyInView =
-        position.dy < screenHeight - 20 && position.dy > -200;
-
-    if (currentlyInView && !_isVisible) {
-      Future.delayed(widget.delay, () {
-        if (mounted) {
-          setState(() => _isVisible = true);
-          _controller.forward();
-        }
-      });
-    } else if (!currentlyInView && _isVisible) {
-      setState(() {
-        _isVisible = false;
-      });
-      _controller.reset();
-    }
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        _checkVisibility();
-        return false;
-      },
-      child: KeyedSubtree(
-        key: _key,
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            switch (widget.type) {
-              case AnimationType.flip:
-                return Transform(
-                  transform: Matrix4.identity()
-                    ..setEntry(3, 2, 0.001)
-                    ..rotateX((1 - _controller.value) * 1.5),
-                  alignment: Alignment.center,
-                  child: Opacity(opacity: _controller.value, child: child),
-                );
-              case AnimationType.bounce:
-                return Transform.scale(
-                  scale: Curves.elasticOut.transform(_controller.value),
-                  child: Opacity(opacity: _controller.value, child: child),
-                );
-              case AnimationType.fade:
-                return Transform.translate(
-                  offset: Offset(0, 20 * (1 - _controller.value)),
-                  child: Opacity(opacity: _controller.value, child: child),
-                );
-            }
-          },
-          child: widget.child,
-        ),
-      ),
     );
   }
 }

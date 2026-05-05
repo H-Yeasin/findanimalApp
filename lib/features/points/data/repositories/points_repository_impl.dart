@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/redeemable_item_model.dart';
+import '../../data/models/redemption_model.dart';
 import '../../domain/repositories/points_repository.dart';
 import '../sources/points_remote_source.dart';
 
@@ -19,6 +20,18 @@ class PointsRepositoryImpl implements PointsRepository {
 
   @override
   Future<void> redeemPoints() async {}
+
+  @override
+  Future<void> redeemReward(String rewardId) async {
+    await _remoteSource.redeemReward(rewardId);
+  }
+
+  @override
+  Future<List<RedemptionModel>> getMyRedemptions() async {
+    final response = await _remoteSource.getMyRedemptions();
+    final List<dynamic> data = response['data'];
+    return data.map((json) => RedemptionModel.fromJson(json)).toList();
+  }
 
   @override
   Future<List<RedeemableItemModel>> getAllRewards({

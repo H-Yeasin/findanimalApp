@@ -23,8 +23,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     return PartnerScreenScaffold(
       header: const PartnerHeroHeader(
         title: 'MY PAYMENT\nMEANS',
-        imageUrl:
-            'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80', // Replace with exact image if available
+        imageUrl: "assets/mypaymentsHeader.png",
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),

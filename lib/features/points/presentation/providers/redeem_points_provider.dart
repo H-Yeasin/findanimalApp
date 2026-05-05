@@ -12,6 +12,13 @@ class RedeemPointsNotifier extends AsyncNotifier<void> {
       await ref.read(pointsRepositoryProvider).redeemPoints();
     });
   }
+
+  Future<void> redeemReward(String rewardId) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(pointsRepositoryProvider).redeemReward(rewardId);
+    });
+  }
 }
 
 final redeemPointsProvider = AsyncNotifierProvider<RedeemPointsNotifier, void>(

@@ -10,10 +10,13 @@ import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
+import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../providers/my_reports_provider.dart';
 
 class MyReportsScreen extends ConsumerWidget {
-  const MyReportsScreen({super.key});
+  final bool showBottomNav;
+
+  const MyReportsScreen({super.key, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +32,7 @@ class MyReportsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppTopBar(showBackButton: false),
+                  const AppTopBar(),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -152,6 +155,33 @@ class MyReportsScreen extends ConsumerWidget {
           ],
         ),
       ),
+      bottomNavigationBar: showBottomNav
+          ? CustomBottomNavigationBar(
+              currentIndex: 1,
+              onTap: (index) {
+                switch (index) {
+                  case 0:
+                    context.go(RouteNames.root);
+                    break;
+                  case 1:
+                    break;
+                  case 3:
+                    context.go(RouteNames.mainCommunity);
+                    break;
+                  case 4:
+                    context.go(RouteNames.mainSolidarity);
+                    break;
+                  case 2:
+                    if (context.canPop()) {
+                      context.pop();
+                    } else {
+                      context.go(RouteNames.mainProfile);
+                    }
+                    break;
+                }
+              },
+            )
+          : null,
     );
   }
 
