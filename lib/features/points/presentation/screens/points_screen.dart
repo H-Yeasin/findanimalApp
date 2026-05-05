@@ -19,7 +19,7 @@ class PointsScreen extends ConsumerWidget {
       backgroundColor: AppColors.surface,
       body: SafeArea(
         child: pointsState.when(
-          data: (state) => _buildContent(context, state),
+          data: (state) => _buildContent(context, ref, state),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (err, stack) => Center(child: Text('Error: $err')),
         ),
@@ -27,7 +27,7 @@ class PointsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, PointsState state) {
+  Widget _buildContent(BuildContext context, WidgetRef ref, PointsState state) {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -40,7 +40,7 @@ class PointsScreen extends ConsumerWidget {
                 const SizedBox(height: 30),
                 _buildHistoricalSection(state.history),
                 const SizedBox(height: 40),
-                _buildRedeemSection(state.redeemableItems),
+                _buildRedeemSection(ref, state),
               ],
             ),
           ),
@@ -153,7 +153,7 @@ class PointsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildRedeemSection(List<RedeemableItemModel> items) {
+  Widget _buildRedeemSection(WidgetRef ref, PointsState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -168,47 +168,148 @@ class PointsScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTab('Limited edition', isSelected: true),
-            const SizedBox(width: 10),
-            _buildTab('Featured', isSelected: false),
-            const SizedBox(width: 10),
-            _buildTab('Solidarity shop', isSelected: false),
-          ],
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTab(
+                ref,
+                'Limited edition',
+                'limited',
+                isSelected: state.currentCategory == 'limited',
+              ),
+              const SizedBox(width: 10),
+              _buildTab(
+                ref,
+                'Featured',
+                'featured',
+                isSelected: state.currentCategory == 'featured',
+              ),
+              const SizedBox(width: 10),
+              _buildTab(
+                ref,
+                'Solidarity shop',
+                'solidarity',
+                isSelected: state.currentCategory == 'solidarity',
+              ),
+              const SizedBox(width: 10),
+              _buildTab(
+                ref,
+                'All',
+                null,
+                isSelected: state.currentCategory == null,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTypeTab(
+                ref,
+                'Product',
+                'product',
+                isSelected: state.currentType == 'product',
+              ),
+              const SizedBox(width: 10),
+              _buildTypeTab(
+                ref,
+                'Gift Card',
+                'giftcard',
+                isSelected: state.currentType == 'giftcard',
+              ),
+              const SizedBox(width: 10),
+              _buildTypeTab(
+                ref,
+                'All Types',
+                null,
+                isSelected: state.currentType == null,
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: 25),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.85,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
+        if (state.redeemableItems.isEmpty)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                'No rewards available with these filters.',
+                style: TextStyle(color: AppColors.brandPrimary),
+              ),
+            ),
+          )
+        else
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.85,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+            ),
+            itemCount: state.redeemableItems.length,
+            itemBuilder:
+                (context, index) => _buildItemCard(state.redeemableItems[index]),
           ),
-          itemCount: items.length,
-          itemBuilder: (context, index) => _buildItemCard(items[index]),
-        ),
       ],
     );
   }
 
-  Widget _buildTab(String label, {bool isSelected = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.brandPrimary : Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.brandPrimary),
+  Widget _buildTypeTab(
+    WidgetRef ref,
+    String label,
+    String? type, {
+    bool isSelected = false,
+  }) {
+    return GestureDetector(
+      onTap: () => ref.read(pointsProvider.notifier).setType(type),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.brandPrimary : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.brandPrimary),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : AppColors.brandPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : AppColors.brandPrimary,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
+    );
+  }
+
+  Widget _buildTab(
+    WidgetRef ref,
+    String label,
+    String? category, {
+    bool isSelected = false,
+  }) {
+    return GestureDetector(
+      onTap: () => ref.read(pointsProvider.notifier).setCategory(category),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.brandPrimary : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.brandPrimary),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : AppColors.brandPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
@@ -231,23 +332,32 @@ class PointsScreen extends ConsumerWidget {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Image.asset(
-                      item.imageUrl,
+                    child: Image.network(
+                      item.photo.secureUrl,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) =>
-                          _buildPlaceholderIcon(item.name),
+                      errorBuilder:
+                          (context, error, stackTrace) =>
+                              _buildPlaceholderIcon(item.title),
                     ),
                   ),
                 ),
                 Positioned(
                   top: 8,
                   right: 8,
-                  child: Text(
-                    '${item.pointsCost} pts',
-                    style: const TextStyle(
-                      color: AppColors.brandPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.8),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      '${item.points} pts',
+                      style: const TextStyle(
+                        color: AppColors.brandPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
@@ -270,8 +380,10 @@ class PointsScreen extends ConsumerWidget {
               ),
             ),
             child: Text(
-              item.name,
+              item.title,
               textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: AppColors.brandPrimary,
                 fontSize: 10,

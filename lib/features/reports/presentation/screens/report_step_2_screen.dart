@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,10 +30,11 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
   }
 
   Future<void> _pickImage() async {
+    final l10n = AppLocalizations.of(context);
     if (_pickedImages.length >= 3) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Maximum 3 photos allowed')));
+      ).showSnackBar(SnackBar(content: Text(l10n.reportStep2MaxPhotos)));
       return;
     }
 
@@ -54,6 +56,7 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     // Listen for address changes from the map picker
     ref.listen(reportFormProvider.select((s) => s.address), (prev, next) {
       if (next != null && next != _addressController.text) {
@@ -63,18 +66,18 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
 
     return ReportBaseLayout(
       currentStep: 2,
-      stepTitle: 'DESCRIBE THE\nANIMAL',
+      stepTitle: l10n.reportStep2Title,
       onButtonPressed: () {
         // Validation
         if (_addressController.text.trim().isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please enter the last known location.')),
+            SnackBar(content: Text(l10n.reportStep2LocationRequired)),
           );
           return;
         }
         if (_descriptionController.text.trim().isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please add a description of the animal.')),
+            SnackBar(content: Text(l10n.reportStep2DescriptionRequired)),
           );
           return;
         }
@@ -90,13 +93,13 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLabel('WHERE DID YOU LAST SEE HIM?'),
+          _buildLabel(l10n.reportStep2LocationLabel),
           Row(
             children: [
               Expanded(
                 child: _buildTextField(
                   controller: _addressController,
-                  hint: 'Address of last location',
+                  hint: l10n.reportStep2LocationHint,
                 ),
               ),
               const SizedBox(width: 10),
@@ -114,20 +117,19 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
             ],
           ),
           const SizedBox(height: 25),
-          _buildLabel('ADD A DESCRIPTION'),
+          _buildLabel(l10n.reportStep2DescriptionLabel),
           _buildTextField(
             controller: _descriptionController,
-            hint:
-                'Description of the animal, the situation etc.. (500 words max)',
+            hint: l10n.reportStep2DescriptionHint,
             maxLines: 5,
           ),
           const SizedBox(height: 25),
-          _buildLabel('ADD ONE OR MORE PHOTOS OF THE ANIMAL (MAX 3)'),
+          _buildLabel(l10n.reportStep2PhotosLabel),
           if (_pickedImages.isNotEmpty) ...[
             _buildImageList(),
             const SizedBox(height: 15),
           ],
-          _buildUploadBox(),
+          _buildUploadBox(l10n),
         ],
       ),
     );
@@ -226,7 +228,7 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
     );
   }
 
-  Widget _buildUploadBox() {
+  Widget _buildUploadBox(AppLocalizations l10n) {
     return GestureDetector(
       onTap: _pickImage,
       child: Container(
@@ -254,7 +256,7 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
             ),
             const SizedBox(width: 15),
             Text(
-              'Upload a photo',
+              l10n.reportStep2UploadHint,
               style: TextStyle(
                 color: const Color(0xFFBA4A22).withValues(alpha: 0.6),
                 fontSize: 16,

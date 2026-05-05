@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
 import '../../data/repositories/reports_repository.dart';
+import '../providers/my_reports_provider.dart';
 
 class ReportFormState {
   const ReportFormState({
@@ -161,7 +162,7 @@ class ReportFormNotifier extends Notifier<ReportFormState> {
   }
 
   String _mapYesNoFromBackend(String value) {
-    if (value == 'Unknown') return "I don't know";
+    if (value == 'Unknown') return 'Unknown';
     return value;
   }
 
@@ -239,6 +240,8 @@ class ReportFormNotifier extends Notifier<ReportFormState> {
       } else {
         await repository.createReport(state);
       }
+      // Refresh the reports list
+      ref.invalidate(myReportsProvider);
       state = state.copyWith(submissionState: const AsyncValue.data(null));
       return true;
     } catch (e, stack) {

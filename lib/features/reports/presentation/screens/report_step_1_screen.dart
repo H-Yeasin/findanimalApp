@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
@@ -32,38 +33,62 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    // Mappings for display labels to API values
+    final postTypes = {
+      l10n.reportStep1Lost: 'Lost',
+      l10n.reportStep1Found: 'Found',
+      l10n.reportStep1Spotted: 'Spotted',
+      l10n.reportStep1Injured: 'Injured',
+    };
+
+    final speciesItems = {
+      l10n.reportStep1Dog: 'Dog',
+      l10n.reportStep1Cat: 'Cat',
+      l10n.reportStep1Bird: 'Bird',
+      l10n.reportStep1Rabbit: 'Rabbit',
+      l10n.reportStep1Other: 'Other',
+    };
+
+    // Helper to find the current label for a given API value
+    String? getLabel(Map<String, String> map, String? apiValue) {
+      if (apiValue == null) return null;
+      return map.entries
+          .firstWhere((e) => e.value == apiValue, orElse: () => map.entries.first)
+          .key;
+    }
+
     return ReportBaseLayout(
       currentStep: 1,
-      stepTitle: 'WHAT TYPE OF\nANIMAL?',
+      stepTitle: l10n.reportStep1Title,
       onButtonPressed: () {
         // Validation
         if (_selectedPostType == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select a post type.')),
+            SnackBar(content: Text(l10n.reportStep1PostTypeRequired)),
           );
           return;
         }
         if (_nameController.text.trim().isEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Please enter your animal's name.")),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.reportStep1NameRequired)));
           return;
         }
         if (_selectedSpecies == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select the species.')),
+            SnackBar(content: Text(l10n.reportStep1SpeciesRequired)),
           );
           return;
         }
         if (_selectedGender == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select the gender.')),
+            SnackBar(content: Text(l10n.reportStep1GenderRequired)),
           );
           return;
         }
-        ref
-            .read(reportFormProvider.notifier)
-            .setBasicInfo(
+        ref.read(reportFormProvider.notifier).setBasicInfo(
               postType: _selectedPostType,
               animalName: _nameController.text,
               species: _selectedSpecies,
@@ -75,44 +100,60 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLabel('WHAT TYPES OF ADS DO YOU WANT TO PUBLISH?'),
+          _buildLabel(l10n.reportStep1PostTypeLabel),
           _buildDropdown(
-            value: _selectedPostType,
-            hint: 'Post Types',
-            items: ['Lost', 'Found', 'Spotted', 'Injured'],
-            onChanged: (val) => setState(() => _selectedPostType = val),
+            value: getLabel(postTypes, _selectedPostType),
+            hint: l10n.reportStep1PostTypeHint,
+            items: postTypes.keys.toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() => _selectedPostType = postTypes[val]);
+              }
+            },
           ),
           const SizedBox(height: 20),
-          _buildLabel("WHAT IS YOUR ANIMAL'S NAME?"),
+          _buildLabel(l10n.reportStep1NameLabel),
           _buildTextField(
             controller: _nameController,
-            hint: "Enter my pet's name",
+            hint: l10n.reportStep1NameHint,
           ),
           const SizedBox(height: 20),
-          _buildLabel('WHAT SPECIES IS IT?'),
+          _buildLabel(l10n.reportStep1SpeciesLabel),
           _buildDropdown(
-            value: _selectedSpecies,
-            hint: 'Species of the animal',
-            items: ['Dog', 'Cat', 'Bird', 'Rabbit', 'Other'],
-            onChanged: (val) => setState(() => _selectedSpecies = val),
+            value: getLabel(speciesItems, _selectedSpecies),
+            hint: l10n.reportStep1SpeciesHint,
+            items: speciesItems.keys.toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() => _selectedSpecies = speciesItems[val]);
+              }
+            },
           ),
           const SizedBox(height: 20),
-          _buildLabel('WHAT RACE IS HE?'),
+          _buildLabel(l10n.reportStep1BreedLabel),
           _buildTextField(
             controller: _breedController,
-            hint: 'Breed of the animal',
+            hint: l10n.reportStep1BreedHint,
           ),
           const SizedBox(height: 20),
-          _buildLabel('IS THIS A MALE OR FEMALE?'),
+          _buildLabel(l10n.reportStep1GenderLabel),
           Row(
             children: [
-              _buildRadioButton('Male', _selectedGender == 'Male', () {
-                setState(() => _selectedGender = 'Male');
-              }),
+              _buildRadioButton(
+                l10n.reportStep1Male,
+                _selectedGender == 'Male',
+                () {
+                  setState(() => _selectedGender = 'Male');
+                },
+              ),
               const SizedBox(width: 30),
-              _buildRadioButton('Female', _selectedGender == 'Female', () {
-                setState(() => _selectedGender = 'Female');
-              }),
+              _buildRadioButton(
+                l10n.reportStep1Female,
+                _selectedGender == 'Female',
+                () {
+                  setState(() => _selectedGender = 'Female');
+                },
+              ),
             ],
           ),
         ],

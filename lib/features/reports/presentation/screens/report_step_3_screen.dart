@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
@@ -30,38 +31,37 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ReportBaseLayout(
       currentStep: 3,
-      stepTitle: 'TECHNICAL\nINFORMATION',
+      stepTitle: l10n.reportStep3Title,
       onButtonPressed: () {
         // Validation
         if (_hasChip == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please answer: Does it have an electronic chip?')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.reportStep3ChipRequired)));
           return;
         }
         if (_hasTattoo == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please answer: Does it have a tattoo?')),
+            SnackBar(content: Text(l10n.reportStep3TattooRequired)),
           );
           return;
         }
         if (_hasCollar == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please answer: Does it have a collar or harness?')),
+            SnackBar(content: Text(l10n.reportStep3CollarRequired)),
           );
           return;
         }
         if (_eventDate == null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Please select when this happened.')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.reportStep3DateRequired)));
           return;
         }
-        ref
-            .read(reportFormProvider.notifier)
-            .setTechnicalInfo(
+        ref.read(reportFormProvider.notifier).setTechnicalInfo(
               hasMicrochip: _hasChip,
               hasTattoo: _hasTattoo,
               hasCollarOrHarness: _hasCollar,
@@ -72,25 +72,19 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildQuestionSection('DOES IT HAVE AN ELECTRONIC CHIP?', _hasChip, (
-            val,
-          ) {
+          _buildQuestionSection(l10n.reportStep3ChipLabel, _hasChip, (val) {
             setState(() => _hasChip = val);
-          }),
+          }, l10n),
           const SizedBox(height: 25),
-          _buildQuestionSection('DOES HE HAVE A TATTOO?', _hasTattoo, (val) {
+          _buildQuestionSection(l10n.reportStep3TattooLabel, _hasTattoo, (val) {
             setState(() => _hasTattoo = val);
-          }),
+          }, l10n),
           const SizedBox(height: 25),
-          _buildQuestionSection(
-            'DOES HE HAVE A COLLAR OR HARNESS?',
-            _hasCollar,
-            (val) {
-              setState(() => _hasCollar = val);
-            },
-          ),
+          _buildQuestionSection(l10n.reportStep3CollarLabel, _hasCollar, (val) {
+            setState(() => _hasCollar = val);
+          }, l10n),
           const SizedBox(height: 25),
-          _buildLabel('WHEN DID THIS HAPPEN?'),
+          _buildLabel(l10n.reportStep3DateLabel),
           _buildDatePicker(),
         ],
       ),
@@ -115,6 +109,7 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
     String question,
     String? currentValue,
     Function(String) onChanged,
+    AppLocalizations l10n,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,19 +119,19 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             _buildRadioButton(
-              'Yes',
+              l10n.yes,
               currentValue == 'Yes',
               () => onChanged('Yes'),
             ),
             _buildRadioButton(
-              'No',
+              l10n.no,
               currentValue == 'No',
               () => onChanged('No'),
             ),
             _buildRadioButton(
-              "I don't know",
-              currentValue == "I don't know",
-              () => onChanged("I don't know"),
+              l10n.dontKnow,
+              currentValue == 'Unknown',
+              () => onChanged('Unknown'),
             ),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../providers/report_form_provider.dart';
 
 class LocationPickerScreen extends ConsumerStatefulWidget {
@@ -73,9 +74,16 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    if (_addressLine == 'Locating...') {
+      _addressLine = l10n.locating;
+    } else if (_addressLine == 'Address not found') {
+      _addressLine = l10n.addressNotFound;
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Location'),
+        title: Text(l10n.selectLocation),
         backgroundColor: const Color(0xFFBA4A22),
         foregroundColor: Colors.white,
       ),
@@ -178,9 +186,9 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: const Text(
-                      'Confirm Location',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.confirmLocation,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

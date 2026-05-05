@@ -438,6 +438,86 @@ class AppLocalizations {
   String get personalInformation => _text('personalInformation');
   String get changeCover => _text('changeCover');
   String get required => _text('required');
+  String get myAnimals => _text('myAnimals');
+  String couldNotLoadAnimals(String error) =>
+      text('couldNotLoadAnimals', params: {'error': error});
+  String get noAnimalsYet => _text('noAnimalsYet');
+  String get personalInformationLabel => _text('personalInformationLabel');
+
+  String get reportStep1Title => _text('reportStep1Title');
+  String get reportStep1PostTypeRequired => _text('reportStep1PostTypeRequired');
+  String get reportStep1NameRequired => _text('reportStep1NameRequired');
+  String get reportStep1SpeciesRequired => _text('reportStep1SpeciesRequired');
+  String get reportStep1GenderRequired => _text('reportStep1GenderRequired');
+  String get reportStep1PostTypeLabel => _text('reportStep1PostTypeLabel');
+  String get reportStep1PostTypeHint => _text('reportStep1PostTypeHint');
+  String get reportStep1NameLabel => _text('reportStep1NameLabel');
+  String get reportStep1NameHint => _text('reportStep1NameHint');
+  String get reportStep1SpeciesLabel => _text('reportStep1SpeciesLabel');
+  String get reportStep1SpeciesHint => _text('reportStep1SpeciesHint');
+  String get reportStep1BreedLabel => _text('reportStep1BreedLabel');
+  String get reportStep1BreedHint => _text('reportStep1BreedHint');
+  String get reportStep1GenderLabel => _text('reportStep1GenderLabel');
+  String get reportStep1Male => _text('reportStep1Male');
+  String get reportStep1Female => _text('reportStep1Female');
+  String get reportStep1Dog => _text('reportStep1Dog');
+  String get reportStep1Cat => _text('reportStep1Cat');
+  String get reportStep1Bird => _text('reportStep1Bird');
+  String get reportStep1Rabbit => _text('reportStep1Rabbit');
+  String get reportStep1Other => _text('reportStep1Other');
+  String get reportStep1Lost => _text('reportStep1Lost');
+  String get reportStep1Found => _text('reportStep1Found');
+  String get reportStep1Spotted => _text('reportStep1Spotted');
+  String get reportStep1Injured => _text('reportStep1Injured');
+
+  String get reportStep2Title => _text('reportStep2Title');
+  String get reportStep2MaxPhotos => _text('reportStep2MaxPhotos');
+  String get reportStep2LocationRequired => _text('reportStep2LocationRequired');
+  String get reportStep2DescriptionRequired =>
+      _text('reportStep2DescriptionRequired');
+  String get reportStep2LocationLabel => _text('reportStep2LocationLabel');
+  String get reportStep2LocationHint => _text('reportStep2LocationHint');
+  String get reportStep2DescriptionLabel => _text('reportStep2DescriptionLabel');
+  String get reportStep2DescriptionHint => _text('reportStep2DescriptionHint');
+  String get reportStep2PhotosLabel => _text('reportStep2PhotosLabel');
+  String get reportStep2UploadHint => _text('reportStep2UploadHint');
+
+  String get reportStep3Title => _text('reportStep3Title');
+  String get reportStep3ChipRequired => _text('reportStep3ChipRequired');
+  String get reportStep3TattooRequired => _text('reportStep3TattooRequired');
+  String get reportStep3CollarRequired => _text('reportStep3CollarRequired');
+  String get reportStep3DateRequired => _text('reportStep3DateRequired');
+  String get reportStep3ChipLabel => _text('reportStep3ChipLabel');
+  String get reportStep3TattooLabel => _text('reportStep3TattooLabel');
+  String get reportStep3CollarLabel => _text('reportStep3CollarLabel');
+  String get reportStep3DateLabel => _text('reportStep3DateLabel');
+
+  String get reportStep4Title => _text('reportStep4Title');
+  String get reportStep4Publishing => _text('reportStep4Publishing');
+  String get reportStep4PublishButton => _text('reportStep4PublishButton');
+  String get reportStep4ContactRequired => _text('reportStep4ContactRequired');
+  String get reportStep4EmailInvalid => _text('reportStep4EmailInvalid');
+  String get reportStep4Success => _text('reportStep4Success');
+  String reportStep4Error(String error) =>
+      text('reportStep4Error', params: {'error': error});
+  String get reportStep4PhoneLabel => _text('reportStep4PhoneLabel');
+  String get reportStep4PhoneHint => _text('reportStep4PhoneHint');
+  String get reportStep4VisibilityLabel => _text('reportStep4VisibilityLabel');
+  String get reportStep4EmailLabel => _text('reportStep4EmailLabel');
+  String get reportStep4EmailHint => _text('reportStep4EmailHint');
+
+  String get yes => _text('yes');
+  String get no => _text('no');
+  String get dontKnow => _text('dontKnow');
+  String get noLocationAvailable => _text('noLocationAvailable');
+  String get couldNotOpenMap => _text('couldNotOpenMap');
+  String get selectLocation => _text('selectLocation');
+  String get locating => _text('locating');
+  String get addressNotFound => _text('addressNotFound');
+  String get confirmLocation => _text('confirmLocation');
+  String get reportPointsInfo => _text('reportPointsInfo');
+  String get following => _text('following');
+  String get noReportsYet => _text('noReportsYet');
 }
 
 class _AppLocalizationsDelegate

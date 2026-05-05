@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
+import '../../../../core/routing/route_names.dart';
+import 'package:go_router/go_router.dart';
 
 class ReportBaseLayout extends ConsumerWidget {
   final int currentStep;
   final String stepTitle;
   final Widget child;
-  final String buttonText;
+  final String? buttonText;
   final VoidCallback onButtonPressed;
 
   const ReportBaseLayout({
@@ -16,19 +20,20 @@ class ReportBaseLayout extends ConsumerWidget {
     required this.currentStep,
     required this.stepTitle,
     required this.child,
-    this.buttonText = 'Following',
+    this.buttonText,
     required this.onButtonPressed,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AppBackground(
         child: SafeArea(
           child: Column(
             children: [
-              _buildHeader(context, ref),
+              _buildHeader(context, ref, l10n),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -39,8 +44,8 @@ class ReportBaseLayout extends ConsumerWidget {
                       const SizedBox(height: 30),
                       child,
                       const SizedBox(height: 40),
-                      _buildMainButton(),
-                      const SizedBox(height: 120), // Bottom nav space
+                      _buildMainButton(l10n),
+                      const SizedBox(height: 20), // Reduced bottom space
                     ],
                   ),
                 ),
@@ -49,20 +54,46 @@ class ReportBaseLayout extends ConsumerWidget {
           ),
         ),
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1, // Active tab for reporting flow
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go(RouteNames.reports);
+              break;
+            case 1:
+              context.go(RouteNames.myReports);
+              break;
+            case 2:
+              context.go(RouteNames.mainHome);
+              break;
+            case 3:
+              context.go(RouteNames.mainCommunity);
+              break;
+            case 4:
+              context.go(RouteNames.mainSolidarity);
+              break;
+          }
+        },
+      ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, WidgetRef ref) {
+  Widget _buildHeader(
+    BuildContext context,
+    WidgetRef ref,
+    AppLocalizations l10n,
+  ) {
     return Column(
       children: [
-        const AppTopBar(showBackButton: false),
+        const AppTopBar(showBackButton: true),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const Text('I REPORT', style: AppTextStyles.display),
-              const Text(
-                'For each report, you earn 10 points on your Hesteka account',
+              Text(l10n.navReport.toUpperCase(), style: AppTextStyles.display),
+              Text(
+                l10n.reportPointsInfo,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.caption,
               ),
@@ -86,7 +117,7 @@ class ReportBaseLayout extends ConsumerWidget {
             final stepNum = index + 1;
             final isActive = stepNum == currentStep;
             return SizedBox(
-              width: circleSize,
+              width: 70,
               child: isActive
                   ? Text(
                       stepTitle.toUpperCase(),
@@ -132,7 +163,7 @@ class ReportBaseLayout extends ConsumerWidget {
                       '$stepNum',
                       style: TextStyle(
                         color: isActive ? Colors.white : brandColor,
-                        fontSize: 24,
+                        fontSize: 32,
                         fontFamily: 'EricaOne',
                         fontWeight: FontWeight.w400,
                       ),
@@ -147,7 +178,7 @@ class ReportBaseLayout extends ConsumerWidget {
     );
   }
 
-  Widget _buildMainButton() {
+  Widget _buildMainButton(AppLocalizations l10n) {
     return GestureDetector(
       onTap: onButtonPressed,
       child: Container(
@@ -159,7 +190,7 @@ class ReportBaseLayout extends ConsumerWidget {
         ),
         child: Center(
           child: Text(
-            buttonText.toUpperCase(),
+            (buttonText ?? l10n.following).toUpperCase(),
             style: AppTextStyles.button.copyWith(fontSize: 18),
           ),
         ),

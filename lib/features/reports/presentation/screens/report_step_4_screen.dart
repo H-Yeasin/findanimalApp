@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
@@ -30,15 +31,16 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ReportBaseLayout(
       currentStep: 4,
-      stepTitle: 'PERSONAL\nINFORMATION',
+      stepTitle: l10n.reportStep4Title,
       buttonText: ref
           .watch(reportFormProvider)
           .submissionState
           .maybeWhen(
-            loading: () => 'Publishing...',
-            orElse: () => 'Publish my ad',
+            loading: () => l10n.reportStep4Publishing,
+            orElse: () => l10n.reportStep4PublishButton,
           ),
       onButtonPressed: () async {
         // Validation — at least one contact method required
@@ -46,21 +48,15 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
         final email = _emailController.text.trim();
         if (phone.isEmpty && email.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                'Please provide at least a phone number or email address.',
-              ),
-            ),
+            SnackBar(content: Text(l10n.reportStep4ContactRequired)),
           );
           return;
         }
         if (email.isNotEmpty &&
             !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Please enter a valid email address.'),
-            ),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.reportStep4EmailInvalid)));
           return;
         }
         ref
@@ -82,19 +78,25 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
 
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Report published successfully!'),
-                backgroundColor: Color(0xFFBA4A22),
+              SnackBar(
+                content: Text(l10n.reportStep4Success),
+                backgroundColor: const Color(0xFFBA4A22),
               ),
             );
           }
         } else {
           if (mounted) {
-            final error = ref.read(reportFormProvider).submissionState.error;
+            final error =
+                ref
+                    .read(reportFormProvider)
+                    .submissionState
+                    .error
+                    ?.toString() ??
+                '';
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Error publishing report: $error'),
+                content: Text(l10n.reportStep4Error(error)),
                 backgroundColor: Colors.red,
               ),
             );
@@ -104,27 +106,27 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLabel('YOUR PHONE NUMBER'),
+          _buildLabel(l10n.reportStep4PhoneLabel),
           _buildTextField(
             controller: _phoneController,
-            hint: 'My phone number',
+            hint: l10n.reportStep4PhoneHint,
             keyboardType: TextInputType.phone,
           ),
           const SizedBox(height: 10),
-          _buildCheckbox('Make it visible on my report', _isPhoneVisible, (
+          _buildCheckbox(l10n.reportStep4VisibilityLabel, _isPhoneVisible, (
             val,
           ) {
             setState(() => _isPhoneVisible = val);
           }),
           const SizedBox(height: 25),
-          _buildLabel('YOUR EMAIL ADDRESS'),
+          _buildLabel(l10n.reportStep4EmailLabel),
           _buildTextField(
             controller: _emailController,
-            hint: 'My email address',
+            hint: l10n.reportStep4EmailHint,
             keyboardType: TextInputType.emailAddress,
           ),
           const SizedBox(height: 10),
-          _buildCheckbox('Make it visible on my report', _isEmailVisible, (
+          _buildCheckbox(l10n.reportStep4VisibilityLabel, _isEmailVisible, (
             val,
           ) {
             setState(() => _isEmailVisible = val);

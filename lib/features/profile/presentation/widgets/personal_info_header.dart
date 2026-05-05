@@ -39,24 +39,15 @@ class PersonalInfoHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (selectedImage != null)
-            Image.file(
-              File(selectedImage!.path),
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, -0.9),
-            )
-          else if (hasNetwork)
+          if (hasNetwork)
             Image.network(
               imageUrl!,
               fit: BoxFit.cover,
               alignment: const Alignment(0, -0.9),
             )
           else
-            Image.asset(
-              'assets/images/profile/personal_information_mock.png',
-              fit: BoxFit.cover,
-              alignment: const Alignment(0, -0.9),
-            ),
+            Icon(Icons.person, size: 100, color: Colors.grey),
+
           Container(color: Colors.black.withValues(alpha: 0.10)),
           const Positioned(left: 22, top: 38, child: PartnerBackButton()),
           Positioned(

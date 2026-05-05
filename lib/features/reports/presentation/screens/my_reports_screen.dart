@@ -45,18 +45,41 @@ class MyReportsScreen extends ConsumerWidget {
                   ),
                   Expanded(
                     child: reportsAsync.when(
-                      data: (reports) => ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 10,
-                        ),
-                        itemCount: reports.length,
-                        itemBuilder: (context, index) => _buildReportCard(
-                          context,
-                          ref,
-                          reports[index],
-                          l10n,
-                        ),
+                      data: (reports) => RefreshIndicator(
+                        color: const Color(0xFFBA4A22),
+                        onRefresh: () => ref.refresh(myReportsProvider.future),
+                        child: reports.isEmpty
+                            ? ListView(
+                                children: [
+                                  SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height *
+                                        0.6,
+                                    child: Center(
+                                      child: Text(
+                                        l10n.noReportsYet,
+                                        style: const TextStyle(
+                                          color: Color(0xFFBA4A22),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 10,
+                                ),
+                                itemCount: reports.length,
+                                itemBuilder: (context, index) =>
+                                    _buildReportCard(
+                                      context,
+                                      ref,
+                                      reports[index],
+                                      l10n,
+                                    ),
+                              ),
                       ),
                       loading: () => const Center(
                         child: CircularProgressIndicator(
@@ -268,13 +291,12 @@ class MyReportsScreen extends ConsumerWidget {
   }
 
   Future<void> _openMap(BuildContext context, ReportModel report) async {
+    final l10n = AppLocalizations.of(context);
     final coordinates = report.location.coordinates;
     if (coordinates.length < 2) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No location is available for this report.'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.noLocationAvailable)));
       return;
     }
 
@@ -287,7 +309,7 @@ class MyReportsScreen extends ConsumerWidget {
     if (!opened && context.mounted) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Could not open the map.')));
+      ).showSnackBar(SnackBar(content: Text(l10n.couldNotOpenMap)));
     }
   }
 

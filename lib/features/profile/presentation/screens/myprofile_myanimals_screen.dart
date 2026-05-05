@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_background.dart';
+import '../../../../core/widgets/app_top_bar.dart';
+import '../../../../features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../../data/models/my_animal_model.dart';
@@ -38,221 +42,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
     final currentUser = ref.watch(currentUserProvider);
     final l10n = AppLocalizations.of(context);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFEDEDED),
-      body: Stack(
-        children: [
-          const Positioned.fill(child: CustomPaint(painter: _GridPainter())),
-          SafeArea(
-            bottom: false,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(22, 16, 22, 26),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () {
-                        if (context.canPop()) {
-                          context.pop();
-                        } else {
-                          context.go(RouteNames.myProfile);
-                        }
-                      },
-                      customBorder: const CircleBorder(),
-                      child: Container(
-                        width: 43,
-                        height: 43,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(0xFFBA4A22),
-                        ),
-                        child: const Icon(
-                          Icons.undo,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-                  const Text(
-                    'My profile',
-                    style: TextStyle(
-                      color: Color(0xFFBA4A22),
-                      fontFamily: 'EricaOne',
-                      fontSize: 30,
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                  profileAsync.when(
-                    loading: () => _personalInfoCard(
-                      name: 'Loading...',
-                      onTap: () =>
-                          context.push(RouteNames.profilePersonalInformation),
-                    ),
-                    error: (error, stack) => _personalInfoCard(
-                      name: currentUser?.fullName.isNotEmpty == true
-                          ? currentUser!.fullName
-                          : 'My profile',
-                      onTap: () =>
-                          context.push(RouteNames.profilePersonalInformation),
-                    ),
-                    data: (profile) => _personalInfoCard(
-                      name:
-                          '${profile.firstName} ${profile.lastName}'
-                              .trim()
-                              .isEmpty
-                          ? 'My profile'
-                          : '${profile.firstName} ${profile.lastName}'.trim(),
-                      onTap: () =>
-                          context.push(RouteNames.profilePersonalInformation),
-                    ),
-                  ),
-                  const SizedBox(height: 22),
-                  Row(
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'My animals',
-                          style: TextStyle(
-                            color: Color(0xFFBA4A22),
-                            fontFamily: 'EricaOne',
-                            fontSize: 30,
-                            height: 1.0,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: _openAddAnimal,
-                        customBorder: const CircleBorder(),
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFFBA4A22),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-                  animalsAsync.when(
-                    loading: () => const Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFFBA4A22),
-                        ),
-                      ),
-                    ),
-                    error: (error, stack) => Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Could not load animals: $error',
-                            style: const TextStyle(
-                              color: Color(0xFFBA4A22),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          OutlinedButton(
-                            onPressed: () => ref.invalidate(myAnimalsProvider),
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    data: (animals) {
-                      final ownerId = currentUser?.id;
-                      final myAnimals = ownerId == null
-                          ? animals
-                          : animals
-                                .where(
-                                  (animal) =>
-                                      animal.user?.id.isNotEmpty == true &&
-                                      animal.user!.id == ownerId,
-                                )
-                                .toList();
-
-                      if (myAnimals.isEmpty) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 10),
-                          child: Text(
-                            'No animals added yet. Tap + to add your first one.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFFBA4A22),
-                              fontFamily: 'EricaOne',
-                              fontSize: 18,
-                            ),
-                          ),
-                        );
-                      }
-
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: myAnimals.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 12),
-                        itemBuilder: (_, index) {
-                          final animal = myAnimals[index];
-                          return _AnimalCard(
-                            animal: animal,
-                            onEdit: () => _openEditAnimal(animal),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 26),
-                  Center(
-                    child: SizedBox(
-                      width: 340,
-                      height: 42,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFBA4A22),
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22),
-                          ),
-                          textStyle: const TextStyle(
-                            fontFamily: 'EricaOne',
-                            fontSize: 18,
-                          ),
-                        ),
-                        onPressed: () =>
-                            context.push(RouteNames.reportCreateStep1),
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            l10n.reportOneOfMyAnimals,
-                            maxLines: 1,
-                            softWrap: false,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+    return AppBackgroundScaffold(
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: 2,
         onTap: (index) {
@@ -274,10 +64,197 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
           }
         },
       ),
+      body: AppBackground(
+        showGridFromTop: true,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(22, 0, 22, 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 70),
+              AppTopBar(
+                showBackButton: true,
+                showUserAvatar: false,
+                onBack: () {
+                  if (context.canPop()) {
+                    context.pop();
+                  } else {
+                    context.go(RouteNames.myProfile);
+                  }
+                },
+              ),
+              const SizedBox(height: 18),
+              Text(
+                l10n.myProfile,
+                style: AppTextStyles.heading.copyWith(
+                  color: PartnerUiColors.brand,
+                ),
+              ),
+              const SizedBox(height: 14),
+              profileAsync.when(
+                loading: () => _personalInfoCard(
+                  l10n: l10n,
+                  name: '...',
+                  onTap: () =>
+                      context.push(RouteNames.profilePersonalInformation),
+                ),
+                error: (error, stack) => _personalInfoCard(
+                  l10n: l10n,
+                  name: currentUser?.fullName.isNotEmpty == true
+                      ? currentUser!.fullName
+                      : l10n.myProfile,
+                  onTap: () =>
+                      context.push(RouteNames.profilePersonalInformation),
+                ),
+                data: (profile) => _personalInfoCard(
+                  l10n: l10n,
+                  name:
+                      '${profile.firstName} ${profile.lastName}'.trim().isEmpty
+                      ? l10n.myProfile
+                      : '${profile.firstName} ${profile.lastName}'.trim(),
+                  onTap: () =>
+                      context.push(RouteNames.profilePersonalInformation),
+                ),
+              ),
+              const SizedBox(height: 22),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.myAnimals,
+                      style: AppTextStyles.heading.copyWith(
+                        color: PartnerUiColors.brand,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: _openAddAnimal,
+                    customBorder: const CircleBorder(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        color: PartnerUiColors.brand,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              animalsAsync.when(
+                loading: () => const Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: PartnerUiColors.brand,
+                    ),
+                  ),
+                ),
+                error: (error, stack) => Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Column(
+                    children: [
+                      Text(
+                        l10n.couldNotLoadAnimals(error.toString()),
+                        style: AppTextStyles.body.copyWith(
+                          color: PartnerUiColors.brand,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      OutlinedButton(
+                        onPressed: () => ref.invalidate(myAnimalsProvider),
+                        child: Text(l10n.retry),
+                      ),
+                    ],
+                  ),
+                ),
+                data: (animals) {
+                  final ownerId = currentUser?.id;
+                  final myAnimals = ownerId == null
+                      ? animals
+                      : animals
+                            .where(
+                              (animal) =>
+                                  animal.user?.id.isNotEmpty == true &&
+                                  animal.user!.id == ownerId,
+                            )
+                            .toList();
+
+                  if (myAnimals.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text(
+                        l10n.noAnimalsYet,
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.sectionTitle.copyWith(
+                          color: PartnerUiColors.brand,
+                          fontSize: 18,
+                        ),
+                      ),
+                    );
+                  }
+
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: myAnimals.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 12),
+                    itemBuilder: (_, index) {
+                      final animal = myAnimals[index];
+                      return _AnimalCard(
+                        animal: animal,
+                        onEdit: () => _openEditAnimal(animal),
+                      );
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 26),
+              Center(
+                child: SizedBox(
+                  width: 340,
+                  height: 42,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PartnerUiColors.brand,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                    ),
+                    onPressed: () => context.push(RouteNames.reportCreateStep1),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        l10n.reportOneOfMyAnimals,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: AppTextStyles.button.copyWith(
+                          fontFamily: AppTextStyles.titleFont,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget _personalInfoCard({
+    required AppLocalizations l10n,
     required String name,
     required VoidCallback onTap,
   }) {
@@ -286,7 +263,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFFBA4A22),
+          color: PartnerUiColors.brand,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -297,18 +274,16 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(
+                    style: AppTextStyles.sectionTitle.copyWith(
                       color: Colors.white,
-                      fontFamily: 'EricaOne',
                       fontSize: 19,
                     ),
                   ),
                   const SizedBox(height: 2),
-                  const Text(
-                    'Personal information',
-                    style: TextStyle(
-                      color: Color(0xFFF3DCC8),
-                      fontFamily: 'EricaOne',
+                  Text(
+                    l10n.personalInformationLabel,
+                    style: AppTextStyles.sectionTitle.copyWith(
+                      color: const Color(0xFFF3DCC8),
                       fontSize: 14,
                     ),
                   ),
@@ -335,12 +310,13 @@ class _AnimalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 8, 12, 10),
       decoration: BoxDecoration(
-        color: const Color(0xFFEFE8D5),
+        color: PartnerUiColors.panel,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFBA4A22), width: 1),
+        border: Border.all(color: PartnerUiColors.brand, width: 1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -368,20 +344,18 @@ class _AnimalCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         animal.title,
-                        style: const TextStyle(
-                          color: Color(0xFFBA4A22),
-                          fontFamily: 'EricaOne',
+                        style: AppTextStyles.sectionTitle.copyWith(
+                          color: PartnerUiColors.brand,
                           fontSize: 20,
                         ),
                       ),
                     ),
                     InkWell(
                       onTap: onEdit,
-                      child: const Text(
-                        'Edit',
-                        style: TextStyle(
-                          color: Color(0xFFD8C89D),
-                          fontFamily: 'EricaOne',
+                      child: Text(
+                        l10n.edit,
+                        style: AppTextStyles.sectionTitle.copyWith(
+                          color: const Color(0xFFD8C89D),
                           fontSize: 14,
                           decoration: TextDecoration.underline,
                         ),
@@ -394,9 +368,8 @@ class _AnimalCard extends StatelessWidget {
                   animal.description,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Color(0xFFBA4A22),
-                    fontFamily: 'EricaOne',
+                  style: AppTextStyles.sectionTitle.copyWith(
+                    color: PartnerUiColors.brand,
                     fontSize: 14,
                     height: 1.25,
                   ),
@@ -415,34 +388,9 @@ class _AnimalCard extends StatelessWidget {
       height: 72,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        color: const Color(0xFFE7DCCB),
+        color: PartnerUiColors.grid,
       ),
-      child: const Icon(Icons.pets, color: Color(0xFFBA4A22)),
+      child: const Icon(Icons.pets, color: PartnerUiColors.brand),
     );
   }
-}
-
-class _GridPainter extends CustomPainter {
-  const _GridPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFE7DCCB)
-      ..strokeWidth = 1;
-
-    const xStep = 92.0;
-    const yStep = 102.0;
-
-    for (double x = 0; x <= size.width; x += xStep) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    for (double y = 0; y <= size.height; y += yStep) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

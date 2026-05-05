@@ -5,6 +5,8 @@ import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 
+import 'package:share_plus/share_plus.dart';
+
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/user_avatar.dart';
@@ -159,12 +161,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           },
                         ),
                         const SizedBox(height: 22),
-                        Text(
-                          l10n.inviteContacts,
-                          style: const TextStyle(
-                            color: Color(0xFFBA4A22),
-                            fontFamily: 'EricaOne',
-                            fontSize: 19,
+                        InkWell(
+                          onTap: () {
+                            Share.share(
+                              'Join me on Hesteka! Download the app at https://www.hesteka.com',
+                            );
+                          },
+                          child: Text(
+                            l10n.inviteContacts,
+                            style: const TextStyle(
+                              color: Color(0xFFBA4A22),
+                              fontFamily: 'EricaOne',
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ],

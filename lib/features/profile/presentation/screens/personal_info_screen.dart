@@ -187,21 +187,21 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final isSaving = ref.watch(updateProfileProvider).isLoading;
 
     return AppBackgroundScaffold(
-      body: Column(
-        children: [
-          PersonalInfoHeader(
-            isEditing: _isEditing,
-            isSaving: isSaving,
-            onEditTap: () => _setEditMode(!_isEditing),
-            onSaveTap: _save,
-            onCancelTap: _cancelEditing,
-            imageUrl: _currentImageUrl,
-            selectedImage: _selectedImage,
-            onPickImage: _pickProfileImage,
-          ),
-          Expanded(
-            child: AppBackground(
-              showGridFromTop: false,
+      body: AppBackground(
+        showGridFromTop: true,
+        child: Column(
+          children: [
+            PersonalInfoHeader(
+              isEditing: _isEditing,
+              isSaving: isSaving,
+              onEditTap: () => _setEditMode(!_isEditing),
+              onSaveTap: _save,
+              onCancelTap: _cancelEditing,
+              imageUrl: _currentImageUrl,
+              selectedImage: _selectedImage,
+              onPickImage: _pickProfileImage,
+            ),
+            Expanded(
               child: profileAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (error, stack) => Padding(
@@ -311,7 +311,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                           const SizedBox(height: 24),
                           if (_isEditing)
                             SizedBox(
-                              width: 240,
+                              width: 400,
                               height: 42,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -336,12 +336,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                                         ),
                                       )
                                     : Text(
-                                      l10n.saveChanges,
-                                      style: AppTextStyles.button.copyWith(
-                                        fontFamily: AppTextStyles.titleFont,
-                                        fontSize: 18,
+                                        l10n.saveChanges,
+                                        style: AppTextStyles.button.copyWith(
+                                          fontFamily: AppTextStyles.titleFont,
+                                          fontSize: 18,
+                                        ),
                                       ),
-                                    ),
                               ),
                             ),
                         ],
@@ -351,8 +351,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                 },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

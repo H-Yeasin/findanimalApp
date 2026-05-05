@@ -15,4 +15,22 @@ class PointsRemoteSource {
   Future<void> getMyPoints() async {
     await _apiClient.get('/points/get-my-points');
   }
+
+  Future<Map<String, dynamic>> getAllRewards({
+    String? category,
+    String? type,
+    bool isActive = true,
+  }) async {
+    final queryParams = {
+      if (category != null) 'category': category,
+      if (type != null) 'type': type,
+      'isActive': isActive,
+    };
+
+    final response = await _apiClient.get(
+      '/rewards/get-all-rewards',
+      queryParameters: queryParams,
+    );
+    return response.data;
+  }
 }
