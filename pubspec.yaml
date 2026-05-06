@@ -96,13 +96,8 @@ flutter:
     - assets/images/Map/
     - assets/images/profile/
     - assets/images/partner/
-    - assets/images/cat.png
     - assets/images/profile/
     - assets/images/
-    - assets/images/veterenaries.png
-    - assets/images/authorities.png
-    - assets/images/partner.png
-    - assets/images/profile/PrivecyPolicy.png
 
   fonts:
     - family: EricaOne

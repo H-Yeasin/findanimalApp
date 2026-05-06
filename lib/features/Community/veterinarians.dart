@@ -4,6 +4,8 @@ import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
 import '../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/widgets/app_background.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
 class VeterinariansScreen extends ConsumerStatefulWidget {
   const VeterinariansScreen({super.key});
@@ -33,53 +35,18 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
 
     return Scaffold(
       backgroundColor: surface,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () =>
-              ref.read(veterinariansProvider.notifier).fetchContacts(),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              children: [
+      body: AppBackground(
+        showGridFromTop: true,
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () =>
+                ref.read(veterinariansProvider.notifier).fetchContacts(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
                 // Header
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: const BoxDecoration(
-                            color: brandPrimary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.undo,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      const Icon(Icons.person, color: brandPrimary, size: 40),
-                    ],
-                  ),
-                ),
-
-                Text(
-                  l10n.listVeterinarians.toUpperCase().replaceAll(' ', '\n'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
-                    color: brandPrimary,
-                    height: 0.9,
-                  ),
-                ),
+                AppTopBar(title: l10n.listVeterinarians),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -179,15 +146,15 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 100),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(

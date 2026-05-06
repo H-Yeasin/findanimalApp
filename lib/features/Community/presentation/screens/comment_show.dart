@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../data/models/chat_model.dart';
 import '../providers/community_providers.dart';
-import '../../community_screen.dart'; // To reuse VideoPlayerWidget
+import '../widgets/community_video_player.dart';
 
 class CommentShowScreen extends ConsumerStatefulWidget {
   final ChatModel mainPost;
@@ -46,19 +47,26 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
     }
   }
 
-  String _formatTimeAgo(DateTime? dateTime) {
-    if (dateTime == null) return 'À l\'instant';
+  String _formatTimeAgo(DateTime? dateTime, AppLocalizations l10n) {
+    if (dateTime == null) return l10n.justNow;
     final duration = DateTime.now().difference(dateTime);
-    if (duration.inDays > 0) return 'Il y a ${duration.inDays} j';
-    if (duration.inHours > 0) return 'Il y a ${duration.inHours} h';
-    if (duration.inMinutes > 0) return 'Il y a ${duration.inMinutes} m';
-    return 'À l\'instant';
+    if (duration.inDays > 0) {
+      return l10n.text('daysAgo', params: {'days': '${duration.inDays}'});
+    }
+    if (duration.inHours > 0) {
+      return l10n.text('hoursAgo', params: {'hours': '${duration.inHours}'});
+    }
+    if (duration.inMinutes > 0) {
+      return l10n.text('minutesAgo', params: {'minutes': '${duration.inMinutes}'});
+    }
+    return l10n.justNow;
   }
 
   @override
   Widget build(BuildContext context) {
     // Watch localChatProvider directly for real-time updates
     final chatsAsync = ref.watch(localChatProvider);
+    final l10n = AppLocalizations.of(context);
     const brandPrimary = Color(0xFFBA4A22);
 
     return Scaffold(
@@ -66,9 +74,9 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        title: const Text(
-          'Comments',
-          style: TextStyle(
+        title: Text(
+          l10n.comments,
+          style: const TextStyle(
             color: brandPrimary,
             fontFamily: 'EricaOne',
             fontSize: 20,
@@ -123,8 +131,8 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: const [
-                          SizedBox(
+                        children: [
+                          const SizedBox(
                             width: 15,
                             height: 15,
                             child: CircularProgressIndicator(
@@ -132,10 +140,10 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                               color: Colors.blue,
                             ),
                           ),
-                          SizedBox(width: 12),
+                          const SizedBox(width: 12),
                           Text(
-                            'Posting...',
-                            style: TextStyle(
+                            l10n.posting,
+                            style: const TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
@@ -172,13 +180,13 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
 
                   if (comments.isEmpty) {
                     return ListView(
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(top: 100),
+                          padding: const EdgeInsets.only(top: 100),
                           child: Center(
                             child: Text(
-                              'No comments yet.',
-                              style: TextStyle(color: Colors.grey),
+                              l10n.noCommentsYet,
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ),
                         ),
@@ -204,7 +212,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text('Erreur: $err'),
+                        child: Text(l10n.errorParam(err.toString())),
                       ),
                     ),
                   ],
@@ -305,10 +313,10 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                           child: TextField(
                             controller: _commentController,
                             maxLines: null,
-                            decoration: const InputDecoration(
-                              hintText: 'Write a comment...',
+                            decoration: InputDecoration(
+                              hintText: l10n.writeCommentHint,
                               border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,
                               ),
                             ),
@@ -380,7 +388,10 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
   Widget _buildCommentItem(ChatModel comment, Color color) {
     final name = '${comment.user.firstName} ${comment.user.lastName}';
     final profileUrl = comment.user.profileImage?.secureUrl;
-    final time = _formatTimeAgo(comment.createdAt);
+    final time = _formatTimeAgo(
+      comment.createdAt,
+      AppLocalizations.of(context),
+    );
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),

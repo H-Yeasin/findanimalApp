@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/models/contact_model.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../core/localization/app_localizations.dart';
 
 class DetailsShelterVeterinariansScreen extends StatelessWidget {
   final ContactModel contact;
@@ -12,6 +13,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: surface,
@@ -136,7 +138,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                     children: [
                       _buildActionButton(
                         icon: Icons.phone,
-                        label: 'CALL',
+                        label: l10n.toCall,
                         onTap: () {
                           if (contact.phone != null) {
                             _launchCaller(contact.phone!);
@@ -147,7 +149,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       _buildActionButton(
                         icon: Icons.language,
-                        label: 'WEB',
+                        label: l10n.web,
                         onTap: () {
                           if (contact.website != null) {
                             _launchUrl(contact.website!);
@@ -160,9 +162,9 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   const SizedBox(height: 32),
 
                   // Info Section
-                  const Text(
-                    'INFORMATION',
-                    style: TextStyle(
+                  Text(
+                    l10n.contactInformation,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: brandPrimary,
@@ -171,7 +173,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildInfoCard(
                     icon: Icons.place,
-                    title: 'Address',
+                    title: l10n.address,
                     value: contact.fullAddress,
                     color: brandPrimary,
                     cardBg: cardBg,
@@ -180,7 +182,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     _buildInfoCard(
                       icon: Icons.email,
-                      title: 'Email',
+                      title: l10n.email,
                       value: contact.email!,
                       color: brandPrimary,
                       cardBg: cardBg,
@@ -190,7 +192,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     _buildInfoCard(
                       icon: Icons.phone_android,
-                      title: 'Phone',
+                      title: l10n.phone,
                       value: contact.phone!,
                       color: brandPrimary,
                       cardBg: cardBg,
@@ -198,9 +200,9 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   ],
 
                   const SizedBox(height: 32),
-                  const Text(
-                    'DESCRIPTION',
-                    style: TextStyle(
+                  Text(
+                    l10n.descriptionLabel,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: brandPrimary,
@@ -208,7 +210,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    contact.description ?? 'No description available.',
+                    contact.description ?? l10n.noDescriptionAvailable,
                     style: const TextStyle(
                       fontSize: 14,
                       color: brandPrimary,

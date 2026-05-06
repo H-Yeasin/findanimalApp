@@ -4,6 +4,8 @@ import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
 import '../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/widgets/app_background.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
 class SheltersScreen extends ConsumerStatefulWidget {
   const SheltersScreen({super.key});
@@ -32,52 +34,17 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
 
     return Scaffold(
       backgroundColor: surface,
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: () => ref.read(sheltersProvider.notifier).fetchContacts(),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Column(
-              children: [
+      body: AppBackground(
+        showGridFromTop: true,
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: () => ref.read(sheltersProvider.notifier).fetchContacts(),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                children: [
                 // Header
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: brandPrimary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.undo,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      Icon(Icons.person, color: brandPrimary, size: 40),
-                    ],
-                  ),
-                ),
-
-                Text(
-                  l10n.listShelters.toUpperCase().replaceAll(' ', '\n'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
-                    color: brandPrimary,
-                    height: 0.9,
-                  ),
-                ),
+                AppTopBar(title: l10n.listShelters),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -161,7 +128,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                       ],
                     );
                   },
-                  loading: () =>  Center(
+                  loading: () => Center(
                     child: CircularProgressIndicator(color: brandPrimary),
                   ),
                   error: (err, stack) => Center(
@@ -178,8 +145,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
@@ -248,7 +216,8 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
   ) {
     final name = shelter.name;
     final address = shelter.fullAddress;
-    final imageUrl = shelter.fullImageUrl ??
+    final imageUrl =
+        shelter.fullImageUrl ??
         'https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?q=80&w=100';
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -298,7 +267,12 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    _buildSmallButton(l10n.seeOnMap.toUpperCase(), Colors.white, color, color),
+                    _buildSmallButton(
+                      l10n.seeOnMap.toUpperCase(),
+                      Colors.white,
+                      color,
+                      color,
+                    ),
                     const SizedBox(width: 10),
                     _buildSmallButton(
                       l10n.seeDetails.toUpperCase(),
@@ -311,8 +285,8 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                           MaterialPageRoute(
                             builder: (context) =>
                                 DetailsShelterVeterinariansScreen(
-                              contact: shelter,
-                            ),
+                                  contact: shelter,
+                                ),
                           ),
                         );
                       },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../providers/notification_providers.dart';
 import '../../data/models/notification_model.dart';
@@ -12,13 +13,14 @@ class NotificationScreen extends ConsumerWidget {
     const brandPrimary = Color(0xFFBA4A22);
     const bgColor = Color(0xFFFBF4E9);
     final notificationsAsync = ref.watch(notificationsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: bgColor,
       body: Column(
         children: [
           const SizedBox(height: 60),
-          AppTopBar(title: 'Notifications'),
+          AppTopBar(title: l10n.notifications),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () =>
@@ -27,7 +29,7 @@ class NotificationScreen extends ConsumerWidget {
               child: notificationsAsync.when(
                 data: (notifications) {
                   if (notifications.isEmpty) {
-                    return _buildEmptyState(brandPrimary);
+                    return _buildEmptyState(brandPrimary, l10n);
                   }
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(
@@ -41,6 +43,7 @@ class NotificationScreen extends ConsumerWidget {
                         ref,
                         notifications[index],
                         brandPrimary,
+                        l10n,
                       );
                     },
                   );
@@ -59,7 +62,7 @@ class NotificationScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Failed to load notifications',
+                        l10n.failedToLoadNotifications,
                         style: TextStyle(
                           color: brandPrimary,
                           fontSize: 16,
@@ -68,7 +71,7 @@ class NotificationScreen extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: () => ref.refresh(notificationsProvider),
-                        child: const Text('Try Again'),
+                        child: Text(l10n.retry),
                       ),
                     ],
                   ),
@@ -81,7 +84,7 @@ class NotificationScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyState(Color brandPrimary) {
+  Widget _buildEmptyState(Color brandPrimary, AppLocalizations l10n) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -92,9 +95,9 @@ class NotificationScreen extends ConsumerWidget {
             size: 80,
           ),
           const SizedBox(height: 16),
-          const Text(
-            'No notifications yet',
-            style: TextStyle(
+          Text(
+            l10n.noNotificationsYet,
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -110,8 +113,9 @@ class NotificationScreen extends ConsumerWidget {
     WidgetRef ref,
     NotificationModel notification,
     Color brandPrimary,
+    AppLocalizations l10n,
   ) {
-    final time = _formatTimeAgo(notification.createdAt);
+    final time = _formatTimeAgo(notification.createdAt, l10n);
 
     return Dismissible(
       key: Key(notification.id),
@@ -269,11 +273,17 @@ class NotificationScreen extends ConsumerWidget {
     }
   }
 
-  String _formatTimeAgo(DateTime dateTime) {
+  String _formatTimeAgo(DateTime dateTime, AppLocalizations l10n) {
     final duration = DateTime.now().difference(dateTime);
-    if (duration.inDays > 0) return '${duration.inDays}d';
-    if (duration.inHours > 0) return '${duration.inHours}h';
-    if (duration.inMinutes > 0) return '${duration.inMinutes}m';
-    return 'now';
+    if (duration.inDays > 0) {
+      return l10n.text('daysAgo', params: {'days': '${duration.inDays}'});
+    }
+    if (duration.inHours > 0) {
+      return l10n.text('hoursAgo', params: {'hours': '${duration.inHours}'});
+    }
+    if (duration.inMinutes > 0) {
+      return l10n.text('minutesAgo', params: {'minutes': '${duration.inMinutes}'});
+    }
+    return l10n.justNow;
   }
 }

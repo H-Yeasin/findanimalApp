@@ -119,8 +119,7 @@ const Map<String, String> appFr = {
       'Veuillez vous connecter pour publier dans la communauté.',
   'couldNotPost': 'Impossible de publier. Veuillez réessayer.',
   'postSharedSuccess': 'Publication partagée avec succès',
-  'pleaseLoginToShareStory':
-      'Veuillez vous connecter pour partager une histoire.',
+  'pleaseLoginToShareStory': 'Veuillez vous connecter pour partager une story.',
   'couldNotShareStory':
       'Impossible de partager l’histoire. Veuillez réessayer.',
   'storySharedSuccess': 'Histoire partagée avec succès',
@@ -226,19 +225,40 @@ const Map<String, String> appFr = {
   'makeDonation': 'Nous soutenir',
   'seeDetails': 'Voir les détails',
   'seeCollectionPoint': 'Voir le point de collecte',
-  'listShelters': 'Liste des refuges',
+  'listShelters': 'Liste des\n Refuges',
   'allShelters': 'Tous les refuges',
-  'listVeterinarians': 'Liste des vétérinaires',
+  'listVeterinarians': 'Liste des\nVétérinaires',
   'allVeterinarians': 'Tous les vétérinaires',
   'searchByName': 'Rechercher par nom',
   'filterBySortBy': 'Filtrer par / Trier par',
   'ourPartners': 'Nos partenaires',
   'viewWebsite': 'Voir le site web',
   'addToCart': 'Ajouter au panier',
-  'seeLocalMissions': 'missions locales',
+  'seeLocalMissions': 'Missions Locales',
   'seeFullList': 'Voir la liste complète',
   'goToFaq': 'Aller à la FAQ',
   'shareStory': 'Partager une histoire',
+  'shareStoryShort': 'Partager une\nhistoire',
+  'addCaptionHint': 'Ajouter une légende...',
+  'noLocalMessages': 'Aucun message local pour le moment.',
+  'imageUnavailable': 'Image non disponible',
+  'videoLoadFailed': 'Impossible de charger la vidéo',
+  'comments': 'Commentaires',
+  'noCommentsYet': 'Aucun commentaire pour le moment.',
+  'writeCommentHint': 'Écrire un commentaire...',
+  'faqNoQuestionsTitle': 'ICI, AUCUNE QUESTION\nNE RESTE SANS RÉPONSE !',
+  'contactsTitle': 'CONTACTS',
+  'sheltersLabel': 'REFUGES',
+  'veterinariansLabel': 'VÉTÉRINAIRES',
+  'authoritiesLabel': 'AUTORITÉS',
+  'partnersLabel': 'PARTENAIRES',
+  'contactInformation': 'INFORMATIONS',
+  'descriptionLabel': 'DESCRIPTION',
+  'noDescriptionAvailable': 'Aucune description disponible.',
+  'web': 'WEB',
+  'failedToLoadNotifications': 'Impossible de charger les notifications',
+  'noNotificationsYet': 'Aucune notification pour le moment',
+  'faqSupportRequestSubject': 'Demande de support',
   'partnersBody':
       'Retrouvez ici tous nos partenaires engagés, des contacts de confiance au plus proche de vous.',
   'sheltersBody':
@@ -461,4 +481,70 @@ const Map<String, String> appFr = {
       'Pour chaque signalement, vous gagnez 10 points sur votre compte Hesteka',
   'following': 'Suivant',
   'noReportsYet': "Vous n'avez pas encore créé de signalements.",
+  'faqReportEditQuestion': 'Puis-je modifier mon signalement ?',
+  'faqReportEditAnswer':
+      'Oui, tu peux le modifier à tout moment depuis ton compte.',
+  'faqReportDeleteQuestion': 'Puis-je supprimer mon annonce ?',
+  'faqReportDeleteAnswer':
+      'Oui, dès que l\'animal est retrouvé ou si tu le souhaites.',
+  'faqReportVisibilityQuestion':
+      'Est-ce que mon signalement est visible partout ?',
+  'faqReportVisibilityAnswer':
+      'Il est prioritairement diffusé aux utilisateurs proches de la zone indiquée.',
+  'faqReportForSomeoneQuestion': 'Puis-je signaler pour quelqu\'un d\'autre ?',
+  'faqReportForSomeoneAnswer':
+      'Oui, tant que les informations sont fiables et vérifiées.',
+  'faqReportVerifiedQuestion': 'Mon signalement est-il vérifié ?',
+  'faqReportVerifiedAnswer':
+      'Une modération peut être effectuée pour garantir la fiabilité des informations.',
+  'faqReportFoundQuestion': 'Comment indiquer que l\'animal a été retrouvé ?',
+  'faqReportFoundAnswer':
+      'Tu peux clôturer ton signalement en un clic depuis ton annonce.',
+  'faqMissionFindQuestion': 'Comment trouver une mission près de chez moi ?',
+  'faqMissionFindAnswer':
+      'L\'application te propose automatiquement des missions selon ta localisation.',
+  'faqMissionParticipateQuestion': 'Comment participer à une mission ?',
+  'faqMissionParticipateAnswer':
+      'Il suffit de t\'inscrire directement depuis la fiche mission.',
+  'faqMissionFreeQuestion': 'Les missions sont-elles gratuites ?',
+  'faqMissionFreeAnswer':
+      'Oui, elles reposent sur l\'entraide et le bénévolat, mais te rapporteront des points.',
+  'faqMissionExperienceQuestion': 'Faut-il une expérience particulière ?',
+  'faqMissionExperienceAnswer':
+      'Non, la plupart des missions sont accessibles à tous.',
+  'faqMissionConfirmedQuestion':
+      'Comment savoir si une mission est confirmée ?',
+  'faqMissionConfirmedAnswer': 'Tu reçois une notification dès validation.',
+  'faqMissionCancelQuestion': 'Puis-je annuler ma participation ?',
+  'faqMissionCancelAnswer':
+      'Oui, 24H avant le début de la mission. Préviens directement l\'association par téléphone.',
+  'faqAccountEditQuestion': 'Puis-je modifier mes informations ?',
+  'faqAccountEditAnswer': 'Oui, à tout moment dans les paramètres.',
+  'faqAccountDataQuestion': 'Mes données sont-elles protégées ?',
+  'faqAccountDataAnswer':
+      'Oui, elles sont sécurisées et non partagées sans ton consentement.',
+  'faqAccountDevicesQuestion': 'Puis-je me connecter sur plusieurs appareils ?',
+  'faqAccountDevicesAnswer': 'Oui, sans aucun problème.',
+  'faqMessagingBlockQuestion': 'Puis-je bloquer un utilisateur ?',
+  'faqMessagingBlockAnswer':
+      'Oui, en cas de besoin. Tu peux signaler un utilisateur ou même le bloquer.',
+  'faqMessagingStartQuestion': 'Comment démarrer une conversation ?',
+  'faqMessagingStartAnswer': 'Depuis un profil ou une annonce.',
+  'faqDonationsDestinationQuestion': 'À qui vont les dons ?',
+  'faqDonationsDestinationAnswer':
+      'Une partie est pour soutenir l\'application mais aussi aux refuges/associations.',
+  'faqDonationsSecureQuestion': 'Les dons sont-ils sécurisés ?',
+  'faqDonationsSecureAnswer': 'Oui, via des systèmes de paiement sécurisés.',
+  'faqDonationsOtherHelpQuestion': 'Puis-je aider autrement ?',
+  'faqDonationsOtherHelpAnswer':
+      'Oui, en participant à des missions ou en partageant via des points de collecte.',
+  'faqSecurityContentQuestion': 'L\'application vérifie-t-elle les contenus ?',
+  'faqSecurityContentAnswer': 'Une modération est en place.',
+  'faqSecurityProblemQuestion': 'Que faire en cas de problème ?',
+  'faqSecurityProblemAnswer': 'Contacte le support via l\'application.',
+  'faqSecurityScamsQuestion': 'Comment éviter les arnaques ?',
+  'faqSecurityScamsAnswer':
+      'Ne partage pas d\'informations sensibles et utilise la messagerie interne.',
+  'faqSecurityDataQuestion': 'L\'application partage-t-elle mes données ?',
+  'faqSecurityDataAnswer': 'Non, pas sans ton consentement.',
 };

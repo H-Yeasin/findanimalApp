@@ -195,6 +195,27 @@ const Map<String, String> appEn = {
   'seeFullList': 'See Full List',
   'goToFaq': 'Go to FAQ',
   'shareStory': 'Share a Story',
+  'shareStoryShort': 'Share a\nstory',
+  'addCaptionHint': 'Add a caption...',
+  'noLocalMessages': 'No local messages yet.',
+  'imageUnavailable': 'Image unavailable',
+  'videoLoadFailed': 'Could not load the video',
+  'comments': 'Comments',
+  'noCommentsYet': 'No comments yet.',
+  'writeCommentHint': 'Write a comment...',
+  'faqNoQuestionsTitle': 'HERE THERE ARE NO\nQUESTIONS WITHOUT ANSWERS!',
+  'contactsTitle': 'CONTACTS',
+  'sheltersLabel': 'SHELTERS',
+  'veterinariansLabel': 'VETERINARIANS',
+  'authoritiesLabel': 'AUTHORITIES',
+  'partnersLabel': 'PARTNERS',
+  'contactInformation': 'INFORMATION',
+  'descriptionLabel': 'DESCRIPTION',
+  'noDescriptionAvailable': 'No description available.',
+  'web': 'WEB',
+  'failedToLoadNotifications': 'Failed to load notifications',
+  'noNotificationsYet': 'No notifications yet',
+  'faqSupportRequestSubject': 'Support Request',
   'partnersBody':
       'Find here all of our committed partners, trusted contacts closest to you.',
   'sheltersBody':
@@ -455,4 +476,69 @@ const Map<String, String> appEn = {
       'For each report, you earn 10 points on your Hesteka account',
   'following': 'Following',
   'noReportsYet': "You haven't created any reports yet.",
+  'faqReportEditQuestion': 'Can I edit my report?',
+  'faqReportEditAnswer': 'Yes, you can edit it anytime from your account.',
+  'faqReportDeleteQuestion': 'Can I delete my listing?',
+  'faqReportDeleteAnswer':
+      'Yes, once the animal is found or whenever you want.',
+  'faqReportVisibilityQuestion': 'Is my report visible everywhere?',
+  'faqReportVisibilityAnswer':
+      'It is mainly shown to users near the indicated area.',
+  'faqReportForSomeoneQuestion': 'Can I report for someone else?',
+  'faqReportForSomeoneAnswer':
+      'Yes, as long as the information is reliable and verified.',
+  'faqReportVerifiedQuestion': 'Is my report verified?',
+  'faqReportVerifiedAnswer':
+      'Moderation may be carried out to ensure the reliability of the information.',
+  'faqReportFoundQuestion':
+      'How do I indicate that the animal has been found?',
+  'faqReportFoundAnswer':
+      'You can close your report with one click from your listing.',
+  'faqMissionFindQuestion': 'How can I find a mission near me?',
+  'faqMissionFindAnswer':
+      'The app automatically suggests missions based on your location.',
+  'faqMissionParticipateQuestion': 'How can I participate in a mission?',
+  'faqMissionParticipateAnswer':
+      'You just need to register directly from the mission details page.',
+  'faqMissionFreeQuestion': 'Are the missions free?',
+  'faqMissionFreeAnswer':
+      'Yes, they are based on mutual help and volunteering, but they will earn you points.',
+  'faqMissionExperienceQuestion': 'Do I need any special experience?',
+  'faqMissionExperienceAnswer':
+      'No, most missions are accessible to everyone.',
+  'faqMissionConfirmedQuestion': 'How do I know if a mission is confirmed?',
+  'faqMissionConfirmedAnswer':
+      'You receive a notification once it is validated.',
+  'faqMissionCancelQuestion': 'Can I cancel my participation?',
+  'faqMissionCancelAnswer':
+      'Yes, 24 hours before the mission starts. Notify the association directly by phone.',
+  'faqAccountEditQuestion': 'Can I edit my information?',
+  'faqAccountEditAnswer': 'Yes, anytime in the settings.',
+  'faqAccountDataQuestion': 'Is my data protected?',
+  'faqAccountDataAnswer':
+      'Yes, it is secured and not shared without your consent.',
+  'faqAccountDevicesQuestion': 'Can I log in on multiple devices?',
+  'faqAccountDevicesAnswer': 'Yes, without any problem.',
+  'faqMessagingBlockQuestion': 'Can I block a user?',
+  'faqMessagingBlockAnswer':
+      'Yes, if needed. You can report a user or even block them.',
+  'faqMessagingStartQuestion': 'How do I start a conversation?',
+  'faqMessagingStartAnswer': 'From a profile or a listing.',
+  'faqDonationsDestinationQuestion': 'Who do the donations go to?',
+  'faqDonationsDestinationAnswer':
+      'Part of it supports the app, and also shelters/associations.',
+  'faqDonationsSecureQuestion': 'Are donations secure?',
+  'faqDonationsSecureAnswer': 'Yes, through secure payment systems.',
+  'faqDonationsOtherHelpQuestion': 'Can I help in another way?',
+  'faqDonationsOtherHelpAnswer':
+      'Yes, by participating in missions or by sharing through collection points.',
+  'faqSecurityContentQuestion': 'Does the app verify content?',
+  'faqSecurityContentAnswer': 'Moderation is in place.',
+  'faqSecurityProblemQuestion': 'What should I do in case of a problem?',
+  'faqSecurityProblemAnswer': 'Contact support through the app.',
+  'faqSecurityScamsQuestion': 'How can I avoid scams?',
+  'faqSecurityScamsAnswer':
+      'Do not share sensitive information and use the internal messaging system.',
+  'faqSecurityDataQuestion': 'Does the app share my data?',
+  'faqSecurityDataAnswer': 'No, not without your consent.',
 };

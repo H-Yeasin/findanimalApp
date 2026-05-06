@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/widgets/app_background.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/network/dio_provider.dart';
 import '../../core/localization/app_localizations.dart';
@@ -91,7 +93,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
-      query: 'subject=Support Request',
+      query:
+          'subject=${Uri.encodeComponent(AppLocalizations.of(context).faqSupportRequestSubject)}',
     );
 
     if (await canLaunchUrl(emailUri)) {
@@ -118,134 +121,79 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
 
     return Scaffold(
       backgroundColor: surface,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: [
-              _buildHeader(context, l10n, brandPrimary),
-
-              const SizedBox(height: 20),
-              Text(
-                l10n.howCanIHelp,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w900,
-                  color: brandPrimary,
-                ),
-              ),
-              const SizedBox(height: 10),
-              FAQSearchBar(
-                controller: _searchController,
-                brandPrimary: brandPrimary,
-                cardBg: cardBg,
-                l10n: l10n,
-              ),
-
-              const SizedBox(height: 20),
-              Text(
-                l10n.faqSubtitle,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w900,
-                  color: brandPrimary,
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              ...faqData.map((section) {
-                final filteredQuestions = section.questions
-                    .where(
-                      (q) =>
-                          q.question.toLowerCase().contains(_searchQuery) ||
-                          q.answer.toLowerCase().contains(_searchQuery),
-                    )
-                    .toList();
-
-                if (filteredQuestions.isEmpty) return const SizedBox.shrink();
-
-                if (section.category == 'INITIAL') {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: _buildFAQGrid(
-                      filteredQuestions,
-                      cardBg,
-                      brandPrimary,
-                    ),
-                  );
-                }
-
-                return _buildCategorySection(
-                  section.title,
-                  section.image,
-                  filteredQuestions,
-                  cardBg,
-                  brandPrimary,
-                );
-              }),
-
-              const SizedBox(height: 40),
-              _buildContactSection(l10n, brandPrimary),
-              const SizedBox(height: 100),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(
-    BuildContext context,
-    AppLocalizations l10n,
-    Color brandPrimary,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: brandPrimary,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.undo, color: Colors.white, size: 20),
-            ),
-          ),
-          AnimatedBuilder(
-            animation: _floatController,
-            builder: (context, child) {
-              return Transform.translate(
-                offset: Offset(0, 5 * _floatController.value),
-                child: Text(
-                  l10n.faqTitleLabel,
-                  style: TextStyle(
-                    fontSize: 36,
+      body: AppBackground(
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: [
+                AppTopBar(title: l10n.faqTitleLabel, showUserAvatar: false),
+                const SizedBox(height: 20),
+                Text(
+                  l10n.howCanIHelp,
+                  style: const TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.w900,
                     color: brandPrimary,
-                    fontFamily: 'EricaOne',
-                    letterSpacing: 1.5,
                   ),
                 ),
-              );
-            },
-          ),
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: brandPrimary,
-              shape: BoxShape.circle,
+                const SizedBox(height: 10),
+                FAQSearchBar(
+                  controller: _searchController,
+                  brandPrimary: brandPrimary,
+                  cardBg: cardBg,
+                  l10n: l10n,
+                ),
+
+                const SizedBox(height: 20),
+                Text(
+                  l10n.faqSubtitle,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w900,
+                    color: brandPrimary,
+                  ),
+                ),
+                const SizedBox(height: 15),
+
+                ...faqData.map((section) {
+                  final filteredQuestions = section.questions
+                      .where(
+                        (q) =>
+                            q.question.toLowerCase().contains(_searchQuery) ||
+                            q.answer.toLowerCase().contains(_searchQuery),
+                      )
+                      .toList();
+
+                  if (filteredQuestions.isEmpty) return const SizedBox.shrink();
+
+                  if (section.category == 'INITIAL') {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: _buildFAQGrid(
+                        filteredQuestions,
+                        cardBg,
+                        brandPrimary,
+                      ),
+                    );
+                  }
+
+                  return _buildCategorySection(
+                    section.title,
+                    section.image,
+                    filteredQuestions,
+                    cardBg,
+                    brandPrimary,
+                  );
+                }),
+
+                const SizedBox(height: 40),
+                _buildContactSection(l10n, brandPrimary),
+                const SizedBox(height: 100),
+              ],
             ),
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: brandPrimary,
-              child: Icon(Icons.person, color: Colors.white),
-            ),
           ),
-        ],
+        ),
       ),
     );
   }
