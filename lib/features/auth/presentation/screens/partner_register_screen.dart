@@ -238,13 +238,11 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 },
               ),
               const SizedBox(height: 24),
-              Center(
-                child: AuthOutlinePillButton(
-                  label: l10n.registerAsPartner,
-                  isLoading: isLoading,
-                  width: 200,
-                  onPressed: isLoading ? null : _submit,
-                ),
+              AuthOutlinePillButton(
+                label: l10n.registerAsPartner,
+                isLoading: isLoading,
+                width: double.infinity,
+                onPressed: isLoading ? null : _submit,
               ),
             ],
           ),

@@ -11,6 +11,8 @@ abstract class MissionsRepository {
     required String title,
     required String description,
     required String address,
+    required double latitude,
+    required double longitude,
     required String duration,
     required int points,
     MultipartFile? image,

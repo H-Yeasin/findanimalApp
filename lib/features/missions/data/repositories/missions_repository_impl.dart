@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
 
@@ -49,6 +51,8 @@ class MissionsRepositoryImpl implements MissionsRepository {
     required String title,
     required String description,
     required String address,
+    required double latitude,
+    required double longitude,
     required String duration,
     required int points,
     MultipartFile? image,
@@ -57,6 +61,10 @@ class MissionsRepositoryImpl implements MissionsRepository {
       'title': title,
       'description': description,
       'address': address,
+      'location': jsonEncode({
+        'type': 'Point',
+        'coordinates': [longitude, latitude],
+      }),
       'duration': duration,
       'points': points,
       ...?(image == null ? null : {'image': image}),

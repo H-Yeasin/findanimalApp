@@ -50,7 +50,8 @@ const Map<String, String> appFr = {
   'createMyAccount': 'Créer mon compte',
   'registerAsPartner': 'S’inscrire en tant que Partenaire',
   'partnerRegisterTitle': 'S’inscrire en tant que Partenaire',
-  'partnerRegisterSuccess': 'Inscription partenaire réussie.',
+  'partnerRegisterSuccess':
+      'Inscription partenaire envoyée. Veuillez attendre l’approbation administrateur.',
   'forgotPasswordTitle': 'Mot de passe oublié',
   'sendOtp': 'Envoyer le code OTP',
   'otpSent': 'Code OTP envoyé à votre adresse email.',
@@ -234,7 +235,7 @@ const Map<String, String> appFr = {
   'ourPartners': 'Nos partenaires',
   'viewWebsite': 'Voir le site web',
   'addToCart': 'Ajouter au panier',
-  'seeLocalMissions': 'Voir les missions locales',
+  'seeLocalMissions': 'missions locales',
   'seeFullList': 'Voir la liste complète',
   'goToFaq': 'Aller à la FAQ',
   'shareStory': 'Partager une histoire',
@@ -420,10 +421,12 @@ const Map<String, String> appFr = {
   'reportStep2DescriptionLabel': 'AJOUTER UNE DESCRIPTION',
   'reportStep2DescriptionHint':
       'Description de l’animal, de la situation etc.. (500 mots max)',
-  'reportStep2PhotosLabel': 'AJOUTER UNE OU PLUSIEURS PHOTOS DE L’ANIMAL (MAX 3)',
+  'reportStep2PhotosLabel':
+      'AJOUTER UNE OU PLUSIEURS PHOTOS DE L’ANIMAL (MAX 3)',
   'reportStep2UploadHint': 'Télécharger une photo',
   'reportStep3Title': 'INFORMATIONS\nTECHNIQUES',
-  'reportStep3ChipRequired': 'Veuillez répondre : A-t-il une puce électronique ?',
+  'reportStep3ChipRequired':
+      'Veuillez répondre : A-t-il une puce électronique ?',
   'reportStep3TattooRequired': 'Veuillez répondre : A-t-il un tatouage ?',
   'reportStep3CollarRequired':
       'Veuillez répondre : A-t-il un collier ou un harnais ?',

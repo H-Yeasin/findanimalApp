@@ -49,7 +49,8 @@ const Map<String, String> appEn = {
   'createMyAccount': 'Create my account',
   'registerAsPartner': 'Register as Partner',
   'partnerRegisterTitle': 'Register as a Partner',
-  'partnerRegisterSuccess': 'Partner registration successful.',
+  'partnerRegisterSuccess':
+      'Partner registration submitted. Please wait for admin approval.',
   'forgotPasswordTitle': 'Forgot Password',
   'sendOtp': 'Send OTP',
   'otpSent': 'OTP sent to your email.',
@@ -190,7 +191,7 @@ const Map<String, String> appEn = {
   'ourPartners': 'Our Partners',
   'viewWebsite': 'View Website',
   'addToCart': 'Add to Cart',
-  'seeLocalMissions': 'See Local Missions',
+  'seeLocalMissions': 'Local Missions',
   'seeFullList': 'See Full List',
   'goToFaq': 'Go to FAQ',
   'shareStory': 'Share a Story',
@@ -421,7 +422,8 @@ const Map<String, String> appEn = {
   'reportStep3Title': 'TECHNICAL\nINFORMATION',
   'reportStep3ChipRequired': 'Please answer: Does it have an electronic chip?',
   'reportStep3TattooRequired': 'Please answer: Does it have a tattoo?',
-  'reportStep3CollarRequired': 'Please answer: Does it have a collar or harness?',
+  'reportStep3CollarRequired':
+      'Please answer: Does it have a collar or harness?',
   'reportStep3DateRequired': 'Please select when this happened.',
   'reportStep3ChipLabel': 'DOES IT HAVE AN ELECTRONIC CHIP?',
   'reportStep3TattooLabel': 'DOES HE HAVE A TATTOO?',

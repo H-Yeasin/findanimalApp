@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
+import '../providers/missions_list_provider.dart';
 import '../providers/partner_missions_provider.dart';
 import '../../../../core/localization/app_localizations.dart';
 
@@ -25,6 +27,8 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
   final _durationController = TextEditingController();
   final _pointsController = TextEditingController();
 
+  double? _latitude;
+  double? _longitude;
   XFile? _selectedImage;
   bool _isSubmitting = false;
 
@@ -46,19 +50,38 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
     }
   }
 
+  Future<void> _pickLocation() async {
+    final result = await context.push<Map<String, dynamic>>(
+      '/partner/location-picker',
+    );
+    if (result == null || !mounted) return;
+
+    final lat = (result['lat'] as num?)?.toDouble();
+    final lng = (result['lng'] as num?)?.toDouble();
+    if (lat == null || lng == null) return;
+
+    setState(() {
+      _addressController.text = (result['address'] ?? '').toString();
+      _latitude = lat;
+      _longitude = lng;
+    });
+  }
+
   Future<void> _createMission() async {
     final points = int.tryParse(_pointsController.text.trim());
+    final l10n = AppLocalizations.of(context);
 
     if (_titleController.text.trim().isEmpty ||
         _descriptionController.text.trim().isEmpty ||
         _addressController.text.trim().isEmpty ||
+        _latitude == null ||
+        _longitude == null ||
         _durationController.text.trim().isEmpty ||
         points == null ||
         points <= 0) {
-      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(l10n.fillAllFields)));
+      ).showSnackBar(SnackBar(content: Text(l10n.fillAllFieldsAndLocation)));
       return;
     }
 
@@ -76,6 +99,8 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
             title: _titleController.text.trim(),
             description: _descriptionController.text.trim(),
             address: _addressController.text.trim(),
+            latitude: _latitude!,
+            longitude: _longitude!,
             duration: _durationController.text.trim(),
             points: points,
             image: imageFile,
@@ -88,9 +113,14 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
       _addressController.clear();
       _durationController.clear();
       _pointsController.clear();
-      setState(() => _selectedImage = null);
+      setState(() {
+        _selectedImage = null;
+        _latitude = null;
+        _longitude = null;
+      });
 
       ref.invalidate(partnerMissionsProvider);
+      ref.invalidate(missionsListProvider);
 
       final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
@@ -225,6 +255,20 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
           PartnerInputField(
             controller: _addressController,
             hint: l10n.missionAddressHint,
+          ),
+          const SizedBox(height: 8),
+          InkWell(
+            onTap: _pickLocation,
+            child: PartnerOutlinedField(
+              _latitude == null || _longitude == null
+                  ? l10n.pickLocationOnMap
+                  : '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}',
+              trailing: const Icon(
+                Icons.map_outlined,
+                color: PartnerUiColors.brand,
+                size: 24,
+              ),
+            ),
           ),
           const SizedBox(height: 10),
           PartnerFieldLabel(

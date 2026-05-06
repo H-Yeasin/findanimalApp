@@ -41,7 +41,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
   final ImagePicker _picker = ImagePicker();
 
   GoogleMapController? _mapController;
-  LatLng _currentPosition = const LatLng(0, 0); // Default to 0,0 until location is loaded
+  LatLng _currentPosition = const LatLng(
+    0,
+    0,
+  ); // Default to 0,0 until location is loaded
 
   @override
   void initState() {
@@ -239,7 +242,10 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
       builder: (context) {
         final controller = TextEditingController();
         return AlertDialog(
-          title: Text(l10n.newStory, style: const TextStyle(fontFamily: 'EricaOne')),
+          title: Text(
+            l10n.newStory,
+            style: const TextStyle(fontFamily: 'EricaOne'),
+          ),
           content: TextField(
             controller: controller,
             decoration: const InputDecoration(hintText: 'Add a caption...'),
@@ -381,8 +387,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                   Text(
                     l10n.communityTitle,
                     style: const TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
+                      fontSize: 24,
                       color: brandPrimary,
                       fontFamily: 'EricaOne',
                     ),
@@ -434,10 +439,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                               ),
                             ),
                             IconButton(
-                              icon: const Icon(
-                                Icons.send,
-                                color: brandPrimary,
-                              ),
+                              icon: const Icon(Icons.send, color: brandPrimary),
                               onPressed: _submitPost,
                             ),
                           ],
@@ -456,14 +458,13 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                         right: 8.0,
                                         top: 8.0,
                                       ),
-                                      child: _selectedMedia[index]
-                                              .path
-                                              .toLowerCase()
-                                              .endsWith('.mp4') ||
-                                          _selectedMedia[index]
-                                              .path
-                                              .toLowerCase()
-                                              .endsWith('.mov')
+                                      child:
+                                          _selectedMedia[index].path
+                                                  .toLowerCase()
+                                                  .endsWith('.mp4') ||
+                                              _selectedMedia[index].path
+                                                  .toLowerCase()
+                                                  .endsWith('.mov')
                                           ? Container(
                                               width: 50,
                                               height: 50,
@@ -622,9 +623,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                             onTap: _shareStory,
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Center(
                               child: Text(
                                 _isUnauthorizedError(err)
@@ -654,11 +653,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: 18,
-                        ),
+                        const Icon(Icons.search, color: Colors.white, size: 18),
                         const SizedBox(width: 10),
                         Text(
                           l10n.findFriend,
@@ -761,7 +756,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
             // Chat List (SliverList for lazy loading)
             chatAsync.when(
               data: (chats) {
-                final posts = chats.where((chat) => chat.replyTo == null).toList();
+                final posts = chats
+                    .where((chat) => chat.replyTo == null)
+                    .toList();
                 if (posts.isEmpty) {
                   return SliverToBoxAdapter(
                     child: Container(
@@ -770,7 +767,9 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                       decoration: BoxDecoration(
                         color: boxBg,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: brandPrimary.withValues(alpha: 0.3)),
+                        border: Border.all(
+                          color: brandPrimary.withValues(alpha: 0.3),
+                        ),
                       ),
                       child: const Center(
                         child: Text(
@@ -787,43 +786,51 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                 return SliverPadding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final chat = posts[index];
-                        final timeAgo = _formatTimeAgo(chat.createdAt);
-                        final isFirst = index == 0;
-                        final isLast = index == posts.length - 1;
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final chat = posts[index];
+                      final timeAgo = _formatTimeAgo(chat.createdAt);
+                      final isFirst = index == 0;
+                      final isLast = index == posts.length - 1;
 
-                        return Container(
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: boxBg,
-                            borderRadius: BorderRadius.vertical(
-                              top: isFirst ? const Radius.circular(20) : Radius.zero,
-                              bottom: isLast ? const Radius.circular(20) : Radius.zero,
-                            ),
-                            border: Border(
-                              left: BorderSide(color: brandPrimary.withValues(alpha: 0.3)),
-                              right: BorderSide(color: brandPrimary.withValues(alpha: 0.3)),
-                              top: isFirst 
-                                  ? BorderSide(color: brandPrimary.withValues(alpha: 0.3)) 
-                                  : BorderSide.none,
-                              bottom: isLast 
-                                  ? BorderSide(color: brandPrimary.withValues(alpha: 0.3)) 
-                                  : BorderSide.none,
-                            ),
+                      return Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: boxBg,
+                          borderRadius: BorderRadius.vertical(
+                            top: isFirst
+                                ? const Radius.circular(20)
+                                : Radius.zero,
+                            bottom: isLast
+                                ? const Radius.circular(20)
+                                : Radius.zero,
                           ),
-                          child: Column(
-                            children: [
-                              _buildPostItem(chat, timeAgo, brandPrimary, chats),
-                              if (!isLast)
-                                const Divider(height: 30),
-                            ],
+                          border: Border(
+                            left: BorderSide(
+                              color: brandPrimary.withValues(alpha: 0.3),
+                            ),
+                            right: BorderSide(
+                              color: brandPrimary.withValues(alpha: 0.3),
+                            ),
+                            top: isFirst
+                                ? BorderSide(
+                                    color: brandPrimary.withValues(alpha: 0.3),
+                                  )
+                                : BorderSide.none,
+                            bottom: isLast
+                                ? BorderSide(
+                                    color: brandPrimary.withValues(alpha: 0.3),
+                                  )
+                                : BorderSide.none,
                           ),
-                        );
-                      },
-                      childCount: posts.length,
-                    ),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildPostItem(chat, timeAgo, brandPrimary, chats),
+                            if (!isLast) const Divider(height: 30),
+                          ],
+                        ),
+                      );
+                    }, childCount: posts.length),
                   ),
                 );
               },
@@ -887,7 +894,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                 target: _currentPosition,
                                 zoom: 12,
                               ),
-                              onMapCreated: (controller) => _mapController = controller,
+                              onMapCreated: (controller) =>
+                                  _mapController = controller,
                               markers: markers,
                               myLocationEnabled: true,
                               myLocationButtonEnabled: false,
@@ -945,7 +953,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => const MissionLocalScreen(),
+                                builder: (context) =>
+                                    const MissionLocalScreen(),
                               ),
                             );
                           },
@@ -1004,7 +1013,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => const FAQCommunityScreen(),
+                                          builder: (context) =>
+                                              const FAQCommunityScreen(),
                                         ),
                                       );
                                     },
@@ -1081,10 +1091,26 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> {
                             crossAxisSpacing: 10,
                             padding: const EdgeInsets.symmetric(horizontal: 40),
                             children: [
-                              _buildContactButton(context, 'SHELTERS', const SheltersScreen()),
-                              _buildContactButton(context, 'VETERINARIANS', const VeterinariansScreen()),
-                              _buildContactButton(context, 'AUTHORITIES', const AuthoritiesScreen()),
-                              _buildContactButton(context, 'PARTNERS', const PartnersScreen()),
+                              _buildContactButton(
+                                context,
+                                'SHELTERS',
+                                const SheltersScreen(),
+                              ),
+                              _buildContactButton(
+                                context,
+                                'VETERINARIANS',
+                                const VeterinariansScreen(),
+                              ),
+                              _buildContactButton(
+                                context,
+                                'AUTHORITIES',
+                                const AuthoritiesScreen(),
+                              ),
+                              _buildContactButton(
+                                context,
+                                'PARTNERS',
+                                const PartnersScreen(),
+                              ),
                             ],
                           ),
                         ],
@@ -1426,7 +1452,7 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
 
   Future<void> _initializePlayer() async {
     if (_isInitialized) return;
-    
+
     final cleanUrl = widget.url.trim();
     try {
       _controller = VideoPlayerController.networkUrl(Uri.parse(cleanUrl));
@@ -1436,7 +1462,8 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
           _isInitialized = true;
           _hasError = false;
         });
-        _controller!.play(); // Play immediately after initialization if triggered by tap
+        _controller!
+            .play(); // Play immediately after initialization if triggered by tap
       }
     } catch (e) {
       debugPrint("Video Error for $cleanUrl: $e");
@@ -1490,7 +1517,11 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
         child: InkWell(
           onTap: _initializePlayer,
           child: const Center(
-            child: Icon(Icons.play_circle_fill, color: Color(0xFFBA4A22), size: 50),
+            child: Icon(
+              Icons.play_circle_fill,
+              color: Color(0xFFBA4A22),
+              size: 50,
+            ),
           ),
         ),
       );

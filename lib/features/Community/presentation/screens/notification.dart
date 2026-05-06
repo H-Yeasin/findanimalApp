@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../providers/notification_providers.dart';
 import '../../data/models/notification_model.dart';
@@ -19,23 +17,8 @@ class NotificationScreen extends ConsumerWidget {
       backgroundColor: bgColor,
       body: Column(
         children: [
-          const SizedBox(height: 50),
-          AppTopBar(
-            title: 'Notifications',
-            leftWidget: Center(
-              child: Container(
-                margin: const EdgeInsets.only(left: 10),
-                decoration: const BoxDecoration(
-                  color: brandPrimary,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.undo, color: Colors.white, size: 20),
-                  onPressed: () => context.go(RouteNames.root),
-                ),
-              ),
-            ),
-          ),
+          const SizedBox(height: 60),
+          AppTopBar(title: 'Notifications'),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () =>
