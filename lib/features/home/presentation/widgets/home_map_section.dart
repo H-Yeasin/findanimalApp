@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hesteka_frontend/features/seek/presentation/widgets/report_map_card.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/providers/location_provider.dart';
@@ -23,6 +24,22 @@ class HomeMapSection extends ConsumerStatefulWidget {
 class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
   GoogleMapController? _mapController;
   LatLng? _lastCameraTarget;
+  BitmapDescriptor? _customPin;
+  dynamic _selectedReport;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomPin();
+  }
+
+  Future<void> _loadCustomPin() async {
+    _customPin = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 50)),
+      'assets/images/Map/animalPin.png',
+    );
+    if (mounted) setState(() {});
+  }
 
   Future<void> _moveCameraTo(LatLng target) async {
     final controller = _mapController;
@@ -30,9 +47,7 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
 
     _lastCameraTarget = target;
     await controller.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: target, zoom: 11),
-      ),
+      CameraUpdate.newCameraPosition(CameraPosition(target: target, zoom: 11)),
     );
   }
 
@@ -70,15 +85,31 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
                 report.location.coordinates[1],
                 report.location.coordinates[0],
               ),
-              infoWindow: InfoWindow(
-                title: report.animalName.toUpperCase(),
-                snippet: '${report.status} | ${report.breed}',
-              ),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                report.status.toLowerCase() == 'found'
-                    ? BitmapDescriptor.hueAzure
-                    : BitmapDescriptor.hueOrange,
-              ),
+              onTap: () {
+                setState(() {
+                  if (_selectedReport?.id == report.id) {
+                    _selectedReport = null;
+                  } else {
+                    _selectedReport = report;
+                    _mapController?.animateCamera(
+                      CameraUpdate.newLatLngZoom(
+                        LatLng(
+                          report.location.coordinates[1],
+                          report.location.coordinates[0],
+                        ),
+                        14,
+                      ),
+                    );
+                  }
+                });
+              },
+              icon:
+                  _customPin ??
+                  BitmapDescriptor.defaultMarkerWithHue(
+                    report.status.toLowerCase() == 'found'
+                        ? BitmapDescriptor.hueAzure
+                        : BitmapDescriptor.hueOrange,
+                  ),
             ),
           );
         }
@@ -113,6 +144,11 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
                   _moveCameraTo(userLocAsync.value!);
                 }
               },
+              onTap: (_) {
+                if (_selectedReport != null) {
+                  setState(() => _selectedReport = null);
+                }
+              },
               initialCameraPosition: CameraPosition(
                 target: initialLocation,
                 zoom: 11,
@@ -125,6 +161,12 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
             ),
           ),
         ),
+        if (_selectedReport != null)
+          Positioned(
+            top: 15,
+            left: 16,
+            child: ReportMapCard(report: _selectedReport),
+          ),
         Positioned(
           top: 15,
           right: 16,

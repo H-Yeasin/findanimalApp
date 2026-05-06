@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-import 'dart:ui' as ui;
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../providers/seek_report_filters_provider.dart';
 import '../providers/seek_reports_provider.dart';
+import 'report_map_card.dart';
 import 'seek_filter_pill.dart';
+import 'seek_reports_map_filters.dart';
 
 class SeekReportsMapSection extends ConsumerStatefulWidget {
   const SeekReportsMapSection({
@@ -30,12 +31,26 @@ class SeekReportsMapSection extends ConsumerStatefulWidget {
 class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
   static const double _collapsedFilterHeight = 55;
 
-  final Map<String, BitmapDescriptor> _markerIconCache = {};
-  final Set<String> _pendingMarkerIcons = {};
   GoogleMapController? _mapController;
   bool _filtersExpanded = false;
   bool _sortExpanded = false;
   bool _radiusExpanded = false;
+  BitmapDescriptor? _customPin;
+  dynamic _selectedReport;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomPin();
+  }
+
+  Future<void> _loadCustomPin() async {
+    _customPin = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 50)),
+      'assets/images/Map/animalPin.png',
+    );
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
@@ -79,15 +94,26 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 report.location.coordinates[1],
                 report.location.coordinates[0],
               ),
-              infoWindow: InfoWindow(
-                title: report.animalName.toUpperCase(),
-                snippet: '${report.status} | ${report.breed}',
-              ),
-              icon: _markerIconFor(
-                report.species,
-                report.status,
-                MediaQuery.devicePixelRatioOf(context),
-              ),
+              onTap: () {
+                setState(() {
+                  if (_selectedReport?.id == report.id) {
+                    _selectedReport = null;
+                  } else {
+                    _selectedReport = report;
+                    _mapController?.animateCamera(
+                      CameraUpdate.newLatLngZoom(
+                        LatLng(
+                          report.location.coordinates[1],
+                          report.location.coordinates[0],
+                        ),
+                        14,
+                      ),
+                    );
+                  }
+                });
+              },
+              icon: _customPin ??
+                  BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
               anchor: const Offset(0.5, 0.95),
             ),
           );
@@ -144,6 +170,11 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                   target: mapTarget,
                   zoom: hasLocation ? 12 : 2,
                 ),
+                onTap: (_) {
+                  if (_selectedReport != null) {
+                    setState(() => _selectedReport = null);
+                  }
+                },
                 onMapCreated: (controller) {
                   _mapController = controller;
                   final currentTarget =
@@ -163,6 +194,14 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 mapToolbarEnabled: false,
               ),
             ),
+            if (_selectedReport != null)
+              Positioned(
+                top: 15,
+                left: 16,
+                child: ReportMapCard(
+                  report: _selectedReport,
+                ),
+              ),
             Positioned(
               bottom: 45,
               right: 25,
@@ -276,18 +315,18 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
   }
 
   Widget _buildSortMenu(AppLocalizations l10n, String currentSort) {
-    return _FilterPanel(
+    return SeekFilterPanel(
       topPadding: 10,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _RadioOptionRow<String>(
+          SeekRadioOptionRow<String>(
             value: 'descending',
             groupValue: currentSort,
             label: l10n.sortByNewest,
             onChanged: _setDateSort,
           ),
-          _RadioOptionRow<String>(
+          SeekRadioOptionRow<String>(
             value: 'ascending',
             groupValue: currentSort,
             label: l10n.sortByOldest,
@@ -301,12 +340,12 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
   Widget _buildRadiusMenu(int currentRadius) {
     const radiusOptions = [1, 5, 10, 25, 50];
 
-    return _FilterPanel(
+    return SeekFilterPanel(
       topPadding: 10,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: radiusOptions.map((radius) {
-          return _RadioOptionRow<int>(
+          return SeekRadioOptionRow<int>(
             value: radius,
             groupValue: currentRadius,
             label: '$radius km',
@@ -383,7 +422,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
               const SizedBox(height: 10),
               ...options.map((option) {
                 final isSelected = currentStatuses.contains(option.value);
-                return _FilterOptionRow(
+                return SeekFilterOptionRow(
                   label: option.label,
                   isSelected: isSelected,
                   onTap: () => _toggleStatus(option.value, currentStatuses),
@@ -397,12 +436,12 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     );
   }
 
-  List<_SeekStatusFilterOption> _statusFilterOptions(AppLocalizations l10n) {
+  List<SeekStatusFilterOption> _statusFilterOptions(AppLocalizations l10n) {
     return [
-      _SeekStatusFilterOption('lost', l10n.filterLostAnimals),
-      _SeekStatusFilterOption('found', l10n.filterFoundAnimals),
-      _SeekStatusFilterOption('sighted', l10n.filterSightedAnimals),
-      _SeekStatusFilterOption('rescued', l10n.filterInjuredAnimals),
+      SeekStatusFilterOption('lost', l10n.filterLostAnimals),
+      SeekStatusFilterOption('found', l10n.filterFoundAnimals),
+      SeekStatusFilterOption('sighted', l10n.filterSightedAnimals),
+      SeekStatusFilterOption('rescued', l10n.filterInjuredAnimals),
     ];
   }
 
@@ -451,51 +490,8 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     });
   }
 
-  String _statusLabel(AppLocalizations l10n, String status) {
-    switch (status) {
-      case 'lost':
-        return l10n.statusMissing;
-      case 'found':
-        return l10n.statusFound;
-      case 'sighted':
-        return l10n.filterSightedAnimals;
-      case 'rescued':
-        return l10n.statusRescued;
-      case 'all':
-      default:
-        return l10n.statusAll;
-    }
-  }
-
   String _sortLabel(AppLocalizations l10n, String sort) {
     return sort == 'ascending' ? l10n.sortByOldest : l10n.sortByNewest;
-  }
-
-  BitmapDescriptor _markerIconFor(
-    String species,
-    String status,
-    double devicePixelRatio,
-  ) {
-    final key = '${species.toLowerCase()}-${status.toLowerCase()}';
-    final cached = _markerIconCache[key];
-    if (cached != null) return cached;
-
-    if (!_pendingMarkerIcons.contains(key)) {
-      _pendingMarkerIcons.add(key);
-      _createAnimalMarkerIcon(
-        species: species,
-        status: status,
-        devicePixelRatio: devicePixelRatio,
-      ).then((icon) {
-        if (!mounted) return;
-        setState(() {
-          _markerIconCache[key] = icon;
-          _pendingMarkerIcons.remove(key);
-        });
-      });
-    }
-
-    return BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange);
   }
 
   LatLng? _locationFromFilters(Map<String, dynamic> filters) {
@@ -514,247 +510,5 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
       ),
     );
   }
-
-  Future<BitmapDescriptor> _createAnimalMarkerIcon({
-    required String species,
-    required String status,
-    required double devicePixelRatio,
-  }) async {
-    final logicalSize = const Size(44, 54);
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder);
-    final scale = devicePixelRatio.clamp(1.0, 3.0);
-    canvas.scale(scale);
-
-    const brand = Color(0xFFBA4A22);
-    const white = Colors.white;
-    final paint = Paint()..isAntiAlias = true;
-    final path = Path()
-      ..addOval(const Rect.fromLTWH(7, 1, 30, 30))
-      ..moveTo(22, 52)
-      ..cubicTo(14, 39, 9, 30, 9, 21)
-      ..cubicTo(9, 9, 15, 2, 22, 2)
-      ..cubicTo(29, 2, 35, 9, 35, 21)
-      ..cubicTo(35, 30, 30, 39, 22, 52)
-      ..close();
-
-    canvas.drawShadow(path, Colors.black.withValues(alpha: 0.25), 3, true);
-    paint.color = brand;
-    canvas.drawPath(path, paint);
-
-    final innerPaint = Paint()
-      ..color = white
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.4
-      ..strokeCap = StrokeCap.round;
-    canvas.drawCircle(const Offset(22, 21), 9, innerPaint);
-
-    final icon = _iconFor(species: species, status: status);
-    final iconPainter = TextPainter(
-      text: TextSpan(
-        text: String.fromCharCode(icon.codePoint),
-        style: TextStyle(
-          color: white,
-          fontSize: 18,
-          fontFamily: icon.fontFamily,
-          package: icon.fontPackage,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-    iconPainter.paint(
-      canvas,
-      Offset(22 - iconPainter.width / 2, 21 - iconPainter.height / 2),
-    );
-
-    final statusDot = Paint()..color = _statusAccent(status);
-    canvas.drawCircle(const Offset(32, 9), 5, Paint()..color = white);
-    canvas.drawCircle(const Offset(32, 9), 3.5, statusDot);
-
-    final picture = recorder.endRecording();
-    final image = await picture.toImage(
-      (logicalSize.width * scale).round(),
-      (logicalSize.height * scale).round(),
-    );
-    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-    return BitmapDescriptor.bytes(
-      Uint8List.view(bytes!.buffer),
-      imagePixelRatio: scale,
-      width: logicalSize.width,
-      height: logicalSize.height,
-    );
-  }
-
-  IconData _iconFor({required String species, required String status}) {
-    final normalizedStatus = status.toLowerCase();
-    if (normalizedStatus == 'lost') return Icons.priority_high_rounded;
-    if (normalizedStatus == 'rescued') return Icons.add_rounded;
-
-    switch (species.toLowerCase()) {
-      case 'bird':
-        return Icons.flutter_dash_rounded;
-      case 'cat':
-      case 'dog':
-      default:
-        return Icons.pets_rounded;
-    }
-  }
-
-  Color _statusAccent(String status) {
-    switch (status.toLowerCase()) {
-      case 'found':
-        return const Color(0xFFFFE4B8);
-      case 'rescued':
-        return const Color(0xFFEBD6B5);
-      case 'sighted':
-        return const Color(0xFFFFF1D0);
-      case 'lost':
-      default:
-        return const Color(0xFFFFFFFF);
-    }
-  }
 }
 
-class _SeekStatusFilterOption {
-  const _SeekStatusFilterOption(this.value, this.label);
-
-  final String value;
-  final String label;
-}
-
-class _FilterPanel extends StatelessWidget {
-  const _FilterPanel({required this.child, this.topPadding = 0});
-
-  final Widget child;
-  final double topPadding;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: topPadding),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          border: Border.all(color: const Color(0xFFF2E6D8), width: 1.5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: child,
-      ),
-    );
-  }
-}
-
-class _RadioOptionRow<T> extends StatelessWidget {
-  const _RadioOptionRow({
-    required this.value,
-    required this.groupValue,
-    required this.label,
-    required this.onChanged,
-  });
-
-  final T value;
-  final T groupValue;
-  final String label;
-  final ValueChanged<T> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final isSelected = value == groupValue;
-
-    return InkWell(
-      onTap: () => onChanged(value),
-      borderRadius: BorderRadius.circular(10),
-      child: SizedBox(
-        height: 34,
-        child: Row(
-          children: [
-            Radio<T>(
-              value: value,
-              groupValue: groupValue,
-              onChanged: (next) {
-                if (next != null) onChanged(next);
-              },
-              activeColor: const Color(0xFFBA4A22),
-              visualDensity: VisualDensity.compact,
-            ),
-            Expanded(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: const Color(0xFFBA4A22),
-                  fontSize: 15,
-                  fontFamily: 'EricaOne',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _FilterOptionRow extends StatelessWidget {
-  const _FilterOptionRow({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: SizedBox(
-        height: 28,
-        child: Row(
-          children: [
-            Container(
-              width: 18,
-              height: 18,
-              decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFFBA4A22) : Colors.white,
-                borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: const Color(0xFFBA4A22), width: 1.5),
-              ),
-              child: Icon(
-                isSelected ? Icons.check_rounded : Icons.close_rounded,
-                color: isSelected ? Colors.white : const Color(0xFFBA4A22),
-                size: 13,
-              ),
-            ),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Color(0xFFBA4A22),
-                  fontSize: 12,
-                  fontFamily: 'EricaOne',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
