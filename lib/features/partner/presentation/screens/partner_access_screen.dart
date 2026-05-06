@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
@@ -84,7 +85,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 34),
-            AppTopBar(),
+            const AppTopBar(showUserAvatar: false),
             const SizedBox(height: 14),
             if (user != null) _buildPartnerDashboard(context, user, l10n),
           ],
@@ -104,9 +105,8 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
         Text(
           user.company?.toUpperCase() ?? l10n.partnerLabel,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: AppTextStyles.heading.copyWith(
             color: PartnerUiColors.brand,
-            fontFamily: 'EricaOne',
             fontSize: 28,
           ),
         ),

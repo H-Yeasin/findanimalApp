@@ -28,8 +28,8 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
     final statusList = (filters['status'] is List)
         ? List<String>.from(filters['status'])
         : (filters['status'] == 'all'
-            ? <String>[]
-            : [filters['status'].toString()]);
+              ? <String>[]
+              : [filters['status'].toString()]);
     final sort = (filters['sort'] ?? 'descending').toString();
     final radius = (filters['radius'] as num?)?.toInt() ?? 5;
     final hasLocation = filters.containsKey('lat');
@@ -58,7 +58,10 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
   }
 
   // ─────────────────── Status filter ───────────────────────
-  Widget _buildStatusFilter(AppLocalizations l10n, List<String> currentStatuses) {
+  Widget _buildStatusFilter(
+    AppLocalizations l10n,
+    List<String> currentStatuses,
+  ) {
     final options = _statusFilterOptions(l10n);
 
     return AnimatedSize(
@@ -150,7 +153,7 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
           Row(
             children: [
               Expanded(
-                flex: 2,
+                // flex: 3,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
@@ -194,8 +197,8 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
             child: _sortExpanded
                 ? _buildSortMenu(l10n, sort)
                 : _radiusExpanded
-                    ? _buildRadiusMenu(radius)
-                    : const SizedBox.shrink(),
+                ? _buildRadiusMenu(radius)
+                : const SizedBox.shrink(),
           ),
         ],
       ),

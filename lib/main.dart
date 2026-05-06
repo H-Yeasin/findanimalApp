@@ -6,6 +6,7 @@ import 'app.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'core/services/notification_service.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,10 @@ void main() async {
 
   // Initialize Notification Service
   container.read(notificationServiceProvider).init();
+
+  // Initialize timeago locales
+  timeago.setLocaleMessages('fr', timeago.FrMessages());
+  timeago.setLocaleMessages('en', timeago.EnMessages());
 
   runApp(
     UncontrolledProviderScope(container: container, child: const HestekaApp()),

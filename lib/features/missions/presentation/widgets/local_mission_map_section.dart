@@ -12,6 +12,7 @@ class LocalMissionMapSection extends StatelessWidget {
     required this.onLocateMe,
     this.onTapMap,
     this.selectedMission,
+    this.circles = const {},
     super.key,
   });
 
@@ -20,8 +21,8 @@ class LocalMissionMapSection extends StatelessWidget {
   final ValueChanged<GoogleMapController> onMapCreated;
   final VoidCallback onLocateMe;
   final VoidCallback? onTapMap;
-  final dynamic
-  selectedMission; // Use dynamic if MissionModel is not imported or import it
+  final dynamic selectedMission;
+  final Set<Circle> circles;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,7 @@ class LocalMissionMapSection extends StatelessWidget {
               onMapCreated: onMapCreated,
               onTap: (_) => onTapMap?.call(),
               markers: markers,
+              circles: circles,
               myLocationEnabled: true,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,

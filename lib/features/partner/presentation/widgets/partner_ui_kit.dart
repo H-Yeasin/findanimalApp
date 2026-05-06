@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
@@ -20,12 +21,14 @@ class PartnerScreenScaffold extends StatelessWidget {
     required this.child,
     this.header,
     this.bottomNavIndex = 2,
+    this.scrollController,
     super.key,
   });
 
   final Widget child;
   final Widget? header;
   final int bottomNavIndex;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,10 @@ class PartnerScreenScaffold extends StatelessWidget {
               child: SafeArea(
                 top: false,
                 bottom: false,
-                child: SingleChildScrollView(child: child),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: child,
+                ),
               ),
             ),
           ],
@@ -109,12 +115,10 @@ class PartnerHeroHeader extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: AppTextStyles.heading.copyWith(
                   color: PartnerUiColors.lightText,
                   fontSize: 56 / 2,
-                  fontFamily: 'EricaOne',
                   height: 1.05,
-                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -124,7 +128,6 @@ class PartnerHeroHeader extends StatelessWidget {
     );
   }
 }
-
 
 class PartnerBackButton extends StatelessWidget {
   const PartnerBackButton({this.onPressed, super.key});
@@ -167,12 +170,10 @@ class PartnerPageTitle extends StatelessWidget {
     return Text(
       text,
       textAlign: TextAlign.center,
-      style: const TextStyle(
+      style: AppTextStyles.heading.copyWith(
         color: PartnerUiColors.brand,
-        fontFamily: 'EricaOne',
         fontSize: 28,
         height: 1.03,
-        fontWeight: FontWeight.w700,
       ),
     );
   }
@@ -205,10 +206,9 @@ class PartnerCardActionRow extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: AppTextStyles.sectionTitle.copyWith(
                   color: PartnerUiColors.brand,
                   fontSize: 38 / 2,
-                  fontFamily: 'EricaOne',
                 ),
               ),
             ),
@@ -247,9 +247,8 @@ class PartnerInfoRow extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: const TextStyle(
+              style: AppTextStyles.sectionTitle.copyWith(
                 color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
                 fontSize: 34 / 2,
               ),
             ),
@@ -259,9 +258,8 @@ class PartnerInfoRow extends StatelessWidget {
             child: Text(
               value,
               textAlign: TextAlign.right,
-              style: const TextStyle(
+              style: AppTextStyles.sectionTitle.copyWith(
                 color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
                 fontSize: 34 / 2,
                 height: 1.15,
               ),
@@ -298,9 +296,8 @@ class PartnerSettingsRow extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: AppTextStyles.sectionTitle.copyWith(
                   color: PartnerUiColors.brand,
-                  fontFamily: 'EricaOne',
                   fontSize: 34 / 2,
                 ),
               ),
@@ -308,9 +305,8 @@ class PartnerSettingsRow extends StatelessWidget {
             if (value != null)
               Text(
                 value!,
-                style: const TextStyle(
+                style: AppTextStyles.sectionTitle.copyWith(
                   color: PartnerUiColors.brand,
-                  fontFamily: 'EricaOne',
                   fontSize: 34 / 2,
                 ),
               ),
@@ -335,9 +331,8 @@ class PartnerSectionHeading extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(
+            style: AppTextStyles.sectionTitle.copyWith(
               color: PartnerUiColors.brand,
-              fontFamily: 'EricaOne',
               fontSize: 20,
             ),
           ),
@@ -357,9 +352,8 @@ class PartnerFieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: AppTextStyles.sectionTitle.copyWith(
         color: PartnerUiColors.brand,
-        fontFamily: 'EricaOne',
         fontSize: 32 / 2,
       ),
     );
@@ -399,9 +393,8 @@ class PartnerOutlinedField extends StatelessWidget {
           Expanded(
             child: Text(
               hint,
-              style: const TextStyle(
+              style: AppTextStyles.sectionTitle.copyWith(
                 color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
                 fontSize: 32 / 2,
                 height: 1.2,
               ),
@@ -433,9 +426,8 @@ class PartnerInputField extends StatelessWidget {
       maxLines: maxLines,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(
+        hintStyle: AppTextStyles.sectionTitle.copyWith(
           color: PartnerUiColors.brand.withValues(alpha: 0.5),
-          fontFamily: 'EricaOne',
           fontSize: 32 / 2,
         ),
         filled: true,
@@ -453,9 +445,8 @@ class PartnerInputField extends StatelessWidget {
           borderSide: const BorderSide(color: PartnerUiColors.brand, width: 2),
         ),
       ),
-      style: const TextStyle(
+      style: AppTextStyles.sectionTitle.copyWith(
         color: PartnerUiColors.brand,
-        fontFamily: 'EricaOne',
         fontSize: 32 / 2,
       ),
     );
@@ -485,7 +476,7 @@ class PartnerPublishButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 28 / 2),
+          textStyle: AppTextStyles.button.copyWith(fontSize: 28 / 2),
         ),
         onPressed: onTap,
         child: Text(label),
@@ -521,12 +512,11 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               child: Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text(
                       'Title of the local mission',
-                      style: TextStyle(
+                      style: AppTextStyles.sectionTitle.copyWith(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'EricaOne',
                         fontSize: 32 / 2,
                       ),
                     ),
@@ -565,11 +555,10 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Text(
+                      Text(
                         'Balader des chiens',
-                        style: TextStyle(
+                        style: AppTextStyles.sectionTitle.copyWith(
                           color: PartnerUiColors.brand,
-                          fontFamily: 'EricaOne',
                           fontSize: 32 / 2,
                         ),
                       ),
@@ -586,11 +575,10 @@ class _PartnerMissionTitleFieldState extends State<PartnerMissionTitleField> {
                         width: 1,
                       ),
                     ),
-                    child: const Text(
-                      'Saisir|',
-                      style: TextStyle(
+                    child: Text(
+                      'Saisir',
+                      style: AppTextStyles.sectionTitle.copyWith(
                         color: PartnerUiColors.brand,
-                        fontFamily: 'EricaOne',
                         fontSize: 32 / 2,
                       ),
                     ),
@@ -630,4 +618,3 @@ class PartnerToggle extends StatelessWidget {
     );
   }
 }
-

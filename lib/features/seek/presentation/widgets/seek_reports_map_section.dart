@@ -223,7 +223,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
           Row(
             children: [
               Expanded(
-                flex: 2,
+                // flex: 2,
                 child: GestureDetector(
                   onTap: () {
                     setState(() {

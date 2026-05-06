@@ -28,12 +28,19 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
   LatLng _currentPosition = const LatLng(48.8566, 2.3522);
   BitmapDescriptor? _customPin;
   MissionModel? _selectedMission;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _loadCustomPin();
     _initializeLocation();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadCustomPin() async {
@@ -109,11 +116,15 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
           position: LatLng(lat, lng),
           onTap: () {
             setState(() {
-              _selectedMission = mission;
+              if (_selectedMission?.id == mission.id) {
+                _selectedMission = null;
+              } else {
+                _selectedMission = mission;
+                _mapController?.animateCamera(
+                  CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14),
+                );
+              }
             });
-            _mapController?.animateCamera(
-              CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14),
-            );
           },
           icon:
               _customPin ??
@@ -125,6 +136,20 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     return markers;
   }
 
+  Set<Circle> _buildCircles(LatLng center, double? radiusKm) {
+    if (radiusKm == null) return {};
+    return {
+      Circle(
+        circleId: const CircleId('mission_radius'),
+        center: center,
+        radius: radiusKm * 1000,
+        fillColor: PartnerUiColors.brand.withValues(alpha: 0.1),
+        strokeColor: PartnerUiColors.brand.withValues(alpha: 0.4),
+        strokeWidth: 2,
+      ),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final missionsAsync = ref.watch(missionsListProvider);
@@ -132,8 +157,13 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     final filters = ref.watch(missionsFiltersProvider);
     final l10n = AppLocalizations.of(context);
 
+    final center = (filters['lat'] != null && filters['lng'] != null)
+        ? LatLng(filters['lat'] as double, filters['lng'] as double)
+        : _currentPosition;
+
     return PartnerScreenScaffold(
       bottomNavIndex: 0,
+      scrollController: _scrollController,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20, 18, 20, 28),
         child: Column(
@@ -145,7 +175,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
             ),
             const SizedBox(height: 18),
             LocalMissionMapSection(
-              currentPosition: _currentPosition,
+              currentPosition: center,
               markers: _buildMarkers(missionsForMap),
               onMapCreated: (controller) => _mapController = controller,
               onLocateMe: _handleLocateMe,
@@ -155,6 +185,10 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                 }
               },
               selectedMission: _selectedMission,
+              circles: _buildCircles(
+                center,
+                (filters['radius'] as num?)?.toDouble(),
+              ),
             ),
             const SizedBox(height: 14),
             LocalMissionFilterBar(
@@ -190,7 +224,27 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
 
                 return Column(
                   children: [
-                    for (final mission in missions) LocalMissionCard(mission),
+                    for (final mission in missions)
+                      LocalMissionCard(
+                        mission,
+                        onSeeOnMap: () {
+                          final lat = mission.location?.latitude;
+                          final lng = mission.location?.longitude;
+                          if (lat != null && lng != null) {
+                            _scrollController.animateTo(
+                              0,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                            setState(() {
+                              _selectedMission = mission;
+                            });
+                            _mapController?.animateCamera(
+                              CameraUpdate.newLatLngZoom(LatLng(lat, lng), 15),
+                            );
+                          }
+                        },
+                      ),
                     LocalMissionPagination(
                       page: paginatedData.page,
                       totalPages: paginatedData.totalPages,

@@ -18,10 +18,8 @@ class LocalMissionHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: CustomBackButton(color: PartnerUiColors.brand),
-        ),
+        const SizedBox(height: 30),
+        const AppTopBar(showUserAvatar: false),
         const SizedBox(height: 10),
         PartnerPageTitle(title),
         const SizedBox(height: 10),

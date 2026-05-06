@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,15 +8,18 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../auth/presentation/providers/auth_provider.dart';
 
 class LocalMissionCard extends ConsumerWidget {
-  const LocalMissionCard(this.mission, {super.key});
+  const LocalMissionCard(this.mission, {this.onSeeOnMap, super.key});
 
   final MissionModel mission;
+  final VoidCallback? onSeeOnMap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final currentUser = ref.watch(currentUserProvider);
     final organization = mission.partner?.company ?? l10n.organization;
     final timeAgo = mission.createdAt != null
         ? _formatTimeAgo(mission.createdAt!, l10n)
@@ -91,7 +96,7 @@ class LocalMissionCard extends ConsumerWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: onSeeOnMap,
                         style: OutlinedButton.styleFrom(
                           foregroundColor: PartnerUiColors.brand,
                           side: const BorderSide(color: PartnerUiColors.brand),
@@ -106,7 +111,9 @@ class LocalMissionCard extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () => _joinMission(context, ref, l10n),
+                        onPressed: currentUser?.role == 'partners'
+                            ? null
+                            : () => _joinMission(context, ref, l10n),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PartnerUiColors.brand,
                           foregroundColor: Colors.white,
@@ -169,17 +176,14 @@ class LocalMissionCard extends ConsumerWidget {
   }
 
   String _formatTimeAgo(DateTime dateTime, AppLocalizations l10n) {
-    final duration = DateTime.now().difference(dateTime);
-    if (duration.inDays > 0) {
-      return l10n.daysAgo.replaceAll('{days}', duration.inDays.toString());
-    } else if (duration.inHours > 0) {
-      return l10n.hoursAgo.replaceAll('{hours}', duration.inHours.toString());
-    } else if (duration.inMinutes > 0) {
-      return l10n.minutesAgo.replaceAll(
-        '{minutes}',
-        duration.inMinutes.toString(),
-      );
+    final now = DateTime.now();
+    final difference = now.difference(dateTime);
+
+    if (difference.inDays < 1 && now.day == dateTime.day) {
+      return timeago.format(dateTime, locale: l10n.locale.languageCode);
+    } else {
+      return DateFormat('HH:mm - dd MMM yyyy', l10n.locale.languageCode)
+          .format(dateTime);
     }
-    return l10n.justNow;
   }
 }

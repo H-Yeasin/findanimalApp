@@ -19,7 +19,7 @@ class LocalMissionFilterBar extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: _FilterButton(text: sortText, onTap: onOpenFilters),
         ),
         const SizedBox(width: 10),

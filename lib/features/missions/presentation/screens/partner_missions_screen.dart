@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
-import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../providers/missions_list_provider.dart';
 import '../providers/partner_missions_provider.dart';
-import '../../../../core/localization/app_localizations.dart';
+import '../widgets/partner_created_missions_list.dart';
+import '../widgets/partner_mission_create_card.dart';
 
 class PartnerMissionsScreen extends ConsumerStatefulWidget {
   const PartnerMissionsScreen({super.key});
@@ -149,248 +150,37 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
     final missionsAsync = ref.watch(partnerMissionsProvider);
 
     return PartnerScreenScaffold(
+      bottomNavIndex: 0,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(22, 20, 22, 26),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AppTopBar(showBackButton: false),
+            const AppTopBar(showUserAvatar: false),
             const SizedBox(height: 14),
             PartnerPageTitle(l10n.myLocalMissions),
             const SizedBox(height: 16),
-            _buildCreateCard(l10n),
+            PartnerMissionCreateCard(
+              titleController: _titleController,
+              descriptionController: _descriptionController,
+              addressController: _addressController,
+              durationController: _durationController,
+              pointsController: _pointsController,
+              latitude: _latitude,
+              longitude: _longitude,
+              hasSelectedImage: _selectedImage != null,
+              isSubmitting: _isSubmitting,
+              onPickLocation: _pickLocation,
+              onPickImage: _pickImage,
+              onCreateMission: _createMission,
+            ),
             const SizedBox(height: 16),
             PartnerSectionHeading(l10n.myCreatedMissions),
             const SizedBox(height: 10),
-            missionsAsync.when(
-              loading: () => const Padding(
-                padding: EdgeInsets.only(top: 30),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: PartnerUiColors.brand,
-                  ),
-                ),
-              ),
-              error: (error, stack) => Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Column(
-                  children: [
-                    Text(
-                      l10n.couldNotLoadMissions,
-                      style: const TextStyle(
-                        color: PartnerUiColors.brand,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    OutlinedButton(
-                      onPressed: () => ref.invalidate(partnerMissionsProvider),
-                      child: Text(l10n.retry),
-                    ),
-                  ],
-                ),
-              ),
-              data: (missions) {
-                if (missions.isEmpty) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      l10n.noMissionsCreated,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: PartnerUiColors.brand,
-                        fontFamily: 'EricaOne',
-                        fontSize: 22,
-                      ),
-                    ),
-                  );
-                }
-
-                return ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: missions.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    return _MissionItemCard(mission: missions[index]);
-                  },
-                );
-              },
-            ),
+            PartnerCreatedMissionsList(missionsAsync: missionsAsync),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildCreateCard(AppLocalizations l10n) {
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: PartnerUiColors.panel,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: PartnerUiColors.brand),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          PartnerFieldLabel(l10n.missionTitle),
-          const SizedBox(height: 8),
-          PartnerInputField(
-            controller: _titleController,
-            hint: l10n.missionTitleHint,
-          ),
-          const SizedBox(height: 10),
-          PartnerFieldLabel(l10n.message.toUpperCase()),
-          const SizedBox(height: 8),
-          PartnerInputField(
-            controller: _descriptionController,
-            hint: l10n.missionDescriptionHint,
-            maxLines: 3,
-          ),
-          const SizedBox(height: 10),
-          PartnerFieldLabel(l10n.fieldAddress.toUpperCase()),
-          const SizedBox(height: 8),
-          PartnerInputField(
-            controller: _addressController,
-            hint: l10n.missionAddressHint,
-          ),
-          const SizedBox(height: 8),
-          InkWell(
-            onTap: _pickLocation,
-            child: PartnerOutlinedField(
-              _latitude == null || _longitude == null
-                  ? l10n.pickLocationOnMap
-                  : '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}',
-              trailing: const Icon(
-                Icons.map_outlined,
-                color: PartnerUiColors.brand,
-                size: 24,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          PartnerFieldLabel(
-            l10n.categoryMessaging.toUpperCase(),
-          ), // Or use a proper duration label if available
-          const SizedBox(height: 8),
-          PartnerInputField(
-            controller: _durationController,
-            hint: l10n.missionDurationHint,
-          ),
-          const SizedBox(height: 10),
-          PartnerFieldLabel(l10n.myPoints.toUpperCase()),
-          const SizedBox(height: 8),
-          PartnerInputField(controller: _pointsController, hint: 'e.g. 250'),
-          const SizedBox(height: 10),
-          PartnerFieldLabel(l10n.missionImageOptional),
-          const SizedBox(height: 8),
-          InkWell(
-            onTap: _pickImage,
-            child: PartnerOutlinedField(
-              _selectedImage == null
-                  ? l10n.uploadMissionImage
-                  : l10n.imageSelected,
-              trailing: const Icon(
-                Icons.cloud_upload_outlined,
-                color: PartnerUiColors.brand,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
-          Center(
-            child: _isSubmitting
-                ? const CircularProgressIndicator(color: PartnerUiColors.brand)
-                : PartnerPublishButton(
-                    label: l10n.createLocalMission,
-                    onTap: _createMission,
-                  ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MissionItemCard extends StatelessWidget {
-  const _MissionItemCard({required this.mission});
-
-  final MissionModel mission;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: PartnerUiColors.panel,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: PartnerUiColors.brand),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: mission.photo != null
-                ? Image.network(
-                    mission.photo!.secureUrl,
-                    width: 74,
-                    height: 74,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, error, stackTrace) => _placeholder(),
-                  )
-                : _placeholder(),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  mission.title,
-                  style: const TextStyle(
-                    color: PartnerUiColors.brand,
-                    fontFamily: 'EricaOne',
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  mission.address,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: PartnerUiColors.brand,
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  l10n.durationPoints
-                      .replaceAll('{duration}', mission.duration)
-                      .replaceAll('{points}', (mission.points ?? 0).toString()),
-                  style: const TextStyle(
-                    color: PartnerUiColors.brand,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _placeholder() {
-    return Container(
-      width: 74,
-      height: 74,
-      color: const Color(0xFFE4D5B6),
-      child: const Icon(Icons.flag_outlined, color: PartnerUiColors.brand),
     );
   }
 }
