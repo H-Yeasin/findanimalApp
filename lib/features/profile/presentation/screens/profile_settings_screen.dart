@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -189,7 +190,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: l10n.settingsTitle,
-        imageUrl: "assets/settingsHeader.png",
+        imageUrl: AppAssets.settingsHeader,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(38, 20, 38, 34),

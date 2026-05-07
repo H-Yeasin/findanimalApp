@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
@@ -11,7 +12,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       header: PartnerHeroHeader(
         title: 'PRIVACY POLICY',
         imageUrl:
-            'assets/images/profile/PrivecyPolicy.png', // Cat peeking image
+            AppAssets.privacyPolicy, // Cat peeking image
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),

@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_text_styles.dart';
@@ -98,7 +99,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                           -5,
                         ), // Adjust this value to move it more/less
                         child: Image.asset(
-                          'assets/images/Bottom_Navigation_icon/bottom_nav_middle.png',
+                          AppAssets.bottomNavMiddle,
                           width: 60,
                           height: 60,
                           // fit: BoxFit.contain,
@@ -130,7 +131,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/Bottom_Navigation_icon/$icon.png',
+              AppAssets.bottomNavIcon(icon),
               width: 24,
               height: 24,
               fit: BoxFit.contain,

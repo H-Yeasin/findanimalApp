@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 
 import '../../../../core/widgets/app_background.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
@@ -81,7 +82,7 @@ class _AuthHeroHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/cat.png', fit: BoxFit.cover),
+          Image.asset(AppAssets.cat, fit: BoxFit.cover),
           Container(color: Colors.black.withValues(alpha: 0.03)),
           if (showBackButton)
             Positioned(
@@ -106,7 +107,7 @@ class _AuthHeroHeader extends StatelessWidget {
           Align(
             alignment: const Alignment(0, 0.52),
             child: Image.asset(
-              'assets/images/Logo/logo.png',
+              AppAssets.logo,
               width: 246,
               fit: BoxFit.contain,
               errorBuilder: (_, error, stackTrace) => const Text(

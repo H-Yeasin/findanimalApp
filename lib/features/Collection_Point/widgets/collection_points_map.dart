@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
@@ -49,7 +50,7 @@ class _CollectionPointsMapState extends State<CollectionPointsMap> {
   Future<void> _loadCustomPin() async {
     _customPin = await BitmapDescriptor.asset(
       const ImageConfiguration(size: Size(40, 50)),
-      'assets/images/Map/collectionPointPin.png',
+      AppAssets.collectionPointMapPin,
     );
     if (mounted) setState(() {});
   }

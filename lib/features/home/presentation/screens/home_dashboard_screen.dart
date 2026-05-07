@@ -4,7 +4,7 @@ import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/features/solidarity/presentation/screens/solidarity_hub_screen.dart';
 
-import '../../../Community/community_screen.dart';
+import '../../../Community/presentation/screens/community_screen.dart';
 import '../../../missions/mission_local.dart';
 import '../../../reports/presentation/screens/my_reports_screen.dart';
 import '../../../seek/presentation/screens/seek_reports_screen.dart';

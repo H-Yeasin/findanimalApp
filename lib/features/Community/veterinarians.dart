@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
@@ -64,7 +65,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
 
                 // Header Image
                 Image.asset(
-                  'assets/images/veterenaries.png',
+                  AppAssets.veterinarians,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,

@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -254,7 +255,7 @@ class _FaqSection extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(05),
                   child: Image.asset(
-                    'assets/images/faqImage.png',
+                    AppAssets.faqImage,
                     height: 120,
                     fit: BoxFit.cover,
                   ),
@@ -282,7 +283,7 @@ class _ContactsSection extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           Image.asset(
-            'assets/images/contackBackground.png',
+            AppAssets.contactBackground,
             height: 300,
             width: double.infinity,
             fit: BoxFit.cover,

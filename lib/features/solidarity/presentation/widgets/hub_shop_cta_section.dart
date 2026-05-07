@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
@@ -21,7 +22,7 @@ class HubShopCTASection extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(25),
               child: Image.asset(
-                'assets/images/solidarity_shop.png',
+                AppAssets.solidarityShop,
                 height: 200,
                 width: MediaQuery.of(context).size.width * 0.9,
                 fit: BoxFit.cover,

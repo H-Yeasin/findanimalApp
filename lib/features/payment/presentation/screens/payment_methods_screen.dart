@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +24,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     return PartnerScreenScaffold(
       header: const PartnerHeroHeader(
         title: 'MY PAYMENT\nMEANS',
-        imageUrl: "assets/mypaymentsHeader.png",
+        imageUrl: AppAssets.myPaymentsHeader,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),

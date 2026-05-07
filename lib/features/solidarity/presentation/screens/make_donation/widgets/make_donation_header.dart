@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
@@ -21,7 +22,7 @@ class MakeDonationHeader extends StatelessWidget {
           width: double.infinity,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage('assets/soliderityHeader.png'),
+              image: AssetImage(AppAssets.solidarityHeader),
               fit: BoxFit.cover,
             ),
           ),

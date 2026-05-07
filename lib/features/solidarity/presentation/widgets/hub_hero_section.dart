@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -17,7 +18,7 @@ class HubHeroSection extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Image.asset(
-          'assets/soliderityHeader.png',
+          AppAssets.solidarityHeader,
           height: heroHeight,
           width: double.infinity,
           fit: BoxFit.cover,

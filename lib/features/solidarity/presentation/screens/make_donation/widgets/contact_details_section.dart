@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
@@ -68,7 +69,7 @@ class ContactDetailsSection extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  'assets/images/payment/paypal_logo.png', // Assuming this exists or using a generic icon
+                  AppAssets.paypalLogo, // Assuming this exists or using a generic icon
                   height: 30,
                   errorBuilder: (context, error, stackTrace) => const Row(
                     mainAxisAlignment: MainAxisAlignment.center,

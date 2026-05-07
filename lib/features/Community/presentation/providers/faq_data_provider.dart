@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 
@@ -42,7 +43,7 @@ class FAQDataProvider {
       FAQSection(
         category: 'LOCAL MISSIONS',
         title: l10n.categoryMissions,
-        image: 'assets/images/faq_image_2.png',
+        image: AppAssets.faqImage2,
         questions: [
           FAQItem(
             question: l10n.text('faqMissionFindQuestion'),
@@ -73,7 +74,7 @@ class FAQDataProvider {
       FAQSection(
         category: 'MY ACCOUNT',
         title: l10n.categoryAccount,
-        image: 'assets/images/faq_image_3.png',
+        image: AppAssets.faqImage3,
         questions: [
           FAQItem(
             question: l10n.text('faqAccountEditQuestion'),
@@ -92,7 +93,7 @@ class FAQDataProvider {
       FAQSection(
         category: 'MESSAGING',
         title: l10n.categoryMessaging,
-        image: 'assets/images/faq_image_4.png',
+        image: AppAssets.faqImage4,
         questions: [
           FAQItem(
             question: l10n.text('faqMessagingBlockQuestion'),
@@ -107,7 +108,7 @@ class FAQDataProvider {
       FAQSection(
         category: 'DONATIONS AND HELP',
         title: l10n.categoryDonations,
-        image: 'assets/images/faq_image_5.png',
+        image: AppAssets.faqImage5,
         questions: [
           FAQItem(
             question: l10n.text('faqDonationsDestinationQuestion'),
@@ -126,7 +127,7 @@ class FAQDataProvider {
       FAQSection(
         category: 'SECURITY',
         title: l10n.categorySecurity,
-        image: 'assets/images/faq_image_6.png',
+        image: AppAssets.faqImage6,
         questions: [
           FAQItem(
             question: l10n.text('faqSecurityContentQuestion'),

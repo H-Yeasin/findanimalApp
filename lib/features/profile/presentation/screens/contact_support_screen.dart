@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
@@ -13,7 +14,7 @@ class ContactSupportScreen extends StatelessWidget {
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: l10n.contactUs,
-        imageUrl: 'assets/images/profile/contactUs.png',
+        imageUrl: AppAssets.contactUs,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(22, 20, 22, 40),

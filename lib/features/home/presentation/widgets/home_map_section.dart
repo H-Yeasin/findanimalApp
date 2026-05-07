@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,7 +37,7 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
   Future<void> _loadCustomPin() async {
     _customPin = await BitmapDescriptor.asset(
       const ImageConfiguration(size: Size(40, 50)),
-      'assets/images/Map/animalPin.png',
+      AppAssets.animalMapPin,
     );
     if (mounted) setState(() {});
   }

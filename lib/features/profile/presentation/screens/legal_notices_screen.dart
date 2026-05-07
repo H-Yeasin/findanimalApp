@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
@@ -10,7 +11,7 @@ class LegalNoticesScreen extends StatelessWidget {
     return PartnerScreenScaffold(
       header: const PartnerHeroHeader(
         title: 'LEGAL NOTICES',
-        imageUrl: 'assets/images/profile/LegalNotice.png',
+        imageUrl: AppAssets.legalNotice,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),

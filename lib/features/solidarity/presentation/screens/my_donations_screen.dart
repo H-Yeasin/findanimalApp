@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
@@ -37,7 +38,7 @@ class MyDonationsScreen extends ConsumerWidget {
                         width: double.infinity,
                         decoration: const BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/supporHeader.png'),
+                            image: AssetImage(AppAssets.supportHeader),
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
                               Color.fromARGB(255, 43, 41, 41),
@@ -206,7 +207,7 @@ class MyDonationsScreen extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Image.asset('assets/supportCat.png'),
+                      child: Image.asset(AppAssets.supportCat),
                     ),
                   ),
 

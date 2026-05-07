@@ -11,8 +11,8 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/verify_otp_screen.dart';
 import '../../features/contacts/presentation/screens/contact_detail_screen.dart';
-import '../../features/home/presentation/screens/main_shell_screen.dart';
-import '../../features/Community/community_screen.dart';
+import '../../features/home/presentation/screens/home_dashboard_screen.dart';
+import '../../features/Community/presentation/screens/community_screen.dart';
 import '../../features/Community/presentation/screens/notification.dart';
 import '../../features/missions/presentation/screens/partner_missions_screen.dart';
 
@@ -58,7 +58,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: RouteNames.root,
-        builder: (context, state) => const MainShellScreen(),
+        builder: (context, state) => const HomeDashboard(),
       ),
       GoRoute(
         path: RouteNames.main,
@@ -133,7 +133,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: RouteNames.mainHome,
-        builder: (context, state) => const MainShellScreen(),
+        builder: (context, state) => const HomeDashboard(),
       ),
       GoRoute(
         path: RouteNames.myReports,

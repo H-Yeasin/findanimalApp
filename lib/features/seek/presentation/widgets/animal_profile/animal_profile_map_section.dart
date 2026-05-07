@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -134,7 +135,7 @@ class _StaticMapPlaceholder extends StatelessWidget {
     return Stack(
       children: [
         Image.asset(
-          'assets/images/Map/map.png',
+          AppAssets.animalMapPin,
           width: double.infinity,
           height: 190,
           fit: BoxFit.cover,

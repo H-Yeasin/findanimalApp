@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import '../data/models/contact_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,7 +47,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : Image.asset(
-                            'assets/images/shelter_header.png',
+                            AppAssets.shelterHeader,
                             fit: BoxFit.cover,
                           ),
                   ),

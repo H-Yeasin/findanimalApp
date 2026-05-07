@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? imageUrl;
@@ -33,7 +34,7 @@ class UserAvatar extends StatelessWidget {
             : null,
         child: imageUrl == null || imageUrl!.isEmpty
             ? Image.asset(
-                'assets/images/Login_signup/account.png',
+                AppAssets.accountIcon,
                 width: radius * 1.1,
                 height: radius * 1.1,
                 errorBuilder: (context, error, stackTrace) =>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
@@ -63,7 +64,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
 
                 // Header Image
                 Image.asset(
-                  'assets/images/authorities.png',
+                  AppAssets.authorities,
                   width: double.infinity,
                   height: 200,
                   fit: BoxFit.cover,

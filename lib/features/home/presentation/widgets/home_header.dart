@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
@@ -22,7 +23,7 @@ class HomeTopHeader extends StatelessWidget {
             children: [
               ColoredBox(color: Colors.black),
               Image(
-                image: AssetImage('assets/homeHero.png'),
+                image: AssetImage(AppAssets.homeHero),
                 fit: BoxFit.cover,
                 alignment: Alignment.center,
               ),
@@ -41,7 +42,7 @@ class HomeTopHeader extends StatelessWidget {
               children: [
                 Positioned.fill(
                   child: Image.asset(
-                    'assets/images/Logo/logo.png',
+                    AppAssets.logo,
                     fit: BoxFit.contain,
                     alignment: Alignment.bottomLeft,
                   ),

@@ -1,3 +1,4 @@
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
@@ -62,7 +63,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
 
                 // Updated Image
                 Image.asset(
-                  'assets/images/shelter_header.png',
+                  AppAssets.shelterHeader,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
