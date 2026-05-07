@@ -194,7 +194,17 @@ class _CollectionPointScreenState extends ConsumerState<CollectionPointScreen> {
                 ),
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (err, stack) => Center(
-                  child: Text('${l10n.error}: $err', style: AppTextStyles.body),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      l10n.errorLoadingFailed,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.body.copyWith(
+                        color: _brandPrimary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

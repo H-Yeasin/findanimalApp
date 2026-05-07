@@ -23,10 +23,9 @@ class HomeCommunityHelpedSection extends ConsumerWidget {
             l10n.homeCommunityHelped,
             style: AppTextStyles.body.copyWith(
               color: Color(0xFFF9EAD4),
-              fontSize: 28,
-              fontWeight: FontWeight.w900,
+              fontSize: 32,
               fontFamily: 'EricaOne',
-              letterSpacing: 1.2,
+              letterSpacing: 1.5,
             ),
             textAlign: TextAlign.center,
           ),

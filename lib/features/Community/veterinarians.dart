@@ -47,113 +47,120 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                // Header
-                AppTopBar(title: l10n.listVeterinarians),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    l10n.veterinariansBody,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                  // Header
+                  AppTopBar(title: l10n.listVeterinarians),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      l10n.veterinariansBody,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Header Image
-                Image.asset(
-                  AppAssets.veterinarians,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  // Header Image
+                  Image.asset(
+                    AppAssets.veterinarians,
                     width: double.infinity,
                     height: 200,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image_not_supported, size: 50),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: double.infinity,
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image_not_supported, size: 50),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Search Bar
-                _buildSearchBar(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 10),
+                  // Search Bar
+                  _buildSearchBar(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 10),
 
-                // Filter Dropdown
-                _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 30),
+                  // Filter Dropdown
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 30),
 
-                // List Section
-                veterinariansAsync.when(
-                  data: (veterinarians) {
-                    if (veterinarians.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            l10n.noReportsFound,
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                  // List Section
+                  veterinariansAsync.when(
+                    data: (veterinarians) {
+                      if (veterinarians.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
                             child: Text(
-                              l10n.allVeterinarians.toUpperCase(),
-                              style: AppTextStyles.heading.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w900,
+                              l10n.noReportsFound,
+                              style: AppTextStyles.body.copyWith(
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
+                        );
+                      }
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                l10n.allVeterinarians.toUpperCase(),
+                                style: AppTextStyles.heading.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: veterinarians.length,
+                            itemBuilder: (context, index) {
+                              final vet = veterinarians[index];
+                              return _buildVetCard(
+                                vet,
+                                cardBg,
+                                brandPrimary,
+                                l10n,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: brandPrimary),
+                    ),
+                    error: (err, stack) => Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          l10n.errorLoadingFailed,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body.copyWith(
+                            color: brandPrimary,
+                            fontSize: 14,
+                          ),
                         ),
-                        const SizedBox(height: 15),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: veterinarians.length,
-                          itemBuilder: (context, index) {
-                            final vet = veterinarians[index];
-                            return _buildVetCard(
-                              vet,
-                              cardBg,
-                              brandPrimary,
-                              l10n,
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: brandPrimary),
-                  ),
-                  error: (err, stack) => Center(
-                    child: Text(
-                      l10n.unknownError,
-                      style: AppTextStyles.body,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 100),
-              ],
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(

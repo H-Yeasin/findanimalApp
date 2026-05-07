@@ -27,9 +27,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final brandPrimary = Color(0xFFBA4A22);
-    final surface = Color(0xFFFBF4E9);
-    final cardBg = Color(0xFFFFF6E5);
+    const brandPrimary = Color(0xFFBA4A22);
+    const surface = Color(0xFFFBF4E9);
+    const cardBg = Color(0xFFFFF6E5);
 
     final sheltersAsync = ref.watch(sheltersProvider);
     final l10n = AppLocalizations.of(context);
@@ -45,108 +45,115 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                // Header
-                AppTopBar(title: l10n.listShelters),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    l10n.sheltersBody,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                  // Header
+                  AppTopBar(title: l10n.listShelters),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      l10n.sheltersBody,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Updated Image
-                Image.asset(
-                  AppAssets.shelterHeader,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 20),
+                  // Updated Image
+                  Image.asset(
+                    AppAssets.shelterHeader,
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(height: 20),
 
-                // Search Bar
-                _buildSearchBar(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 10),
+                  // Search Bar
+                  _buildSearchBar(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 10),
 
-                // Filter Dropdown
-                _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 30),
+                  // Filter Dropdown
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 30),
 
-                // List Section
-                sheltersAsync.when(
-                  data: (shelters) {
-                    if (shelters.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            l10n.noReportsFound,
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                  // List Section
+                  sheltersAsync.when(
+                    data: (shelters) {
+                      if (shelters.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
                             child: Text(
-                              l10n.allShelters.toUpperCase(),
-                              style: AppTextStyles.heading.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w900,
+                              l10n.noReportsFound,
+                              style: AppTextStyles.body.copyWith(
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
+                        );
+                      }
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                l10n.allShelters.toUpperCase(),
+                                style: AppTextStyles.heading.copyWith(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: shelters.length,
+                            itemBuilder: (context, index) {
+                              final shelter = shelters[index];
+                              return _buildShelterCard(
+                                shelter,
+                                cardBg,
+                                brandPrimary,
+                                l10n,
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: brandPrimary),
+                    ),
+                    error: (err, stack) => Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          l10n.errorLoadingFailed,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body.copyWith(
+                            color: brandPrimary,
+                            fontSize: 14,
+                          ),
                         ),
-                        const SizedBox(height: 15),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: shelters.length,
-                          itemBuilder: (context, index) {
-                            final shelter = shelters[index];
-                            return _buildShelterCard(
-                              shelter,
-                              cardBg,
-                              brandPrimary,
-                              l10n,
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                  loading: () => Center(
-                    child: CircularProgressIndicator(color: brandPrimary),
-                  ),
-                  error: (err, stack) => Center(
-                    child: Text(
-                      l10n.unknownError,
-                      style: AppTextStyles.body,
+                      ),
                     ),
                   ),
-                ),
 
-                const SizedBox(height: 100),
-              ],
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(

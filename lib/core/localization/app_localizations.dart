@@ -99,6 +99,7 @@ class AppLocalizations {
   String get unknownError => _text('unknownError');
   String get genericError => _text('genericError');
   String get noData => _text('noData');
+  String get errorLoadingFailed => _text('errorLoadingFailed');
   String get accountTitle => _text('accountTitle');
   String get skip => _text('skip');
   String get login => _text('login');

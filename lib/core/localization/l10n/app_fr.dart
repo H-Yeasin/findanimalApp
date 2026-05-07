@@ -18,6 +18,7 @@ const Map<String, String> appFr = {
   'unknownError': 'Une erreur est survenue.',
   'genericError': 'Une erreur est survenue. Veuillez réessayer.',
   'noData': 'Aucune donnée trouvée.',
+  'errorLoadingFailed': 'Le chargement a échoué. Veuillez essayer de vous connecter...',
   'accountTitle': 'Connectez-vous ou créez votre\ncompte Hesteka',
   'skip': 'Passer>>',
   'login': 'Se connecter',

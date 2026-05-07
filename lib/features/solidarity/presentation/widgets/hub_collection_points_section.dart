@@ -144,7 +144,19 @@ class _HubCollectionPointsSectionState
               error: (err, stack) => SizedBox(
                 height: 300,
                 width: double.infinity,
-                child: Center(child: Text('Error loading map: $err')),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      l10n.errorLoadingFailed,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.body.copyWith(
+                        color: brandPrimary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
         const SizedBox(height: 50),

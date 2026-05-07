@@ -43,94 +43,101 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                // Header
-                AppTopBar(title: l10n.ourPartners),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    l10n.partnersBody,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
+                  // Header
+                  AppTopBar(title: l10n.ourPartners),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      l10n.partnersBody,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Header Image
-                Image.asset(
-                  AppAssets.partner,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  // Header Image
+                  Image.asset(
+                    AppAssets.partner,
                     width: double.infinity,
                     height: 200,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image_not_supported, size: 50),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Search Bar
-                _buildSearchBar(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 30),
-
-                // List Section
-                partnersAsync.when(
-                  data: (partners) {
-                    if (partners.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            l10n.noReportsFound,
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: partners.length,
-                      itemBuilder: (context, index) {
-                        final partner = partners[index];
-                        return _buildPartnerCard(
-                          partner.name,
-                          partner.type,
-                          partner.fullImageUrl,
-                          cardBg,
-                          brandPrimary,
-                          l10n,
-                        );
-                      },
-                    );
-                  },
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: brandPrimary),
-                  ),
-                  error: (err, stack) => Center(
-                    child: Text(
-                      l10n.unknownError,
-                      style: AppTextStyles.body,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: double.infinity,
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image_not_supported, size: 50),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 20),
 
-                const SizedBox(height: 100),
-              ],
+                  // Search Bar
+                  _buildSearchBar(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 30),
+
+                  // List Section
+                  partnersAsync.when(
+                    data: (partners) {
+                      if (partners.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              l10n.noReportsFound,
+                              style: AppTextStyles.body.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: partners.length,
+                        itemBuilder: (context, index) {
+                          final partner = partners[index];
+                          return _buildPartnerCard(
+                            partner.name,
+                            partner.type,
+                            partner.fullImageUrl,
+                            cardBg,
+                            brandPrimary,
+                            l10n,
+                          );
+                        },
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: brandPrimary),
+                    ),
+                    error: (err, stack) => Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          l10n.errorLoadingFailed,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body.copyWith(
+                            color: brandPrimary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(

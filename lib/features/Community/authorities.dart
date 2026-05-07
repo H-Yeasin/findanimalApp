@@ -121,7 +121,17 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                       child: CircularProgressIndicator(color: brandPrimary),
                     ),
                     error: (err, stack) => Center(
-                      child: Text(l10n.unknownError, style: AppTextStyles.body),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          l10n.errorLoadingFailed,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body.copyWith(
+                            color: brandPrimary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
 

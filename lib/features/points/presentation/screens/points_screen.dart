@@ -29,7 +29,19 @@ class PointsScreen extends ConsumerWidget {
         child: pointsState.when(
           data: (state) => _buildContent(context, ref, state),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Center(child: Text(l10n.errorParam('$err'))),
+          error: (err, stack) => Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                l10n.errorLoadingFailed,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.body.copyWith(
+                  color: AppColors.brandPrimary,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -582,7 +594,7 @@ class PointsScreen extends ConsumerWidget {
         Navigator.of(context, rootNavigator: true).pop();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).errorParam('$e')),
+            content: Text(AppLocalizations.of(context).errorLoadingFailed),
             backgroundColor: Colors.red,
           ),
         );

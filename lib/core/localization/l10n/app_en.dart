@@ -18,6 +18,7 @@ const Map<String, String> appEn = {
   'unknownError': 'Something went wrong.',
   'genericError': 'Something went wrong. Please try again.',
   'noData': 'No data found.',
+  'errorLoadingFailed': 'Loading failed. Please try with login...',
   'accountTitle': 'Log in or create your\nHesteka account',
   'skip': 'Skip>>',
   'login': 'Log in',

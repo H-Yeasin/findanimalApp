@@ -76,7 +76,7 @@ class HomeReportedRecentlySection extends ConsumerWidget {
                   child: CircularProgressIndicator(color: Color(0xFFBA4A22)),
                 ),
                 error: (error, stack) =>
-                    Center(child: Text('${l10n.errorLoadingReports} $error')),
+                    Center(child: Text(l10n.errorLoadingFailed)),
               ),
           const SizedBox(height: 25),
           GestureDetector(
