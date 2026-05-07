@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/features/reports/presentation/providers/report_form_provider.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:hesteka_frontend/features/seek/presentation/providers/seek_reports_provider.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
@@ -428,7 +428,7 @@ class MyReportsScreen extends ConsumerWidget {
                       children: [
                         _buildSmallButton(
                           l10n.seeOnMap,
-                          () => _openMap(context, report),
+                          () => _openMap(context, ref, report),
                         ),
                         _buildSmallButton(
                           l10n.seeAnimalSheet(report.animalName),
@@ -478,27 +478,9 @@ class MyReportsScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _openMap(BuildContext context, ReportModel report) async {
-    final l10n = AppLocalizations.of(context);
-    final coordinates = report.location.coordinates;
-    if (coordinates.length < 2) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.noLocationAvailable)));
-      return;
-    }
-
-    final lat = coordinates[1];
-    final lng = coordinates[0];
-    final uri = Uri.parse(
-      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
-    );
-    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.couldNotOpenMap)));
-    }
+  void _openMap(BuildContext context, WidgetRef ref, ReportModel report) {
+    ref.read(selectedSeekReportProvider.notifier).state = report;
+    context.push(RouteNames.reports);
   }
 
   Widget _buildSmallButton(String label, VoidCallback onTap) {
