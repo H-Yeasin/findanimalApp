@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/localization/app_localizations.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 
-final missionParticipantsProvider = FutureProvider.family<List<dynamic>, String>((ref, missionId) {
-  return ref.watch(missionsRepositoryProvider).getLocalMissionParticipants(missionId);
-});
+final missionParticipantsProvider =
+    FutureProvider.family<List<dynamic>, String>((ref, missionId) {
+      return ref
+          .watch(missionsRepositoryProvider)
+          .getLocalMissionParticipants(missionId);
+    });
 
 class MissionParticipantsBottomSheet extends ConsumerWidget {
   const MissionParticipantsBottomSheet({required this.missionId, super.key});
@@ -15,7 +17,6 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
     final participantsAsync = ref.watch(missionParticipantsProvider(missionId));
 
     return DraggableScrollableSheet(
@@ -69,8 +70,10 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                       itemCount: participants.length,
                       separatorBuilder: (_, _) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
-                        final participant = participants[index] as Map<String, dynamic>;
-                        final user = participant['user'] as Map<String, dynamic>;
+                        final participant =
+                            participants[index] as Map<String, dynamic>;
+                        final user =
+                            participant['user'] as Map<String, dynamic>;
                         final firstName = user['firstName'] ?? '';
                         final lastName = user['lastName'] ?? '';
                         final email = user['email'] ?? '';
@@ -83,7 +86,9 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                             color: Colors.white.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: PartnerUiColors.brand.withValues(alpha: 0.2),
+                              color: PartnerUiColors.brand.withValues(
+                                alpha: 0.2,
+                              ),
                             ),
                           ),
                           child: Row(
@@ -91,7 +96,9 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                               CircleAvatar(
                                 backgroundColor: PartnerUiColors.brand,
                                 child: Text(
-                                  firstName.isNotEmpty ? firstName[0].toUpperCase() : '?',
+                                  firstName.isNotEmpty
+                                      ? firstName[0].toUpperCase()
+                                      : '?',
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               ),
@@ -111,7 +118,9 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                     Text(
                                       email,
                                       style: TextStyle(
-                                        color: PartnerUiColors.brand.withValues(alpha: 0.7),
+                                        color: PartnerUiColors.brand.withValues(
+                                          alpha: 0.7,
+                                        ),
                                         fontSize: 13,
                                       ),
                                     ),
@@ -122,9 +131,14 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: _getStatusColor(status).withValues(alpha: 0.1),
+                                      color: _getStatusColor(
+                                        status,
+                                      ).withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -154,11 +168,11 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                     );
                   },
                   loading: () => const Center(
-                    child: CircularProgressIndicator(color: PartnerUiColors.brand),
+                    child: CircularProgressIndicator(
+                      color: PartnerUiColors.brand,
+                    ),
                   ),
-                  error: (error, _) => Center(
-                    child: Text('Erreur: $error'),
-                  ),
+                  error: (error, _) => Center(child: Text('Erreur: $error')),
                 ),
               ),
             ],

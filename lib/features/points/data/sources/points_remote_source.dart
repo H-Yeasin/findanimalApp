@@ -22,8 +22,8 @@ class PointsRemoteSource {
     bool isActive = true,
   }) async {
     final queryParams = {
-      if (category != null) 'category': category,
-      if (type != null) 'type': type,
+      'category': ?category,
+      'type': ?type,
       'isActive': isActive,
     };
 

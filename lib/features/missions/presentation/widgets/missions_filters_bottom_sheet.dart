@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../core/localization/app_localizations.dart';
-import '../../../../core/providers/location_provider.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../providers/missions_filters_provider.dart';
 

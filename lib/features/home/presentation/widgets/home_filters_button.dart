@@ -396,7 +396,7 @@ class _RadioOptionRow<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = value == groupValue;
+    // final isSelected = value == groupValue;
 
     return InkWell(
       onTap: () => onChanged(value),
@@ -407,7 +407,7 @@ class _RadioOptionRow<T> extends StatelessWidget {
           children: [
             Radio<T>(
               value: value,
-              groupValue: groupValue,
+              // groupValue: groupValue,
               onChanged: (next) {
                 if (next != null) onChanged(next);
               },

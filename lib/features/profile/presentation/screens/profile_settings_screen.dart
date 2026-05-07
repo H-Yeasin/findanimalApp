@@ -192,152 +192,152 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
         imageUrl: "assets/settingsHeader.png",
       ),
       child: Padding(
-          padding: const EdgeInsets.fromLTRB(38, 20, 38, 34),
-          child: Column(
-            children: [
-              PartnerSettingsRow(
-                label: l10n.changePassword,
-                value: '************',
-                onTap: () {
-                  final email = currentUser?.email.trim() ?? '';
-                  if (email.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Could not find account email. Please login again.',
-                        ),
+        padding: const EdgeInsets.fromLTRB(38, 20, 38, 34),
+        child: Column(
+          children: [
+            PartnerSettingsRow(
+              label: l10n.changePassword,
+              value: '************',
+              onTap: () {
+                final email = currentUser?.email.trim() ?? '';
+                if (email.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        'Could not find account email. Please login again.',
                       ),
-                    );
-                    return;
-                  }
-
-                  context.push(
-                    '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
+                    ),
                   );
-                },
+                  return;
+                }
+
+                context.push(
+                  '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
+                );
+              },
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.registeredPaymentMethods,
+              onTap: () => context.push(RouteNames.profilePaymentMethods),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                color: PartnerUiColors.brand,
+                size: 36,
               ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.registeredPaymentMethods,
-                onTap: () => context.push(RouteNames.profilePaymentMethods),
-                trailing: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: PartnerUiColors.brand,
-                  size: 36,
-                ),
-              ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.language,
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.language,
+              onTap: () => _openLanguageSheet(currentLanguage),
+              trailing: GestureDetector(
                 onTap: () => _openLanguageSheet(currentLanguage),
-                trailing: GestureDetector(
-                  onTap: () => _openLanguageSheet(currentLanguage),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        currentLanguage.flag,
-                        style: const TextStyle(fontSize: 22),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        currentLanguage.name.toUpperCase(),
-                        style: const TextStyle(
-                          color: PartnerUiColors.brand,
-                          fontFamily: 'EricaOne',
-                          fontSize: 34 / 2,
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      const Icon(
-                        Icons.keyboard_arrow_down_rounded,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      currentLanguage.flag,
+                      style: const TextStyle(fontSize: 22),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      currentLanguage.name.toUpperCase(),
+                      style: const TextStyle(
                         color: PartnerUiColors.brand,
-                        size: 24,
+                        fontFamily: 'EricaOne',
+                        fontSize: 34 / 2,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      color: PartnerUiColors.brand,
+                      size: 24,
+                    ),
+                  ],
                 ),
               ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.locationLabel,
-                trailing: PartnerToggle(
-                  value: _locationEnabled,
-                  onChanged: _onLocationToggleChanged,
-                ),
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.locationLabel,
+              trailing: PartnerToggle(
+                value: _locationEnabled,
+                onChanged: _onLocationToggleChanged,
               ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.darkLightMode,
-                trailing: IconButton(
-                  onPressed: () {
-                    // TODO: Implement theme toggle
-                  },
-                  icon: const Icon(
-                    Icons.wb_sunny_rounded,
-                    color: PartnerUiColors.brand,
-                    size: 28,
-                  ),
-                ),
-              ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.privacyPolicy,
-                onTap: () => context.push(RouteNames.privacyPolicy),
-                trailing: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: PartnerUiColors.brand,
-                  size: 36,
-                ),
-              ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.legalNotices,
-                onTap: () => context.push(RouteNames.legalNotices),
-                trailing: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: PartnerUiColors.brand,
-                  size: 36,
-                ),
-              ),
-              const Divider(color: PartnerUiColors.brand),
-              PartnerSettingsRow(
-                label: l10n.contactSupport,
-                onTap: () => context.push(RouteNames.contactSupport),
-                trailing: const Icon(
-                  Icons.chevron_right_rounded,
-                  color: PartnerUiColors.brand,
-                  size: 36,
-                ),
-              ),
-              const Divider(color: PartnerUiColors.brand),
-              // const SizedBox(height: 34),
-              // PartnerPublishButton(
-              //   label: l10n.logoutLabel,
-              //   onTap: () async {
-              //     await ref.read(authSessionProvider.notifier).logout();
-              //     if (context.mounted) context.go(RouteNames.login);
-              //   },
-              // ),
-              const SizedBox(height: 30),
-              GestureDetector(
-                onTap: () {
-                  // TODO: Implement account deletion
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.darkLightMode,
+              trailing: IconButton(
+                onPressed: () {
+                  // TODO: Implement theme toggle
                 },
-                child: Text(
-                  l10n.deleteMyAccount,
-                  style: const TextStyle(
-                    color: PartnerUiColors.brand,
-                    fontFamily: 'EricaOne',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                  ),
+                icon: const Icon(
+                  Icons.wb_sunny_rounded,
+                  color: PartnerUiColors.brand,
+                  size: 28,
                 ),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.privacyPolicy,
+              onTap: () => context.push(RouteNames.privacyPolicy),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                color: PartnerUiColors.brand,
+                size: 36,
+              ),
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.legalNotices,
+              onTap: () => context.push(RouteNames.legalNotices),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                color: PartnerUiColors.brand,
+                size: 36,
+              ),
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            PartnerSettingsRow(
+              label: l10n.contactSupport,
+              onTap: () => context.push(RouteNames.contactSupport),
+              trailing: const Icon(
+                Icons.chevron_right_rounded,
+                color: PartnerUiColors.brand,
+                size: 36,
+              ),
+            ),
+            const Divider(color: PartnerUiColors.brand),
+            // const SizedBox(height: 34),
+            // PartnerPublishButton(
+            //   label: l10n.logoutLabel,
+            //   onTap: () async {
+            //     await ref.read(authSessionProvider.notifier).logout();
+            //     if (context.mounted) context.go(RouteNames.login);
+            //   },
+            // ),
+            // const SizedBox(height: 30),
+            // GestureDetector(
+            //   onTap: () {
+            //     // TODO: Implement account deletion
+            //   },
+            //   child: Text(
+            //     l10n.deleteMyAccount,
+            //     style: const TextStyle(
+            //       color: PartnerUiColors.brand,
+            //       fontFamily: 'EricaOne',
+            //       fontSize: 18,
+            //       fontWeight: FontWeight.w900,
+            //     ),
+            //   ),
+            // ),
+            const SizedBox(height: 20),
+          ],
         ),
-      );
+      ),
+    );
   }
 }
