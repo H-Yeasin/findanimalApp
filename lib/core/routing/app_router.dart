@@ -10,7 +10,6 @@ import '../../features/auth/presentation/screens/partner_register_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/verify_otp_screen.dart';
-import '../../features/contacts/presentation/screens/contact_detail_screen.dart';
 import '../../features/home/presentation/screens/home_dashboard_screen.dart';
 import '../../features/Community/presentation/screens/community_screen.dart';
 import '../../features/Community/presentation/screens/notification.dart';
@@ -238,13 +237,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.profileSettings,
         builder: (context, state) => const ProfileSettingsScreen(),
-      ),
-      GoRoute(
-        path: '/contacts/:id',
-        builder: (context, state) {
-          final id = state.pathParameters['id'] ?? '';
-          return ContactDetailScreen(id: id);
-        },
       ),
       GoRoute(
         path: RouteNames.profileMyAnimals,
