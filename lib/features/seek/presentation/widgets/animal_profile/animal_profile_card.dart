@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'animal_profile_data.dart';
@@ -17,13 +19,14 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final data = widget.data;
-    String buttonText = 'Contact the owner';
+    String buttonText = l10n.contactOwner;
     if (data.details.toLowerCase().contains('found')) {
-      buttonText = 'I know the owner';
+      buttonText = l10n.knowOwner;
     }
     if (data.status.toLowerCase().contains('injured')) {
-      buttonText = 'I am available to take care of it';
+      buttonText = l10n.availableToTakeCare;
     }
 
     return Container(
@@ -116,7 +119,9 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            data.ownerName,
+                            data.ownerName == 'Owner'
+                                ? l10n.owner
+                                : data.ownerName,
                             style: const TextStyle(
                               color: Color(0xFFBA4A22),
                               fontSize: 12,
@@ -125,7 +130,9 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           ),
                           const Spacer(),
                           Text(
-                            data.time,
+                            DateFormat(
+                              l10n.profileDateFormat,
+                            ).format(data.eventDate.toLocal()),
                             style: const TextStyle(
                               color: Color(0xFFD3A482),
                               fontSize: 9,
@@ -136,7 +143,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                       const SizedBox(height: 10),
                       // Details: Adult | Cat | Angora | Lost
                       Text(
-                        data.details,
+                        '${data.age} | ${data.species} | ${data.breed} | ${data.status.toLowerCase() == 'found' ? l10n.found : l10n.statusMissing}',
                         style: const TextStyle(
                           color: Color(0xFFBA4A22),
                           fontSize: 12,
@@ -158,7 +165,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           ),
                         ),
                         child: Text(
-                          'Current status: ${data.status}',
+                          l10n.currentStatus(data.status),
                           style: const TextStyle(
                             color: Color(0xFFBA4A22),
                             fontSize: 9,
@@ -194,7 +201,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           child: Center(
                             child: Text(
                               _showContactInfo
-                                  ? 'Hide contact info'
+                                  ? l10n.hideContactInfo
                                   : buttonText,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -243,9 +250,9 @@ class _OwnerContactInfo extends StatelessWidget {
     final visibleEmail = data.isEmailVisible && _hasText(data.contactEmail);
 
     if (!visiblePhone && !visibleEmail) {
-      return const Text(
-        'No public phone or email is available for this report.',
-        style: TextStyle(
+      return Text(
+        AppLocalizations.of(context).noPublicContactInfo,
+        style: const TextStyle(
           color: Color(0xFFBA4A22),
           fontSize: 10.5,
           height: 1.3,
@@ -284,7 +291,9 @@ class _OwnerContactInfo extends StatelessWidget {
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not open contact app.')),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).couldNotOpenContactApp),
+        ),
       );
     }
   }

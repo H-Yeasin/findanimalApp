@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
-import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 
@@ -14,15 +13,11 @@ class PartnerProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final user = ref.watch(currentUserProvider);
     final profileAsync = ref.watch(myProfileProvider);
 
-    // Get hero image from the API profile (has profileImage.secure_url)
-    // Fall back to session user data, then empty string (grey placeholder)
     final heroImage = profileAsync.maybeWhen(
       data: (profile) => profile.profileImage?.secure_url ?? '',
-      orElse: () =>
-          (user?.profileImage?.isNotEmpty ?? false) ? user!.profileImage! : '',
+      orElse: () => '',
     );
 
     return PartnerScreenScaffold(
@@ -32,70 +27,111 @@ class PartnerProfileScreen extends ConsumerWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(38, 18, 38, 28),
-        child: Column(
-          children: [
-            Text(
-              l10n.myInformation,
+        child: profileAsync.when(
+          loading: () => const Padding(
+            padding: EdgeInsets.only(top: 36),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          error: (error, stackTrace) => Padding(
+            padding: const EdgeInsets.only(top: 36),
+            child: Text(
+              l10n.errorParam(error.toString()),
+              textAlign: TextAlign.center,
               style: const TextStyle(
-                color: Color(0xFFD8C89D),
-                fontFamily: 'EricaOne',
-                fontSize: 18,
+                color: PartnerUiColors.brand,
+                fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 12),
-            PartnerInfoRow(
-              label: l10n.firstName.toUpperCase(),
-              value: user?.firstName ?? '',
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerInfoRow(
-              label: l10n.lastName.toUpperCase(),
-              value: user?.lastName ?? '',
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerInfoRow(
-              label: l10n.company.toUpperCase(),
-              value: user?.company ?? '',
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerInfoRow(
-              label: l10n.email.toUpperCase(),
-              value: user?.email ?? '',
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerInfoRow(
-              label: l10n.phone.toUpperCase(),
-              value: user?.phone ?? l10n.noPhone,
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerInfoRow(
-              label: l10n.address.toUpperCase(),
-              value: user?.address ?? l10n.unknownValue,
-              compact: true,
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 280,
-              height: 42,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: PartnerUiColors.brand,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(22),
-                  ),
-                  textStyle: const TextStyle(
+          ),
+          data: (profile) {
+            final addressParts = [
+              profile.address,
+              profile.postalCode,
+              profile.city,
+              profile.country,
+            ].whereType<String>();
+            final fullAddress = addressParts
+                .where((part) => part.trim().isNotEmpty)
+                .join(', ');
+            final locationAddress = profile.location?.address;
+
+            return Column(
+              children: [
+                Text(
+                  l10n.myInformation,
+                  style: const TextStyle(
+                    color: Color(0xFFD8C89D),
                     fontFamily: 'EricaOne',
-                    fontSize: 14,
+                    fontSize: 18,
                   ),
                 ),
-                onPressed: () =>
-                    context.push(RouteNames.profilePersonalInformation),
-                child: Text(l10n.editMyInformation),
-              ),
-            ),
-          ],
+                const SizedBox(height: 12),
+                PartnerInfoRow(
+                  label: l10n.company.toUpperCase(),
+                  value: profile.company ?? l10n.unknownValue,
+                ),
+                const Divider(color: PartnerUiColors.brand),
+                PartnerInfoRow(
+                  label: l10n.firstName.toUpperCase(),
+                  value: profile.firstName,
+                ),
+                const Divider(color: PartnerUiColors.brand),
+                PartnerInfoRow(
+                  label: l10n.lastName.toUpperCase(),
+                  value: profile.lastName,
+                ),
+                const Divider(color: PartnerUiColors.brand),
+                PartnerInfoRow(
+                  label: l10n.email.toUpperCase(),
+                  value: profile.email,
+                ),
+                const Divider(color: PartnerUiColors.brand),
+                PartnerInfoRow(
+                  label: l10n.phone.toUpperCase(),
+                  value: profile.phone.isNotEmpty ? profile.phone : l10n.noPhone,
+                ),
+                const Divider(color: PartnerUiColors.brand),
+                PartnerInfoRow(
+                  label: l10n.address.toUpperCase(),
+                  value: fullAddress.isNotEmpty
+                      ? fullAddress
+                      : l10n.unknownValue,
+                  compact: true,
+                ),
+                if (locationAddress != null &&
+                    locationAddress.trim().isNotEmpty) ...[
+                  const Divider(color: PartnerUiColors.brand),
+                  PartnerInfoRow(
+                    label: l10n.locationAddress.toUpperCase(),
+                    value: locationAddress,
+                    compact: true,
+                  ),
+                ],
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: 280,
+                  height: 42,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: PartnerUiColors.brand,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      textStyle: const TextStyle(
+                        fontFamily: 'EricaOne',
+                        fontSize: 14,
+                      ),
+                    ),
+                    onPressed: () =>
+                        context.push(RouteNames.profilePersonalInformation),
+                    child: Text(l10n.editMyInformation),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

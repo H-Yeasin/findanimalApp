@@ -39,7 +39,11 @@ class AuthRemoteSource {
   }
 
   Future<void> registerPartner(RegisterPartnerRequestModel request) async {
-    await _apiClient.post(ApiEndpoints.registerPartner, data: request.toJson());
+    await _apiClient.post(
+      ApiEndpoints.registerPartner,
+      data: await request.toFormData(),
+      options: Options(contentType: Headers.multipartFormDataContentType),
+    );
   }
 
   Future<void> verifyAccount({

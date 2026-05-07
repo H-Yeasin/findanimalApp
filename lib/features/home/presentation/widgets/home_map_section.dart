@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/features/seek/presentation/widgets/report_map_card.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../../seek/data/models/report_model.dart';
 import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
 
@@ -25,7 +26,6 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
   GoogleMapController? _mapController;
   LatLng? _lastCameraTarget;
   BitmapDescriptor? _customPin;
-  dynamic _selectedReport;
 
   @override
   void initState() {
@@ -75,6 +75,25 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
       }
     });
 
+    ref.listen<ReportModel?>(selectedHomeReportProvider, (_, next) {
+      if (next != null && next.location.coordinates.length >= 2) {
+        _moveCameraTo(
+          LatLng(next.location.coordinates[1], next.location.coordinates[0]),
+        );
+        // Optionally scroll to top
+        final primaryScrollController = PrimaryScrollController.maybeOf(context);
+        if (primaryScrollController != null && primaryScrollController.hasClients) {
+          primaryScrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
+
+    final selectedReport = ref.watch(selectedHomeReportProvider);
+
     final markers = <Marker>{};
     if (reportsAsync.hasValue) {
       for (final report in reportsAsync.value!) {
@@ -87,22 +106,12 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
                 report.location.coordinates[0],
               ),
               onTap: () {
-                setState(() {
-                  if (_selectedReport?.id == report.id) {
-                    _selectedReport = null;
-                  } else {
-                    _selectedReport = report;
-                    _mapController?.animateCamera(
-                      CameraUpdate.newLatLngZoom(
-                        LatLng(
-                          report.location.coordinates[1],
-                          report.location.coordinates[0],
-                        ),
-                        14,
-                      ),
-                    );
-                  }
-                });
+                final currentSelected = ref.read(selectedHomeReportProvider);
+                if (currentSelected?.id == report.id) {
+                  ref.read(selectedHomeReportProvider.notifier).state = null;
+                } else {
+                  ref.read(selectedHomeReportProvider.notifier).state = report;
+                }
               },
               icon:
                   _customPin ??
@@ -159,8 +168,8 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
                 }
               },
               onTap: (_) {
-                if (_selectedReport != null) {
-                  setState(() => _selectedReport = null);
+                if (selectedReport != null) {
+                  ref.read(selectedHomeReportProvider.notifier).state = null;
                 }
               },
               initialCameraPosition: CameraPosition(
@@ -176,11 +185,11 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
             ),
           ),
         ),
-        if (_selectedReport != null)
+        if (selectedReport != null)
           Positioned(
             top: 15,
             left: 16,
-            child: ReportMapCard(report: _selectedReport),
+            child: ReportMapCard(report: selectedReport),
           ),
         Positioned(
           top: 15,

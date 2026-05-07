@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'animal_profile_data.dart';
@@ -13,6 +14,7 @@ class AnimalProfileMapSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final reportAsync = ref.watch(seekReportDetailProvider(data.id));
 
     return Stack(
@@ -82,9 +84,9 @@ class AnimalProfileMapSection extends ConsumerWidget {
                     width: 1.0,
                   ),
                 ),
-                child: const Text(
-                  'VIEW ON THE MAP ITS LAST LOCATION',
-                  style: TextStyle(
+                child: Text(
+                  l10n.viewOnMapLastLocation,
+                  style: const TextStyle(
                     color: Color(0xFFBA4A22),
                     fontSize: 11,
                     fontWeight: FontWeight.w900,
@@ -105,8 +107,8 @@ class AnimalProfileMapSection extends ConsumerWidget {
     final lng = data.longitude;
     if (lat == null || lng == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No location is available for this report.'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).noLocationAvailable),
         ),
       );
       return;
@@ -117,9 +119,9 @@ class AnimalProfileMapSection extends ConsumerWidget {
     );
     final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!opened && context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Could not open the map.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(AppLocalizations.of(context).couldNotOpenMap)),
+      );
     }
   }
 }

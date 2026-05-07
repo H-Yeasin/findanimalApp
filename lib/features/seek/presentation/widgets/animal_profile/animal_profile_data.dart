@@ -19,6 +19,10 @@ class AnimalProfileData {
   final double? latitude;
   final double? longitude;
   final String? address;
+  final String age;
+  final String species;
+  final String breed;
+  final DateTime eventDate;
 
   AnimalProfileData({
     required this.id,
@@ -37,6 +41,10 @@ class AnimalProfileData {
     this.latitude,
     this.longitude,
     this.address,
+    required this.age,
+    required this.species,
+    required this.breed,
+    required this.eventDate,
   });
 
   factory AnimalProfileData.fromReport(ReportModel report) {
@@ -71,6 +79,10 @@ class AnimalProfileData {
       latitude: coordinates.length >= 2 ? coordinates[1] : null,
       longitude: coordinates.length >= 2 ? coordinates[0] : null,
       address: report.location.address,
+      age: report.age,
+      species: report.species,
+      breed: report.breed,
+      eventDate: report.eventDate,
     );
   }
 }

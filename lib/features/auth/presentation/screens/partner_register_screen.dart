@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
@@ -25,9 +26,17 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _postalCodeController = TextEditingController();
+  final _countryController = TextEditingController(text: 'France');
   final _companyController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  XFile? _selectedLogo;
+  double? _latitude;
+  double? _longitude;
+  String? _locationAddress;
 
   @override
   void dispose() {
@@ -36,10 +45,38 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
+    _cityController.dispose();
+    _postalCodeController.dispose();
+    _countryController.dispose();
     _companyController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickLogo() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
+    );
+    if (image == null || !mounted) return;
+    setState(() => _selectedLogo = image);
+  }
+
+  Future<void> _pickLocation() async {
+    final result = await context.push<Map<String, dynamic>>(
+      RouteNames.partnerRegisterLocationPicker,
+    );
+    if (result == null || !mounted) return;
+
+    final lat = result['lat'];
+    final lng = result['lng'];
+    setState(() {
+      _latitude = lat is num ? lat.toDouble() : double.tryParse('$lat');
+      _longitude = lng is num ? lng.toDouble() : double.tryParse('$lng');
+      _locationAddress = result['address'] as String?;
+    });
   }
 
   Future<void> _submit() async {
@@ -49,13 +86,34 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
       return;
     }
 
+    if (_selectedLogo == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.fieldRequired(l10n.text('fieldLogo')))),
+      );
+      return;
+    }
+
+    if (_latitude == null || _longitude == null || _locationAddress == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.fieldRequired(l10n.text('fieldLocation')))),
+      );
+      return;
+    }
+
     final request = RegisterPartnerRequestModel(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       email: _emailController.text.trim(),
       phone: _phoneController.text.trim(),
       address: _addressController.text.trim(),
+      city: _cityController.text.trim(),
+      postalCode: _postalCodeController.text.trim(),
+      country: _countryController.text.trim(),
       company: _companyController.text.trim(),
+      latitude: _latitude!,
+      longitude: _longitude!,
+      locationAddress: _locationAddress!,
+      logoPath: _selectedLogo!.path,
       password: _passwordController.text,
     );
 
@@ -82,6 +140,163 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     }
   }
 
+  String? _required(String? value, String field) {
+    return Validators.required(
+      value,
+      requiredMessage: AppLocalizations.of(context).fieldRequired(field),
+    );
+  }
+
+  String? _postalCodeValidator(String? value) {
+    final l10n = AppLocalizations.of(context);
+    final required = _required(value, l10n.text('fieldPostalCode'));
+    if (required != null) return required;
+    if (!RegExp(r'^\d{5}$').hasMatch(value!.trim())) {
+      return l10n.text('postalCodeInvalid');
+    }
+    return null;
+  }
+
+  Widget _sectionTitle(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: AuthUiColors.brand,
+          fontFamily: 'EricaOne',
+          fontSize: 18,
+        ),
+      ),
+    );
+  }
+
+  Widget _field({
+    required String label,
+    required TextEditingController controller,
+    required String hint,
+    String? Function(String?)? validator,
+    TextInputType? keyboardType,
+    bool obscureText = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AuthFieldLabel(label),
+        const SizedBox(height: 8),
+        AuthPillTextField(
+          controller: controller,
+          hintText: hint,
+          readOnly: false,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          validator: validator,
+        ),
+      ],
+    );
+  }
+
+  Widget _logoPicker(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AuthFieldLabel(l10n.text('partnerLogoLabel')),
+        const SizedBox(height: 8),
+        InkWell(
+          borderRadius: BorderRadius.circular(22),
+          onTap: _pickLogo,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 78),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AuthUiColors.brand,
+              borderRadius: BorderRadius.circular(22),
+            ),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    width: 54,
+                    height: 54,
+                    color: AuthUiColors.cream,
+                    child: _selectedLogo == null
+                        ? const Icon(
+                            Icons.storefront,
+                            color: AuthUiColors.brand,
+                          )
+                        : FutureBuilder(
+                            future: _selectedLogo!.readAsBytes(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const SizedBox.shrink();
+                              }
+                              return Image.memory(
+                                snapshot.data!,
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    _selectedLogo?.name ?? l10n.text('partnerLogoHint'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                const Icon(Icons.upload_file, color: Colors.white),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _locationPicker(AppLocalizations l10n) {
+    final hasLocation = _latitude != null && _longitude != null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AuthFieldLabel(l10n.text('selectedLocationLabel')),
+        const SizedBox(height: 8),
+        InkWell(
+          borderRadius: BorderRadius.circular(22),
+          onTap: _pickLocation,
+          child: Container(
+            constraints: const BoxConstraints(minHeight: 54),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: AuthUiColors.brand,
+              borderRadius: BorderRadius.circular(22),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.location_on, color: Colors.white),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    hasLocation
+                        ? _locationAddress ?? l10n.text('selectedLocationLabel')
+                        : l10n.text('chooseCompanyLocation'),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+                const Icon(Icons.map_outlined, color: Colors.white),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(authActionProvider).isLoading;
@@ -106,58 +321,82 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
               const SizedBox(height: 4),
               AuthMainTitle(l10n.partnerRegisterTitle),
               const SizedBox(height: 22),
+              _sectionTitle(l10n.text('partnerCompanyDetails')),
+              _field(
+                label: l10n.companyNameLabel,
+                controller: _companyController,
+                hint: l10n.companyNameHint,
+                validator: (v) => _required(v, l10n.fieldCompanyName),
+              ),
+              const SizedBox(height: 16),
+              _logoPicker(l10n),
+              const SizedBox(height: 16),
+              _field(
+                label: l10n.addressLabel,
+                controller: _addressController,
+                hint: l10n.addressHint,
+                validator: (v) => _required(v, l10n.fieldAddress),
+              ),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AuthFieldLabel(l10n.firstNameLabel),
-                        const SizedBox(height: 8),
-                        AuthPillTextField(
-                          controller: _firstNameController,
-                          hintText: l10n.firstNameHint,
-                          readOnly: false,
-                          validator: (v) => Validators.required(
-                            v,
-                            requiredMessage: l10n.fieldRequired(
-                              l10n.fieldFirstName,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: _field(
+                      label: l10n.text('cityLabel'),
+                      controller: _cityController,
+                      hint: l10n.text('cityHint'),
+                      validator: (v) => _required(v, l10n.text('fieldCity')),
                     ),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AuthFieldLabel(l10n.lastNameLabel),
-                        const SizedBox(height: 8),
-                        AuthPillTextField(
-                          controller: _lastNameController,
-                          hintText: l10n.lastNameHint,
-                          readOnly: false,
-                          validator: (v) => Validators.required(
-                            v,
-                            requiredMessage: l10n.fieldRequired(
-                              l10n.fieldLastName,
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: _field(
+                      label: l10n.text('postalCodeLabel'),
+                      controller: _postalCodeController,
+                      hint: l10n.text('postalCodeHint'),
+                      keyboardType: TextInputType.number,
+                      validator: _postalCodeValidator,
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-              AuthFieldLabel(l10n.emailLabel),
-              const SizedBox(height: 8),
-              AuthPillTextField(
+              _field(
+                label: l10n.text('countryLabel'),
+                controller: _countryController,
+                hint: l10n.text('countryHint'),
+                validator: (v) => _required(v, l10n.country),
+              ),
+              const SizedBox(height: 16),
+              _locationPicker(l10n),
+              const SizedBox(height: 22),
+              _sectionTitle(l10n.text('partnerContactDetails')),
+              Row(
+                children: [
+                  Expanded(
+                    child: _field(
+                      label: l10n.text('contactFirstNameLabel'),
+                      controller: _firstNameController,
+                      hint: l10n.firstNameHint,
+                      validator: (v) => _required(v, l10n.fieldFirstName),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _field(
+                      label: l10n.text('contactLastNameLabel'),
+                      controller: _lastNameController,
+                      hint: l10n.lastNameHint,
+                      validator: (v) => _required(v, l10n.fieldLastName),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _field(
+                label: l10n.emailLabel,
                 controller: _emailController,
-                hintText: l10n.emailHint,
-                readOnly: false,
+                hint: l10n.emailHint,
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) => Validators.email(
                   value,
@@ -166,54 +405,20 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              AuthFieldLabel(l10n.phoneLabel),
-              const SizedBox(height: 8),
-              AuthPillTextField(
+              _field(
+                label: l10n.phoneLabel,
                 controller: _phoneController,
-                hintText: l10n.phoneHint,
-                readOnly: false,
+                hint: l10n.phoneHint,
                 keyboardType: TextInputType.phone,
-                validator: (v) => Validators.required(
-                  v,
-                  requiredMessage: l10n.fieldRequired(l10n.fieldPhone),
-                ),
+                validator: (v) => _required(v, l10n.fieldPhone),
               ),
               const SizedBox(height: 16),
-              AuthFieldLabel(l10n.addressLabel),
-              const SizedBox(height: 8),
-              AuthPillTextField(
-                controller: _addressController,
-                hintText: l10n.addressHint,
-                readOnly: false,
-                validator: (v) => Validators.required(
-                  v,
-                  requiredMessage: l10n.fieldRequired(l10n.fieldAddress),
-                ),
-              ),
-              const SizedBox(height: 16),
-              AuthFieldLabel(l10n.companyNameLabel),
-              const SizedBox(height: 8),
-              AuthPillTextField(
-                controller: _companyController,
-                hintText: l10n.companyNameHint,
-                readOnly: false,
-                validator: (v) => Validators.required(
-                  v,
-                  requiredMessage: l10n.fieldRequired(l10n.fieldCompanyName),
-                ),
-              ),
-              const SizedBox(height: 16),
-              AuthFieldLabel(l10n.passwordLabel),
-              const SizedBox(height: 8),
-              AuthPillTextField(
+              _field(
+                label: l10n.passwordLabel,
                 controller: _passwordController,
-                hintText: l10n.passwordHint,
-                readOnly: false,
+                hint: l10n.passwordHint,
                 obscureText: true,
-                validator: (value) => Validators.required(
-                  value,
-                  requiredMessage: l10n.fieldRequired(l10n.fieldPassword),
-                ),
+                validator: (value) => _required(value, l10n.fieldPassword),
               ),
               const SizedBox(height: 10),
               AuthPillTextField(
@@ -222,12 +427,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 readOnly: false,
                 obscureText: true,
                 validator: (value) {
-                  final base = Validators.required(
-                    value,
-                    requiredMessage: l10n.fieldRequired(
-                      l10n.fieldConfirmPassword,
-                    ),
-                  );
+                  final base = _required(value, l10n.fieldConfirmPassword);
                   if (base != null) {
                     return base;
                   }

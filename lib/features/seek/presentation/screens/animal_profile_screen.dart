@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/widgets/app_background.dart';
+import '../../../../core/widgets/app_top_bar.dart';
+
 import '../widgets/animal_profile/animal_profile_data.dart';
-import '../widgets/animal_profile/animal_profile_grid_painter.dart';
-import '../widgets/animal_profile/animal_profile_header.dart';
 import '../widgets/animal_profile/animal_profile_card.dart';
 import '../widgets/animal_profile/animal_profile_map_section.dart';
 import '../widgets/animal_profile/animal_profile_comments_section.dart';
@@ -18,16 +19,14 @@ class AnimalProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFDF6ED),
-      body: Stack(
-        children: [
-          Positioned.fill(child: CustomPaint(painter: AnimalProfileGridPainter())),
-          SafeArea(
-            child: Column(
-              children: [
-                const AnimalProfileHeader(),
-                Expanded(
+    return AppBackgroundScaffold(
+      showGridFromTop: true,
+      body: SafeArea(
+        
+        child: Column(
+          children: [
+            const AppTopBar(),
+            Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -61,10 +60,8 @@ class AnimalProfileScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

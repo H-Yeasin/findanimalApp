@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -42,7 +41,12 @@ class SeekReportsList extends ConsumerWidget {
             children: reports.map((report) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 16),
-                child: SeekAnimalCard(report: report),
+                child: SeekAnimalCard(
+                  report: report,
+                  onViewOnMap: () {
+                    ref.read(selectedSeekReportProvider.notifier).state = report;
+                  },
+                ),
               );
             }).toList(),
           );
@@ -68,9 +72,10 @@ class SeekReportsList extends ConsumerWidget {
 }
 
 class SeekAnimalCard extends StatelessWidget {
-  const SeekAnimalCard({required this.report, super.key});
+  const SeekAnimalCard({required this.report, this.onViewOnMap, super.key});
 
   final ReportModel report;
+  final VoidCallback? onViewOnMap;
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +167,7 @@ class SeekAnimalCard extends StatelessWidget {
                       child: SeekSmallButton(
                         text: l10n.viewOnMap,
                         isFilled: false,
-                        onTap: () => _openMap(context, data),
+                        onTap: onViewOnMap,
                       ),
                     ),
                     const SizedBox(width: 14),
@@ -181,29 +186,6 @@ class SeekAnimalCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<void> _openMap(BuildContext context, AnimalProfileData data) async {
-    final lat = data.latitude;
-    final lng = data.longitude;
-    if (lat == null || lng == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No location is available for this report.'),
-        ),
-      );
-      return;
-    }
-
-    final uri = Uri.parse(
-      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
-    );
-    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!opened && context.mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Could not open the map.')));
-    }
   }
 }
 

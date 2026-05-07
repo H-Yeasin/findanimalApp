@@ -65,28 +65,14 @@ class HubPartnersSection extends ConsumerWidget {
 
   Widget _buildPartnerLogo(String imageUrl, Color color) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      width: 70,
-      height: 70,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: ClipOval(
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) =>
-              Icon(Icons.store, color: color, size: 30),
-        ),
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      width: 90,
+      height: 60,
+      child: Image.network(
+        imageUrl,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) =>
+            Icon(Icons.store, color: color, size: 30),
       ),
     );
   }

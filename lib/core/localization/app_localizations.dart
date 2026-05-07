@@ -77,6 +77,11 @@ class AppLocalizations {
       text('updateFailed', params: {'error': error});
   String errorParam(String error) =>
       text('errorParam', params: {'error': error});
+  String currentStatus(String status) =>
+      text('currentStatus', params: {'status': status});
+  String errorLoadingComments(String error) =>
+      text('errorLoadingComments', params: {'error': error});
+  String commentAs(String name) => text('commentAs', params: {'name': name});
 
   String get appName => _text('appName');
   String get settingsTitle => _text('settingsTitle');
@@ -545,6 +550,22 @@ class AppLocalizations {
   String get reportPointsInfo => _text('reportPointsInfo');
   String get following => _text('following');
   String get noReportsYet => _text('noReportsYet');
+  String get contactOwner => _text('contactOwner');
+  String get knowOwner => _text('knowOwner');
+  String get availableToTakeCare => _text('availableToTakeCare');
+  String get hideContactInfo => _text('hideContactInfo');
+  String get noPublicContactInfo => _text('noPublicContactInfo');
+  String get couldNotOpenContactApp => _text('couldNotOpenContactApp');
+  String get latestInfo => _text('latestInfo');
+  String get beTheFirstToHelp => _text('beTheFirstToHelp');
+  String get replying => _text('replying');
+  String get gif => _text('gif');
+  String get iLike => _text('iLike');
+  String get reply => _text('reply');
+  String get replyEllipsis => _text('replyEllipsis');
+  String get viewOnMapLastLocation => _text('viewOnMapLastLocation');
+  String get owner => _text('owner');
+  String get profileDateFormat => _text('profileDateFormat');
 }
 
 class _AppLocalizationsDelegate

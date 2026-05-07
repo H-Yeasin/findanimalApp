@@ -14,6 +14,8 @@ final homeReportFiltersProvider = StateProvider<Map<String, dynamic>>((ref) {
   };
 });
 
+final selectedHomeReportProvider = StateProvider<ReportModel?>((ref) => null);
+
 final homeReportsProvider = FutureProvider<List<ReportModel>>((ref) async {
   final repository = ref.watch(reportsRepositoryProvider);
   final filters = ref.watch(homeReportFiltersProvider);

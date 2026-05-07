@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../data/models/report_model.dart';
 import '../providers/seek_report_filters_provider.dart';
 import '../providers/seek_reports_provider.dart';
 import 'report_map_card.dart';
@@ -36,7 +37,6 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
   bool _sortExpanded = false;
   bool _radiusExpanded = false;
   BitmapDescriptor? _customPin;
-  dynamic _selectedReport;
 
   @override
   void initState() {
@@ -83,6 +83,26 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
       }
     });
 
+    ref.listen<ReportModel?>(selectedSeekReportProvider, (_, next) {
+      if (next != null && next.location.coordinates.length >= 2) {
+        _animateToLocation(
+          LatLng(next.location.coordinates[1], next.location.coordinates[0]),
+          zoom: 14,
+        );
+        // Optionally, one could scroll to top here using PrimaryScrollController
+        final primaryScrollController = PrimaryScrollController.maybeOf(context);
+        if (primaryScrollController != null && primaryScrollController.hasClients) {
+          primaryScrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      }
+    });
+
+    final selectedReport = ref.watch(selectedSeekReportProvider);
+
     final markers = <Marker>{};
     if (reportsAsync.hasValue) {
       for (final report in reportsAsync.value!.data) {
@@ -95,22 +115,12 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 report.location.coordinates[0],
               ),
               onTap: () {
-                setState(() {
-                  if (_selectedReport?.id == report.id) {
-                    _selectedReport = null;
-                  } else {
-                    _selectedReport = report;
-                    _mapController?.animateCamera(
-                      CameraUpdate.newLatLngZoom(
-                        LatLng(
-                          report.location.coordinates[1],
-                          report.location.coordinates[0],
-                        ),
-                        14,
-                      ),
-                    );
-                  }
-                });
+                final currentSelected = ref.read(selectedSeekReportProvider);
+                if (currentSelected?.id == report.id) {
+                  ref.read(selectedSeekReportProvider.notifier).state = null;
+                } else {
+                  ref.read(selectedSeekReportProvider.notifier).state = report;
+                }
               },
               icon: _customPin ??
                   BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
@@ -171,8 +181,8 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                   zoom: hasLocation ? 12 : 2,
                 ),
                 onTap: (_) {
-                  if (_selectedReport != null) {
-                    setState(() => _selectedReport = null);
+                  if (selectedReport != null) {
+                    ref.read(selectedSeekReportProvider.notifier).state = null;
                   }
                 },
                 onMapCreated: (controller) {
@@ -194,12 +204,12 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 mapToolbarEnabled: false,
               ),
             ),
-            if (_selectedReport != null)
+            if (selectedReport != null)
               Positioned(
                 top: 15,
                 left: 16,
                 child: ReportMapCard(
-                  report: _selectedReport,
+                  report: selectedReport,
                 ),
               ),
             Positioned(

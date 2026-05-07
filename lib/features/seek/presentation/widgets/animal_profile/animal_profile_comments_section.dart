@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/seek/comments/data/models/comment_model.dart';
 import 'package:hesteka_frontend/features/seek/comments/presentation/providers/comments_provider.dart';
@@ -50,6 +51,7 @@ class _AnimalProfileCommentsSectionState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final commentsAsync = ref.watch(commentsProvider(widget.data.id));
     final currentUser = ref.watch(currentUserProvider);
 
@@ -58,9 +60,9 @@ class _AnimalProfileCommentsSectionState
       child: Column(
         children: [
           // Title
-          const Text(
-            'LATEST INFO',
-            style: TextStyle(
+          Text(
+            l10n.latestInfo,
+            style: const TextStyle(
               fontFamily: 'EricaOne',
               fontSize: 26,
               color: Color(0xFFBA4A22),
@@ -69,14 +71,14 @@ class _AnimalProfileCommentsSectionState
           ),
           const SizedBox(height: 14),
 
-          commentsAsync.when(
             data: (comments) {
               if (comments.isEmpty) {
-                return const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    'No comments yet. Be the first to help!',
-                    style: TextStyle(color: Color(0xFFBA4A22), fontSize: 12),
+                    l10n.beTheFirstToHelp,
+                    style:
+                        const TextStyle(color: Color(0xFFBA4A22), fontSize: 12),
                   ),
                 );
               }
@@ -110,7 +112,7 @@ class _AnimalProfileCommentsSectionState
             error: (error, stack) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
-                'Error loading comments: $error',
+                l10n.errorLoadingComments(error.toString()),
                 style: const TextStyle(color: Colors.red, fontSize: 10),
               ),
             ),
@@ -123,9 +125,9 @@ class _AnimalProfileCommentsSectionState
               padding: const EdgeInsets.only(bottom: 8.0, left: 14),
               child: Row(
                 children: [
-                  const Text(
-                    'Replying...',
-                    style: TextStyle(
+                  Text(
+                    l10n.replying,
+                    style: const TextStyle(
                       color: Color(0xFFBA4A22),
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -170,8 +172,7 @@ class _AnimalProfileCommentsSectionState
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
-                      hintText:
-                          'Comment as ${currentUser?.firstName ?? "User"}',
+                      hintText: l10n.commentAs(currentUser?.firstName ?? "User"),
                       hintStyle: const TextStyle(color: Colors.white70),
                       border: InputBorder.none,
                       isDense: true,
@@ -189,9 +190,9 @@ class _AnimalProfileCommentsSectionState
                     border: Border.all(color: Colors.white, width: 1.2),
                     borderRadius: BorderRadius.circular(3),
                   ),
-                  child: const Text(
-                    'GIF',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.gif,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 9,
                       fontWeight: FontWeight.bold,
@@ -206,8 +207,6 @@ class _AnimalProfileCommentsSectionState
               ],
             ),
           ),
-        ],
-      ),
     );
   }
 }
@@ -229,8 +228,9 @@ class _CommentItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final authorName =
         '${comment.author.firstName.toLowerCase()}_${comment.author.lastName.toLowerCase()}';
+    final l10n = AppLocalizations.of(context);
     final timeFormatted =
-        '${DateFormat('h').format(comment.createdAt)} hours ago'; // Simplified timeago
+        l10n.text('hoursAgo', params: {'hours': DateFormat('h').format(comment.createdAt)}); // Using existing hoursAgo key
 
     return Container(
       width: double.infinity,
@@ -312,9 +312,9 @@ class _CommentItem extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: onLike,
-                child: const Text(
-                  'I like',
-                  style: TextStyle(
+                child: Text(
+                  l10n.iLike,
+                  style: const TextStyle(
                     color: Color(0xFFBA4A22),
                     fontWeight: FontWeight.bold,
                     fontSize: 10,
@@ -324,9 +324,9 @@ class _CommentItem extends StatelessWidget {
               const SizedBox(width: 20),
               GestureDetector(
                 onTap: onReply,
-                child: const Text(
-                  'Reply',
-                  style: TextStyle(
+                child: Text(
+                  l10n.reply,
+                  style: const TextStyle(
                     color: Color(0xFFBA4A22),
                     fontWeight: FontWeight.bold,
                     fontSize: 10,
@@ -363,8 +363,8 @@ class _CommentItem extends StatelessWidget {
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Reply...',
-                        style: TextStyle(
+                        l10n.replyEllipsis,
+                        style: const TextStyle(
                           color: Color(0xFFD3A482),
                           fontSize: 11,
                         ),

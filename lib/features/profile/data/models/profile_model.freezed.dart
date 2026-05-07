@@ -28,6 +28,9 @@ mixin _$ProfileModel {
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
+  String? get city => throw _privateConstructorUsedError;
+  String? get postalCode => throw _privateConstructorUsedError;
+  String? get country => throw _privateConstructorUsedError;
   String? get company => throw _privateConstructorUsedError;
   int? get pointsBalance => throw _privateConstructorUsedError;
   String? get selfIntroduction => throw _privateConstructorUsedError;
@@ -62,6 +65,9 @@ abstract class $ProfileModelCopyWith<$Res> {
     String email,
     String phone,
     String address,
+    String? city,
+    String? postalCode,
+    String? country,
     String? company,
     int? pointsBalance,
     String? selfIntroduction,
@@ -98,6 +104,9 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
     Object? email = null,
     Object? phone = null,
     Object? address = null,
+    Object? city = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
     Object? company = freezed,
     Object? pointsBalance = freezed,
     Object? selfIntroduction = freezed,
@@ -134,6 +143,18 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
                 ? _value.address
                 : address // ignore: cast_nullable_to_non_nullable
                       as String,
+            city: freezed == city
+                ? _value.city
+                : city // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            postalCode: freezed == postalCode
+                ? _value.postalCode
+                : postalCode // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            country: freezed == country
+                ? _value.country
+                : country // ignore: cast_nullable_to_non_nullable
+                      as String?,
             company: freezed == company
                 ? _value.company
                 : company // ignore: cast_nullable_to_non_nullable
@@ -220,6 +241,9 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
     String email,
     String phone,
     String address,
+    String? city,
+    String? postalCode,
+    String? country,
     String? company,
     int? pointsBalance,
     String? selfIntroduction,
@@ -257,6 +281,9 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
     Object? email = null,
     Object? phone = null,
     Object? address = null,
+    Object? city = freezed,
+    Object? postalCode = freezed,
+    Object? country = freezed,
     Object? company = freezed,
     Object? pointsBalance = freezed,
     Object? selfIntroduction = freezed,
@@ -293,6 +320,18 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
             ? _value.address
             : address // ignore: cast_nullable_to_non_nullable
                   as String,
+        city: freezed == city
+            ? _value.city
+            : city // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        postalCode: freezed == postalCode
+            ? _value.postalCode
+            : postalCode // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        country: freezed == country
+            ? _value.country
+            : country // ignore: cast_nullable_to_non_nullable
+                  as String?,
         company: freezed == company
             ? _value.company
             : company // ignore: cast_nullable_to_non_nullable
@@ -344,6 +383,9 @@ class _$ProfileModelImpl implements _ProfileModel {
     required this.email,
     required this.phone,
     required this.address,
+    this.city,
+    this.postalCode,
+    this.country,
     this.company,
     this.pointsBalance,
     this.selfIntroduction,
@@ -372,6 +414,12 @@ class _$ProfileModelImpl implements _ProfileModel {
   @override
   final String address;
   @override
+  final String? city;
+  @override
+  final String? postalCode;
+  @override
+  final String? country;
+  @override
   final String? company;
   @override
   final int? pointsBalance;
@@ -392,7 +440,7 @@ class _$ProfileModelImpl implements _ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, address: $address, company: $company, pointsBalance: $pointsBalance, selfIntroduction: $selfIntroduction, profession: $profession, role: $role, status: $status, isVerified: $isVerified, profileImage: $profileImage, location: $location)';
+    return 'ProfileModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, address: $address, city: $city, postalCode: $postalCode, country: $country, company: $company, pointsBalance: $pointsBalance, selfIntroduction: $selfIntroduction, profession: $profession, role: $role, status: $status, isVerified: $isVerified, profileImage: $profileImage, location: $location)';
   }
 
   @override
@@ -408,6 +456,10 @@ class _$ProfileModelImpl implements _ProfileModel {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.address, address) || other.address == address) &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.postalCode, postalCode) ||
+                other.postalCode == postalCode) &&
+            (identical(other.country, country) || other.country == country) &&
             (identical(other.company, company) || other.company == company) &&
             (identical(other.pointsBalance, pointsBalance) ||
                 other.pointsBalance == pointsBalance) &&
@@ -435,6 +487,9 @@ class _$ProfileModelImpl implements _ProfileModel {
     email,
     phone,
     address,
+    city,
+    postalCode,
+    country,
     company,
     pointsBalance,
     selfIntroduction,
@@ -468,6 +523,9 @@ abstract class _ProfileModel implements ProfileModel {
     required final String email,
     required final String phone,
     required final String address,
+    final String? city,
+    final String? postalCode,
+    final String? country,
     final String? company,
     final int? pointsBalance,
     final String? selfIntroduction,
@@ -495,6 +553,12 @@ abstract class _ProfileModel implements ProfileModel {
   String get phone;
   @override
   String get address;
+  @override
+  String? get city;
+  @override
+  String? get postalCode;
+  @override
+  String? get country;
   @override
   String? get company;
   @override

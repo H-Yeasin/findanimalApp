@@ -9,6 +9,7 @@ class AuthScreenScaffold extends StatelessWidget {
     this.onBack,
     this.headerAction,
     this.showBackButton = true,
+    this.showBottomNavigation = false,
     this.bottomNavIndex = 2,
     this.onBottomTap,
     this.contentPadding = const EdgeInsets.fromLTRB(34, 18, 34, 24),
@@ -19,6 +20,7 @@ class AuthScreenScaffold extends StatelessWidget {
   final VoidCallback? onBack;
   final Widget? headerAction;
   final bool showBackButton;
+  final bool showBottomNavigation;
   final int bottomNavIndex;
   final ValueChanged<int>? onBottomTap;
   final EdgeInsetsGeometry contentPadding;
@@ -50,10 +52,12 @@ class AuthScreenScaffold extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: bottomNavIndex,
-        onTap: onBottomTap ?? (_) {},
-      ),
+      bottomNavigationBar: showBottomNavigation
+          ? CustomBottomNavigationBar(
+              currentIndex: bottomNavIndex,
+              onTap: onBottomTap ?? (_) {},
+            )
+          : null,
     );
   }
 }

@@ -9,6 +9,8 @@ final seekReportsProvider = AsyncNotifierProvider<SeekReportsNotifier, Paginated
   SeekReportsNotifier.new,
 );
 
+final selectedSeekReportProvider = StateProvider<ReportModel?>((ref) => null);
+
 class SeekReportsNotifier extends AsyncNotifier<PaginatedResponse<ReportModel>> {
   @override
   Future<PaginatedResponse<ReportModel>> build() async {

@@ -60,7 +60,12 @@ class HomeReportedRecentlySection extends ConsumerWidget {
                         .map(
                           (report) => Padding(
                             padding: const EdgeInsets.only(bottom: 16),
-                            child: SeekAnimalCard(report: report),
+                            child: SeekAnimalCard(
+                              report: report,
+                              onViewOnMap: () {
+                                ref.read(selectedHomeReportProvider.notifier).state = report;
+                              },
+                            ),
                           ),
                         )
                         .toList(),

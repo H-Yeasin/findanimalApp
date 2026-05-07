@@ -85,6 +85,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const PartnerRegisterScreen(),
       ),
       GoRoute(
+        path: RouteNames.partnerRegisterLocationPicker,
+        builder: (context, state) => const PartnerLocationPickerScreen(),
+      ),
+      GoRoute(
         path: RouteNames.partnerAuthGateway,
         builder: (context, state) => const PartnerAuthGatewayScreen(),
       ),

@@ -8,6 +8,8 @@ class RouteNames {
   static const String partnerLogin = '/auth/partner-login';
   static const String register = '/auth/register';
   static const String partnerRegister = '/auth/partner-register';
+  static const String partnerRegisterLocationPicker =
+      '/auth/partner-location-picker';
   static const String forgotPassword = '/auth/forgot-password';
   static const String verifyOtp = '/auth/verify-otp';
   static const String resetPassword = '/auth/reset-password';
