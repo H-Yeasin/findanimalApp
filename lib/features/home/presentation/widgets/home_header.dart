@@ -1,5 +1,6 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
@@ -93,7 +94,7 @@ class HomeInfoBanner extends StatelessWidget {
       }
     }
     final baseStyle = AppTextStyles.body.copyWith(
-      color: Colors.white,
+      color: AppColors.white,
       fontFamily: 'BarlowCondensed',
       fontSize: 18,
       height: 1.16,
@@ -117,7 +118,11 @@ class HomeInfoBanner extends StatelessWidget {
                   ),
                   TextSpan(
                     text: boldPhrase,
-                    style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w800),
+                    style: AppTextStyles.body.copyWith(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   TextSpan(text: bannerText.split(boldPhrase).last),
                 ],

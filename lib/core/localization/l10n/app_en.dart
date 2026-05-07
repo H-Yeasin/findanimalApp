@@ -605,4 +605,56 @@ const Map<String, String> appEn = {
   'pointsInsufficientPoints': 'Insufficient points balance',
   'pointsRedeemSuccess': 'Reward redeemed successfully!',
   'pointsPts': 'pts',
+  'privacyPolicyTitle': 'PRIVACY POLICY',
+  'privacyPolicyIntro':
+      'We attach great importance to the protection of your personal data. When you use our application, certain information may be collected in order to enable it to function properly and improve your experience.\n\nWe are committed to processing this data in a responsible, transparent and secure manner, in accordance with the laws in force, in particular the General Data Protection Regulation (GDPR) applicable in the European Union.',
+  'privacyDataCollectTitle': 'DATA WE COLLECT',
+  'privacyDataCollectContent':
+      'When you use the application, we may collect certain personal information that you provide to us directly or that is necessary for the operation of the service. This may include your last name, first name, email address, telephone number, postal address, as well as information associated with your user account.\n\nAs part of donations made via the application, certain payment-related data may also be used to process the transaction securely. This information is generally processed by secure payment services.\n\nDepending on the functionalities used, we may also collect certain location data in order to improve certain functionalities of the application, for example to display information or sections close to you.\n\nFinally, certain technical data may be collected automatically, such as the type of device used, the version of the application or certain information related to the connection, in order to ensure the security and stability of the service.',
+  'privacyUseDataTitle': 'USE OF DATA',
+  'privacyUseDataContent':
+      'The data collected is used to enable the operation of the application and to improve the services offered. This includes in particular to manage your account, process your requests and provide you with a personalized experience.',
+  'privacySharingTitle': 'SHARING DATA WITH PARTNERS',
+  'privacySharingContent':
+      'Certain data may be shared with partners or technical service providers when this is necessary for the operation of the application or to improve the services offered. This may include, for example, payment services, hosting services, technical tools, logistics partners or analytics and maintenance services.\n\nIn some cases, these partners may process certain information in order to provide their services or improve the user experience. However, we ensure that we only work with partners who comply with applicable data protection regulations.\n\nWe do not sell your personal data and we ensure that their use remains regulated and secure.',
+  'privacyRetentionTitle': 'DATA RETENTION',
+  'privacyRetentionContent':
+      'Personal data is kept only for the period necessary for the purposes for which it was collected. Certain information may be kept longer when required by law, particularly in the context of legal or accounting obligations related to financial transactions.',
+  'privacySecurityTitle': 'DATA SECURITY',
+  'privacySecurityContent':
+      'We put in place technical and organizational measures to protect your personal data against unauthorized access, loss, modification or disclosure. This includes the use of secure connections and database protection systems.',
+  'privacyRightsTitle': 'YOUR RIGHTS',
+  'privacyRightsContent':
+      'In accordance with the General Data Protection Regulation (GDPR) and applicable data protection laws, you have several rights regarding your personal information. You can in particular request access to your data, request their correction, request their deletion or object to certain processing.',
+  'privacyContactTitle': 'CONTACT',
+  'privacyContactContent':
+      'For any questions regarding the management of your personal data or to exercise your rights, you can contact us at the following address:',
+  'legalNoticesTitle': 'LEGAL NOTICES',
+  'legalNoticesFullTitle': 'LEGAL NOTICES - HESTEKA',
+  'legalEditorTitle': 'APPLICATION EDITOR',
+  'legalEditorContent':
+      'The Hesteka application is published by: Hesteka SAS. Address: 58 rue Denise Vernay, Pélissanne, 13330. SIRET: 123 456 789 00001. Email: contact@hesteka.com. Telephone: +33 6 41 45 83 60.\n\nThe director of the publication is Emma Fauveau, as legal representative of Hesteka SAS.',
+  'legalHostingTitle': 'HOSTING OF THE APPLICATION',
+  'legalHostingContent':
+      'The Hesteka application is hosted by: OVH Cloud. Address: 2 rue Kellermann, 59100 Roubaix, France. Website: www.ovh.com. Telephone: +33 9 72 10 10 07.\n\nThe host ensures secure storage of all data collected by the application.',
+  'legalIPTitle': 'INTELLECTUAL PROPERTY',
+  'legalIPContent':
+      'All content present in the Hesteka application (texts, images, logos, icons, design, videos) are the exclusive property of Hesteka SAS, unless otherwise stated.\n\nAny reproduction, representation, modification, distribution or use, partial or total, of the contents of the application without prior written authorization is strictly prohibited and constitutes an infringement punishable by law.',
+  'legalPersonalDataTitle': 'PERSONAL DATA',
+  'legalPersonalDataContent':
+      'We comply with the provisions of the General Data Protection Regulation (GDPR) and guarantee that your information is processed securely and transparently. Certain data may be used by our partners only for the proper functioning of the application and to improve the services offered.',
+  'legalResponsibilityTitle': 'RESPONSIBILITY',
+  'legalResponsibilityContent':
+      'Hesteka strives to ensure that the information available in the application is accurate and up to date. However, Hesteka cannot be held responsible for errors, omissions or results related to the use of the application or the information presented there.\n\nThe user is responsible for the use he makes of the application and its contents. Access to certain services may be subject to specific conditions specified within the application.',
+  'legalExternalLinksTitle': 'EXTERNAL LINKS',
+  'legalExternalLinksContent':
+      'The application may contain links to third-party sites or services. Hesteka has no control over these sites and assumes no responsibility for their content or the practices of their operators.\n\nWe recommend consulting the conditions and privacy policies of these sites before any interaction.',
+  'legalLawTitle': 'APPLICABLE LAW',
+  'legalLawContent':
+      'These legal notices are governed by French law. Any dispute relating to the use of the Hesteka application falls under the jurisdiction of the French courts.',
+  'legalContactTitle': 'CONTACT',
+  'legalContactContent':
+      'For any questions regarding these legal notices or the application, you can contact us at:',
+  'legalContactInfo':
+      'Email: contact@hesteka.com\nTelephone: +33 6 41 45 83 60',
 };

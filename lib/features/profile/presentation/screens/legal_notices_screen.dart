@@ -1,5 +1,6 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
@@ -9,9 +10,10 @@ class LegalNoticesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return PartnerScreenScaffold(
-      header: const PartnerHeroHeader(
-        title: 'LEGAL NOTICES',
+      header: PartnerHeroHeader(
+        title: l10n.legalNoticesTitle,
         imageUrl: AppAssets.legalNotice,
       ),
       child: Padding(
@@ -20,7 +22,7 @@ class LegalNoticesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'LEGAL NOTICES - HESTEKA',
+              l10n.legalNoticesFullTitle,
               style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontFamily: 'EricaOne',
@@ -29,45 +31,25 @@ class LegalNoticesScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 25),
+            _buildSection(l10n.legalEditorTitle, l10n.legalEditorContent),
+            _buildSection(l10n.legalHostingTitle, l10n.legalHostingContent),
+            _buildSection(l10n.legalIPTitle, l10n.legalIPContent),
             _buildSection(
-              'APPLICATION EDITOR',
-              'The Hesteka application is published by: Hesteka SAS. Address: 58 rue Denise Vernay, Pélissanne, 13330. SIRET: 123 456 789 00001. Email: contact@hesteka.com. Telephone: +33 6 41 45 83 60.\n\n'
-                  'The director of the publication is Emma Fauveau, as legal representative of Hesteka SAS.',
+              l10n.legalPersonalDataTitle,
+              l10n.legalPersonalDataContent,
             ),
             _buildSection(
-              'HOSTING OF THE APPLICATION',
-              'The Hesteka application is hosted by: OVH Cloud. Address: 2 rue Kellermann, 59100 Roubaix, France. Website: www.ovh.com. Telephone: +33 9 72 10 10 07.\n\n'
-                  'The host ensures secure storage of all data collected by the application.',
+              l10n.legalResponsibilityTitle,
+              l10n.legalResponsibilityContent,
             ),
             _buildSection(
-              'INTELLECTUAL PROPERTY',
-              'All content present in the Hesteka application (texts, images, logos, icons, design, videos) are the exclusive property of Hesteka SAS, unless otherwise stated.\n\n'
-                  'Any reproduction, representation, modification, distribution or use, partial or total, of the contents of the application without prior written authorization is strictly prohibited and constitutes an infringement punishable by law.',
+              l10n.legalExternalLinksTitle,
+              l10n.legalExternalLinksContent,
             ),
-            _buildSection(
-              'PERSONAL DATA',
-              'We comply with the provisions of the General Data Protection Regulation (GDPR) and guarantee that your information is processed securely and transparently. Certain data may be used by our partners only for the proper functioning of the application and to improve the services offered.',
-            ),
-            _buildSection(
-              'RESPONSIBILITY',
-              'Hesteka strives to ensure that the information available in the application is accurate and up to date. However, Hesteka cannot be held responsible for errors, omissions or results related to the use of the application or the information presented there.\n\n'
-                  'The user is responsible for the use he makes of the application and its contents. Access to certain services may be subject to specific conditions specified within the application.',
-            ),
-            _buildSection(
-              'EXTERNAL LINKS',
-              'The application may contain links to third-party sites or services. Hesteka has no control over these sites and assumes no responsibility for their content or the practices of their operators.\n\n'
-                  'We recommend consulting the conditions and privacy policies of these sites before any interaction.',
-            ),
-            _buildSection(
-              'APPLICABLE LAW',
-              'These legal notices are governed by French law. Any dispute relating to the use of the Hesteka application falls under the jurisdiction of the French courts.',
-            ),
-            _buildSection(
-              'CONTACT',
-              'For any questions regarding these legal notices or the application, you can contact us at:',
-            ),
+            _buildSection(l10n.legalLawTitle, l10n.legalLawContent),
+            _buildSection(l10n.legalContactTitle, l10n.legalContactContent),
             Text(
-              'Email: contact@hesteka.com\nTelephone: +33 6 41 45 83 60',
+              l10n.legalContactInfo,
               style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontWeight: FontWeight.bold,

@@ -8,4 +8,6 @@ class AppColors {
   static const Color surface = Color(0xFFFBF4E9);
   static const Color textPrimary = Color(0xFF1F1F1F);
   static const Color backgroundColor = Color.fromARGB(0, 255, 255, 255);
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color red = Color(0xFFC64F2A);
 }

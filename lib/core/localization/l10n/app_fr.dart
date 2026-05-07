@@ -613,4 +613,56 @@ const Map<String, String> appFr = {
   'pointsInsufficientPoints': 'Solde de points insuffisant',
   'pointsRedeemSuccess': 'Récompense échangée avec succès !',
   'pointsPts': 'pts',
+  'privacyPolicyTitle': 'POLITIQUE DE CONFIDENTIALITÉ',
+  'privacyPolicyIntro':
+      'Nous attachons une grande importance à la protection de vos données personnelles. Lorsque vous utilisez notre application, certaines informations peuvent être collectées afin de lui permettre de fonctionner correctement et d\'améliorer votre expérience.\n\nNous nous engageons à traiter ces données de manière responsable, transparente et sécurisée, conformément aux lois en vigueur, notamment le Règlement Général sur la Protection des Données (RGPD) applicable dans l\'Union Européenne.',
+  'privacyDataCollectTitle': 'DONNÉES QUE NOUS COLLECTONS',
+  'privacyDataCollectContent':
+      'Lorsque vous utilisez l\'application, nous pouvons collecter certaines informations personnelles que vous nous fournissez directement ou qui sont nécessaires au fonctionnement du service. Cela peut inclure votre nom, prénom, adresse e-mail, numéro de téléphone, adresse postale, ainsi que des informations associées à votre compte utilisateur.\n\nDans le cadre de dons effectués via l\'application, certaines données relatives au paiement peuvent également être utilisées pour traiter la transaction en toute sécurité. Ces informations sont généralement traitées par des services de paiement sécurisés.\n\nSelon les fonctionnalités utilisées, nous pouvons également collecter certaines données de localisation afin d\'améliorer certaines fonctionnalités de l\'application, par exemple pour afficher des informations ou des sections proches de vous.\n\nEnfin, certaines données techniques peuvent être collectées automatiquement, telles que le type d\'appareil utilisé, la version de l\'application ou certaines informations liées à la connexion, afin d\'assurer la sécurité et la stabilité du service.',
+  'privacyUseDataTitle': 'UTILISATION DES DONNÉES',
+  'privacyUseDataContent':
+      'Les données collectées sont utilisées pour permettre le fonctionnement de l\'application et améliorer les services proposés. Cela inclut notamment la gestion de votre compte, le traitement de vos demandes et la fourniture d\'une expérience personnalisée.',
+  'privacySharingTitle': 'PARTAGE DES DONNÉES AVEC DES PARTENAIRES',
+  'privacySharingContent':
+      'Certaines données peuvent être partagées avec des partenaires ou des prestataires de services techniques lorsque cela est nécessaire au fonctionnement de l\'application ou à l\'amélioration des services proposés. Cela peut inclure, par exemple, des services de paiement, des services d\'hébergement, des outils techniques, des partenaires logistiques ou des services d\'analyse et de maintenance.\n\nDans certains cas, ces partenaires peuvent traiter certaines informations afin de fournir leurs services ou d\'améliorer l\'expérience utilisateur. Toutefois, nous veillons à ne travailler qu\'avec des partenaires qui respectent les réglementations applicables en matière de protection des données.\n\nNous ne vendons pas vos données personnelles et nous veillons à ce que leur utilisation reste encadrée et sécurisée.',
+  'privacyRetentionTitle': 'CONSERVATION DES DONNÉES',
+  'privacyRetentionContent':
+      'Les données personnelles sont conservées uniquement pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées. Certaines informations peuvent être conservées plus longtemps lorsque la loi l\'exige, notamment dans le cadre d\'obligations légales ou comptables liées aux transactions financières.',
+  'privacySecurityTitle': 'SÉCURITÉ DES DONNÉES',
+  'privacySecurityContent':
+      'Nous mettons en place des mesures techniques et organisationnelles pour protéger vos données personnelles contre tout accès non autorisé, perte, modification ou divulgation. Cela inclut l\'utilisation de connexions sécurisées et de systèmes de protection de base de données.',
+  'privacyRightsTitle': 'VOS DROITS',
+  'privacyRightsContent':
+      'Conformément au Règlement Général sur la Protection des Données (RGPD) et aux lois applicables sur la protection des données, vous disposez de plusieurs droits concernant vos informations personnelles. Vous pouvez notamment demander l\'accès à vos données, demander leur rectification, demander leur suppression ou vous opposer à certains traitements.',
+  'privacyContactTitle': 'CONTACT',
+  'privacyContactContent':
+      'Pour toute question concernant la gestion de vos données personnelles ou pour exercer vos droits, vous pouvez nous contacter à l\'adresse suivante :',
+  'legalNoticesTitle': 'MENTIONS LÉGALES',
+  'legalNoticesFullTitle': 'MENTIONS LÉGALES - HESTEKA',
+  'legalEditorTitle': 'ÉDITEUR DE L\'APPLICATION',
+  'legalEditorContent':
+      'L\'application Hesteka est éditée par : Hesteka SAS. Adresse : 58 rue Denise Vernay, Pélissanne, 13330. SIRET : 123 456 789 00001. E-mail : contact@hesteka.com. Téléphone : +33 6 41 45 83 60.\n\nLa directrice de la publication est Emma Fauveau, en qualité de représentante légale de Hesteka SAS.',
+  'legalHostingTitle': 'HÉBERGEMENT DE L\'APPLICATION',
+  'legalHostingContent':
+      'L\'application Hesteka est hébergée par : OVH Cloud. Adresse : 2 rue Kellermann, 59100 Roubaix, France. Site web : www.ovh.com. Téléphone : +33 9 72 10 10 07.\n\nL\'hébergeur assure le stockage sécurisé de l\'ensemble des données collectées par l\'application.',
+  'legalIPTitle': 'PROPRIÉTÉ INTELLECTUELLE',
+  'legalIPContent':
+      'Tous les contenus présents dans l\'application Hesteka (textes, images, logos, icônes, design, vidéos) sont la propriété exclusive de Hesteka SAS, sauf mention contraire.\n\nToute reproduction, représentation, modification, distribution ou utilisation, partielle ou totale, des contenus de l\'application sans autorisation écrite préalable est strictement interdite et constitue une contrefaçon sanctionnée par la loi.',
+  'legalPersonalDataTitle': 'DONNÉES PERSONNELLES',
+  'legalPersonalDataContent':
+      'Nous respectons les dispositions du Règlement Général sur la Protection des Données (RGPD) et garantissons que vos informations sont traitées de manière sécurisée et transparente. Certaines données peuvent être utilisées par nos partenaires uniquement pour le bon fonctionnement de l\'application et l\'amélioration des services proposés.',
+  'legalResponsibilityTitle': 'RESPONSABILITÉ',
+  'legalResponsibilityContent':
+      'Hesteka s\'efforce d\'assurer l\'exactitude et la mise à jour des informations diffusées dans l\'application. Toutefois, Hesteka ne saurait être tenue pour responsable des erreurs, omissions ou des résultats liés à l\'utilisation de l\'application ou des informations qui y sont présentées.\n\nL\'utilisateur est responsable de l\'usage qu\'il fait de l\'application et de ses contenus. L\'accès à certains services peut être soumis à des conditions spécifiques précisées au sein de l\'application.',
+  'legalExternalLinksTitle': 'LIENS EXTERNES',
+  'legalExternalLinksContent':
+      'L\'application peut contenir des liens vers des sites ou services tiers. Hesteka n\'exerce aucun contrôle sur ces sites et n\'assume aucune responsabilité quant à leur contenu ou aux pratiques de leurs opérateurs.\n\nNous vous recommandons de consulter les conditions et politiques de confidentialité de ces sites avant toute interaction.',
+  'legalLawTitle': 'DROIT APPLICABLE',
+  'legalLawContent':
+      'Les présentes mentions légales sont régies par le droit français. Tout litige relatif à l\'utilisation de l\'application Hesteka relève de la compétence des tribunaux français.',
+  'legalContactTitle': 'CONTACT',
+  'legalContactContent':
+      'Pour toute question concernant ces mentions légales ou l\'application, vous pouvez nous contacter à :',
+  'legalContactInfo':
+      'E-mail : contact@hesteka.com\nTéléphone : +33 6 41 45 83 60',
 };

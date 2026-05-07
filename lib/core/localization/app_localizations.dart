@@ -594,6 +594,43 @@ class AppLocalizations {
   String get pointsInsufficientPoints => _text('pointsInsufficientPoints');
   String get pointsRedeemSuccess => _text('pointsRedeemSuccess');
   String get pointsPts => _text('pointsPts');
+
+  String get privacyPolicyTitle => _text('privacyPolicyTitle');
+  String get privacyPolicyIntro => _text('privacyPolicyIntro');
+  String get privacyDataCollectTitle => _text('privacyDataCollectTitle');
+  String get privacyDataCollectContent => _text('privacyDataCollectContent');
+  String get privacyUseDataTitle => _text('privacyUseDataTitle');
+  String get privacyUseDataContent => _text('privacyUseDataContent');
+  String get privacySharingTitle => _text('privacySharingTitle');
+  String get privacySharingContent => _text('privacySharingContent');
+  String get privacyRetentionTitle => _text('privacyRetentionTitle');
+  String get privacyRetentionContent => _text('privacyRetentionContent');
+  String get privacySecurityTitle => _text('privacySecurityTitle');
+  String get privacySecurityContent => _text('privacySecurityContent');
+  String get privacyRightsTitle => _text('privacyRightsTitle');
+  String get privacyRightsContent => _text('privacyRightsContent');
+  String get privacyContactTitle => _text('privacyContactTitle');
+  String get privacyContactContent => _text('privacyContactContent');
+
+  String get legalNoticesTitle => _text('legalNoticesTitle');
+  String get legalNoticesFullTitle => _text('legalNoticesFullTitle');
+  String get legalEditorTitle => _text('legalEditorTitle');
+  String get legalEditorContent => _text('legalEditorContent');
+  String get legalHostingTitle => _text('legalHostingTitle');
+  String get legalHostingContent => _text('legalHostingContent');
+  String get legalIPTitle => _text('legalIPTitle');
+  String get legalIPContent => _text('legalIPContent');
+  String get legalPersonalDataTitle => _text('legalPersonalDataTitle');
+  String get legalPersonalDataContent => _text('legalPersonalDataContent');
+  String get legalResponsibilityTitle => _text('legalResponsibilityTitle');
+  String get legalResponsibilityContent => _text('legalResponsibilityContent');
+  String get legalExternalLinksTitle => _text('legalExternalLinksTitle');
+  String get legalExternalLinksContent => _text('legalExternalLinksContent');
+  String get legalLawTitle => _text('legalLawTitle');
+  String get legalLawContent => _text('legalLawContent');
+  String get legalContactTitle => _text('legalContactTitle');
+  String get legalContactContent => _text('legalContactContent');
+  String get legalContactInfo => _text('legalContactInfo');
 }
 
 class _AppLocalizationsDelegate
