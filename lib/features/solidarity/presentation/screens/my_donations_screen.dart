@@ -117,7 +117,7 @@ class MyDonationsScreen extends ConsumerWidget {
                                 style: AppTextStyles.body.copyWith(
                                   color: brandPrimary,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+                                  // fontWeight: FontWeight.w500,
                                 ),
                               ),
                             );
@@ -162,7 +162,9 @@ class MyDonationsScreen extends ConsumerWidget {
                         error: (err, stack) => Center(
                           child: Text(
                             '${l10n.unknownError}: $err',
-                            style: AppTextStyles.body.copyWith(color: Colors.red),
+                            style: AppTextStyles.body.copyWith(
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),

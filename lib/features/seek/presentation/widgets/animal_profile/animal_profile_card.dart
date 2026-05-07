@@ -178,7 +178,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                         style: AppTextStyles.caption.copyWith(
                           fontSize: 10.5,
                           height: 1.4,
-                          fontWeight: FontWeight.w500,
+                          // fontWeight: FontWeight.w500,
                         ),
                       ),
                       const SizedBox(height: 16),

@@ -27,7 +27,9 @@ class AuthAccountScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
-            textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 14),
+            textStyle: AppTextStyles.condensedSectionTitle.copyWith(
+              fontSize: 18,
+            ),
           ),
 
           child: Text(l10n.skip),

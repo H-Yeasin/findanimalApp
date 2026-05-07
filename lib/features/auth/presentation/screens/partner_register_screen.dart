@@ -375,7 +375,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 children: [
                   Expanded(
                     child: _field(
-                      label: l10n.text('contactFirstNameLabel'),
+                      label: l10n.text('FirstNameLabel'),
                       controller: _firstNameController,
                       hint: l10n.firstNameHint,
                       validator: (v) => _required(v, l10n.fieldFirstName),
@@ -384,7 +384,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: _field(
-                      label: l10n.text('contactLastNameLabel'),
+                      label: l10n.text('LastNameLabel'),
                       controller: _lastNameController,
                       hint: l10n.lastNameHint,
                       validator: (v) => _required(v, l10n.fieldLastName),
@@ -444,6 +444,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 width: double.infinity,
                 onPressed: isLoading ? null : _submit,
               ),
+              const SizedBox(height: 50),
             ],
           ),
         ),

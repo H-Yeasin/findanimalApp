@@ -22,11 +22,10 @@ class AuthMainTitle extends StatelessWidget {
     return Text(
       text,
       textAlign: center ? TextAlign.center : TextAlign.start,
-      style: AppTextStyles.heading.copyWith(
+      style: AppTextStyles.condensedSectionTitle.copyWith(
         color: AuthUiColors.brand,
-        fontSize: 28,
-        height: 1.03,
-        fontWeight: FontWeight.w700,
+        fontSize: 36,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
@@ -41,9 +40,9 @@ class AuthFieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppTextStyles.sectionTitle.copyWith(
+      style: AppTextStyles.condensedSectionTitle.copyWith(
         color: AuthUiColors.brand,
-        fontSize: 17,
+        fontSize: 16,
       ),
     );
   }
@@ -165,7 +164,7 @@ class AuthOutlinePillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 17),
+          textStyle: AppTextStyles.condensedSectionTitle.copyWith(fontSize: 20),
         ),
         onPressed: onPressed,
         child: isLoading
@@ -208,7 +207,7 @@ class AuthFilledPillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 15),
+          textStyle: AppTextStyles.condensedSectionTitle.copyWith(fontSize: 18),
         ),
         onPressed: onPressed,
         child: Text(label),
@@ -250,7 +249,7 @@ class AuthSocialPillButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: AppTextStyles.sectionTitle.copyWith(
+              style: AppTextStyles.condensedSectionTitle.copyWith(
                 color: Colors.white,
                 fontSize: 18,
               ),
@@ -272,7 +271,7 @@ class AuthGoogleGlyph extends StatelessWidget {
         return const LinearGradient(
           colors: [
             Color(0xFF4285F4),
-            Color(0xFFEA4335),
+            Color.fromARGB(255, 43, 6, 3),
             Color(0xFFFBBC05),
             Color(0xFF34A853),
           ],

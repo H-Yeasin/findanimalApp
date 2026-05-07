@@ -68,20 +68,17 @@ class _HubCollectionPointsSectionState
         Text(
           l10n.collectionPoints.toUpperCase(),
           textAlign: TextAlign.center,
-          style: AppTextStyles.condensedSectionTitle.copyWith(
-            fontSize: 27,
-          ),
+          style: AppTextStyles.condensedSectionTitle.copyWith(fontSize: 27),
         ),
         Text(
           l10n.collectionPointsAround,
           textAlign: TextAlign.center,
-          style: AppTextStyles.caption.copyWith(
-            fontSize: 14,
-            height: 1,
-          ),
+          style: AppTextStyles.caption.copyWith(fontSize: 14, height: 1),
         ),
         const SizedBox(height: 15),
-        ref.watch(allCollectionPointsProvider).when(
+        ref
+            .watch(allCollectionPointsProvider)
+            .when(
               data: (points) {
                 return Stack(
                   alignment: Alignment.bottomCenter,
@@ -121,9 +118,7 @@ class _HubCollectionPointsSectionState
                             color: const Color(0xFFFBF4E9),
                             borderRadius: BorderRadius.circular(25),
                             border: Border.all(
-                              color: brandPrimary.withValues(
-                                alpha: 0.5,
-                              ),
+                              color: brandPrimary.withValues(alpha: 0.5),
                               width: 1.5,
                             ),
                           ),
@@ -149,9 +144,7 @@ class _HubCollectionPointsSectionState
               error: (err, stack) => SizedBox(
                 height: 300,
                 width: double.infinity,
-                child: Center(
-                  child: Text('Error loading map: $err'),
-                ),
+                child: Center(child: Text('Error loading map: $err')),
               ),
             ),
         const SizedBox(height: 50),
@@ -173,7 +166,7 @@ class _HubCollectionPointsSectionState
             style: AppTextStyles.body.copyWith(
               fontSize: 14,
               color: brandPrimary,
-              fontWeight: FontWeight.w500,
+              // fontWeight: FontWeight.w500,
               height: 1.3,
             ),
           ),

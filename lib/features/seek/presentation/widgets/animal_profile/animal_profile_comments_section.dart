@@ -316,7 +316,7 @@ class _CommentItem extends StatelessWidget {
             style: AppTextStyles.caption.copyWith(
               fontSize: 11,
               height: 1.5,
-              fontWeight: FontWeight.w500,
+              // fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 10),

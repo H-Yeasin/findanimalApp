@@ -46,97 +46,94 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
-                // Header
-                AppTopBar(title: l10n.authoritiesTitle),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Text(
-                    l10n.authoritiesBody,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.caption.copyWith(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
+                  // Header
+                  AppTopBar(title: l10n.authoritiesTitle),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Text(
+                      l10n.authoritiesBody,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.caption.copyWith(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                // Header Image
-                Image.asset(
-                  AppAssets.authorities,
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  // Header Image
+                  Image.asset(
+                    AppAssets.authorities,
                     width: double.infinity,
                     height: 200,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image_not_supported, size: 50),
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                Text(
-                  l10n.gendarmeries,
-                  style: AppTextStyles.heading.copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: 10),
-
-                // Search Bar
-                _buildSearchBar(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 10),
-
-                // Filter Dropdown
-                _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                const SizedBox(height: 20),
-
-                // List Section
-                authoritiesAsync.when(
-                  data: (authorities) {
-                    if (authorities.isEmpty) {
-                      return Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            l10n.noReportsFound,
-                            style: AppTextStyles.body.copyWith(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    return _buildAuthorityGrid(
-                      authorities,
-                      cardBg,
-                      brandPrimary,
-                      l10n,
-                    );
-                  },
-                  loading: () => const Center(
-                    child: CircularProgressIndicator(color: brandPrimary),
-                  ),
-                  error: (err, stack) => Center(
-                    child: Text(
-                      l10n.unknownError,
-                      style: AppTextStyles.body,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      width: double.infinity,
+                      height: 200,
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image_not_supported, size: 50),
                     ),
                   ),
-                ),
+                  const SizedBox(height: 20),
 
-                const SizedBox(height: 100),
-              ],
+                  Text(
+                    l10n.gendarmeries,
+                    style: AppTextStyles.heading.copyWith(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  // Search Bar
+                  _buildSearchBar(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 10),
+
+                  // Filter Dropdown
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 20),
+
+                  // List Section
+                  authoritiesAsync.when(
+                    data: (authorities) {
+                      if (authorities.isEmpty) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(
+                              l10n.noReportsFound,
+                              style: AppTextStyles.body.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return _buildAuthorityGrid(
+                        authorities,
+                        cardBg,
+                        brandPrimary,
+                        l10n,
+                      );
+                    },
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: brandPrimary),
+                    ),
+                    error: (err, stack) => Center(
+                      child: Text(l10n.unknownError, style: AppTextStyles.body),
+                    ),
+                  ),
+
+                  const SizedBox(height: 100),
+                ],
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
@@ -308,7 +305,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   style: AppTextStyles.caption.copyWith(
                     color: color,
                     fontSize: 9,
-                    fontWeight: FontWeight.w500,
+                    // fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

@@ -101,7 +101,7 @@ class NotificationScreen extends ConsumerWidget {
             style: AppTextStyles.body.copyWith(
               color: Colors.grey,
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              // fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -283,7 +283,10 @@ class NotificationScreen extends ConsumerWidget {
       return l10n.text('hoursAgo', params: {'hours': '${duration.inHours}'});
     }
     if (duration.inMinutes > 0) {
-      return l10n.text('minutesAgo', params: {'minutes': '${duration.inMinutes}'});
+      return l10n.text(
+        'minutesAgo',
+        params: {'minutes': '${duration.inMinutes}'},
+      );
     }
     return l10n.justNow;
   }
