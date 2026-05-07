@@ -257,7 +257,9 @@ class MyReportsScreen extends ConsumerWidget {
 
       if (selectedAnimal == null || !context.mounted) return;
 
-      ref.read(reportFormProvider.notifier).populateFromMyAnimal(selectedAnimal);
+      ref
+          .read(reportFormProvider.notifier)
+          .populateFromMyAnimal(selectedAnimal);
       context.push(RouteNames.reportCreateStep1);
     } catch (error) {
       if (!context.mounted) return;

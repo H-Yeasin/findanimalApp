@@ -22,44 +22,43 @@ class AnimalProfileScreen extends ConsumerWidget {
     return AppBackgroundScaffold(
       showGridFromTop: true,
       body: SafeArea(
-        
         child: Column(
           children: [
-            const AppTopBar(),
+            const AppTopBar(showUserAvatar: false),
             Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Column(
-                        children: [
-                          // === OUTER WRAPPER CARD ===
-                          Container(
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF5E4CE),
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(
-                                color: const Color(0xFFBA4A22),
-                                width: 1.5,
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(22),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  AnimalProfileCard(data: data),
-                                  AnimalProfileMapSection(data: data),
-                                  AnimalProfileCommentsSection(data: data),
-                                ],
-                              ),
-                            ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Column(
+                    children: [
+                      // === OUTER WRAPPER CARD ===
+                      Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5E4CE),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: const Color(0xFFBA4A22),
+                            width: 1.5,
                           ),
-                          const SizedBox(height: 100),
-                        ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(22),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              AnimalProfileCard(data: data),
+                              AnimalProfileMapSection(data: data),
+                              AnimalProfileCommentsSection(data: data),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 100),
+                    ],
                   ),
                 ),
+              ),
+            ),
           ],
         ),
       ),

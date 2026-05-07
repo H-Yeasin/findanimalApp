@@ -71,14 +71,17 @@ class _AnimalProfileCommentsSectionState
           ),
           const SizedBox(height: 14),
 
+          commentsAsync.when(
             data: (comments) {
               if (comments.isEmpty) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     l10n.beTheFirstToHelp,
-                    style:
-                        const TextStyle(color: Color(0xFFBA4A22), fontSize: 12),
+                    style: const TextStyle(
+                      color: Color(0xFFBA4A22),
+                      fontSize: 12,
+                    ),
                   ),
                 );
               }
@@ -172,7 +175,9 @@ class _AnimalProfileCommentsSectionState
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
-                      hintText: l10n.commentAs(currentUser?.firstName ?? "User"),
+                      hintText: l10n.commentAs(
+                        currentUser?.firstName ?? "User",
+                      ),
                       hintStyle: const TextStyle(color: Colors.white70),
                       border: InputBorder.none,
                       isDense: true,
@@ -207,6 +212,8 @@ class _AnimalProfileCommentsSectionState
               ],
             ),
           ),
+        ],
+      ),
     );
   }
 }
@@ -229,8 +236,10 @@ class _CommentItem extends StatelessWidget {
     final authorName =
         '${comment.author.firstName.toLowerCase()}_${comment.author.lastName.toLowerCase()}';
     final l10n = AppLocalizations.of(context);
-    final timeFormatted =
-        l10n.text('hoursAgo', params: {'hours': DateFormat('h').format(comment.createdAt)}); // Using existing hoursAgo key
+    final timeFormatted = l10n.text(
+      'hoursAgo',
+      params: {'hours': DateFormat('h').format(comment.createdAt)},
+    ); // Using existing hoursAgo key
 
     return Container(
       width: double.infinity,
@@ -354,13 +363,13 @@ class _CommentItem extends StatelessWidget {
               child: GestureDetector(
                 onTap: onReply,
                 child: Row(
-                  children: const [
-                    CircleAvatar(
+                  children: [
+                    const CircleAvatar(
                       radius: 11,
                       backgroundColor: Color(0xFFBA4A22),
                       child: Icon(Icons.person, color: Colors.white, size: 13),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         l10n.replyEllipsis,
