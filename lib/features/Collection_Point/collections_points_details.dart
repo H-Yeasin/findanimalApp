@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
@@ -25,6 +26,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     const brandPrimary = AppColors.brandPrimary;
     const cardBg = Color(0xFFFFF6E5);
 
@@ -36,7 +38,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
             children: [
               const AppTopBar(showUserAvatar: false),
               const SizedBox(height: 10),
-              _buildDetailCard(brandPrimary, cardBg),
+              _buildDetailCard(brandPrimary, cardBg, l10n),
               const SizedBox(height: 50),
             ],
           ),
@@ -45,7 +47,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailCard(Color color, Color cardBg) {
+  Widget _buildDetailCard(Color color, Color cardBg, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
@@ -98,7 +100,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                     Text(
                       title.startsWith('COLLECTION')
                           ? title
-                          : 'COLLECTION POINT',
+                          : l10n.collectionPointGenericTitle,
                       style: AppTextStyles.heading.copyWith(
                         color: color,
                         fontSize: 28,
@@ -137,7 +139,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
           const SizedBox(height: 15),
           Center(
             child: Text(
-              'Together, let\'s help animals in need.',
+              l10n.collectionPointTogetherHelp,
               style: AppTextStyles.subtitle.copyWith(
                 color: color,
                 fontSize: 13,
@@ -190,7 +192,7 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                'SEE ON MAP',
+                l10n.seeOnMap,
                 style: AppTextStyles.button.copyWith(
                   color: Colors.white,
                   fontSize: 14,

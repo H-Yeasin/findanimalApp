@@ -198,6 +198,9 @@ const Map<String, String> appFr = {
   'collectionPointDescription': 'DESCRIPTION DU POINT DE COLLECTE',
   'collectionPointDescriptionHint': 'Description du point de collecte',
   'collectionPointAddress': 'ADRESSE DU POINT DE COLLECTE',
+  'collectionPointGenericTitle': 'POINT DE COLLECTE',
+  'collectionPointTogetherHelp':
+      'Ensemble, aidons les animaux dans le besoin.',
   'pickLocationOnMap': 'Choisir l’emplacement sur la carte',
   'photoOfCollectionPoint': 'PHOTO DU POINT DE COLLECTE',
   'uploadPhoto': 'Télécharger une photo',

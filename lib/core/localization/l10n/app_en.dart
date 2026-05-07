@@ -315,6 +315,8 @@ const Map<String, String> appEn = {
   'collectionPointDescription': 'COLLECTION POINT DESCRIPTION',
   'collectionPointDescriptionHint': 'Collection point description',
   'collectionPointAddress': 'COLLECTION POINT ADDRESS',
+  'collectionPointGenericTitle': 'COLLECTION POINT',
+  'collectionPointTogetherHelp': 'Together, let\'s help animals in need.',
   'pickLocationOnMap': 'Pick location on map',
   'photoOfCollectionPoint': 'PHOTO OF COLLECTION POINT',
   'uploadPhoto': 'Upload photo',

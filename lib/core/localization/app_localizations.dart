@@ -376,6 +376,8 @@ class AppLocalizations {
   String get collectionPointDescriptionHint =>
       _text('collectionPointDescriptionHint');
   String get collectionPointAddress => _text('collectionPointAddress');
+  String get collectionPointGenericTitle => _text('collectionPointGenericTitle');
+  String get collectionPointTogetherHelp => _text('collectionPointTogetherHelp');
   String get pickLocationOnMap => _text('pickLocationOnMap');
   String get photoOfCollectionPoint => _text('photoOfCollectionPoint');
   String get uploadPhoto => _text('uploadPhoto');
