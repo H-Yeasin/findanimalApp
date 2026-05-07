@@ -7,6 +7,7 @@ class AuthScreenScaffold extends StatelessWidget {
   const AuthScreenScaffold({
     required this.child,
     this.onBack,
+    this.headerAction,
     this.showBackButton = true,
     this.bottomNavIndex = 2,
     this.onBottomTap,
@@ -16,6 +17,7 @@ class AuthScreenScaffold extends StatelessWidget {
 
   final Widget child;
   final VoidCallback? onBack;
+  final Widget? headerAction;
   final bool showBackButton;
   final int bottomNavIndex;
   final ValueChanged<int>? onBottomTap;
@@ -27,7 +29,11 @@ class AuthScreenScaffold extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          _AuthHeroHeader(showBackButton: showBackButton, onBack: onBack),
+          _AuthHeroHeader(
+            showBackButton: showBackButton,
+            onBack: onBack,
+            headerAction: headerAction,
+          ),
           Expanded(
             child: AppBackground(
               backgroundColor: const Color(0xFFEDEDED),
@@ -53,10 +59,15 @@ class AuthScreenScaffold extends StatelessWidget {
 }
 
 class _AuthHeroHeader extends StatelessWidget {
-  const _AuthHeroHeader({required this.showBackButton, required this.onBack});
+  const _AuthHeroHeader({
+    required this.showBackButton,
+    required this.onBack,
+    required this.headerAction,
+  });
 
   final bool showBackButton;
   final VoidCallback? onBack;
+  final Widget? headerAction;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +97,8 @@ class _AuthHeroHeader extends StatelessWidget {
                 ),
               ),
             ),
+          if (headerAction != null)
+            Positioned(right: 24, top: 38, child: headerAction!),
           Align(
             alignment: const Alignment(0, 0.52),
             child: Image.asset(

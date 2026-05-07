@@ -23,16 +23,16 @@ class SolidarityHubScreen extends ConsumerWidget {
         child: Stack(
           children: [
             SingleChildScrollView(
-                child: Column(
-                  children: [
-                    HubHeroSection(l10n: l10n),
-                    HubDonationCTASection(l10n: l10n),
-                    HubCollectionPointsSection(l10n: l10n),
-                    HubPartnersSection(l10n: l10n),
-                    HubShopCTASection(l10n: l10n),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  HubHeroSection(l10n: l10n),
+                  HubDonationCTASection(l10n: l10n),
+                  HubCollectionPointsSection(l10n: l10n),
+                  HubPartnersSection(l10n: l10n),
+                  HubShopCTASection(l10n: l10n),
+                ],
               ),
+            ),
             const Positioned(
               top: 0,
               left: 0,

@@ -20,6 +20,19 @@ class AuthAccountScreen extends StatelessWidget {
           context.go(RouteNames.root);
         }
       },
+      headerAction: TextButton(
+        onPressed: () => context.go(RouteNames.root),
+        style: TextButton.styleFrom(
+          backgroundColor: AuthUiColors.brand,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22),
+          ),
+          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 14),
+        ),
+        child: Text(l10n.skip),
+      ),
       onBottomTap: (_) => context.go(RouteNames.root),
       child: Column(
         children: [

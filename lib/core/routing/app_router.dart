@@ -54,7 +54,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final currentUser = ref.watch(currentUserProvider);
 
   return GoRouter(
-    initialLocation: RouteNames.root,
+    initialLocation: RouteNames.account,
     routes: [
       GoRoute(
         path: RouteNames.root,

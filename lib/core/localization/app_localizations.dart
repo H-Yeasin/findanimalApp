@@ -96,6 +96,7 @@ class AppLocalizations {
   String get retry => _text('retry');
   String get unknownError => _text('unknownError');
   String get accountTitle => _text('accountTitle');
+  String get skip => _text('skip');
   String get login => _text('login');
   String get createAccount => _text('createAccount');
   String get partnerAccess => _text('partnerAccess');

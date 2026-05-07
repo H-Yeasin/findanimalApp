@@ -17,6 +17,7 @@ const Map<String, String> appEn = {
   'retry': 'Retry',
   'unknownError': 'Something went wrong.',
   'accountTitle': 'Log in or create your\nHesteka account',
+  'skip': 'Skip',
   'login': 'Log in',
   'createAccount': 'Create an account',
   'partnerAccess': 'Partner access',

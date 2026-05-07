@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
+import 'package:hesteka_frontend/core/widgets/app_background.dart';
+import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
 class CollectionPointsDetailsScreen extends StatelessWidget {
   final String title;
@@ -21,54 +25,22 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const brandPrimary = Color(0xFFBA4A22);
-    const surface = Color(0xFFFBF4E9);
+    const brandPrimary = AppColors.brandPrimary;
     const cardBg = Color(0xFFFFF6E5);
 
-    return Scaffold(
-      backgroundColor: surface,
-      body: CustomPaint(
-        painter: _GridPainter(),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildCustomAppBar(context, brandPrimary),
-                const SizedBox(height: 10),
-                _buildDetailCard(brandPrimary, cardBg),
-                const SizedBox(height: 50),
-              ],
-            ),
+    return AppBackgroundScaffold(
+      showGridFromTop: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const AppTopBar(showUserAvatar: false),
+              const SizedBox(height: 10),
+              _buildDetailCard(brandPrimary, cardBg),
+              const SizedBox(height: 50),
+            ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildCustomAppBar(BuildContext context, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-              child: const Icon(Icons.undo, color: Colors.white, size: 24),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            child: const CircleAvatar(
-              backgroundColor: Color(0xFFBA4A22),
-              radius: 20,
-              child: Icon(Icons.person, color: Colors.white, size: 24),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -127,25 +99,22 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                       title.startsWith('COLLECTION')
                           ? title
                           : 'COLLECTION POINT',
-                      style: TextStyle(
+                      style: AppTextStyles.heading.copyWith(
                         color: color,
                         fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                        fontFamily: 'EricaOne',
                       ),
                     ),
                     const SizedBox(height: 5),
                     Text(
                       subtitle,
-                      style: TextStyle(
+                      style: AppTextStyles.subtitle.copyWith(
                         color: color,
-                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
                     Text(
                       title, // Using title as the name if it's not a generic header
-                      style: TextStyle(
+                      style: AppTextStyles.caption.copyWith(
                         color: color.withValues(alpha: 0.8),
                         fontSize: 12,
                       ),
@@ -158,21 +127,20 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
           const SizedBox(height: 25),
           Text(
             description,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: color,
               fontSize: 13,
               height: 1.3,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 15),
           Center(
             child: Text(
               'Together, let\'s help animals in need.',
-              style: TextStyle(
+              style: AppTextStyles.subtitle.copyWith(
                 color: color,
                 fontSize: 13,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ),
@@ -221,11 +189,10 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
                 color: color,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text(
+              child: Text(
                 'SEE ON MAP',
-                style: TextStyle(
+                style: AppTextStyles.button.copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
               ),
@@ -235,25 +202,4 @@ class CollectionPointsDetailsScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class _GridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFFBA4A22).withValues(alpha: 0.05)
-      ..strokeWidth = 1.0;
-
-    double step = 25;
-
-    for (double i = 0; i < size.width; i += step) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-    for (double i = 0; i < size.height; i += step) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
