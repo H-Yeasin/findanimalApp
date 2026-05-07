@@ -12,6 +12,7 @@ import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/user_avatar.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../providers/profile_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -44,7 +45,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Text(
                     '${profile.firstName}${profile.lastName.isNotEmpty ? " ${profile.lastName[0]}." : ""}',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: Color(0xFFBA4A22),
                       fontFamily: 'EricaOne',
                       fontSize: 28,
@@ -71,7 +72,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Text(
                     l10n.memberSince,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: Color(0xFFBA4A22),
                       fontFamily: 'EricaOne',
                       fontSize: 15,
@@ -169,7 +170,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           },
                           child: Text(
                             l10n.inviteContacts,
-                            style: const TextStyle(
+                            style: AppTextStyles.body.copyWith(
                               color: Color(0xFFBA4A22),
                               fontFamily: 'EricaOne',
                               fontSize: 14,
@@ -228,7 +229,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontFamily: 'EricaOne',
                   fontSize: 19,

@@ -11,6 +11,7 @@ import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_u
 import '../../data/models/my_animal_model.dart';
 import '../../data/repositories/my_animals_repository.dart';
 import '../providers/my_animals_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class AddAnimalScreen extends ConsumerStatefulWidget {
   const AddAnimalScreen({this.animalId, this.initialAnimal, super.key});
@@ -315,7 +316,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                                     : 'Select image'
                               : _selectedImage!.name,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             color: PartnerUiColors.brand,
                             fontWeight: FontWeight.w600,
                           ),
@@ -354,7 +355,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                         )
                       : Text(
                           widget.isEditMode ? 'UPDATE ANIMAL' : 'CREATE ANIMAL',
-                          style: TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             fontFamily: 'EricaOne',
                             fontSize: 18,
                           ),
@@ -382,7 +383,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
         Icons.keyboard_arrow_down_rounded,
         color: PartnerUiColors.brand,
       ),
-      style: const TextStyle(
+      style: AppTextStyles.body.copyWith(
         color: PartnerUiColors.brand,
         fontWeight: FontWeight.w600,
       ),

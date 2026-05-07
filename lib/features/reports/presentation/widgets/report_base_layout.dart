@@ -161,7 +161,7 @@ class ReportBaseLayout extends ConsumerWidget {
                     alignment: Alignment.center,
                     child: Text(
                       '$stepNum',
-                      style: TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: isActive ? Colors.white : brandColor,
                         fontSize: 32,
                         fontFamily: 'EricaOne',

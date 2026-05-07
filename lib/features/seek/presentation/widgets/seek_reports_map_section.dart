@@ -12,6 +12,7 @@ import '../providers/seek_reports_provider.dart';
 import 'report_map_card.dart';
 import 'seek_filter_pill.dart';
 import 'seek_reports_map_filters.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SeekReportsMapSection extends ConsumerStatefulWidget {
   const SeekReportsMapSection({
@@ -157,7 +158,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
         Text(
           l10n.seekViewReports,
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: Color(0xFFBA4A22),
             fontSize: 28,
             fontFamily: 'EricaOne',
@@ -411,7 +412,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                   children: [
                     Text(
                       l10n.filters,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: Color(0xFFBA4A22),
                         fontSize: 15,
                         fontFamily: 'EricaOne',

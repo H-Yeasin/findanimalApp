@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PartnerLocationPickerScreen extends StatefulWidget {
   const PartnerLocationPickerScreen({super.key});
@@ -136,7 +137,7 @@ class _PartnerLocationPickerScreenState
                       Expanded(
                         child: Text(
                           _addressLine,
-                          style: const TextStyle(fontSize: 14),
+                          style: AppTextStyles.body.copyWith(fontSize: 14),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -164,9 +165,9 @@ class _PartnerLocationPickerScreenState
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Confirm Location',
-                      style: TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

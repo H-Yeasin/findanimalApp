@@ -15,6 +15,7 @@ import 'presentation/widgets/local_mission_header.dart';
 import 'presentation/widgets/local_mission_map_section.dart';
 import 'presentation/widgets/local_mission_pagination.dart';
 import 'presentation/widgets/missions_filters_bottom_sheet.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class MissionLocalScreen extends ConsumerStatefulWidget {
   const MissionLocalScreen({super.key});
@@ -214,7 +215,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                     child: Text(
                       l10n.noMissionsFound,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',
                         fontSize: 16,
@@ -269,7 +270,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                 child: Text(
                   '${l10n.error}: $error',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.red),
+                  style: AppTextStyles.body.copyWith(color: Colors.red),
                 ),
               ),
             ),

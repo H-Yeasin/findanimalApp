@@ -11,6 +11,7 @@ import '../widgets/shop_hero_section.dart';
 import '../widgets/shop_best_sellers_section.dart';
 import '../widgets/shop_entire_collection_section.dart';
 import '../widgets/shop_commitments_section.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SolidarityShopScreen extends ConsumerWidget {
   const SolidarityShopScreen({super.key});
@@ -32,7 +33,7 @@ class SolidarityShopScreen extends ConsumerWidget {
             ),
             Expanded(
               child: DefaultTextStyle(
-                style: const TextStyle(color: Color(0xFFBA4A22)),
+                style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22)),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,

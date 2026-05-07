@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
@@ -110,9 +111,9 @@ class _AuthHeroHeader extends StatelessWidget {
               AppAssets.logo,
               width: 246,
               fit: BoxFit.contain,
-              errorBuilder: (_, error, stackTrace) => const Text(
+              errorBuilder: (_, error, stackTrace) => Text(
                 'HESTEKA',
-                style: TextStyle(
+                style: AppTextStyles.heading.copyWith(
                   color: Colors.white,
                   fontSize: 42,
                   fontWeight: FontWeight.w900,

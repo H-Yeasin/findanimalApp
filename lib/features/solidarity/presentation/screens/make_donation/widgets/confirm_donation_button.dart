@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ConfirmDonationButton extends StatelessWidget {
   const ConfirmDonationButton({
@@ -28,7 +29,7 @@ class ConfirmDonationButton extends StatelessWidget {
           child: Text(
             l10n.validateMySupport.toUpperCase(),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: primaryOrange,
               fontWeight: FontWeight.w900,
               fontSize: 16,

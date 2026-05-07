@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 final activeVideoProvider = StateProvider<String?>((ref) => null);
 
@@ -66,13 +67,13 @@ class _VideoPlayerWidgetState extends ConsumerState<VideoPlayerWidget> {
             const SizedBox(height: 8),
             Text(
               l10n.videoLoadFailed,
-              style: TextStyle(color: Color(0xFFBA4A22), fontSize: 12),
+              style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22), fontSize: 12),
             ),
             TextButton(
               onPressed: _initializePlayer,
               child: Text(
                 l10n.retry,
-                style: const TextStyle(color: Color(0xFFBA4A22)),
+                style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22)),
               ),
             ),
           ],

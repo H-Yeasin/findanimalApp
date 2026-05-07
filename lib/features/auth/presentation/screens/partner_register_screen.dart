@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/validators.dart';
 import '../../data/models/register_partner_request_model.dart';
 import '../providers/auth_provider.dart';
@@ -162,9 +163,8 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         text,
-        style: const TextStyle(
+        style: AppTextStyles.sectionTitle.copyWith(
           color: AuthUiColors.brand,
-          fontFamily: 'EricaOne',
           fontSize: 18,
         ),
       ),
@@ -245,7 +245,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                     _selectedLogo?.name ?? l10n.text('partnerLogoHint'),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: AppTextStyles.body.copyWith(color: Colors.white),
                   ),
                 ),
                 const Icon(Icons.upload_file, color: Colors.white),
@@ -285,7 +285,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                         : l10n.text('chooseCompanyLocation'),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: AppTextStyles.body.copyWith(color: Colors.white),
                   ),
                 ),
                 const Icon(Icons.map_outlined, color: Colors.white),

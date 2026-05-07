@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/payment_method_model.dart';
 import '../providers/payment_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PaymentMethodsScreen extends ConsumerStatefulWidget {
   const PaymentMethodsScreen({super.key});
@@ -48,11 +49,11 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         _buildSectionHeader(context, ref, 'Cards and accounts'),
         const SizedBox(height: 15),
         if (state.paymentMethods.isEmpty)
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(bottom: 16),
             child: Text(
               'No saved cards yet. Tap + Add new to store one.',
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -82,7 +83,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         Expanded(
           child: Text(
             title,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: PartnerUiColors.brand,
               fontFamily: 'EricaOne',
               fontSize: 24,
@@ -103,9 +104,9 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                 )
               : TextButton(
                   onPressed: _isLoading ? null : () => _openAddCardSheet(ref),
-                  child: const Text(
+                  child: Text(
                     '+ Add new',
-                    style: TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                   children: [
                     Text(
                       '${method.brandName} ••••${method.lastFour}',
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -151,7 +152,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                     ),
                     Text(
                       '${method.cardholderName} - ${method.expiryDate}',
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontSize: 14,
                       ),
@@ -195,10 +196,13 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           const SizedBox(height: 10),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   'Use as default payment method',
-                  style: TextStyle(color: PartnerUiColors.brand, fontSize: 13),
+                  style: AppTextStyles.body.copyWith(
+                    color: PartnerUiColors.brand,
+                    fontSize: 13,
+                  ),
                 ),
               ),
               PartnerToggle(
@@ -237,9 +241,9 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Hesteka gift card',
-                style: TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -247,7 +251,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
               ),
               Text(
                 '${giftCard.formattedBalance} available',
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontSize: 14,
                 ),
@@ -297,7 +301,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           ),
         ),
         onPressed: onTap,
-        child: Text(label, style: const TextStyle(fontSize: 12)),
+        child: Text(label, style: AppTextStyles.body.copyWith(fontSize: 12)),
       ),
     );
   }

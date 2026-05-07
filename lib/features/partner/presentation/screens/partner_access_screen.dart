@@ -41,7 +41,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
               children: [
                 Text(
                   l10n.myAdsTitle,
-                  style: TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontFamily: 'EricaOne',
                     fontSize: 22,
@@ -114,7 +114,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
         Text(
           l10n.welcomeName(user.firstName),
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: Color(0xFF1F2D58),
             fontSize: 18,
             fontWeight: FontWeight.bold,

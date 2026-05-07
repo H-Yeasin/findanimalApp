@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../data/models/redemption_model.dart';
 import '../providers/my_redemptions_provider.dart';
@@ -31,12 +32,11 @@ class MyRedemptionsScreen extends ConsumerWidget {
             child: const Icon(Icons.undo, color: Colors.white, size: 20),
           ),
         ),
-        title: const Text(
+        title: Text(
           'MY REDEMPTIONS',
-          style: TextStyle(
+          style: AppTextStyles.heading.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w900,
-            color: AppColors.brandPrimary,
             letterSpacing: 1.2,
           ),
         ),
@@ -44,10 +44,10 @@ class MyRedemptionsScreen extends ConsumerWidget {
       ),
       body: redemptionsState.when(
         data: (redemptions) => redemptions.isEmpty
-            ? const Center(
+            ? Center(
                 child: Text(
                   'No redemptions yet.',
-                  style: TextStyle(color: AppColors.brandPrimary),
+                  style: AppTextStyles.body,
                 ),
               )
             : RefreshIndicator(
@@ -110,16 +110,15 @@ class MyRedemptionsScreen extends ConsumerWidget {
               children: [
                 Text(
                   redemption.rewardItem.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyles.subtitle.copyWith(
+                    fontWeight: FontWeight.w700,
                     fontSize: 16,
-                    color: AppColors.brandPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Redeemed for ${redemption.pointsAtRedemption} pts',
-                  style: TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     fontSize: 12,
                     color: AppColors.brandPrimary.withValues(alpha: 0.6),
                   ),
@@ -127,7 +126,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
                 const SizedBox(height: 4),
                 Text(
                   Formatters.dateTime(redemption.createdAt),
-                  style: TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     fontSize: 10,
                     color: AppColors.brandPrimary.withValues(alpha: 0.4),
                   ),
@@ -146,9 +145,9 @@ class MyRedemptionsScreen extends ConsumerWidget {
             ),
             child: Text(
               redemption.status.toUpperCase(),
-              style: TextStyle(
+              style: AppTextStyles.caption.copyWith(
                 fontSize: 10,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
                 color: _getStatusColor(redemption.status),
               ),
             ),

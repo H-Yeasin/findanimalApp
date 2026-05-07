@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityComposer extends StatelessWidget {
   const CommunityComposer({
@@ -60,13 +61,13 @@ class CommunityComposer extends StatelessWidget {
                     controller: contentController,
                     decoration: InputDecoration(
                       hintText: mindHint,
-                      hintStyle: TextStyle(
+                      hintStyle: AppTextStyles.body.copyWith(
                         color: _brandPrimary.withValues(alpha: 0.5),
                         fontSize: 14,
                       ),
                       border: InputBorder.none,
                     ),
-                    style: const TextStyle(color: _brandPrimary, fontSize: 14),
+                    style: AppTextStyles.body.copyWith(color: _brandPrimary, fontSize: 14),
                   ),
                 ),
               ),
@@ -182,7 +183,7 @@ class _ActionItem extends StatelessWidget {
           Icon(icon, color: CommunityComposer._brandPrimary, size: 28),
           Text(
             label,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: CommunityComposer._brandPrimary,
               fontSize: 10,
               fontWeight: FontWeight.bold,

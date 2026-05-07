@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 const makeDonationBackgroundColor = Color(0xFFFDF8F2);
 const makeDonationPrimaryOrange = Color(0xFFBA4A22);
 
-const makeDonationHeaderStyle = TextStyle(
+final makeDonationHeaderStyle = AppTextStyles.body.copyWith(
   fontFamily: 'Erica One',
   color: Color(0xFFFBF1D7),
   fontSize: 40,

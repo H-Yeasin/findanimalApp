@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/reportComments/data/models/comment_model.dart';
@@ -62,10 +63,8 @@ class _AnimalProfileCommentsSectionState
           // Title
           Text(
             l10n.latestInfo,
-            style: const TextStyle(
-              fontFamily: 'EricaOne',
+            style: AppTextStyles.sectionTitle.copyWith(
               fontSize: 26,
-              color: Color(0xFFBA4A22),
               letterSpacing: 1.5,
             ),
           ),
@@ -78,10 +77,7 @@ class _AnimalProfileCommentsSectionState
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     l10n.beTheFirstToHelp,
-                    style: const TextStyle(
-                      color: Color(0xFFBA4A22),
-                      fontSize: 12,
-                    ),
+                    style: AppTextStyles.caption,
                   ),
                 );
               }
@@ -116,7 +112,10 @@ class _AnimalProfileCommentsSectionState
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(
                 l10n.errorLoadingComments(error.toString()),
-                style: const TextStyle(color: Colors.red, fontSize: 10),
+                style: AppTextStyles.caption.copyWith(
+                  color: Colors.red,
+                  fontSize: 10,
+                ),
               ),
             ),
           ),
@@ -130,10 +129,8 @@ class _AnimalProfileCommentsSectionState
                 children: [
                   Text(
                     l10n.replying,
-                    style: const TextStyle(
-                      color: Color(0xFFBA4A22),
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                    style: AppTextStyles.caption.copyWith(
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -172,13 +169,15 @@ class _AnimalProfileCommentsSectionState
                   child: TextField(
                     controller: _commentController,
                     focusNode: _focusNode,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    style: AppTextStyles.caption.copyWith(color: Colors.white),
                     cursorColor: Colors.white,
                     decoration: InputDecoration(
                       hintText: l10n.commentAs(
                         currentUser?.firstName ?? "User",
                       ),
-                      hintStyle: const TextStyle(color: Colors.white70),
+                      hintStyle: AppTextStyles.caption.copyWith(
+                        color: Colors.white70,
+                      ),
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
@@ -197,10 +196,10 @@ class _AnimalProfileCommentsSectionState
                   ),
                   child: Text(
                     l10n.gif,
-                    style: const TextStyle(
+                    style: AppTextStyles.caption.copyWith(
                       color: Colors.white,
                       fontSize: 9,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -276,24 +275,24 @@ class _CommentItem extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 authorName,
-                style: const TextStyle(
-                  color: Color(0xFFBA4A22),
+                style: AppTextStyles.caption.copyWith(
                   fontWeight: FontWeight.w900,
-                  fontSize: 12,
                 ),
               ),
               const SizedBox(width: 8),
               Text(
                 timeFormatted,
-                style: const TextStyle(color: Color(0xFFD3A482), fontSize: 10),
+                style: AppTextStyles.caption.copyWith(
+                  color: const Color(0xFFD3A482),
+                  fontSize: 10,
+                ),
               ),
               const SizedBox(width: 8),
               Text(
                 '${comment.likes.length}',
-                style: const TextStyle(
-                  color: Color(0xFFBA4A22),
+                style: AppTextStyles.caption.copyWith(
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(width: 2),
@@ -314,8 +313,7 @@ class _CommentItem extends StatelessWidget {
           // Comment text
           Text(
             '"${comment.content}"',
-            style: const TextStyle(
-              color: Color(0xFFBA4A22),
+            style: AppTextStyles.caption.copyWith(
               fontSize: 11,
               height: 1.5,
               fontWeight: FontWeight.w500,
@@ -329,9 +327,8 @@ class _CommentItem extends StatelessWidget {
                 onTap: onLike,
                 child: Text(
                   l10n.iLike,
-                  style: const TextStyle(
-                    color: Color(0xFFBA4A22),
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyles.caption.copyWith(
+                    fontWeight: FontWeight.w700,
                     fontSize: 10,
                   ),
                 ),
@@ -341,9 +338,8 @@ class _CommentItem extends StatelessWidget {
                 onTap: onReply,
                 child: Text(
                   l10n.reply,
-                  style: const TextStyle(
-                    color: Color(0xFFBA4A22),
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyles.caption.copyWith(
+                    fontWeight: FontWeight.w700,
                     fontSize: 10,
                   ),
                 ),
@@ -379,7 +375,7 @@ class _CommentItem extends StatelessWidget {
                     Expanded(
                       child: Text(
                         l10n.replyEllipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.caption.copyWith(
                           color: Color(0xFFD3A482),
                           fontSize: 11,
                         ),
@@ -423,7 +419,7 @@ class _ReplyItem extends StatelessWidget {
             ),
             child: Text(
               reply.content,
-              style: const TextStyle(color: Color(0xFFBA4A22), fontSize: 11),
+              style: AppTextStyles.caption.copyWith(fontSize: 11),
             ),
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../providers/missions_filters_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class MissionsFiltersBottomSheet extends ConsumerStatefulWidget {
   const MissionsFiltersBottomSheet({super.key});
@@ -85,7 +86,7 @@ class _MissionsFiltersBottomSheetState
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: l10n.searchByTitle,
-                hintStyle: TextStyle(
+                hintStyle: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand.withValues(alpha: 0.5),
                 ),
                 prefixIcon: const Icon(
@@ -131,7 +132,7 @@ class _MissionsFiltersBottomSheetState
                   },
                   selectedColor: PartnerUiColors.brand,
                   backgroundColor: PartnerUiColors.panel,
-                  labelStyle: TextStyle(
+                  labelStyle: AppTextStyles.body.copyWith(
                     color: isSelected ? Colors.white : PartnerUiColors.brand,
                     fontFamily: 'EricaOne',
                     fontSize: 12,
@@ -163,7 +164,7 @@ class _MissionsFiltersBottomSheetState
                     '{radius}',
                     _radius.toInt().toString(),
                   ),
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontFamily: 'EricaOne',
                     fontSize: 14,
@@ -318,7 +319,7 @@ class _FilterTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: AppTextStyles.body.copyWith(
           color: PartnerUiColors.brand.withValues(alpha: 0.5),
         ),
         prefixIcon: Icon(icon, color: PartnerUiColors.brand),
@@ -362,7 +363,7 @@ class _DateField extends StatelessWidget {
       },
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: PartnerUiColors.brand),
+        labelStyle: AppTextStyles.body.copyWith(color: PartnerUiColors.brand),
         suffixIcon: const Icon(
           Icons.calendar_today_outlined,
           color: PartnerUiColors.brand,

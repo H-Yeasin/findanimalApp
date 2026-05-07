@@ -6,6 +6,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PartnerProfileScreen extends ConsumerWidget {
   const PartnerProfileScreen({super.key});
@@ -37,7 +38,7 @@ class PartnerProfileScreen extends ConsumerWidget {
             child: Text(
               l10n.errorParam(error.toString()),
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontWeight: FontWeight.w600,
               ),
@@ -59,7 +60,7 @@ class PartnerProfileScreen extends ConsumerWidget {
               children: [
                 Text(
                   l10n.myInformation,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: Color(0xFFD8C89D),
                     fontFamily: 'EricaOne',
                     fontSize: 18,
@@ -119,7 +120,7 @@ class PartnerProfileScreen extends ConsumerWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      textStyle: const TextStyle(
+                      textStyle: AppTextStyles.body.copyWith(
                         fontFamily: 'EricaOne',
                         fontSize: 14,
                       ),

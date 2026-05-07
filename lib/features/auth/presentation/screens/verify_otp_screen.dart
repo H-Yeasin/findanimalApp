@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/validators.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_screen_scaffold.dart';
@@ -138,7 +139,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
             Text(
               'A 6-digit code has been sent to your email. Enter it below to continue.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: AuthUiColors.brand.withValues(alpha: 0.75),
                 fontSize: 13,
                 height: 1.5,
@@ -178,7 +179,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
                     keyboardType: TextInputType.number,
                     textAlign: TextAlign.center,
                     maxLength: 1,
-                    style: const TextStyle(
+                    style: AppTextStyles.subtitle.copyWith(
                       fontSize: 22,
                       fontWeight: FontWeight.w900,
                       color: AuthUiColors.brand,

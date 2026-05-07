@@ -105,7 +105,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 10, color: Colors.white),
+                    style: AppTextStyles.body.copyWith(fontSize: 10, color: Colors.white),
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -134,7 +134,7 @@ class ProductCard extends StatelessWidget {
                         ),
                         child: Text(
                           l10n.addToCart,
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFBA4A22),

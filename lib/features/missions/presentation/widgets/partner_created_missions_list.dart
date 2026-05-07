@@ -6,6 +6,7 @@ import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/mission_model.dart';
 import '../providers/partner_missions_provider.dart';
 import 'partner_mission_item_card.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PartnerCreatedMissionsList extends ConsumerWidget {
   const PartnerCreatedMissionsList({required this.missionsAsync, super.key});
@@ -29,7 +30,7 @@ class PartnerCreatedMissionsList extends ConsumerWidget {
           children: [
             Text(
               l10n.couldNotLoadMissions,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -50,7 +51,7 @@ class PartnerCreatedMissionsList extends ConsumerWidget {
             child: Text(
               l10n.noMissionsCreated,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontFamily: 'EricaOne',
                 fontSize: 22,

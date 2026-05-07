@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
@@ -50,10 +51,9 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   child: Text(
                     l10n.partnersBody,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: AppTextStyles.caption.copyWith(
                       fontSize: 12,
-                      color: brandPrimary,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -87,9 +87,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                           padding: const EdgeInsets.all(20),
                           child: Text(
                             l10n.noReportsFound,
-                            style: const TextStyle(
-                              color: brandPrimary,
-                              fontWeight: FontWeight.bold,
+                            style: AppTextStyles.body.copyWith(
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -118,7 +117,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   error: (err, stack) => Center(
                     child: Text(
                       l10n.unknownError,
-                      style: TextStyle(color: brandPrimary),
+                      style: AppTextStyles.body,
                     ),
                   ),
                 ),
@@ -150,7 +149,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
           hintText: l10n.searchByName,
-          hintStyle: TextStyle(
+          hintStyle: AppTextStyles.caption.copyWith(
             color: color.withValues(alpha: 0.5),
             fontSize: 12,
           ),
@@ -216,7 +215,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: AppTextStyles.subtitle.copyWith(
                     color: color,
                     fontWeight: FontWeight.w900,
                     fontSize: 14,
@@ -224,7 +223,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                 ),
                 Text(
                   type,
-                  style: TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     color: color.withValues(alpha: 0.7),
                     fontSize: 12,
                   ),
@@ -241,9 +240,9 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   ),
                   child: Text(
                     l10n.viewWebsite.toUpperCase(),
-                    style: TextStyle(
+                    style: AppTextStyles.button.copyWith(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       fontSize: 10,
                     ),
                   ),

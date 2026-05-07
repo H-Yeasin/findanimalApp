@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/validators.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_screen_scaffold.dart';
@@ -158,7 +159,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
                 onPressed: () => context.push(RouteNames.forgotPassword),
                 child: Text(
                   l10n.forgotPassword,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: AuthUiColors.brand,
                     fontSize: 13,
                     decoration: TextDecoration.underline,

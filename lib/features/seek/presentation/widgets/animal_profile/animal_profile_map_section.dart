@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'animal_profile_data.dart';
 import '../../providers/seek_report_detail_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class AnimalProfileMapSection extends ConsumerWidget {
   final AnimalProfileData data;
@@ -87,7 +88,7 @@ class AnimalProfileMapSection extends ConsumerWidget {
                 ),
                 child: Text(
                   l10n.viewOnMapLastLocation,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: Color(0xFFBA4A22),
                     fontSize: 11,
                     fontWeight: FontWeight.w900,

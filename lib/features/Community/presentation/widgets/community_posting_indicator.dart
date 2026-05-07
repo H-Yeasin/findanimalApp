@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../providers/community_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityPostingIndicator extends ConsumerWidget {
   const CommunityPostingIndicator({super.key});
@@ -48,7 +49,7 @@ class CommunityPostingIndicator extends ConsumerWidget {
               const SizedBox(width: 12),
               Text(
                 l10n.posting,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
                   fontSize: 13,

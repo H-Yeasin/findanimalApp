@@ -11,6 +11,7 @@ import 'presentation/providers/faq_data_provider.dart';
 import 'presentation/widgets/faq_flip_card.dart';
 import 'presentation/widgets/scroll_appearance_wrapper.dart';
 import 'presentation/widgets/faq_search_bar.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class FAQCommunityScreen extends ConsumerStatefulWidget {
   const FAQCommunityScreen({super.key});
@@ -131,7 +132,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 const SizedBox(height: 20),
                 Text(
                   l10n.howCanIHelp,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     fontSize: 18,
                     fontWeight: FontWeight.w900,
                     color: brandPrimary,
@@ -148,7 +149,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 const SizedBox(height: 20),
                 Text(
                   l10n.faqSubtitle,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                     color: brandPrimary,
@@ -206,7 +207,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
           Text(
             l10n.faqContactText,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w900,
               color: brandPrimary,
@@ -239,7 +240,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 alignment: Alignment.center,
                 child: Text(
                   _supportEmail ?? l10n.contactSupport,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
@@ -309,7 +310,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
             ),
             Text(
               title,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 fontSize: 36,
                 fontWeight: FontWeight.w900,
                 color: Colors.white,

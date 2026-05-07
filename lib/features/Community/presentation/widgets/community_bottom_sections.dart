@@ -9,6 +9,7 @@ import '../../faq_community.dart';
 import '../../partners.dart';
 import '../../shelters.dart';
 import '../../veterinarians.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityBottomSections extends StatelessWidget {
   const CommunityBottomSections({
@@ -40,7 +41,7 @@ class CommunityBottomSections extends StatelessWidget {
         Text(
           l10n.seeLocalMissions.toUpperCase().replaceAll(' ', '\n'),
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: AppTextStyles.body.copyWith(
             fontSize: 32,
             fontWeight: FontWeight.w900,
             color: _brandPrimary,
@@ -182,7 +183,7 @@ class _CommunityMapSection extends StatelessWidget {
               ),
               child: Text(
                 AppLocalizations.of(context).seeFullList.toUpperCase(),
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
                   fontSize: 16,
@@ -210,7 +211,7 @@ class _FaqSection extends StatelessWidget {
           Text(
             l10n.faqNoQuestionsTitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 18,
               fontWeight: FontWeight.w900,
               color: CommunityBottomSections._brandPrimary,
@@ -241,7 +242,7 @@ class _FaqSection extends StatelessWidget {
                         ),
                         child: Text(
                           l10n.goToFaq.toUpperCase(),
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -299,7 +300,7 @@ class _ContactsSection extends StatelessWidget {
             children: [
               Text(
                 l10n.contactsTitle,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   fontSize: 36,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
@@ -363,7 +364,7 @@ class _ContactButton extends StatelessWidget {
         alignment: Alignment.center,
         child: Text(
           label,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: CommunityBottomSections._brandPrimary,
             fontWeight: FontWeight.w900,
             fontSize: 12,

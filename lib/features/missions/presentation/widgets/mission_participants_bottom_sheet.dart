@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/repositories/missions_repository_impl.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 final missionParticipantsProvider =
     FutureProvider.family<List<dynamic>, String>((ref, missionId) {
@@ -43,7 +44,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
               const SizedBox(height: 20),
               Text(
                 'Participants',
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontFamily: 'EricaOne',
                   fontSize: 24,
@@ -57,7 +58,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                       return Center(
                         child: Text(
                           'Aucun participant pour le moment',
-                          style: TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             color: PartnerUiColors.brand.withValues(alpha: 0.7),
                             fontSize: 16,
                           ),
@@ -99,7 +100,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                   firstName.isNotEmpty
                                       ? firstName[0].toUpperCase()
                                       : '?',
-                                  style: const TextStyle(color: Colors.white),
+                                  style: AppTextStyles.body.copyWith(color: Colors.white),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -109,7 +110,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                   children: [
                                     Text(
                                       '$firstName $lastName',
-                                      style: const TextStyle(
+                                      style: AppTextStyles.body.copyWith(
                                         color: PartnerUiColors.brand,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
@@ -117,7 +118,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                     ),
                                     Text(
                                       email,
-                                      style: TextStyle(
+                                      style: AppTextStyles.body.copyWith(
                                         color: PartnerUiColors.brand.withValues(
                                           alpha: 0.7,
                                         ),
@@ -143,7 +144,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                     ),
                                     child: Text(
                                       status.toUpperCase(),
-                                      style: TextStyle(
+                                      style: AppTextStyles.body.copyWith(
                                         color: _getStatusColor(status),
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
@@ -153,7 +154,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                   if (points > 0)
                                     Text(
                                       '+$points pts',
-                                      style: const TextStyle(
+                                      style: AppTextStyles.body.copyWith(
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,

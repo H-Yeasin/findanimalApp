@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../providers/report_form_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LocationPickerScreen extends ConsumerStatefulWidget {
   const LocationPickerScreen({super.key});
@@ -155,7 +156,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                       Expanded(
                         child: Text(
                           _addressLine,
-                          style: const TextStyle(fontSize: 14),
+                          style: AppTextStyles.body.copyWith(fontSize: 14),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -188,7 +189,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
                     ),
                     child: Text(
                       l10n.confirmLocation,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

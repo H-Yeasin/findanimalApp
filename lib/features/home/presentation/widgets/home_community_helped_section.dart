@@ -21,7 +21,7 @@ class HomeCommunityHelpedSection extends ConsumerWidget {
         children: [
           Text(
             l10n.homeCommunityHelped,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFF9EAD4),
               fontSize: 28,
               fontWeight: FontWeight.w900,
@@ -94,7 +94,7 @@ class _StatCircle extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           label,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: Color(0xFFF9EAD4),
             fontSize: 10,
             fontWeight: FontWeight.bold,

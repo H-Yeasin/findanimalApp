@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HubShopCTASection extends StatelessWidget {
   final AppLocalizations l10n;
@@ -36,7 +37,7 @@ class HubShopCTASection extends StatelessWidget {
           child: Text(
             l10n.shopDescription,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 14,
               color: brandPrimary,
               fontWeight: FontWeight.bold,
@@ -61,7 +62,7 @@ class HubShopCTASection extends StatelessWidget {
             ),
             child: Text(
               l10n.viewShop.toUpperCase(),
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 14,

@@ -5,6 +5,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../data/models/chat_model.dart';
 import '../screens/comment_show.dart';
 import 'community_video_player.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityPostItem extends StatelessWidget {
   const CommunityPostItem({
@@ -53,7 +54,7 @@ class CommunityPostItem extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               name,
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: color,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,
@@ -62,12 +63,12 @@ class CommunityPostItem extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               time,
-              style: TextStyle(color: color.withValues(alpha: 0.5), fontSize: 10),
+              style: AppTextStyles.body.copyWith(color: color.withValues(alpha: 0.5), fontSize: 10),
             ),
           ],
         ),
         const SizedBox(height: 8),
-        Text(chat.content, style: TextStyle(color: color, fontSize: 12, height: 1.3)),
+        Text(chat.content, style: AppTextStyles.body.copyWith(color: color, fontSize: 12, height: 1.3)),
         if (chat.media != null && chat.media!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -99,7 +100,7 @@ class CommunityPostItem extends StatelessWidget {
                             const SizedBox(height: 8),
                             Text(
                               l10n.imageUnavailable,
-                              style: TextStyle(
+                              style: AppTextStyles.body.copyWith(
                                 color: color.withValues(alpha: 0.5),
                                 fontSize: 12,
                               ),
@@ -122,7 +123,7 @@ class CommunityPostItem extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     (chat.likesCount ?? 0).toString(),
-                    style: TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: color,
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
@@ -147,7 +148,7 @@ class CommunityPostItem extends StatelessWidget {
             const SizedBox(width: 4),
             Text(
               allChats.where((c) => c.replyTo?.id == chat.id).length.toString(),
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: color,
                 fontSize: 10,
                 fontWeight: FontWeight.bold,

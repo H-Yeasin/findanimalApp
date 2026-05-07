@@ -18,7 +18,7 @@ class HubPartnersSection extends ConsumerWidget {
         const SizedBox(height: 40),
         Text(
           l10n.thoseWhoAre,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             fontSize: 14,
             color: brandPrimary,
             fontWeight: FontWeight.bold,

@@ -129,7 +129,7 @@ class _HubCollectionPointsSectionState
                           ),
                           child: Text(
                             l10n.homeSeeMore.toUpperCase(),
-                            style: const TextStyle(
+                            style: AppTextStyles.body.copyWith(
                               color: brandPrimary,
                               fontWeight: FontWeight.w900,
                               fontSize: 14,
@@ -163,14 +163,14 @@ class _HubCollectionPointsSectionState
                 TextSpan(text: l10n.collectionPointsDescription),
                 TextSpan(
                   text: l10n.donatingNearYou,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
                 ),
               ],
             ),
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 14,
               color: brandPrimary,
               fontWeight: FontWeight.w500,

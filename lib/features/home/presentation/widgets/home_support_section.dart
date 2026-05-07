@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HomeSupportSection extends StatelessWidget {
   const HomeSupportSection({
@@ -24,7 +25,7 @@ class HomeSupportSection extends StatelessWidget {
         children: [
           Text(
             l10n.homeSupportTitle,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFBA4A22),
               fontSize: 32,
               fontWeight: FontWeight.w900,
@@ -65,7 +66,7 @@ class HomeSupportSection extends StatelessWidget {
                   children: [
                     Text(
                       l10n.homeSupportBody,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: Color(0xFFBA4A22),
                         fontSize: 12,
                         height: 1.5,
@@ -75,7 +76,7 @@ class HomeSupportSection extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       l10n.homeSupportPoints,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: Color(0xFFBA4A22),
                         fontSize: 12,
                         height: 1.5,
@@ -114,7 +115,7 @@ class _SupportButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Colors.white,
               fontSize: 10,
               fontWeight: FontWeight.bold,

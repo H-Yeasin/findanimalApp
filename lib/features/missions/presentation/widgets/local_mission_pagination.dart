@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LocalMissionPagination extends StatelessWidget {
   const LocalMissionPagination({
@@ -61,7 +62,7 @@ class _PageNumber extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
         child: Text(
           number.toString(),
-          style: TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: PartnerUiColors.brand,
             fontFamily: 'EricaOne',
             fontSize: 16,

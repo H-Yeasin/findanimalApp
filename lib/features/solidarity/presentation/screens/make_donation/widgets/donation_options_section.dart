@@ -92,7 +92,7 @@ class DonationOptionsSection extends StatelessWidget {
                           child: Center(
                             child: Text(
                               l10n.enterAmount,
-                              style: TextStyle(
+                              style: AppTextStyles.body.copyWith(
                                 color: primaryOrange,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 13,
@@ -127,7 +127,7 @@ class DonationOptionsSection extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: isSelected ? Colors.white : primaryOrange,
               fontWeight: FontWeight.w900,
               fontSize: 11,
@@ -153,7 +153,7 @@ class DonationOptionsSection extends StatelessWidget {
         child: Center(
           child: Text(
             '${amount.toInt()}€',
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: isSelected ? Colors.white : primaryOrange,
               fontWeight: FontWeight.w900,
               fontSize: 16,

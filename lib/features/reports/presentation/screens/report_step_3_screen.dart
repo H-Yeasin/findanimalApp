@@ -5,6 +5,7 @@ import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ReportStep3Screen extends ConsumerStatefulWidget {
   const ReportStep3Screen({super.key});
@@ -96,7 +97,7 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text.toUpperCase(),
-        style: const TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: Color(0xFFBA4A22),
           fontSize: 14,
           fontWeight: FontWeight.w900,
@@ -168,7 +169,7 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
           const SizedBox(width: 6),
           Text(
             label,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFBA4A22),
               fontSize: 12,
               fontWeight: FontWeight.w600,
@@ -220,7 +221,7 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
           children: [
             Text(
               dateText,
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: const Color(0xFFBA4A22).withValues(alpha: 0.5),
                 fontSize: 14,
               ),

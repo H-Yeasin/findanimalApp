@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/community_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityReactionsDialog extends ConsumerWidget {
   const CommunityReactionsDialog({
@@ -51,7 +52,7 @@ class CommunityReactionsDialog extends ConsumerWidget {
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(emoji, style: const TextStyle(fontSize: 30)),
+                    child: Text(emoji, style: AppTextStyles.body.copyWith(fontSize: 30)),
                   ),
                 );
               }).toList(),

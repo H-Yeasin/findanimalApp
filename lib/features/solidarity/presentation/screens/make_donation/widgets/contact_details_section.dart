@@ -70,17 +70,18 @@ class ContactDetailsSection extends StatelessWidget {
               ),
               child: Center(
                 child: Image.asset(
-                  AppAssets.paypalLogo, // Assuming this exists or using a generic icon
+                  AppAssets
+                      .paypalLogo, // Assuming this exists or using a generic icon
                   height: 30,
-                  errorBuilder: (context, error, stackTrace) => const Row(
+                  errorBuilder: (context, error, stackTrace) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.payment, color: Color(0xFF003087)),
-                      SizedBox(width: 5),
+                      const Icon(Icons.payment, color: Color(0xFF003087)),
+                      const SizedBox(width: 5),
                       Text(
                         'PayPal',
-                        style: TextStyle(
-                          color: Color(0xFF003087),
+                        style: AppTextStyles.body.copyWith(
+                          color: const Color(0xFF003087),
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                           fontStyle: FontStyle.italic,
@@ -100,7 +101,7 @@ class ContactDetailsSection extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
                   l10n.orEnterDetails,
-                  style: TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: primaryOrange,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -158,7 +159,7 @@ class ContactDetailsSection extends StatelessWidget {
                 Expanded(
                   child: Text(
                     l10n.onBehalfOfCompany,
-                    style: TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: primaryOrange,
                       fontSize: 11,
                       height: 1.2,
@@ -201,7 +202,7 @@ class ContactDetailsSection extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 6.0, top: 4.0, left: 4.0),
       child: Text(
         text,
-        style: TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: primaryOrange,
           fontWeight: FontWeight.bold,
           fontSize: 14,
@@ -224,10 +225,12 @@ class ContactDetailsSection extends StatelessWidget {
         keyboardType: keyboardType,
         onChanged: onChanged,
         validator: validator,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: AppTextStyles.body.copyWith(color: Colors.white, fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+          hintStyle: AppTextStyles.body.copyWith(
+            color: Colors.white.withValues(alpha: 0.6),
+          ),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 14,
@@ -238,7 +241,7 @@ class ContactDetailsSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
-          errorStyle: const TextStyle(color: Colors.red),
+          errorStyle: AppTextStyles.body.copyWith(color: Colors.red),
         ),
       ),
     );

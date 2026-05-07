@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../providers/seek_report_filters_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SeekReportsFilterSheet extends ConsumerStatefulWidget {
   const SeekReportsFilterSheet({this.initialSection = 'all', super.key});
@@ -56,7 +57,7 @@ class _SeekReportsFilterSheetState
       padding: const EdgeInsets.only(top: 20, bottom: 10),
       child: Text(
         title.toUpperCase(),
-        style: const TextStyle(
+        style: AppTextStyles.body.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w900,
           color: Color(0xFFBA4A22),
@@ -88,7 +89,7 @@ class _SeekReportsFilterSheetState
               children: [
                 Text(
                   l10n.adjustFilters,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
                     color: Color(0xFFBA4A22),
@@ -111,7 +112,7 @@ class _SeekReportsFilterSheetState
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: l10n.searchHintExample,
-                hintStyle: TextStyle(color: Colors.grey[400]),
+                hintStyle: AppTextStyles.body.copyWith(color: Colors.grey[400]),
                 prefixIcon: const Icon(Icons.search, color: Color(0xFFBA4A22)),
                 filled: true,
                 fillColor: const Color(0xFFFBF4E9),
@@ -141,7 +142,7 @@ class _SeekReportsFilterSheetState
                     });
                   },
                   selectedColor: const Color(0xFFBA4A22),
-                  labelStyle: TextStyle(
+                  labelStyle: AppTextStyles.body.copyWith(
                     color: isSelected ? Colors.white : const Color(0xFFBA4A22),
                     fontWeight: FontWeight.bold,
                     fontSize: 11,
@@ -169,7 +170,7 @@ class _SeekReportsFilterSheetState
                 const SizedBox(width: 10),
                 Text(
                   l10n.radiusValue(_radius.toInt()),
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -220,7 +221,7 @@ class _SeekReportsFilterSheetState
                 onPressed: _applyFilters,
                 child: Text(
                   l10n.applyFilters,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.w900,

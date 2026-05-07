@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../data/models/mission_model.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LocalMissionMapSection extends StatelessWidget {
   const LocalMissionMapSection({
@@ -138,7 +139,7 @@ class _MissionMapCard extends StatelessWidget {
                         mission.title.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontFamily: 'EricaOne',
                           fontSize: 9,
@@ -149,7 +150,7 @@ class _MissionMapCard extends StatelessWidget {
                         mission.partner?.company ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontSize: 6,
                           fontWeight: FontWeight.w400,
@@ -162,7 +163,7 @@ class _MissionMapCard extends StatelessWidget {
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontSize: 6,
                           fontWeight: FontWeight.w400,
@@ -189,7 +190,7 @@ class _MissionMapCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 l10n.seeMission,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontSize: 7,
                   fontWeight: FontWeight.w900,

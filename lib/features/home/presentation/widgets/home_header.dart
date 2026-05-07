@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HomeTopHeader extends StatelessWidget {
   const HomeTopHeader({super.key});
@@ -52,7 +53,7 @@ class HomeTopHeader extends StatelessWidget {
                   top: logoHeight * 0.41,
                   child: Text(
                     AppLocalizations.of(context).homeWelcomePrefix,
-                    style: TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: Colors.white,
                       fontFamily: 'BarlowCondensed',
                       fontSize: (logoWidth * 0.055).clamp(15.0, 19.0),
@@ -91,7 +92,7 @@ class HomeInfoBanner extends StatelessWidget {
         break;
       }
     }
-    final baseStyle = const TextStyle(
+    final baseStyle = AppTextStyles.body.copyWith(
       color: Colors.white,
       fontFamily: 'BarlowCondensed',
       fontSize: 18,
@@ -116,7 +117,7 @@ class HomeInfoBanner extends StatelessWidget {
                   ),
                   TextSpan(
                     text: boldPhrase,
-                    style: const TextStyle(fontWeight: FontWeight.w800),
+                    style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w800),
                   ),
                   TextSpan(text: bannerText.split(boldPhrase).last),
                 ],

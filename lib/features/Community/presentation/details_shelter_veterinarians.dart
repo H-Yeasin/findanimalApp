@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/models/contact_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class DetailsShelterVeterinariansScreen extends StatelessWidget {
   final ContactModel contact;
@@ -83,7 +84,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           contact.name,
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             fontSize: 32,
                             fontWeight: FontWeight.w900,
                             color: brandPrimary,
@@ -102,7 +103,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                         ),
                         child: Text(
                           contact.status.toUpperCase(),
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
                             fontSize: 10,
@@ -125,7 +126,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                     ),
                     child: Text(
                       contact.type.toUpperCase(),
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -165,7 +166,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   // Info Section
                   Text(
                     l10n.contactInformation,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: brandPrimary,
@@ -203,7 +204,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   const SizedBox(height: 32),
                   Text(
                     l10n.descriptionLabel,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: brandPrimary,
@@ -212,7 +213,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     contact.description ?? l10n.noDescriptionAvailable,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       fontSize: 14,
                       color: brandPrimary,
                       height: 1.5,
@@ -250,7 +251,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 label,
-                style: TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: color,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -294,7 +295,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: color.withValues(alpha: 0.5),
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
@@ -302,7 +303,7 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                 ),
                 Text(
                   value,
-                  style: TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: color,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

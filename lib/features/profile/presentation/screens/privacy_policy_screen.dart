@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -11,18 +12,17 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: 'PRIVACY POLICY',
-        imageUrl:
-            AppAssets.privacyPolicy, // Cat peeking image
+        imageUrl: AppAssets.privacyPolicy, // Cat peeking image
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'We attach great importance to the protection of your personal data. When you use our application, certain information may be collected in order to enable it to function properly and improve your experience.\n\n'
               'We are committed to processing this data in a responsible, transparent and secure manner, in accordance with the laws in force, in particular the General Data Protection Regulation (GDPR) applicable in the European Union.',
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontSize: 14,
                 height: 1.4,
@@ -62,9 +62,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
               'CONTACT',
               'For any questions regarding the management of your personal data or to exercise your rights, you can contact us at the following address:',
             ),
-            const Text(
+            Text(
               'contact@hesteka.com',
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.underline,
@@ -84,7 +84,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: PartnerUiColors.brand,
               fontFamily: 'EricaOne',
               fontSize: 20,
@@ -94,7 +94,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             content,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: PartnerUiColors.brand,
               fontSize: 14,
               height: 1.4,

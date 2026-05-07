@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../widgets/auth_screen_scaffold.dart';
 import '../widgets/auth_ui_kit.dart';
 
@@ -29,7 +30,7 @@ class AuthAccountScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 14),
+          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 14),
         ),
         child: Text(l10n.skip),
       ),

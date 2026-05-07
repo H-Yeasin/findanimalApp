@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../routing/route_names.dart';
+import '../theme/app_text_styles.dart';
 import 'user_avatar.dart';
 
 class AppTopBar extends ConsumerWidget {
@@ -55,11 +56,10 @@ class AppTopBar extends ConsumerWidget {
             Text(
               title!.toUpperCase(),
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTextStyles.heading.copyWith(
                 color: brandColor,
                 fontSize: 28,
                 fontWeight: FontWeight.w900,
-                fontFamily: 'EricaOne',
                 letterSpacing: 1.2,
               ),
             ),

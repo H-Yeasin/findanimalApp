@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../screens/make_donation_screen.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HubDonationCTASection extends StatelessWidget {
   final AppLocalizations l10n;
@@ -19,7 +20,7 @@ class HubDonationCTASection extends StatelessWidget {
           child: Text(
             l10n.solidarityDescription,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 14,
               color: brandPrimary,
               fontWeight: FontWeight.bold,
@@ -47,7 +48,7 @@ class HubDonationCTASection extends StatelessWidget {
             ),
             child: Text(
               l10n.makeDonation.toUpperCase(),
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 14,

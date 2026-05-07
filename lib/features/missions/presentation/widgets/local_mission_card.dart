@@ -8,6 +8,7 @@ import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LocalMissionCard extends ConsumerWidget {
   const LocalMissionCard(this.mission, {this.onSeeOnMap, super.key});
@@ -61,7 +62,7 @@ class LocalMissionCard extends ConsumerWidget {
                         mission.title.toUpperCase(),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: PartnerUiColors.brand,
                           fontFamily: 'EricaOne',
                           fontSize: 16,
@@ -72,7 +73,7 @@ class LocalMissionCard extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Text(
                       timeAgo,
-                      style: TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand.withValues(alpha: 0.6),
                         fontSize: 10,
                       ),
@@ -84,7 +85,7 @@ class LocalMissionCard extends ConsumerWidget {
                   '$organization | ${l10n.missionDuration.replaceAll('{duration}', mission.duration)}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,

@@ -8,6 +8,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../seek/data/models/report_model.dart';
 import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HomeMapSection extends ConsumerStatefulWidget {
   const HomeMapSection({
@@ -237,7 +238,7 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
               ),
               child: Text(
                 l10n.homeExploreFullMap,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
                   fontSize: 14,

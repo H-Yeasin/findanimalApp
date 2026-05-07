@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SeekStatusFilterOption {
   const SeekStatusFilterOption(this.value, this.label);
@@ -75,7 +76,7 @@ class SeekRadioOptionRow<T> extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontSize: 15,
                   fontFamily: 'EricaOne',
@@ -130,7 +131,7 @@ class SeekFilterOptionRow extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontSize: 12,
                   fontFamily: 'EricaOne',

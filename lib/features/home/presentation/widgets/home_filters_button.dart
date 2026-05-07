@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../providers/home_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 /// Inline expandable filters for the Home feed – mirrors the Seek section
 /// pattern with status checkboxes, sort radio buttons, and radius selection.
@@ -102,7 +103,7 @@ class _HomeInlineFiltersState extends ConsumerState<HomeInlineFilters> {
                   children: [
                     Text(
                       l10n.filters,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: Color(0xFFBA4A22),
                         fontSize: 15,
                         fontFamily: 'EricaOne',
@@ -335,7 +336,7 @@ class _FilterPill extends StatelessWidget {
           Flexible(
             child: Text(
               label,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
@@ -419,7 +420,7 @@ class _RadioOptionRow<T> extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontSize: 15,
                   fontFamily: 'EricaOne',
@@ -473,7 +474,7 @@ class _FilterOptionRow extends StatelessWidget {
                 label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontSize: 12,
                   fontFamily: 'EricaOne',

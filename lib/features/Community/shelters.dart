@@ -5,6 +5,7 @@ import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
@@ -52,10 +53,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                   child: Text(
                     l10n.sheltersBody,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: AppTextStyles.caption.copyWith(
                       fontSize: 12,
-                      color: brandPrimary,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -87,9 +87,8 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                           padding: const EdgeInsets.all(20),
                           child: Text(
                             l10n.noReportsFound,
-                            style: TextStyle(
-                              color: brandPrimary,
-                              fontWeight: FontWeight.bold,
+                            style: AppTextStyles.body.copyWith(
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -103,10 +102,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               l10n.allShelters.toUpperCase(),
-                              style: TextStyle(
+                              style: AppTextStyles.heading.copyWith(
                                 fontSize: 32,
                                 fontWeight: FontWeight.w900,
-                                color: brandPrimary,
                               ),
                             ),
                           ),
@@ -135,7 +133,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                   error: (err, stack) => Center(
                     child: Text(
                       l10n.unknownError,
-                      style: TextStyle(color: brandPrimary),
+                      style: AppTextStyles.body,
                     ),
                   ),
                 ),
@@ -167,7 +165,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
           hintText: l10n.searchByName,
-          hintStyle: TextStyle(color: color.withValues(alpha: 0.5)),
+          hintStyle: AppTextStyles.caption.copyWith(
+            color: color.withValues(alpha: 0.5),
+          ),
           border: InputBorder.none,
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
@@ -201,7 +201,10 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
         children: [
           Text(
             l10n.filterBySortBy,
-            style: TextStyle(color: color, fontWeight: FontWeight.bold),
+            style: AppTextStyles.caption.copyWith(
+              color: color,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           Icon(Icons.keyboard_arrow_down, color: color),
         ],
@@ -248,7 +251,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: AppTextStyles.subtitle.copyWith(
                     color: color,
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
@@ -256,7 +259,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                 ),
                 Text(
                   address,
-                  style: TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     color: color.withValues(alpha: 0.7),
                     fontSize: 12,
                   ),
@@ -316,9 +319,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
         ),
         child: Text(
           label,
-          style: TextStyle(
+          style: AppTextStyles.button.copyWith(
             color: textColor,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             fontSize: 8,
           ),
         ),

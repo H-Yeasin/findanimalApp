@@ -9,6 +9,7 @@ import '../../../../core/localization/app_locale_provider.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ProfileSettingsScreen extends ConsumerStatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -121,7 +122,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
               const SizedBox(height: 24),
               Text(
                 'SELECT LANGUAGE',
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontFamily: 'EricaOne',
                   fontSize: 24,
@@ -148,12 +149,12 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                     ),
                     child: Row(
                       children: [
-                        Text(lang.flag, style: const TextStyle(fontSize: 24)),
+                        Text(lang.flag, style: AppTextStyles.body.copyWith(fontSize: 24)),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
                             lang.name.toUpperCase(),
-                            style: TextStyle(
+                            style: AppTextStyles.body.copyWith(
                               color: isSelected
                                   ? Colors.white
                                   : PartnerUiColors.brand,
@@ -238,12 +239,12 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                   children: [
                     Text(
                       currentLanguage.flag,
-                      style: const TextStyle(fontSize: 22),
+                      style: AppTextStyles.body.copyWith(fontSize: 22),
                     ),
                     const SizedBox(width: 8),
                     Text(
                       currentLanguage.name.toUpperCase(),
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',
                         fontSize: 34 / 2,
@@ -327,7 +328,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
             //   },
             //   child: Text(
             //     l10n.deleteMyAccount,
-            //     style: const TextStyle(
+            //     style: AppTextStyles.body.copyWith(
             //       color: PartnerUiColors.brand,
             //       fontFamily: 'EricaOne',
             //       fontSize: 18,

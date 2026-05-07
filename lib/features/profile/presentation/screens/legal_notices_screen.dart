@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LegalNoticesScreen extends StatelessWidget {
   const LegalNoticesScreen({super.key});
@@ -18,9 +19,9 @@ class LegalNoticesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'LEGAL NOTICES - HESTEKA',
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontFamily: 'EricaOne',
                 fontSize: 22,
@@ -65,9 +66,9 @@ class LegalNoticesScreen extends StatelessWidget {
               'CONTACT',
               'For any questions regarding these legal notices or the application, you can contact us at:',
             ),
-            const Text(
+            Text(
               'Email: contact@hesteka.com\nTelephone: +33 6 41 45 83 60',
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontWeight: FontWeight.bold,
                 height: 1.4,
@@ -87,7 +88,7 @@ class LegalNoticesScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: PartnerUiColors.brand,
               fontFamily: 'EricaOne',
               fontSize: 20,
@@ -97,7 +98,7 @@ class LegalNoticesScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             content,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: PartnerUiColors.brand,
               fontSize: 14,
               height: 1.4,

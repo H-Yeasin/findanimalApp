@@ -148,7 +148,7 @@ class _FilterChip extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(
+        style: AppTextStyles.body.copyWith(
           fontFamily: 'EricaOne',
           fontSize: 14,
           color: isSelected ? Colors.white : const Color(0xFFBA4A22),

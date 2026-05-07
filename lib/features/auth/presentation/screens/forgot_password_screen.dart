@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/validators.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_screen_scaffold.dart';
@@ -93,7 +94,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             Text(
               'Enter your email address below and we\'ll send you a code to reset your password.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: AuthUiColors.brand.withValues(alpha: 0.75),
                 fontSize: 13,
                 height: 1.5,

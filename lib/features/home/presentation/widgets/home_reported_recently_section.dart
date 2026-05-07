@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../seek/presentation/widgets/seek_reports_list.dart';
 import '../providers/home_providers.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HomeReportedRecentlySection extends ConsumerWidget {
   const HomeReportedRecentlySection({super.key, required this.onOpenReports});
@@ -20,7 +21,7 @@ class HomeReportedRecentlySection extends ConsumerWidget {
         children: [
           Text(
             l10n.homeReportedRecently,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFBA4A22),
               fontSize: 28,
               fontWeight: FontWeight.w900,
@@ -32,7 +33,7 @@ class HomeReportedRecentlySection extends ConsumerWidget {
           const SizedBox(height: 5),
           Text(
             l10n.homeNearYou,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFBA4A22),
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -48,7 +49,7 @@ class HomeReportedRecentlySection extends ConsumerWidget {
                     return Center(
                       child: Text(
                         l10n.noReportsFound,
-                        style: const TextStyle(color: Color(0xFFBA4A22)),
+                        style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22)),
                       ),
                     );
                   }
@@ -88,7 +89,7 @@ class HomeReportedRecentlySection extends ConsumerWidget {
               ),
               child: Text(
                 l10n.homeSeeMore,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),

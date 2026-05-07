@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:video_player/video_player.dart';
 import '../../data/models/story_model.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SeeAllStoryScreen extends ConsumerStatefulWidget {
   final List<List<StoryModel>> userStoryGroups;
@@ -350,7 +351,7 @@ class _UserStoryGroupViewerState extends ConsumerState<UserStoryGroupViewer>
                               children: [
                                 Text(
                                   '${story.user.firstName} ${story.user.lastName}',
-                                  style: const TextStyle(
+                                  style: AppTextStyles.body.copyWith(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -359,7 +360,7 @@ class _UserStoryGroupViewerState extends ConsumerState<UserStoryGroupViewer>
                                     story.caption != ".")
                                   Text(
                                     story.caption!,
-                                    style: const TextStyle(
+                                    style: AppTextStyles.body.copyWith(
                                       color: Colors.white70,
                                       fontSize: 12,
                                     ),
@@ -413,7 +414,7 @@ class _UserStoryGroupViewerState extends ConsumerState<UserStoryGroupViewer>
                           onTap: () => _handleReaction(emoji),
                           child: Text(
                             emoji,
-                            style: const TextStyle(fontSize: 32),
+                            style: AppTextStyles.body.copyWith(fontSize: 32),
                           ),
                         );
                       }).toList(),
@@ -485,7 +486,7 @@ class _FloatingEmojiState extends State<_FloatingEmoji>
           right: 20,
           child: Opacity(
             opacity: _opacityAnimation.value,
-            child: Text(widget.emoji, style: const TextStyle(fontSize: 40)),
+            child: Text(widget.emoji, style: AppTextStyles.body.copyWith(fontSize: 40)),
           ),
         );
       },

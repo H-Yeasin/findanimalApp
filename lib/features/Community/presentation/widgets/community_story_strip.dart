@@ -6,6 +6,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../data/models/story_model.dart';
 import '../screens/see_all_story_screen.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityStoryStrip extends ConsumerWidget {
   const CommunityStoryStrip({
@@ -103,7 +104,7 @@ class CommunityStoryStrip extends ConsumerWidget {
                   isUnauthorizedError(err)
                       ? l10n.pleaseLoginToViewLocalChat
                       : l10n.couldNotLoadStories,
-                  style: const TextStyle(fontSize: 11),
+                  style: AppTextStyles.body.copyWith(fontSize: 11),
                 ),
               ),
             ),
@@ -156,7 +157,7 @@ class _StoryItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             name,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: color,
               fontSize: 10,
               fontWeight: FontWeight.bold,

@@ -70,7 +70,7 @@ class PaymentMethodSection extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               state.error!,
-              style: const TextStyle(color: Colors.red, fontSize: 12),
+              style: AppTextStyles.body.copyWith(color: Colors.red, fontSize: 12),
             ),
           ],
         ],
@@ -83,7 +83,7 @@ class PaymentMethodSection extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 6.0, top: 4.0, left: 4.0),
       child: Text(
         text,
-        style: TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: primaryOrange,
           fontWeight: FontWeight.bold,
           fontSize: 14,
@@ -97,10 +97,10 @@ class PaymentMethodSection extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12.0),
       child: TextFormField(
         keyboardType: keyboardType,
-        style: const TextStyle(color: Colors.white, fontSize: 14),
+        style: AppTextStyles.body.copyWith(color: Colors.white, fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.6)),
+          hintStyle: AppTextStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.6)),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 14,

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 
@@ -53,10 +54,9 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   child: Text(
                     l10n.authoritiesBody,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: AppTextStyles.caption.copyWith(
                       fontSize: 10,
-                      color: brandPrimary,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -79,10 +79,9 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
 
                 Text(
                   l10n.gendarmeries,
-                  style: TextStyle(
+                  style: AppTextStyles.heading.copyWith(
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
-                    color: brandPrimary,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -104,9 +103,8 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                           padding: const EdgeInsets.all(20),
                           child: Text(
                             l10n.noReportsFound,
-                            style: const TextStyle(
-                              color: brandPrimary,
-                              fontWeight: FontWeight.bold,
+                            style: AppTextStyles.body.copyWith(
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -125,7 +123,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   error: (err, stack) => Center(
                     child: Text(
                       l10n.unknownError,
-                      style: TextStyle(color: brandPrimary),
+                      style: AppTextStyles.body,
                     ),
                   ),
                 ),
@@ -157,7 +155,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: color),
           hintText: l10n.searchByName,
-          hintStyle: TextStyle(
+          hintStyle: AppTextStyles.caption.copyWith(
             color: color.withValues(alpha: 0.5),
             fontSize: 12,
           ),
@@ -194,9 +192,9 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
         children: [
           Text(
             l10n.filterBySortBy,
-            style: TextStyle(
+            style: AppTextStyles.caption.copyWith(
               color: color,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w700,
               fontSize: 12,
             ),
           ),
@@ -249,7 +247,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: AppTextStyles.caption.copyWith(
                   color: color,
                   fontWeight: FontWeight.w900,
                   fontSize: 12,
@@ -259,7 +257,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               const SizedBox(height: 2),
               Text(
                 contact.city ?? l10n.unknown,
-                style: TextStyle(
+                style: AppTextStyles.caption.copyWith(
                   color: color.withValues(alpha: 0.8),
                   fontSize: 9,
                 ),
@@ -267,9 +265,9 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               const SizedBox(height: 6),
               Text(
                 contact.phone ?? l10n.noPhone,
-                style: TextStyle(
+                style: AppTextStyles.caption.copyWith(
                   color: color,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   fontSize: 11,
                 ),
               ),
@@ -289,10 +287,10 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
               ),
               child: Text(
                 l10n.toCall.toUpperCase(),
-                style: TextStyle(
+                style: AppTextStyles.button.copyWith(
                   color: Colors.white,
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -307,7 +305,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   contact.country ?? 'New Aquitaine',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: AppTextStyles.caption.copyWith(
                     color: color,
                     fontSize: 9,
                     fontWeight: FontWeight.w500,

@@ -380,8 +380,10 @@ class AppLocalizations {
   String get collectionPointDescriptionHint =>
       _text('collectionPointDescriptionHint');
   String get collectionPointAddress => _text('collectionPointAddress');
-  String get collectionPointGenericTitle => _text('collectionPointGenericTitle');
-  String get collectionPointTogetherHelp => _text('collectionPointTogetherHelp');
+  String get collectionPointGenericTitle =>
+      _text('collectionPointGenericTitle');
+  String get collectionPointTogetherHelp =>
+      _text('collectionPointTogetherHelp');
   String get pickLocationOnMap => _text('pickLocationOnMap');
   String get photoOfCollectionPoint => _text('photoOfCollectionPoint');
   String get uploadPhoto => _text('uploadPhoto');
@@ -475,7 +477,8 @@ class AppLocalizations {
   String get personalInformationLabel => _text('personalInformationLabel');
 
   String get reportStep1Title => _text('reportStep1Title');
-  String get reportStep1PostTypeRequired => _text('reportStep1PostTypeRequired');
+  String get reportStep1PostTypeRequired =>
+      _text('reportStep1PostTypeRequired');
   String get reportStep1NameRequired => _text('reportStep1NameRequired');
   String get reportStep1SpeciesRequired => _text('reportStep1SpeciesRequired');
   String get reportStep1BreedRequired => _text('reportStep1BreedRequired');
@@ -503,12 +506,14 @@ class AppLocalizations {
 
   String get reportStep2Title => _text('reportStep2Title');
   String get reportStep2MaxPhotos => _text('reportStep2MaxPhotos');
-  String get reportStep2LocationRequired => _text('reportStep2LocationRequired');
+  String get reportStep2LocationRequired =>
+      _text('reportStep2LocationRequired');
   String get reportStep2DescriptionRequired =>
       _text('reportStep2DescriptionRequired');
   String get reportStep2LocationLabel => _text('reportStep2LocationLabel');
   String get reportStep2LocationHint => _text('reportStep2LocationHint');
-  String get reportStep2DescriptionLabel => _text('reportStep2DescriptionLabel');
+  String get reportStep2DescriptionLabel =>
+      _text('reportStep2DescriptionLabel');
   String get reportStep2DescriptionHint => _text('reportStep2DescriptionHint');
   String get reportStep2PhotosLabel => _text('reportStep2PhotosLabel');
   String get reportStep2UploadHint => _text('reportStep2UploadHint');
@@ -565,6 +570,30 @@ class AppLocalizations {
   String get viewOnMapLastLocation => _text('viewOnMapLastLocation');
   String get owner => _text('owner');
   String get profileDateFormat => _text('profileDateFormat');
+
+  String get pointsMyPoints => _text('pointsMyPoints');
+  String get pointsHistorical => _text('pointsHistorical');
+  String get pointsRedeemMyPoints => _text('pointsRedeemMyPoints');
+  String get pointsMyRedemptionsTooltip => _text('pointsMyRedemptionsTooltip');
+  String get pointsCategoryLimited => _text('pointsCategoryLimited');
+  String get pointsCategoryFeatured => _text('pointsCategoryFeatured');
+  String get pointsCategorySolidarity => _text('pointsCategorySolidarity');
+  String get pointsCategoryAll => _text('pointsCategoryAll');
+  String get pointsTypeProduct => _text('pointsTypeProduct');
+  String get pointsTypeGiftCard => _text('pointsTypeGiftCard');
+  String get pointsTypeAllTypes => _text('pointsTypeAllTypes');
+  String get pointsNoRewards => _text('pointsNoRewards');
+  String get pointsRedeemRewardTitle => _text('pointsRedeemRewardTitle');
+  String pointsRedeemConfirmation(String title, int points) => text(
+    'pointsRedeemConfirmation',
+    params: {'title': title, 'points': '$points'},
+  );
+  String pointsLowStockWarning(int stock) =>
+      text('pointsLowStockWarning', params: {'stock': '$stock'});
+  String get pointsRedeemError => _text('pointsRedeemError');
+  String get pointsInsufficientPoints => _text('pointsInsufficientPoints');
+  String get pointsRedeemSuccess => _text('pointsRedeemSuccess');
+  String get pointsPts => _text('pointsPts');
 }
 
 class _AppLocalizationsDelegate

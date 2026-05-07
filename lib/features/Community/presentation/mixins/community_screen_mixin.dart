@@ -13,6 +13,7 @@ import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/community_providers.dart';
 import '../screens/community_screen.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
   final TextEditingController contentController = TextEditingController();
@@ -221,7 +222,7 @@ mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
         return AlertDialog(
           title: Text(
             l10n.newStory,
-            style: const TextStyle(fontFamily: 'EricaOne'),
+            style: AppTextStyles.body.copyWith(fontFamily: 'EricaOne'),
           ),
           content: TextField(
             controller: controller,

@@ -5,6 +5,7 @@ import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ReportStep1Screen extends ConsumerStatefulWidget {
   const ReportStep1Screen({super.key});
@@ -172,7 +173,7 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text.toUpperCase(),
-        style: const TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: Color(0xFFBA4A22),
           fontSize: 14,
           fontWeight: FontWeight.w900,
@@ -193,10 +194,10 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
       ),
       child: TextField(
         controller: controller,
-        style: const TextStyle(color: Color(0xFFBA4A22), fontSize: 14),
+        style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22), fontSize: 14),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: TextStyle(
+          hintStyle: AppTextStyles.body.copyWith(
             color: const Color(0xFFBA4A22).withValues(alpha: 0.5),
             fontSize: 14,
           ),
@@ -228,7 +229,7 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
           value: value,
           hint: Text(
             hint,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: const Color(0xFFBA4A22).withValues(alpha: 0.5),
               fontSize: 14,
             ),
@@ -241,7 +242,7 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
               value: item,
               child: Text(
                 item,
-                style: const TextStyle(color: Color(0xFFBA4A22), fontSize: 14),
+                style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22), fontSize: 14),
               ),
             );
           }).toList(),
@@ -280,7 +281,7 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
           const SizedBox(width: 8),
           Text(
             label,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Color(0xFFBA4A22),
               fontSize: 14,
               fontWeight: FontWeight.w600,

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class FAQFlipCard extends StatefulWidget {
   final String question;
@@ -93,7 +94,7 @@ class _FAQFlipCardState extends State<FAQFlipCard>
       child: Text(
         widget.question,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: AppTextStyles.body.copyWith(
           fontSize: 14,
           fontWeight: FontWeight.w900,
           color: widget.color,
@@ -125,7 +126,7 @@ class _FAQFlipCardState extends State<FAQFlipCard>
           child: Text(
             widget.answer,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               fontSize: 13,
               fontWeight: FontWeight.w600,
               color: widget.cardBg,

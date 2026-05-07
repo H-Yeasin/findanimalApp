@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class LocalMissionFilterBar extends StatelessWidget {
   const LocalMissionFilterBar({
@@ -56,7 +57,7 @@ class _FilterButton extends StatelessWidget {
               child: Text(
                 text,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontFamily: 'EricaOne',
                   fontSize: 13,

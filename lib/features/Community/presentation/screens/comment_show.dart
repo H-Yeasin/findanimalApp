@@ -7,6 +7,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../data/models/chat_model.dart';
 import '../providers/community_providers.dart';
 import '../widgets/community_video_player.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommentShowScreen extends ConsumerStatefulWidget {
   final ChatModel mainPost;
@@ -76,7 +77,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
         elevation: 1,
         title: Text(
           l10n.comments,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             color: brandPrimary,
             fontFamily: 'EricaOne',
             fontSize: 20,
@@ -143,7 +144,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                           const SizedBox(width: 12),
                           Text(
                             l10n.posting,
-                            style: const TextStyle(
+                            style: AppTextStyles.body.copyWith(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
@@ -186,7 +187,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                           child: Center(
                             child: Text(
                               l10n.noCommentsYet,
-                              style: const TextStyle(color: Colors.grey),
+                              style: AppTextStyles.body.copyWith(color: Colors.grey),
                             ),
                           ),
                         ),
@@ -431,7 +432,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                           color: Colors.black87,
@@ -441,7 +442,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                       if (comment.content.isNotEmpty)
                         Text(
                           comment.content,
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             fontSize: 13,
                             color: Colors.black,
                           ),
@@ -475,7 +476,7 @@ class _CommentShowScreenState extends ConsumerState<CommentShowScreen> {
                   padding: const EdgeInsets.only(left: 10, top: 5),
                   child: Text(
                     time,
-                    style: TextStyle(color: Colors.grey[600], fontSize: 11),
+                    style: AppTextStyles.body.copyWith(color: Colors.grey[600], fontSize: 11),
                   ),
                 ),
               ],

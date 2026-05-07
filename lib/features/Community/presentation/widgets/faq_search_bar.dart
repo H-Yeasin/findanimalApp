@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/localization/app_localizations.dart';
 import 'scroll_appearance_wrapper.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class FAQSearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -38,14 +39,14 @@ class FAQSearchBar extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: controller,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
                 decoration: InputDecoration(
                   hintText: l10n.searchTopic,
-                  hintStyle: const TextStyle(
+                  hintStyle: AppTextStyles.body.copyWith(
                     color: Color(0x80BA4A22),
                     fontSize: 16,
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ContactSupportScreen extends StatelessWidget {
   const ContactSupportScreen({super.key});
@@ -65,7 +66,7 @@ class ContactSupportScreen extends StatelessWidget {
                   ),
                   child: Text(
                     l10n.sendMyMessage,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontFamily: 'EricaOne',
                       fontSize: 16,
@@ -91,7 +92,7 @@ class ContactSupportScreen extends StatelessWidget {
         children: [
           Icon(icon, color: Colors.white, size: 20),
           const SizedBox(height: 4),
-          Text(text, style: const TextStyle(color: Colors.white, fontSize: 8)),
+          Text(text, style: AppTextStyles.body.copyWith(color: Colors.white, fontSize: 8)),
         ],
       ),
     );
@@ -102,7 +103,7 @@ class ContactSupportScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0, left: 4),
       child: Text(
         label,
-        style: const TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: PartnerUiColors.brand,
           fontWeight: FontWeight.bold,
           fontSize: 14,
@@ -121,7 +122,7 @@ class ContactSupportScreen extends StatelessWidget {
       ),
       child: Text(
         hint,
-        style: TextStyle(
+        style: AppTextStyles.body.copyWith(
           color: Colors.white.withValues(alpha: 0.7),
           fontSize: 12,
         ),

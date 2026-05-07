@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ReportMapCard extends StatelessWidget {
   const ReportMapCard({required this.report, super.key});
@@ -59,7 +60,7 @@ class ReportMapCard extends StatelessWidget {
                         report.animalName.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontFamily: 'EricaOne',
                           fontSize: 9,
@@ -70,7 +71,7 @@ class ReportMapCard extends StatelessWidget {
                         report.breed ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontSize: 6,
                           fontWeight: FontWeight.w400,
@@ -80,7 +81,7 @@ class ReportMapCard extends StatelessWidget {
                         report.status ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: Colors.white,
                           fontSize: 6,
                           fontWeight: FontWeight.w400,
@@ -107,7 +108,7 @@ class ReportMapCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 l10n.seeMission, // fallback if seeReport doesn't exist, we'll check it later
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Color(0xFFBA4A22),
                   fontSize: 7,
                   fontWeight: FontWeight.w900,

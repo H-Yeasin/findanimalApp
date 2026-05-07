@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_text_styles.dart';
+
 class AuthUiColors {
   const AuthUiColors._();
 
@@ -20,9 +22,8 @@ class AuthMainTitle extends StatelessWidget {
     return Text(
       text,
       textAlign: center ? TextAlign.center : TextAlign.start,
-      style: const TextStyle(
+      style: AppTextStyles.heading.copyWith(
         color: AuthUiColors.brand,
-        fontFamily: 'EricaOne',
         fontSize: 28,
         height: 1.03,
         fontWeight: FontWeight.w700,
@@ -40,10 +41,9 @@ class AuthFieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
+      style: AppTextStyles.sectionTitle.copyWith(
         color: AuthUiColors.brand,
         fontSize: 17,
-        fontFamily: 'EricaOne',
       ),
     );
   }
@@ -74,17 +74,18 @@ class AuthPillTextField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       obscureText: obscureText,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: AppTextStyles.body.copyWith(color: Colors.white),
       validator: validator,
-      decoration:
-          const InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            errorStyle: TextStyle(height: 0),
-          ).copyWith(
-            hintText: hintText,
-            hintStyle: const TextStyle(color: AuthUiColors.hint, fontSize: 14),
-          ),
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
+        errorStyle: AppTextStyles.caption.copyWith(height: 0),
+        hintText: hintText,
+        hintStyle: AppTextStyles.body.copyWith(color: AuthUiColors.hint),
+      ),
     );
 
     return Container(
@@ -164,7 +165,7 @@ class AuthOutlinePillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 17),
+          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 17),
         ),
         onPressed: onPressed,
         child: isLoading
@@ -207,7 +208,7 @@ class AuthFilledPillButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(22),
           ),
-          textStyle: const TextStyle(fontFamily: 'EricaOne', fontSize: 15),
+          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 15),
         ),
         onPressed: onPressed,
         child: Text(label),
@@ -249,7 +250,10 @@ class AuthSocialPillButton extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               label,
-              style: const TextStyle(fontFamily: 'EricaOne', fontSize: 18),
+              style: AppTextStyles.sectionTitle.copyWith(
+                color: Colors.white,
+                fontSize: 18,
+              ),
             ),
           ],
         ),
@@ -274,9 +278,9 @@ class AuthGoogleGlyph extends StatelessWidget {
           ],
         ).createShader(bounds);
       },
-      child: const Text(
+      child: Text(
         'G',
-        style: TextStyle(
+        style: AppTextStyles.subtitle.copyWith(
           fontSize: 18,
           fontWeight: FontWeight.w800,
           color: Colors.white,
@@ -300,9 +304,8 @@ class AuthOrDivider extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Text(
             label,
-            style: const TextStyle(
+            style: AppTextStyles.sectionTitle.copyWith(
               color: AuthUiColors.brand,
-              fontFamily: 'EricaOne',
               fontSize: 18,
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../data/models/chat_model.dart';
 import 'community_post_item.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityPostList extends StatelessWidget {
   const CommunityPostList({
@@ -44,7 +45,7 @@ class CommunityPostList extends StatelessWidget {
               child: Center(
                 child: Text(
                   l10n.noLocalMessages,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: _brandPrimary,
                     fontWeight: FontWeight.bold,
                   ),
@@ -118,7 +119,7 @@ class CommunityPostList extends StatelessWidget {
               isUnauthorizedError(err)
                   ? l10n.pleaseLoginToViewLocalChat
                   : l10n.couldNotLoadLocalChat,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: _brandPrimary,
                 fontWeight: FontWeight.w600,
               ),

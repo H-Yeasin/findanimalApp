@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class SeekFilterPill extends StatelessWidget {
   const SeekFilterPill({required this.label, required this.icon, super.key});
@@ -20,7 +21,7 @@ class SeekFilterPill extends StatelessWidget {
           Flexible(
             child: Text(
               label,
-              style: const TextStyle(
+              style: AppTextStyles.body.copyWith(
                 color: Colors.white,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,

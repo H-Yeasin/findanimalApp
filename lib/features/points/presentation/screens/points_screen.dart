@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:hesteka_frontend/features/profile/presentation/providers/profile_providers.dart';
 
@@ -8,6 +9,7 @@ import '../../../../core/routing/route_names.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../../data/models/points_history_item_model.dart';
 import '../../data/models/redeemable_item_model.dart';
 import '../providers/points_provider.dart';
@@ -19,6 +21,7 @@ class PointsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pointsState = ref.watch(pointsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -26,7 +29,7 @@ class PointsScreen extends ConsumerWidget {
         child: pointsState.when(
           data: (state) => _buildContent(context, ref, state),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Center(child: Text('Error: $err')),
+          error: (err, stack) => Center(child: Text(l10n.errorParam('$err'))),
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
@@ -69,7 +72,7 @@ class PointsScreen extends ConsumerWidget {
               children: [
                 _buildHeader(context, state.totalPoints),
                 const SizedBox(height: 30),
-                _buildHistoricalSection(state.history),
+                _buildHistoricalSection(context, state.history),
                 const SizedBox(height: 40),
                 _buildRedeemSection(context, ref, state),
               ],
@@ -95,12 +98,11 @@ class PointsScreen extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 15),
-        const Text(
-          'MY POINTS',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context).pointsMyPoints,
+          style: AppTextStyles.heading.copyWith(
             fontSize: 28,
             fontWeight: FontWeight.w900,
-            color: AppColors.brandPrimary,
             letterSpacing: 1.2,
           ),
         ),
@@ -114,10 +116,9 @@ class PointsScreen extends ConsumerWidget {
           ),
           child: Text(
             '$totalPoints',
-            style: const TextStyle(
+            style: AppTextStyles.subtitle.copyWith(
               fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.brandPrimary,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
@@ -125,16 +126,18 @@ class PointsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildHistoricalSection(List<PointsHistoryItemModel> history) {
+  Widget _buildHistoricalSection(
+    BuildContext context,
+    List<PointsHistoryItemModel> history,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'HISTORICAL',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context).pointsHistorical,
+          style: AppTextStyles.subtitle.copyWith(
             fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.brandPrimary,
+            fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 15),
@@ -158,55 +161,56 @@ class PointsScreen extends ConsumerWidget {
         children: [
           Text(
             item.reason,
-            style: const TextStyle(
-              color: AppColors.brandPrimary,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyles.subtitle.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(width: 10),
           Text(
             Formatters.compactDate(item.createdAt),
-            style: TextStyle(
+            style: AppTextStyles.caption.copyWith(
               color: AppColors.brandPrimary.withValues(alpha: 0.4),
-              fontSize: 12,
             ),
           ),
           const Spacer(),
           Text(
             '+${item.points}',
-            style: const TextStyle(
-              color: AppColors.brandPrimary,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.subtitle.copyWith(fontWeight: FontWeight.w700),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildRedeemSection(BuildContext context, WidgetRef ref, PointsState state) {
+  Widget _buildRedeemSection(
+    BuildContext context,
+    WidgetRef ref,
+    PointsState state,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Stack(
           alignment: Alignment.center,
           children: [
-            const Align(
+            Align(
               alignment: Alignment.center,
               child: Text(
-                'REDEEM MY POINTS',
-                style: TextStyle(
+                AppLocalizations.of(context).pointsRedeemMyPoints,
+                style: AppTextStyles.heading.copyWith(
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
-                  color: AppColors.brandPrimary,
                 ),
               ),
             ),
             Align(
               alignment: Alignment.centerRight,
               child: IconButton(
-                icon: const Icon(Icons.receipt_long, color: AppColors.brandPrimary),
-                tooltip: 'My Redemptions',
+                icon: const Icon(
+                  Icons.receipt_long,
+                  color: AppColors.brandPrimary,
+                ),
+                tooltip: AppLocalizations.of(
+                  context,
+                ).pointsMyRedemptionsTooltip,
                 onPressed: () => context.push(RouteNames.profileMyRedemptions),
               ),
             ),
@@ -220,28 +224,28 @@ class PointsScreen extends ConsumerWidget {
             children: [
               _buildTab(
                 ref,
-                'Limited edition',
+                AppLocalizations.of(context).pointsCategoryLimited,
                 'limited',
                 isSelected: state.currentCategory == 'limited',
               ),
               const SizedBox(width: 10),
               _buildTab(
                 ref,
-                'Featured',
+                AppLocalizations.of(context).pointsCategoryFeatured,
                 'featured',
                 isSelected: state.currentCategory == 'featured',
               ),
               const SizedBox(width: 10),
               _buildTab(
                 ref,
-                'Solidarity shop',
+                AppLocalizations.of(context).pointsCategorySolidarity,
                 'solidarity',
                 isSelected: state.currentCategory == 'solidarity',
               ),
               const SizedBox(width: 10),
               _buildTab(
                 ref,
-                'All',
+                AppLocalizations.of(context).pointsCategoryAll,
                 null,
                 isSelected: state.currentCategory == null,
               ),
@@ -256,21 +260,21 @@ class PointsScreen extends ConsumerWidget {
             children: [
               _buildTypeTab(
                 ref,
-                'Product',
+                AppLocalizations.of(context).pointsTypeProduct,
                 'product',
                 isSelected: state.currentType == 'product',
               ),
               const SizedBox(width: 10),
               _buildTypeTab(
                 ref,
-                'Gift Card',
+                AppLocalizations.of(context).pointsTypeGiftCard,
                 'giftcard',
                 isSelected: state.currentType == 'giftcard',
               ),
               const SizedBox(width: 10),
               _buildTypeTab(
                 ref,
-                'All Types',
+                AppLocalizations.of(context).pointsTypeAllTypes,
                 null,
                 isSelected: state.currentType == null,
               ),
@@ -279,12 +283,12 @@ class PointsScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 25),
         if (state.redeemableItems.isEmpty)
-          const Center(
+          Center(
             child: Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Text(
-                'No rewards available with these filters.',
-                style: TextStyle(color: AppColors.brandPrimary),
+                AppLocalizations.of(context).pointsNoRewards,
+                style: AppTextStyles.body,
               ),
             ),
           )
@@ -323,10 +327,10 @@ class PointsScreen extends ConsumerWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(
+          style: AppTextStyles.button.copyWith(
             color: isSelected ? Colors.white : AppColors.brandPrimary,
             fontSize: 12,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
@@ -350,10 +354,10 @@ class PointsScreen extends ConsumerWidget {
         ),
         child: Text(
           label,
-          style: TextStyle(
+          style: AppTextStyles.button.copyWith(
             color: isSelected ? Colors.white : AppColors.brandPrimary,
             fontSize: 12,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),
@@ -404,11 +408,9 @@ class PointsScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        '${item.points} pts',
-                        style: const TextStyle(
-                          color: AppColors.brandPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
+                        '${item.points} ${AppLocalizations.of(context).pointsPts}',
+                        style: AppTextStyles.caption.copyWith(
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
@@ -436,10 +438,9 @@ class PointsScreen extends ConsumerWidget {
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: AppColors.brandPrimary,
+                style: AppTextStyles.caption.copyWith(
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -458,28 +459,28 @@ class PointsScreen extends ConsumerWidget {
       context: parentContext,
       builder: (dialogContext) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'Redeem Reward',
-          style: TextStyle(
-            color: AppColors.brandPrimary,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Text(
+          AppLocalizations.of(parentContext).pointsRedeemRewardTitle,
+          style: AppTextStyles.subtitle.copyWith(fontWeight: FontWeight.w700),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Are you sure you want to redeem "${item.title}" for ${item.points} points?',
+              AppLocalizations.of(
+                parentContext,
+              ).pointsRedeemConfirmation(item.title, item.points),
             ),
             const SizedBox(height: 10),
             if (item.stock < 5)
               Text(
-                'Only ${item.stock} left in stock!',
-                style: const TextStyle(
+                AppLocalizations.of(
+                  parentContext,
+                ).pointsLowStockWarning(item.stock),
+                style: AppTextStyles.caption.copyWith(
                   color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
           ],
@@ -487,7 +488,10 @@ class PointsScreen extends ConsumerWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            child: Text(
+              AppLocalizations.of(parentContext).cancel,
+              style: AppTextStyles.button.copyWith(color: Colors.grey),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -500,7 +504,10 @@ class PointsScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            child: const Text('Redeem', style: TextStyle(color: Colors.white)),
+            child: Text(
+              AppLocalizations.of(parentContext).pointsRedeemMyPoints,
+              style: AppTextStyles.button,
+            ),
           ),
         ],
       ),
@@ -516,7 +523,8 @@ class PointsScreen extends ConsumerWidget {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => const Center(child: CircularProgressIndicator()),
+      builder: (dialogContext) =>
+          const Center(child: CircularProgressIndicator()),
     );
 
     try {
@@ -529,7 +537,7 @@ class PointsScreen extends ConsumerWidget {
 
       if (state.hasError) {
         final error = state.error;
-        String errorMessage = 'Something went wrong. Please try again.';
+        String errorMessage = AppLocalizations.of(context).pointsRedeemError;
 
         // Try to extract message from API error if possible
         try {
@@ -538,11 +546,15 @@ class PointsScreen extends ConsumerWidget {
           if (apiMessage != null && apiMessage is String) {
             errorMessage = apiMessage;
           } else if (error.toString().contains('Insufficient points balance')) {
-            errorMessage = 'Insufficient points balance';
+            errorMessage = AppLocalizations.of(
+              context,
+            ).pointsInsufficientPoints;
           }
         } catch (_) {
           if (error.toString().contains('Insufficient points balance')) {
-            errorMessage = 'Insufficient points balance';
+            errorMessage = AppLocalizations.of(
+              context,
+            ).pointsInsufficientPoints;
           }
         }
 
@@ -555,8 +567,8 @@ class PointsScreen extends ConsumerWidget {
         // Success
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Reward redeemed successfully!'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context).pointsRedeemSuccess),
               backgroundColor: Colors.green,
             ),
           );
@@ -569,7 +581,10 @@ class PointsScreen extends ConsumerWidget {
       if (context.mounted) {
         Navigator.of(context, rootNavigator: true).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text(AppLocalizations.of(context).errorParam('$e')),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }

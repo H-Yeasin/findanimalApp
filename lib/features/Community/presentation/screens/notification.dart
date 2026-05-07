@@ -4,6 +4,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../providers/notification_providers.dart';
 import '../../data/models/notification_model.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class NotificationScreen extends ConsumerWidget {
   const NotificationScreen({super.key});
@@ -63,7 +64,7 @@ class NotificationScreen extends ConsumerWidget {
                       const SizedBox(height: 16),
                       Text(
                         l10n.failedToLoadNotifications,
-                        style: TextStyle(
+                        style: AppTextStyles.body.copyWith(
                           color: brandPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -97,7 +98,7 @@ class NotificationScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             l10n.noNotificationsYet,
-            style: const TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: Colors.grey,
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -192,7 +193,7 @@ class NotificationScreen extends ConsumerWidget {
                         Expanded(
                           child: Text(
                             notification.title,
-                            style: TextStyle(
+                            style: AppTextStyles.body.copyWith(
                               fontWeight: notification.isRead
                                   ? FontWeight.w600
                                   : FontWeight.bold,
@@ -203,7 +204,7 @@ class NotificationScreen extends ConsumerWidget {
                         ),
                         Text(
                           time,
-                          style: TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             fontSize: 12,
                             color: Colors.grey.shade500,
                           ),
@@ -213,7 +214,7 @@ class NotificationScreen extends ConsumerWidget {
                     const SizedBox(height: 6),
                     Text(
                       notification.description,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         fontSize: 14,
                         color: Colors.black54,
                         height: 1.3,

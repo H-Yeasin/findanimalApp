@@ -8,6 +8,7 @@ import '../../data/models/partner_ad_model.dart';
 import '../providers/partner_collection_points_provider.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../../../core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CollectionPointsScreen extends ConsumerWidget {
   const CollectionPointsScreen({super.key});
@@ -63,7 +64,7 @@ class CollectionPointsScreen extends ConsumerWidget {
                     Text(
                       l10n.couldNotLoadCollectionPoints,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -85,7 +86,7 @@ class CollectionPointsScreen extends ConsumerWidget {
                     child: Text(
                       l10n.noCollectionPointsYet,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',
                         fontSize: 20,
@@ -149,7 +150,7 @@ class _CollectionPointCard extends StatelessWidget {
               children: [
                 Text(
                   point.title,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontFamily: 'EricaOne',
                     fontSize: 18,
@@ -160,7 +161,7 @@ class _CollectionPointCard extends StatelessWidget {
                   point.address,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontSize: 13,
                     height: 1.2,
@@ -169,7 +170,7 @@ class _CollectionPointCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   point.status.toUpperCase(),
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,

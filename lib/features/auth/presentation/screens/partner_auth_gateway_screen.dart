@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/route_names.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../widgets/auth_screen_scaffold.dart';
 import '../widgets/auth_ui_kit.dart';
 
@@ -27,10 +28,10 @@ class PartnerAuthGatewayScreen extends StatelessWidget {
           const SizedBox(height: 6),
           const AuthMainTitle('HESTEKA PARTNER'),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'Join the network of professionals\ndedicated to animal welfare.',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: AppTextStyles.body.copyWith(
               color: AuthUiColors.brand,
               fontSize: 15,
               height: 1.4,

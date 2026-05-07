@@ -27,7 +27,7 @@ class SeekReportsList extends ConsumerWidget {
               child: Center(
                 child: Text(
                   l10n.noReportsFound,
-                  style: const TextStyle(
+                  style: AppTextStyles.body.copyWith(
                     color: Color(0xFFBA4A22),
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class SeekReportsList extends ConsumerWidget {
           child: Center(
             child: Text(
               l10n.errorLoadingReports,
-              style: const TextStyle(color: Colors.red),
+              style: AppTextStyles.body.copyWith(color: Colors.red),
             ),
           ),
         ),

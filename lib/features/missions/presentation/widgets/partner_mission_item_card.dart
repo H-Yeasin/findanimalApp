@@ -4,6 +4,7 @@ import '../../../../core/localization/app_localizations.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/mission_model.dart';
 import 'mission_participants_bottom_sheet.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PartnerMissionItemCard extends StatelessWidget {
   const PartnerMissionItemCard({required this.mission, super.key});
@@ -46,7 +47,7 @@ class PartnerMissionItemCard extends StatelessWidget {
                 children: [
                   Text(
                     mission.title,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontFamily: 'EricaOne',
                       fontSize: 18,
@@ -57,7 +58,7 @@ class PartnerMissionItemCard extends StatelessWidget {
                     mission.address,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontSize: 13,
                     ),
@@ -70,7 +71,7 @@ class PartnerMissionItemCard extends StatelessWidget {
                           '{points}',
                           (mission.points ?? 0).toString(),
                         ),
-                    style: const TextStyle(
+                    style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontSize: 12,
                       fontWeight: FontWeight.w700,

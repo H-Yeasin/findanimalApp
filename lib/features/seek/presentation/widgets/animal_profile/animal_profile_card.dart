@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,10 +49,8 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                     children: [
                       Text(
                         data.name.toUpperCase(),
-                        style: const TextStyle(
-                          fontFamily: 'EricaOne',
+                        style: AppTextStyles.sectionTitle.copyWith(
                           fontSize: 26,
-                          color: Color(0xFFBA4A22),
                           letterSpacing: 0.8,
                           height: 1.1,
                         ),
@@ -122,8 +121,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                             data.ownerName == 'Owner'
                                 ? l10n.owner
                                 : data.ownerName,
-                            style: const TextStyle(
-                              color: Color(0xFFBA4A22),
+                            style: AppTextStyles.caption.copyWith(
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
                             ),
@@ -135,7 +133,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                               pattern: l10n.profileDateFormat,
                               locale: l10n.locale.languageCode,
                             ),
-                            style: const TextStyle(
+                            style: AppTextStyles.caption.copyWith(
                               color: Color(0xFFD3A482),
                               fontSize: 9,
                             ),
@@ -146,8 +144,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                       // Details: Adult | Cat | Angora | Lost
                       Text(
                         '${data.age} | ${data.species} | ${data.breed} | ${data.status.toLowerCase() == 'found' ? l10n.found : l10n.statusMissing}',
-                        style: const TextStyle(
-                          color: Color(0xFFBA4A22),
+                        style: AppTextStyles.caption.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
@@ -168,8 +165,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                         ),
                         child: Text(
                           l10n.currentStatus(data.status),
-                          style: const TextStyle(
-                            color: Color(0xFFBA4A22),
+                          style: AppTextStyles.caption.copyWith(
                             fontSize: 9,
                             fontWeight: FontWeight.w800,
                           ),
@@ -179,8 +175,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                       // Description
                       Text(
                         '"${data.description}"',
-                        style: const TextStyle(
-                          color: Color(0xFFBA4A22),
+                        style: AppTextStyles.caption.copyWith(
                           fontSize: 10.5,
                           height: 1.4,
                           fontWeight: FontWeight.w500,
@@ -205,7 +200,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                               _showContactInfo
                                   ? l10n.hideContactInfo
                                   : buttonText,
-                              style: const TextStyle(
+                              style: AppTextStyles.button.copyWith(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -222,8 +217,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                         const SizedBox(height: 10),
                         Text(
                           data.address!,
-                          style: const TextStyle(
-                            color: Color(0xFFBA4A22),
+                          style: AppTextStyles.caption.copyWith(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                           ),
@@ -254,8 +248,7 @@ class _OwnerContactInfo extends StatelessWidget {
     if (!visiblePhone && !visibleEmail) {
       return Text(
         AppLocalizations.of(context).noPublicContactInfo,
-        style: const TextStyle(
-          color: Color(0xFFBA4A22),
+        style: AppTextStyles.caption.copyWith(
           fontSize: 10.5,
           height: 1.3,
           fontWeight: FontWeight.w600,
@@ -324,8 +317,7 @@ class _ContactLine extends StatelessWidget {
               Expanded(
                 child: Text(
                   value,
-                  style: const TextStyle(
-                    color: Color(0xFFBA4A22),
+                  style: AppTextStyles.caption.copyWith(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     decoration: TextDecoration.underline,

@@ -92,7 +92,7 @@ class MyDonationsScreen extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Text(
                       l10n.myDonationsTitle,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: brandPrimary,
                         fontSize: 32,
                         fontWeight: FontWeight.w900,
@@ -114,7 +114,7 @@ class MyDonationsScreen extends ConsumerWidget {
                               child: Text(
                                 l10n.noDonationsMade,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: AppTextStyles.body.copyWith(
                                   color: brandPrimary,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
@@ -134,7 +134,7 @@ class MyDonationsScreen extends ConsumerWidget {
                                   l10n.donationAmount(
                                     donation['amount'].toString(),
                                   ),
-                                  style: const TextStyle(
+                                  style: AppTextStyles.body.copyWith(
                                     color: brandPrimary,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -162,7 +162,7 @@ class MyDonationsScreen extends ConsumerWidget {
                         error: (err, stack) => Center(
                           child: Text(
                             '${l10n.unknownError}: $err',
-                            style: const TextStyle(color: Colors.red),
+                            style: AppTextStyles.body.copyWith(color: Colors.red),
                           ),
                         ),
                       ),
@@ -190,7 +190,7 @@ class MyDonationsScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           l10n.makeDonation.toUpperCase(),
-                          style: const TextStyle(
+                          style: AppTextStyles.body.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w900,
                             fontSize: 16,
@@ -219,7 +219,7 @@ class MyDonationsScreen extends ConsumerWidget {
                     child: Text(
                       l10n.thanksCommunityText,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: AppTextStyles.body.copyWith(
                         color: brandPrimary,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,

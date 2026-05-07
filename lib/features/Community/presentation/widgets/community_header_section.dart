@@ -8,6 +8,7 @@ import '../../data/models/story_model.dart';
 import 'community_composer.dart';
 import 'community_posting_indicator.dart';
 import 'community_story_strip.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class CommunityHeaderSection extends StatelessWidget {
   const CommunityHeaderSection({
@@ -45,7 +46,7 @@ class CommunityHeaderSection extends StatelessWidget {
       children: [
         Text(
           l10n.communityTitle,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             fontSize: 24,
             color: _brandPrimary,
             fontFamily: 'EricaOne',
@@ -86,7 +87,7 @@ class CommunityHeaderSection extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 l10n.findFriend,
-                style: const TextStyle(
+                style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class CommunityHeaderSection extends StatelessWidget {
         const CommunityPostingIndicator(),
         Text(
           l10n.localCat,
-          style: const TextStyle(
+          style: AppTextStyles.body.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w900,
             color: _brandPrimary,

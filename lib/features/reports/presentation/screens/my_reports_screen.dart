@@ -64,7 +64,7 @@ class MyReportsScreen extends ConsumerWidget {
                                     child: Center(
                                       child: Text(
                                         l10n.noReportsYet,
-                                        style: const TextStyle(
+                                        style: AppTextStyles.body.copyWith(
                                           color: Color(0xFFBA4A22),
                                         ),
                                       ),
@@ -134,7 +134,7 @@ class MyReportsScreen extends ConsumerWidget {
                         return Center(
                           child: Text(
                             l10n.couldNotLoadReports,
-                            style: const TextStyle(color: Color(0xFFBA4A22)),
+                            style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22)),
                           ),
                         );
                       },
