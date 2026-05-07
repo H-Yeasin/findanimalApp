@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:hesteka_frontend/features/profile/presentation/providers/profile_providers.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/routing/route_names.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
@@ -165,7 +165,7 @@ class PointsScreen extends ConsumerWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            DateFormat('dd/MM/yy').format(item.createdAt),
+            Formatters.compactDate(item.createdAt),
             style: TextStyle(
               color: AppColors.brandPrimary.withValues(alpha: 0.4),
               fontSize: 12,

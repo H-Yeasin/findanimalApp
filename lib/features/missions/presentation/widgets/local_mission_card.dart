@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/utils/formatters.dart';
 import '../../data/models/mission_model.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
@@ -176,14 +175,9 @@ class LocalMissionCard extends ConsumerWidget {
   }
 
   String _formatTimeAgo(DateTime dateTime, AppLocalizations l10n) {
-    final now = DateTime.now();
-    final difference = now.difference(dateTime);
-
-    if (difference.inDays < 1 && now.day == dateTime.day) {
-      return timeago.format(dateTime, locale: l10n.locale.languageCode);
-    } else {
-      return DateFormat('HH:mm - dd MMM yyyy', l10n.locale.languageCode)
-          .format(dateTime);
-    }
+    return Formatters.recentOrDateTime(
+      dateTime,
+      locale: l10n.locale.languageCode,
+    );
   }
 }

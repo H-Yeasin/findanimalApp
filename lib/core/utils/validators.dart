@@ -1,6 +1,8 @@
 class Validators {
   const Validators._();
 
+  static final RegExp _emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+
   static String? required(
     String? value, {
     String field = 'Field',
@@ -21,11 +23,14 @@ class Validators {
       return requiredMessage ?? 'Email is required';
     }
 
-    final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailRegex.hasMatch(value.trim())) {
+    if (!isEmail(value)) {
       return invalidMessage ?? 'Enter a valid email';
     }
 
     return null;
+  }
+
+  static bool isEmail(String value) {
+    return _emailRegex.hasMatch(value.trim());
   }
 }

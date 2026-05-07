@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 
 class CommunityComposer extends StatelessWidget {
@@ -49,9 +50,7 @@ class CommunityComposer extends StatelessWidget {
             children: [
               const CircleAvatar(
                 radius: 15,
-                backgroundImage: NetworkImage(
-                  'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=100',
-                ),
+                backgroundImage: AssetImage(AppAssets.accountIcon),
               ),
               const SizedBox(width: 10),
               Expanded(

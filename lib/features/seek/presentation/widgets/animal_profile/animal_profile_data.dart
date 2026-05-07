@@ -1,5 +1,4 @@
-import 'package:intl/intl.dart';
-
+import 'package:hesteka_frontend/core/utils/formatters.dart';
 import '../../../data/models/report_model.dart';
 
 class AnimalProfileData {
@@ -64,9 +63,10 @@ class AnimalProfileData {
           : report.species.toUpperCase(),
       details:
           '${report.age} | ${report.species} | ${report.breed} | $actionVerb',
-      time: DateFormat(
-        'MMM d, yyyy - h:mm a',
-      ).format(report.eventDate.toLocal()),
+      time: Formatters.date(
+        report.eventDate.toLocal(),
+        pattern: 'MMM d, yyyy - h:mm a',
+      ),
       status: report.status,
       description: report.description,
       imageUrl: hasImage ? report.images.first.secureUrl : '',

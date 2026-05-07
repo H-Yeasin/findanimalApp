@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/config/app_assets.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
@@ -75,7 +76,7 @@ class PartnerHeroHeader extends StatelessWidget {
       imageUrl.startsWith('http://') || imageUrl.startsWith('https://');
 
   Widget _buildImage() {
-    const fallback = ColoredBox(color: Color(0xFF8D8D8D));
+    final fallback = Image.asset(AppAssets.homeHero, fit: BoxFit.cover);
 
     if (imageUrl.isEmpty) return fallback;
 

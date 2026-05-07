@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/formatters.dart';
 import '../../data/models/redemption_model.dart';
 import '../providers/my_redemptions_provider.dart';
 
@@ -126,7 +126,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  DateFormat('dd MMM yyyy, HH:mm').format(redemption.createdAt),
+                  Formatters.dateTime(redemption.createdAt),
                   style: TextStyle(
                     fontSize: 10,
                     color: AppColors.brandPrimary.withValues(alpha: 0.4),

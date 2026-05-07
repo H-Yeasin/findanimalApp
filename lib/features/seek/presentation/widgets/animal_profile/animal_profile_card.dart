@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
-import 'package:intl/intl.dart';
+import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'animal_profile_data.dart';
@@ -130,9 +130,11 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           ),
                           const Spacer(),
                           Text(
-                            DateFormat(
-                              l10n.profileDateFormat,
-                            ).format(data.eventDate.toLocal()),
+                            Formatters.date(
+                              data.eventDate.toLocal(),
+                              pattern: l10n.profileDateFormat,
+                              locale: l10n.locale.languageCode,
+                            ),
                             style: const TextStyle(
                               color: Color(0xFFD3A482),
                               fontSize: 9,

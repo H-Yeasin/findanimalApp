@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/seek/comments/data/models/comment_model.dart';
 import 'package:hesteka_frontend/features/seek/comments/presentation/providers/comments_provider.dart';
-import 'package:intl/intl.dart';
 import 'animal_profile_data.dart';
 
 class AnimalProfileCommentsSection extends ConsumerStatefulWidget {
@@ -238,7 +238,13 @@ class _CommentItem extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final timeFormatted = l10n.text(
       'hoursAgo',
-      params: {'hours': DateFormat('h').format(comment.createdAt)},
+      params: {
+        'hours': Formatters.date(
+          comment.createdAt,
+          pattern: 'h',
+          locale: l10n.locale.languageCode,
+        ),
+      },
     ); // Using existing hoursAgo key
 
     return Container(

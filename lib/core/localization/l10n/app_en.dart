@@ -16,6 +16,8 @@ const Map<String, String> appEn = {
   'navSolidarity': 'SOLIDARITY',
   'retry': 'Retry',
   'unknownError': 'Something went wrong.',
+  'genericError': 'Something went wrong. Please try again.',
+  'noData': 'No data found.',
   'accountTitle': 'Log in or create your\nHesteka account',
   'skip': 'Skip',
   'login': 'Log in',

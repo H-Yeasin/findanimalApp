@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
+import 'package:hesteka_frontend/core/utils/validators.dart';
 import '../../../../core/routing/route_names.dart';
 import '../providers/report_form_provider.dart';
 import '../widgets/report_base_layout.dart';
@@ -52,8 +53,7 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
           );
           return;
         }
-        if (email.isNotEmpty &&
-            !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
+        if (email.isNotEmpty && !Validators.isEmail(email)) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(l10n.reportStep4EmailInvalid)));

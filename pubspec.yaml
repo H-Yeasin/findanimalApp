@@ -95,8 +95,6 @@ flutter:
     - assets/images/Logo/
     - assets/images/Map/
     - assets/images/profile/
-    - assets/images/partner/
-    - assets/images/profile/
     - assets/images/
 
   fonts:

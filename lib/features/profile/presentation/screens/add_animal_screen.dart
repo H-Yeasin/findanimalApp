@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:hesteka_frontend/core/config/app_assets.dart';
+import 'package:hesteka_frontend/core/utils/validators.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/my_animal_model.dart';
 import '../../data/repositories/my_animals_repository.dart';
@@ -158,8 +160,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: widget.isEditMode ? 'EDIT\nANIMAL' : 'ADD\nANIMAL',
-        imageUrl:
-            'https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=1200&q=80',
+        imageUrl: AppAssets.homeHero,
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 20, 24, 26),
@@ -173,12 +174,8 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
               TextFormField(
                 controller: _titleController,
                 decoration: _inputDecoration('Enter animal title'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Title is required';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    Validators.required(value, requiredMessage: 'Title is required'),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('DESCRIPTION'),
@@ -187,12 +184,10 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                 controller: _descriptionController,
                 maxLines: 4,
                 decoration: _inputDecoration('Write animal description'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Description is required';
-                  }
-                  return null;
-                },
+                validator: (value) => Validators.required(
+                  value,
+                  requiredMessage: 'Description is required',
+                ),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('SPECIES'),
@@ -209,12 +204,8 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
               TextFormField(
                 controller: _breedController,
                 decoration: _inputDecoration('Enter breed'),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Breed is required';
-                  }
-                  return null;
-                },
+                validator: (value) =>
+                    Validators.required(value, requiredMessage: 'Breed is required'),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('GENDER'),
@@ -403,12 +394,10 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
             ),
           )
           .toList(),
-      validator: (selectedValue) {
-        if (selectedValue == null || selectedValue.isEmpty) {
-          return 'This field is required';
-        }
-        return null;
-      },
+      validator: (selectedValue) => Validators.required(
+        selectedValue,
+        requiredMessage: 'This field is required',
+      ),
       onChanged: onChanged,
     );
   }

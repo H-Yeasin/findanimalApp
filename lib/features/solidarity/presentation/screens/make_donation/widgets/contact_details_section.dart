@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
+import 'package:hesteka_frontend/core/utils/validators.dart';
 import '../../../providers/donation_provider.dart';
 
 class ContactDetailsSection extends StatelessWidget {
@@ -116,20 +117,22 @@ class ContactDetailsSection extends StatelessWidget {
             hint: l10n.emailHint,
             keyboardType: TextInputType.emailAddress,
             onChanged: onEmailChanged,
-            validator: (val) {
-              final email = (val ?? '').trim();
-              if (email.isEmpty) return 'Email is required';
-              final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-              if (!emailRegex.hasMatch(email)) return 'Invalid email';
-              return null;
-            },
+            validator: (val) => Validators.email(
+              val,
+              requiredMessage: l10n.emailRequired,
+              invalidMessage: l10n.emailInvalid,
+            ),
           ),
           _inputLabel('${l10n.nameAndFirstName}*'),
           _textField(
             controller: nameController,
             hint: l10n.enterMyFirstAndLastName,
             onChanged: onNameChanged,
-            validator: (val) => val!.isEmpty ? 'Name is required' : null,
+            validator: (val) => Validators.required(
+              val,
+              field: l10n.nameAndFirstName,
+              requiredMessage: l10n.fieldRequired(l10n.nameAndFirstName),
+            ),
           ),
           const SizedBox(height: 10),
           GestureDetector(
@@ -169,10 +172,13 @@ class ContactDetailsSection extends StatelessWidget {
             const SizedBox(height: 15),
             _textField(
               controller: companyNameController,
-              hint: 'Company name',
+              hint: l10n.companyNameHint,
               onChanged: onCompanyNameChanged,
-              validator: (val) =>
-                  val!.isEmpty ? 'Company name is required' : null,
+              validator: (val) => Validators.required(
+                val,
+                field: l10n.fieldCompanyName,
+                requiredMessage: l10n.fieldRequired(l10n.fieldCompanyName),
+              ),
             ),
             _textField(
               controller: companySirenController,

@@ -10,9 +10,6 @@ class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('fr'),
     Locale('en'),
-    Locale('de'),
-    Locale('es'),
-    Locale('it'),
   ];
 
   static AppLocalizations of(BuildContext context) {
@@ -100,6 +97,8 @@ class AppLocalizations {
   String get navSolidarity => _text('navSolidarity');
   String get retry => _text('retry');
   String get unknownError => _text('unknownError');
+  String get genericError => _text('genericError');
+  String get noData => _text('noData');
   String get accountTitle => _text('accountTitle');
   String get skip => _text('skip');
   String get login => _text('login');

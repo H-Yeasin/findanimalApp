@@ -217,9 +217,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
   ) {
     final name = shelter.name;
     final address = shelter.fullAddress;
-    final imageUrl =
-        shelter.fullImageUrl ??
-        'https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?q=80&w=100';
+    final imageUrl = shelter.fullImageUrl;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       padding: const EdgeInsets.all(15),
@@ -232,18 +230,16 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(
-              imageUrl,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                width: 60,
-                height: 60,
-                color: color.withValues(alpha: 0.1),
-                child: Icon(Icons.business, color: color),
-              ),
-            ),
+            child: imageUrl != null
+                ? Image.network(
+                    imageUrl,
+                    width: 60,
+                    height: 60,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        _shelterFallback(color),
+                  )
+                : _shelterFallback(color),
           ),
           const SizedBox(width: 15),
           Expanded(
@@ -326,6 +322,21 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
             fontSize: 8,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _shelterFallback(Color color) {
+    return Image.asset(
+      AppAssets.shelterHeader,
+      width: 60,
+      height: 60,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        width: 60,
+        height: 60,
+        color: color.withValues(alpha: 0.1),
+        child: Icon(Icons.business, color: color),
       ),
     );
   }

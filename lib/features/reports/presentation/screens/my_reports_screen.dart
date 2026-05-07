@@ -5,6 +5,7 @@ import 'package:hesteka_frontend/features/reports/presentation/providers/report_
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
 import 'package:hesteka_frontend/features/seek/presentation/providers/seek_reports_provider.dart';
 
+import '../../../../core/config/app_assets.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -364,20 +365,16 @@ class MyReportsScreen extends ConsumerWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  report.images.isNotEmpty == true
-                      ? report.images[0].secureUrl
-                      : 'https://via.placeholder.com/100',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 80,
-                    height: 80,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.pets),
-                  ),
-                ),
+                child: report.images.isNotEmpty
+                    ? Image.network(
+                        report.images[0].secureUrl,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            _reportImageFallback(),
+                      )
+                    : _reportImageFallback(),
               ),
               const SizedBox(width: 15),
               Expanded(
@@ -474,6 +471,21 @@ class MyReportsScreen extends ConsumerWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+
+  Widget _reportImageFallback() {
+    return Image.asset(
+      AppAssets.cat,
+      width: 80,
+      height: 80,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => Container(
+        width: 80,
+        height: 80,
+        color: Colors.grey[300],
+        child: const Icon(Icons.pets),
       ),
     );
   }
