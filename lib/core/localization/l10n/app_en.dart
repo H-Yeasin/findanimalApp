@@ -19,7 +19,7 @@ const Map<String, String> appEn = {
   'genericError': 'Something went wrong. Please try again.',
   'noData': 'No data found.',
   'accountTitle': 'Log in or create your\nHesteka account',
-  'skip': 'Skip',
+  'skip': 'Skip>>',
   'login': 'Log in',
   'createAccount': 'Create an account',
   'partnerAccess': 'Partner access',
@@ -515,8 +515,7 @@ const Map<String, String> appEn = {
   'faqReportVerifiedQuestion': 'Is my report verified?',
   'faqReportVerifiedAnswer':
       'Moderation may be carried out to ensure the reliability of the information.',
-  'faqReportFoundQuestion':
-      'How do I indicate that the animal has been found?',
+  'faqReportFoundQuestion': 'How do I indicate that the animal has been found?',
   'faqReportFoundAnswer':
       'You can close your report with one click from your listing.',
   'faqMissionFindQuestion': 'How can I find a mission near me?',
@@ -529,8 +528,7 @@ const Map<String, String> appEn = {
   'faqMissionFreeAnswer':
       'Yes, they are based on mutual help and volunteering, but they will earn you points.',
   'faqMissionExperienceQuestion': 'Do I need any special experience?',
-  'faqMissionExperienceAnswer':
-      'No, most missions are accessible to everyone.',
+  'faqMissionExperienceAnswer': 'No, most missions are accessible to everyone.',
   'faqMissionConfirmedQuestion': 'How do I know if a mission is confirmed?',
   'faqMissionConfirmedAnswer':
       'You receive a notification once it is validated.',
@@ -571,7 +569,8 @@ const Map<String, String> appEn = {
   'availableToTakeCare': 'I am available to take care of it',
   'currentStatus': 'Current status: {status}',
   'hideContactInfo': 'Hide contact info',
-  'noPublicContactInfo': 'No public phone or email is available for this report.',
+  'noPublicContactInfo':
+      'No public phone or email is available for this report.',
   'couldNotOpenContactApp': 'Could not open contact app.',
   'latestInfo': 'LATEST INFO',
   'beTheFirstToHelp': 'No comments yet. Be the first to help!',

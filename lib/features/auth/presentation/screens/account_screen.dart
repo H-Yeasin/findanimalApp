@@ -16,32 +16,28 @@ class AuthAccountScreen extends StatelessWidget {
 
     return AppBackground(
       child: AuthScreenScaffold(
-        onBack: () {
-          if (context.canPop()) {
-            context.pop();
-          } else {
-            context.go(RouteNames.root);
-          }
-        },
+        showBackButton: false,
         headerAction: TextButton(
           onPressed: () => context.go(RouteNames.root),
+
           style: TextButton.styleFrom(
             backgroundColor: AuthUiColors.brand,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(22),
+              borderRadius: BorderRadius.circular(8),
             ),
             textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 14),
           ),
+
           child: Text(l10n.skip),
         ),
         onBottomTap: (_) => context.go(RouteNames.root),
         child: Column(
           children: [
-            const SizedBox(height: 6),
+            const SizedBox(height: 10),
             AuthMainTitle(l10n.accountTitle),
-            const SizedBox(height: 70),
+            const SizedBox(height: 100),
             AuthOutlinePillButton(
               label: l10n.login,
               width: 200,

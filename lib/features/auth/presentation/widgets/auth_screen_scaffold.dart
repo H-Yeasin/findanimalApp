@@ -104,7 +104,7 @@ class _AuthHeroHeader extends StatelessWidget {
               ),
             ),
           if (headerAction != null)
-            Positioned(right: 24, top: 38, child: headerAction!),
+            Positioned(right: 24, top: 70, child: headerAction!),
           Align(
             alignment: const Alignment(0, 0.52),
             child: Image.asset(

@@ -19,7 +19,7 @@ const Map<String, String> appFr = {
   'genericError': 'Une erreur est survenue. Veuillez réessayer.',
   'noData': 'Aucune donnée trouvée.',
   'accountTitle': 'Connectez-vous ou créez votre\ncompte Hesteka',
-  'skip': 'Passer',
+  'skip': 'Passer>>',
   'login': 'Se connecter',
   'createAccount': 'Créer un compte',
   'partnerAccess': 'Accès partenaire',
@@ -220,8 +220,7 @@ const Map<String, String> appFr = {
   'collectionPointDescriptionHint': 'Description du point de collecte',
   'collectionPointAddress': 'ADRESSE DU POINT DE COLLECTE',
   'collectionPointGenericTitle': 'POINT DE COLLECTE',
-  'collectionPointTogetherHelp':
-      'Ensemble, aidons les animaux dans le besoin.',
+  'collectionPointTogetherHelp': 'Ensemble, aidons les animaux dans le besoin.',
   'pickLocationOnMap': 'Choisir l’emplacement sur la carte',
   'photoOfCollectionPoint': 'PHOTO DU POINT DE COLLECTE',
   'uploadPhoto': 'Télécharger une photo',
@@ -583,7 +582,8 @@ const Map<String, String> appFr = {
   'latestInfo': 'DERNIÈRES INFOS',
   'beTheFirstToHelp':
       'Aucun commentaire pour le moment. Soyez le premier à aider !',
-  'errorLoadingComments': 'Erreur lors du chargement des commentaires : {error}',
+  'errorLoadingComments':
+      'Erreur lors du chargement des commentaires : {error}',
   'replying': 'Réponse en cours...',
   'commentAs': 'Commenter en tant que {name}',
   'gif': 'GIF',
