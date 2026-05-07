@@ -61,6 +61,7 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final reportsAsync = ref.watch(homeReportsProvider);
+    final filters = ref.watch(homeReportFiltersProvider);
     final userLocAsync = ref.watch(userLocationProvider);
 
     // Default to Paris only if location detection fails completely
@@ -116,6 +117,19 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
       }
     }
 
+    final currentRadius = (filters['radius'] as num?)?.toDouble() ?? 50.0;
+
+    final circles = <Circle>{
+      Circle(
+        circleId: const CircleId('home_radius'),
+        center: initialLocation,
+        radius: currentRadius * 1000, // dynamic radius based on filters
+        fillColor: const Color(0xFFBA4A22).withValues(alpha: 0.06),
+        strokeColor: const Color(0xFFBA4A22),
+        strokeWidth: 2,
+      ),
+    };
+
     return Stack(
       alignment: Alignment.bottomCenter,
       clipBehavior: Clip.none,
@@ -154,6 +168,7 @@ class _HomeMapSectionState extends ConsumerState<HomeMapSection> {
                 zoom: 11,
               ),
               markers: markers,
+              circles: circles,
               myLocationEnabled: false,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
