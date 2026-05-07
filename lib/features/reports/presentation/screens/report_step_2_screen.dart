@@ -57,6 +57,9 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final sourceAnimalImageUrl = ref.watch(
+      reportFormProvider.select((state) => state.sourceAnimalImageUrl),
+    );
     // Listen for address changes from the map picker
     ref.listen(reportFormProvider.select((s) => s.address), (prev, next) {
       if (next != null && next != _addressController.text) {
@@ -128,6 +131,9 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
           if (_pickedImages.isNotEmpty) ...[
             _buildImageList(),
             const SizedBox(height: 15),
+          ] else if (sourceAnimalImageUrl?.isNotEmpty == true) ...[
+            _buildSourceAnimalImage(sourceAnimalImageUrl!),
+            const SizedBox(height: 15),
           ],
           _buildUploadBox(l10n),
         ],
@@ -179,6 +185,28 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildSourceAnimalImage(String imageUrl) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(15),
+      child: Image.network(
+        imageUrl,
+        width: 100,
+        height: 100,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF9EAD4),
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: const Color(0xFFBA4A22), width: 1),
+          ),
+          child: const Icon(Icons.pets, color: Color(0xFFBA4A22)),
+        ),
       ),
     );
   }

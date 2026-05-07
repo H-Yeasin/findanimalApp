@@ -82,6 +82,12 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
           );
           return;
         }
+        if (_breedController.text.trim().isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.reportStep1BreedRequired)),
+          );
+          return;
+        }
         if (_selectedGender == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(l10n.reportStep1GenderRequired)),

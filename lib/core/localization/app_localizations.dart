@@ -471,6 +471,7 @@ class AppLocalizations {
   String get reportStep1PostTypeRequired => _text('reportStep1PostTypeRequired');
   String get reportStep1NameRequired => _text('reportStep1NameRequired');
   String get reportStep1SpeciesRequired => _text('reportStep1SpeciesRequired');
+  String get reportStep1BreedRequired => _text('reportStep1BreedRequired');
   String get reportStep1GenderRequired => _text('reportStep1GenderRequired');
   String get reportStep1PostTypeLabel => _text('reportStep1PostTypeLabel');
   String get reportStep1PostTypeHint => _text('reportStep1PostTypeHint');

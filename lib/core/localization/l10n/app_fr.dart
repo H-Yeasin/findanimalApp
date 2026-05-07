@@ -410,6 +410,7 @@ const Map<String, String> appFr = {
   'reportStep1PostTypeRequired': 'Veuillez sélectionner un type d’annonce.',
   'reportStep1NameRequired': 'Veuillez entrer le nom de votre animal.',
   'reportStep1SpeciesRequired': 'Veuillez sélectionner l’espèce.',
+  'reportStep1BreedRequired': 'Veuillez entrer la race.',
   'reportStep1GenderRequired': 'Veuillez sélectionner le sexe.',
   'reportStep1PostTypeLabel': 'QUEL TYPE D’ANNONCE SOUHAITEZ-VOUS PUBLIER ?',
   'reportStep1PostTypeHint': 'Types d’annonce',

@@ -408,6 +408,7 @@ const Map<String, String> appEn = {
   'reportStep1PostTypeRequired': 'Please select a post type.',
   'reportStep1NameRequired': 'Please enter your animal\'s name.',
   'reportStep1SpeciesRequired': 'Please select the species.',
+  'reportStep1BreedRequired': 'Please enter the breed.',
   'reportStep1GenderRequired': 'Please select the gender.',
   'reportStep1PostTypeLabel': 'WHAT TYPES OF ADS DO YOU WANT TO PUBLISH?',
   'reportStep1PostTypeHint': 'Post Types',

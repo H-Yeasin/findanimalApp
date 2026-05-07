@@ -25,10 +25,22 @@ class AddAnimalScreen extends ConsumerStatefulWidget {
 class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _breedController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   XFile? _selectedImage;
   String? _initialImageUrl;
+  String? _selectedSpecies;
+  String? _selectedGender;
+  String? _selectedAge;
+  String? _hasMicrochip;
+  String? _hasTattoo;
+  String? _hasCollarOrHarness;
   bool _isSubmitting = false;
+
+  static const _speciesOptions = ['Dog', 'Cat', 'Bird', 'Other'];
+  static const _genderOptions = ['Male', 'Female'];
+  static const _ageOptions = ['Junior', 'Adult', 'Senior'];
+  static const _yesNoUnknownOptions = ['Yes', 'No', 'Unknown'];
 
   @override
   void initState() {
@@ -37,6 +49,13 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
     if (animal != null) {
       _titleController.text = animal.title;
       _descriptionController.text = animal.description;
+      _breedController.text = animal.breed ?? '';
+      _selectedSpecies = animal.species;
+      _selectedGender = animal.gender;
+      _selectedAge = animal.age;
+      _hasMicrochip = animal.hasMicrochip;
+      _hasTattoo = animal.hasTattoo;
+      _hasCollarOrHarness = animal.hasCollarOrHarness;
       _initialImageUrl = animal.photo?.secureUrl;
     }
   }
@@ -45,6 +64,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _breedController.dispose();
     super.dispose();
   }
 
@@ -82,6 +102,13 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
               id: widget.animalId!,
               title: _titleController.text.trim(),
               description: _descriptionController.text.trim(),
+              species: _selectedSpecies!,
+              breed: _breedController.text.trim(),
+              gender: _selectedGender!,
+              age: _selectedAge!,
+              hasMicrochip: _hasMicrochip!,
+              hasTattoo: _hasTattoo!,
+              hasCollarOrHarness: _hasCollarOrHarness!,
               image: image,
             );
       } else {
@@ -90,6 +117,13 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
             .create(
               title: _titleController.text.trim(),
               description: _descriptionController.text.trim(),
+              species: _selectedSpecies!,
+              breed: _breedController.text.trim(),
+              gender: _selectedGender!,
+              age: _selectedAge!,
+              hasMicrochip: _hasMicrochip!,
+              hasTattoo: _hasTattoo!,
+              hasCollarOrHarness: _hasCollarOrHarness!,
               image: image!,
             );
       }
@@ -159,6 +193,74 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('SPECIES'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _selectedSpecies,
+                hint: 'Select species',
+                items: _speciesOptions,
+                onChanged: (value) => setState(() => _selectedSpecies = value),
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('BREED'),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _breedController,
+                decoration: _inputDecoration('Enter breed'),
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Breed is required';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('GENDER'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _selectedGender,
+                hint: 'Select gender',
+                items: _genderOptions,
+                onChanged: (value) => setState(() => _selectedGender = value),
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('AGE'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _selectedAge,
+                hint: 'Select age',
+                items: _ageOptions,
+                onChanged: (value) => setState(() => _selectedAge = value),
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('MICROCHIP'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _hasMicrochip,
+                hint: 'Does the animal have a microchip?',
+                items: _yesNoUnknownOptions,
+                onChanged: (value) => setState(() => _hasMicrochip = value),
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('TATTOO'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _hasTattoo,
+                hint: 'Does the animal have a tattoo?',
+                items: _yesNoUnknownOptions,
+                onChanged: (value) => setState(() => _hasTattoo = value),
+              ),
+              const SizedBox(height: 14),
+              const PartnerSectionHeading('COLLAR OR HARNESS'),
+              const SizedBox(height: 8),
+              _buildDropdown(
+                value: _hasCollarOrHarness,
+                hint: 'Does the animal wear one?',
+                items: _yesNoUnknownOptions,
+                onChanged: (value) =>
+                    setState(() => _hasCollarOrHarness = value),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('PHOTO'),
@@ -272,6 +374,42 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDropdown({
+    required String? value,
+    required String hint,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      decoration: _inputDecoration(hint),
+      dropdownColor: PartnerUiColors.panel,
+      icon: const Icon(
+        Icons.keyboard_arrow_down_rounded,
+        color: PartnerUiColors.brand,
+      ),
+      style: const TextStyle(
+        color: PartnerUiColors.brand,
+        fontWeight: FontWeight.w600,
+      ),
+      items: items
+          .map(
+            (item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(item),
+            ),
+          )
+          .toList(),
+      validator: (selectedValue) {
+        if (selectedValue == null || selectedValue.isEmpty) {
+          return 'This field is required';
+        }
+        return null;
+      },
+      onChanged: onChanged,
     );
   }
 

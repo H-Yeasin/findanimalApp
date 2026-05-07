@@ -10,6 +10,7 @@ import '../../../../core/widgets/app_top_bar.dart';
 import '../../../../features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
+import '../../../reports/presentation/providers/report_form_provider.dart';
 import '../../data/models/my_animal_model.dart';
 import '../providers/my_animals_provider.dart';
 import '../providers/profile_providers.dart';
@@ -33,6 +34,52 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
       extra: animal,
     );
     ref.invalidate(myAnimalsProvider);
+  }
+
+  Future<void> _openReportAnimalPicker() async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final animals = await ref.read(myAnimalsProvider.future);
+      if (!mounted) return;
+
+      if (animals.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.noAnimalsYet)));
+        return;
+      }
+
+      final selectedAnimal = await showModalBottomSheet<MyAnimalModel>(
+        context: context,
+        backgroundColor: PartnerUiColors.panel,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (sheetContext) {
+          return SafeArea(
+            child: ListView.separated(
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+              itemCount: animals.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
+              itemBuilder: (_, index) {
+                final animal = animals[index];
+                return _AnimalPickerTile(animal: animal);
+              },
+            ),
+          );
+        },
+      );
+
+      if (selectedAnimal == null || !mounted) return;
+
+      ref.read(reportFormProvider.notifier).populateFromMyAnimal(selectedAnimal);
+      context.push(RouteNames.reportCreateStep1);
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.couldNotLoadAnimals(error.toString()))),
+      );
+    }
   }
 
   @override
@@ -230,7 +277,7 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                         borderRadius: BorderRadius.circular(22),
                       ),
                     ),
-                    onPressed: () => context.push(RouteNames.reportCreateStep1),
+                    onPressed: _openReportAnimalPicker,
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
@@ -390,6 +437,87 @@ class _AnimalCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         color: PartnerUiColors.grid,
       ),
+      child: const Icon(Icons.pets, color: PartnerUiColors.brand),
+    );
+  }
+}
+
+class _AnimalPickerTile extends StatelessWidget {
+  const _AnimalPickerTile({required this.animal});
+
+  final MyAnimalModel animal;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.of(context).pop(animal),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.55),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: PartnerUiColors.brand),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: animal.photo?.secureUrl.isNotEmpty == true
+                  ? Image.network(
+                      animal.photo!.secureUrl,
+                      width: 58,
+                      height: 58,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          _placeholderImage(),
+                    )
+                  : _placeholderImage(),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    animal.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.sectionTitle.copyWith(
+                      color: PartnerUiColors.brand,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    [
+                      animal.species,
+                      animal.breed,
+                      animal.gender,
+                    ].where((item) => item?.isNotEmpty == true).join(' | '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.body.copyWith(
+                      color: PartnerUiColors.brand,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: PartnerUiColors.brand),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _placeholderImage() {
+    return Container(
+      width: 58,
+      height: 58,
+      color: Colors.white,
       child: const Icon(Icons.pets, color: PartnerUiColors.brand),
     );
   }

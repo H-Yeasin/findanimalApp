@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/features/profile/data/models/my_animal_model.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
 import '../../data/repositories/reports_repository.dart';
 import '../providers/my_reports_provider.dart';
@@ -28,6 +29,8 @@ class ReportFormState {
     this.emailAddress,
     this.isEmailVisible = false,
     this.editingReportId,
+    this.sourceAnimalId,
+    this.sourceAnimalImageUrl,
     this.submissionState = const AsyncValue.data(null),
   });
 
@@ -54,6 +57,8 @@ class ReportFormState {
   final String? emailAddress;
   final bool isEmailVisible;
   final String? editingReportId;
+  final String? sourceAnimalId;
+  final String? sourceAnimalImageUrl;
   final AsyncValue<void> submissionState;
 
   ReportFormState copyWith({
@@ -79,6 +84,8 @@ class ReportFormState {
     String? emailAddress,
     bool? isEmailVisible,
     String? editingReportId,
+    String? sourceAnimalId,
+    String? sourceAnimalImageUrl,
     AsyncValue<void>? submissionState,
   }) {
     return ReportFormState(
@@ -104,6 +111,8 @@ class ReportFormState {
       emailAddress: emailAddress ?? this.emailAddress,
       isEmailVisible: isEmailVisible ?? this.isEmailVisible,
       editingReportId: editingReportId ?? this.editingReportId,
+      sourceAnimalId: sourceAnimalId ?? this.sourceAnimalId,
+      sourceAnimalImageUrl: sourceAnimalImageUrl ?? this.sourceAnimalImageUrl,
       submissionState: submissionState ?? this.submissionState,
     );
   }
@@ -164,6 +173,22 @@ class ReportFormNotifier extends Notifier<ReportFormState> {
   String _mapYesNoFromBackend(String value) {
     if (value == 'Unknown') return 'Unknown';
     return value;
+  }
+
+  void populateFromMyAnimal(MyAnimalModel animal) {
+    state = ReportFormState(
+      sourceAnimalId: animal.id,
+      sourceAnimalImageUrl: animal.photo?.secureUrl,
+      animalName: animal.title,
+      species: animal.species,
+      breed: animal.breed,
+      gender: animal.gender,
+      age: animal.age,
+      description: animal.description,
+      hasMicrochip: animal.hasMicrochip,
+      hasTattoo: animal.hasTattoo,
+      hasCollarOrHarness: animal.hasCollarOrHarness,
+    );
   }
 
   void setStep(int value) {

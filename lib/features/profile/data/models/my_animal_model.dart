@@ -3,6 +3,13 @@ class MyAnimalModel {
     required this.id,
     required this.title,
     required this.description,
+    this.species,
+    this.breed,
+    this.gender,
+    this.age,
+    this.hasMicrochip,
+    this.hasTattoo,
+    this.hasCollarOrHarness,
     this.status,
     this.slug,
     this.photo,
@@ -12,6 +19,13 @@ class MyAnimalModel {
   final String id;
   final String title;
   final String description;
+  final String? species;
+  final String? breed;
+  final String? gender;
+  final String? age;
+  final String? hasMicrochip;
+  final String? hasTattoo;
+  final String? hasCollarOrHarness;
   final String? status;
   final String? slug;
   final MyAnimalPhoto? photo;
@@ -22,6 +36,13 @@ class MyAnimalModel {
       id: json['_id'] as String? ?? '',
       title: json['title'] as String? ?? '',
       description: json['description'] as String? ?? '',
+      species: json['species'] as String?,
+      breed: json['breed'] as String?,
+      gender: json['gender'] as String?,
+      age: json['age'] as String?,
+      hasMicrochip: json['hasMicrochip'] as String?,
+      hasTattoo: json['hasTattoo'] as String?,
+      hasCollarOrHarness: json['hasCollarOrHarness'] as String?,
       status: json['status'] as String?,
       slug: json['slug'] as String?,
       photo: json['photo'] is Map<String, dynamic>

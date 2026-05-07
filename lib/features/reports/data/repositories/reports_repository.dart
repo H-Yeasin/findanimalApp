@@ -23,6 +23,8 @@ class ReportsRepository {
     final emailAddress = state.emailAddress?.trim();
     final Map<String, dynamic> data = {
       'animalName': state.animalName,
+      if (state.sourceAnimalId?.isNotEmpty == true)
+        'myAnimalId': state.sourceAnimalId,
       'species': ['Dog', 'Cat', 'Bird'].contains(state.species)
           ? state.species
           : 'Other',

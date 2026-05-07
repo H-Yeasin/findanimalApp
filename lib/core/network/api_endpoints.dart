@@ -24,6 +24,7 @@ class ApiEndpoints {
   static const String updateFcmToken = '/user/update-fcm-token';
   static const String createMyAnimal = '/myanimal/create';
   static const String getAllMyAnimals = '/myanimal/get-all';
+  static const String getMyAnimals = '/myanimal/mine';
   static String updateMyAnimal(String id) => '/myanimal/$id';
 
   // Reports

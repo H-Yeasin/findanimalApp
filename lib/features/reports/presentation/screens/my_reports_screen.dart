@@ -11,6 +11,8 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
+import '../../../profile/data/models/my_animal_model.dart';
+import '../../../profile/presentation/providers/my_animals_provider.dart';
 import '../providers/my_reports_provider.dart';
 
 class MyReportsScreen extends ConsumerWidget {
@@ -141,6 +143,37 @@ class MyReportsScreen extends ConsumerWidget {
               ),
             ),
             Positioned(
+              left: 24,
+              right: 92,
+              bottom: 20,
+              child: SizedBox(
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () => _openAnimalReportPicker(context, ref),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFBA4A22),
+                    foregroundColor: Colors.white,
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      l10n.reportOneOfMyAnimals,
+                      maxLines: 1,
+                      style: AppTextStyles.button.copyWith(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               right: 24,
               bottom: 20,
               child: FloatingActionButton(
@@ -182,6 +215,129 @@ class MyReportsScreen extends ConsumerWidget {
               },
             )
           : null,
+    );
+  }
+
+  Future<void> _openAnimalReportPicker(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final animals = await ref.read(myAnimalsProvider.future);
+      if (!context.mounted) return;
+
+      if (animals.isEmpty) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.noAnimalsYet)));
+        return;
+      }
+
+      final selectedAnimal = await showModalBottomSheet<MyAnimalModel>(
+        context: context,
+        backgroundColor: const Color(0xFFF9EAD4),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (sheetContext) {
+          return SafeArea(
+            child: ListView.separated(
+              padding: const EdgeInsets.fromLTRB(20, 18, 20, 22),
+              itemCount: animals.length,
+              separatorBuilder: (_, _) => const SizedBox(height: 10),
+              itemBuilder: (_, index) {
+                final animal = animals[index];
+                return _buildAnimalPickerTile(sheetContext, animal);
+              },
+            ),
+          );
+        },
+      );
+
+      if (selectedAnimal == null || !context.mounted) return;
+
+      ref.read(reportFormProvider.notifier).populateFromMyAnimal(selectedAnimal);
+      context.push(RouteNames.reportCreateStep1);
+    } catch (error) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.couldNotLoadAnimals(error.toString()))),
+      );
+    }
+  }
+
+  Widget _buildAnimalPickerTile(BuildContext context, MyAnimalModel animal) {
+    return InkWell(
+      onTap: () => Navigator.of(context).pop(animal),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.55),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFBA4A22)),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: animal.photo?.secureUrl.isNotEmpty == true
+                  ? Image.network(
+                      animal.photo!.secureUrl,
+                      width: 58,
+                      height: 58,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          _animalPlaceholder(),
+                    )
+                  : _animalPlaceholder(),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    animal.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.condensedSectionTitle.copyWith(
+                      color: const Color(0xFFBA4A22),
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    [
+                      animal.species,
+                      animal.breed,
+                      animal.gender,
+                    ].where((item) => item?.isNotEmpty == true).join(' | '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.body.copyWith(
+                      color: const Color(0xFFBA4A22),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right, color: Color(0xFFBA4A22)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _animalPlaceholder() {
+    return Container(
+      width: 58,
+      height: 58,
+      color: Colors.white,
+      child: const Icon(Icons.pets, color: Color(0xFFBA4A22)),
     );
   }
 

@@ -16,7 +16,7 @@ class MyAnimalsRepository {
   final ApiClient _apiClient;
 
   Future<List<MyAnimalModel>> getAll() async {
-    final response = await _apiClient.get(ApiEndpoints.getAllMyAnimals);
+    final response = await _apiClient.get(ApiEndpoints.getMyAnimals);
     final payload = response.data as Map<String, dynamic>;
     final items = payload['data'] as List<dynamic>? ?? const [];
     return items
@@ -28,11 +28,25 @@ class MyAnimalsRepository {
   Future<MyAnimalModel> create({
     required String title,
     required String description,
+    required String species,
+    required String breed,
+    required String gender,
+    required String age,
+    required String hasMicrochip,
+    required String hasTattoo,
+    required String hasCollarOrHarness,
     required MultipartFile image,
   }) async {
     final formData = FormData.fromMap({
       'title': title,
       'description': description,
+      'species': species,
+      'breed': breed,
+      'gender': gender,
+      'age': age,
+      'hasMicrochip': hasMicrochip,
+      'hasTattoo': hasTattoo,
+      'hasCollarOrHarness': hasCollarOrHarness,
       'image': image,
     });
     final response = await _apiClient.post(
@@ -47,11 +61,25 @@ class MyAnimalsRepository {
     required String id,
     required String title,
     required String description,
+    required String species,
+    required String breed,
+    required String gender,
+    required String age,
+    required String hasMicrochip,
+    required String hasTattoo,
+    required String hasCollarOrHarness,
     MultipartFile? image,
   }) async {
     final formData = FormData.fromMap({
       'title': title,
       'description': description,
+      'species': species,
+      'breed': breed,
+      'gender': gender,
+      'age': age,
+      'hasMicrochip': hasMicrochip,
+      'hasTattoo': hasTattoo,
+      'hasCollarOrHarness': hasCollarOrHarness,
       ...?(image == null ? null : {'image': image}),
     });
     final response = await _apiClient.patch(
