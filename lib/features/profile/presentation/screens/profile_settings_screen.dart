@@ -149,7 +149,10 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                     ),
                     child: Row(
                       children: [
-                        Text(lang.flag, style: AppTextStyles.body.copyWith(fontSize: 24)),
+                        Text(
+                          lang.flag,
+                          style: AppTextStyles.body.copyWith(fontSize: 24),
+                        ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
@@ -313,29 +316,6 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
               ),
             ),
             const Divider(color: PartnerUiColors.brand),
-            // const SizedBox(height: 34),
-            // PartnerPublishButton(
-            //   label: l10n.logoutLabel,
-            //   onTap: () async {
-            //     await ref.read(authSessionProvider.notifier).logout();
-            //     if (context.mounted) context.go(RouteNames.login);
-            //   },
-            // ),
-            // const SizedBox(height: 30),
-            // GestureDetector(
-            //   onTap: () {
-            //     // TODO: Implement account deletion
-            //   },
-            //   child: Text(
-            //     l10n.deleteMyAccount,
-            //     style: AppTextStyles.body.copyWith(
-            //       color: PartnerUiColors.brand,
-            //       fontFamily: 'EricaOne',
-            //       fontSize: 18,
-            //       fontWeight: FontWeight.w900,
-            //     ),
-            //   ),
-            // ),
             const SizedBox(height: 20),
           ],
         ),

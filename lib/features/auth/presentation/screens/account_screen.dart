@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/app_background.dart';
 import '../widgets/auth_screen_scaffold.dart';
 import '../widgets/auth_ui_kit.dart';
 
@@ -13,53 +14,55 @@ class AuthAccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return AuthScreenScaffold(
-      onBack: () {
-        if (context.canPop()) {
-          context.pop();
-        } else {
-          context.go(RouteNames.root);
-        }
-      },
-      headerAction: TextButton(
-        onPressed: () => context.go(RouteNames.root),
-        style: TextButton.styleFrom(
-          backgroundColor: AuthUiColors.brand,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
+    return AppBackground(
+      child: AuthScreenScaffold(
+        onBack: () {
+          if (context.canPop()) {
+            context.pop();
+          } else {
+            context.go(RouteNames.root);
+          }
+        },
+        headerAction: TextButton(
+          onPressed: () => context.go(RouteNames.root),
+          style: TextButton.styleFrom(
+            backgroundColor: AuthUiColors.brand,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(22),
+            ),
+            textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 14),
           ),
-          textStyle: AppTextStyles.sectionTitle.copyWith(fontSize: 14),
+          child: Text(l10n.skip),
         ),
-        child: Text(l10n.skip),
-      ),
-      onBottomTap: (_) => context.go(RouteNames.root),
-      child: Column(
-        children: [
-          const SizedBox(height: 6),
-          AuthMainTitle(l10n.accountTitle),
-          const SizedBox(height: 70),
-          AuthOutlinePillButton(
-            label: l10n.login,
-            width: 200,
-            onPressed: () => context.push(RouteNames.login),
-          ),
-          const SizedBox(height: 20),
-          AuthOrDivider(label: l10n.or),
-          const SizedBox(height: 22),
-          AuthOutlinePillButton(
-            label: l10n.createAccount,
-            width: 230,
-            onPressed: () => context.push(RouteNames.register),
-          ),
-          const SizedBox(height: 38),
-          AuthFilledPillButton(
-            label: l10n.partnerAccess,
-            onPressed: () => context.push(RouteNames.partnerAuthGateway),
-            isLoading: false,
-          ),
-        ],
+        onBottomTap: (_) => context.go(RouteNames.root),
+        child: Column(
+          children: [
+            const SizedBox(height: 6),
+            AuthMainTitle(l10n.accountTitle),
+            const SizedBox(height: 70),
+            AuthOutlinePillButton(
+              label: l10n.login,
+              width: 200,
+              onPressed: () => context.push(RouteNames.login),
+            ),
+            const SizedBox(height: 20),
+            AuthOrDivider(label: l10n.or),
+            const SizedBox(height: 22),
+            AuthOutlinePillButton(
+              label: l10n.createAccount,
+              width: 230,
+              onPressed: () => context.push(RouteNames.register),
+            ),
+            const SizedBox(height: 38),
+            AuthFilledPillButton(
+              label: l10n.partnerAccess,
+              onPressed: () => context.push(RouteNames.partnerAuthGateway),
+              isLoading: false,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -44,7 +44,8 @@ class SeekReportsList extends ConsumerWidget {
                 child: SeekAnimalCard(
                   report: report,
                   onViewOnMap: () {
-                    ref.read(selectedSeekReportProvider.notifier).state = report;
+                    ref.read(selectedSeekReportProvider.notifier).state =
+                        report;
                   },
                 ),
               );

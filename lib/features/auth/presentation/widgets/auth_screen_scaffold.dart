@@ -40,8 +40,8 @@ class AuthScreenScaffold extends StatelessWidget {
           ),
           Expanded(
             child: AppBackground(
-              backgroundColor: const Color(0xFFEDEDED),
-              lineColor: const Color(0xFFE7DCCB),
+              backgroundColor: AppBackgroundColors.paper,
+              lineColor: AppBackgroundColors.grid,
               child: SafeArea(
                 top: false,
                 bottom: false,

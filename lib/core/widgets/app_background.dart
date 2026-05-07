@@ -145,5 +145,5 @@ class AppBackgroundColors {
   const AppBackgroundColors._();
 
   static const Color paper = Color(0xFFFFFFFF);
-  static const Color grid = Color(0xFFF6E8D4);
+  static const Color grid = Color(0xFFFBF1D7);
 }
