@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/utils/formatters.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
-import 'package:hesteka_frontend/features/seek/comments/data/models/comment_model.dart';
-import 'package:hesteka_frontend/features/seek/comments/presentation/providers/comments_provider.dart';
+import 'package:hesteka_frontend/features/reportComments/data/models/comment_model.dart';
+import 'package:hesteka_frontend/features/reportComments/presentation/providers/comments_provider.dart';
 import 'animal_profile_data.dart';
 
 class AnimalProfileCommentsSection extends ConsumerStatefulWidget {

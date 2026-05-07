@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../core/network/api_client.dart';
-import '../../../../../core/network/dio_provider.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/dio_provider.dart';
 
 final commentsRemoteSourceProvider = Provider<CommentsRemoteSource>((ref) {
   return CommentsRemoteSource(ref.watch(apiClientProvider));
@@ -40,9 +40,7 @@ class CommentsRemoteSource {
   }
 
   Future<dynamic> toggleLike(String commentId) async {
-    final response = await _apiClient.post(
-      '/comments/toggle-like/$commentId',
-    );
+    final response = await _apiClient.post('/comments/toggle-like/$commentId');
     return response.data;
   }
 }
