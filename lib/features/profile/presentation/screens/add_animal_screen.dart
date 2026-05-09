@@ -175,8 +175,10 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
               TextFormField(
                 controller: _titleController,
                 decoration: _inputDecoration('Enter animal title'),
-                validator: (value) =>
-                    Validators.required(value, requiredMessage: 'Title is required'),
+                validator: (value) => Validators.required(
+                  value,
+                  requiredMessage: 'Title is required',
+                ),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('DESCRIPTION'),
@@ -205,8 +207,10 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
               TextFormField(
                 controller: _breedController,
                 decoration: _inputDecoration('Enter breed'),
-                validator: (value) =>
-                    Validators.required(value, requiredMessage: 'Breed is required'),
+                validator: (value) => Validators.required(
+                  value,
+                  requiredMessage: 'Breed is required',
+                ),
               ),
               const SizedBox(height: 14),
               const PartnerSectionHeading('GENDER'),
@@ -376,7 +380,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
     required ValueChanged<String?> onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       decoration: _inputDecoration(hint),
       dropdownColor: PartnerUiColors.panel,
       icon: const Icon(
@@ -389,10 +393,7 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
       ),
       items: items
           .map(
-            (item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(item),
-            ),
+            (item) => DropdownMenuItem<String>(value: item, child: Text(item)),
           )
           .toList(),
       validator: (selectedValue) => Validators.required(

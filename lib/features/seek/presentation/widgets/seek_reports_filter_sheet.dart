@@ -189,7 +189,7 @@ class _SeekReportsFilterSheetState
             ),
             _buildSectionTitle(l10n.sortBy),
             DropdownButtonFormField<String>(
-              value: _sortBy,
+              initialValue: _sortBy,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFFFBF4E9),

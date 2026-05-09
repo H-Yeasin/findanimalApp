@@ -24,7 +24,7 @@ class AuthMainTitle extends StatelessWidget {
       textAlign: center ? TextAlign.center : TextAlign.start,
       style: AppTextStyles.condensedSectionTitle.copyWith(
         color: AuthUiColors.brand,
-        fontSize: 36,
+        fontSize: 32,
         fontWeight: FontWeight.bold,
       ),
     );
