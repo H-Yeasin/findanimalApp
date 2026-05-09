@@ -1,9 +1,15 @@
 const Map<String, String> appFr = {
   'appName': 'Hesteka',
+  'selectLanguage': 'Sélectionnez la langue',
   'settingsTitle': 'PARAMÈTRES DE\nL’APPLICATION',
   'changePassword': 'Changer mon mot de passe',
+  'enterYourEmailAddressToResetPassword':
+      'Entrez votre adresse e-mail ci-dessous et nous vous enverrons un code pour réinitialiser votre mot de passe.',
   'registeredPaymentMethods': 'Moyens de paiement enregistrés',
   'language': 'Langue',
+  'partner': 'PARTENAIRE HESTEKA',
+  'partnerTitle':
+      'Rejoignez le réseau de professionnels dévoués au bien-être animal.',
   'darkLightMode': 'Mode Sombre/Clair',
   'locationAuthorization': 'Autorisation de localisation',
   'privacyPolicy': 'Politique de confidentialité',
@@ -54,6 +60,7 @@ const Map<String, String> appFr = {
   'companyNameHint': 'Nom de l’entreprise',
   'createMyAccount': 'Créer mon compte',
   'registerAsPartner': 'S’inscrire en tant que Partenaire',
+  'loginAsPartner': 'PARTENAIRE LOGIN',
   'partnerRegisterTitle': 'S’inscrire en tant que Partenaire',
   'partnerRegisterSuccess':
       'Inscription partenaire envoyée. Veuillez attendre l’approbation administrateur.',
@@ -128,7 +135,7 @@ const Map<String, String> appFr = {
   'goToLogin': 'Aller à la connexion',
   'couldNotLoadReports':
       'Impossible de charger les signalements. Veuillez réessayer.',
-  'editMyReport': 'Modifier mon signalement',
+  'editMyReport': 'Modifier',
   'unknownAnimal': 'SANS NOM',
   'unknownValue': 'Inconnu',
   'seeOnMap': 'VOIR SUR LA CARTE',
@@ -157,7 +164,7 @@ const Map<String, String> appFr = {
   'pleaseLoginToViewLocalChat':
       'Veuillez vous connecter pour voir le chat local.',
   'couldNotLoadLocalChat': 'Impossible de charger le chat local.',
-  'seekViewReports': 'VOIR LES SIGNALEMENTS',
+  'seekViewReports': 'VOIR LES\nSIGNALEMENTS',
   'locationUpdated': 'Localisation mise à jour !',
   'couldNotGetLocation': 'Impossible d’obtenir la localisation.',
   'filters': 'FILTRES',
@@ -667,4 +674,8 @@ const Map<String, String> appFr = {
       'Pour toute question concernant ces mentions légales ou l\'application, vous pouvez nous contacter à :',
   'legalContactInfo':
       'E-mail : contact@hesteka.com\nTéléphone : +33 6 41 45 83 60',
+
+  'a6DigitCodeHasBeenSentToYourEmail':
+      'Un code à 6 chiffres a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous pour continuer.',
+  'resettingPasswordFor': 'Réinitialisation du mot de passe pour',
 };

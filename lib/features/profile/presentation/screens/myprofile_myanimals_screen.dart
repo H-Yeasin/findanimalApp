@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
@@ -72,7 +73,9 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
 
       if (selectedAnimal == null || !mounted) return;
 
-      ref.read(reportFormProvider.notifier).populateFromMyAnimal(selectedAnimal);
+      ref
+          .read(reportFormProvider.notifier)
+          .populateFromMyAnimal(selectedAnimal);
       context.push(RouteNames.reportCreateStep1);
     } catch (error) {
       if (!mounted) return;
@@ -179,15 +182,15 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                     customBorder: const CircleBorder(),
                     child: Container(
                       width: 40,
-                      height: 40,
+                      height: 45,
                       decoration: const BoxDecoration(
                         color: PartnerUiColors.brand,
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
-                        Icons.add,
+                        Icons.add_rounded,
                         color: Colors.white,
-                        size: 24,
+                        size: 35,
                       ),
                     ),
                   ),
@@ -209,9 +212,8 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                     children: [
                       Text(
                         l10n.couldNotLoadAnimals(error.toString()),
-                        style: AppTextStyles.body.copyWith(
+                        style: AppTextStyles.condensedSectionTitle.copyWith(
                           color: PartnerUiColors.brand,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -240,9 +242,9 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                       child: Text(
                         l10n.noAnimalsYet,
                         textAlign: TextAlign.center,
-                        style: AppTextStyles.sectionTitle.copyWith(
+                        style: AppTextStyles.condensedSectionTitle.copyWith(
+                          fontSize: 14,
                           color: PartnerUiColors.brand,
-                          fontSize: 18,
                         ),
                       ),
                     );
@@ -284,9 +286,9 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                         l10n.reportOneOfMyAnimals,
                         maxLines: 1,
                         softWrap: false,
-                        style: AppTextStyles.button.copyWith(
-                          fontFamily: AppTextStyles.titleFont,
-                          fontSize: 18,
+                        style: AppTextStyles.condensedSectionTitle.copyWith(
+                          color: AppColors.white,
+                          fontSize: 20,
                         ),
                       ),
                     ),
@@ -321,17 +323,19 @@ class _MyAnimalsScreenState extends ConsumerState<MyAnimalsScreen> {
                 children: [
                   Text(
                     name,
-                    style: AppTextStyles.sectionTitle.copyWith(
-                      color: Colors.white,
-                      fontSize: 19,
+                    style: AppTextStyles.condensedSectionTitle.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.white,
+                      fontSize: 32,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     l10n.personalInformationLabel,
-                    style: AppTextStyles.sectionTitle.copyWith(
-                      color: const Color(0xFFF3DCC8),
-                      fontSize: 14,
+                    style: AppTextStyles.subtitle.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: AppColors.surface,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -391,9 +395,9 @@ class _AnimalCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         animal.title,
-                        style: AppTextStyles.sectionTitle.copyWith(
+                        style: AppTextStyles.condensedSectionTitle.copyWith(
                           color: PartnerUiColors.brand,
-                          fontSize: 20,
+                          fontSize: 28,
                         ),
                       ),
                     ),
@@ -401,8 +405,8 @@ class _AnimalCard extends StatelessWidget {
                       onTap: onEdit,
                       child: Text(
                         l10n.edit,
-                        style: AppTextStyles.sectionTitle.copyWith(
-                          color: const Color(0xFFD8C89D),
+                        style: AppTextStyles.button.copyWith(
+                          color: AppColors.red,
                           fontSize: 14,
                           decoration: TextDecoration.underline,
                         ),
@@ -413,13 +417,9 @@ class _AnimalCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   animal.description,
-                  maxLines: 3,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.sectionTitle.copyWith(
-                    color: PartnerUiColors.brand,
-                    fontSize: 14,
-                    height: 1.25,
-                  ),
+                  style: AppTextStyles.subtitle,
                 ),
               ],
             ),

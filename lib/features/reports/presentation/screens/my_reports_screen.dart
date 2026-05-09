@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/features/reports/presentation/providers/report_form_provider.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
 import 'package:hesteka_frontend/features/seek/presentation/providers/seek_reports_provider.dart';
@@ -44,8 +45,9 @@ class MyReportsScreen extends ConsumerWidget {
                     child: Text(
                       l10n.myReportsTitle,
                       style: AppTextStyles.heading.copyWith(
-                        color: const Color(0xFFBA4A22),
+                        color: AppColors.red,
                         fontSize: 32,
+                        height: 1.5,
                       ),
                     ),
                   ),
@@ -134,7 +136,9 @@ class MyReportsScreen extends ConsumerWidget {
                         return Center(
                           child: Text(
                             l10n.couldNotLoadReports,
-                            style: AppTextStyles.body.copyWith(color: Color(0xFFBA4A22)),
+                            style: AppTextStyles.body.copyWith(
+                              color: Color(0xFFBA4A22),
+                            ),
                           ),
                         );
                       },
@@ -143,47 +147,50 @@ class MyReportsScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            // Positioned(
+            //   left: 64,
+            //   right: 64,
+            //   bottom: 40,
+            //   child: SizedBox(
+            //     height: 56,
+            //     child: ElevatedButton(
+            //       onPressed: () => _openAnimalReportPicker(context, ref),
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: const Color(0xFFBA4A22),
+            //         foregroundColor: Colors.white,
+            //         elevation: 3,
+            //         shape: RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(28),
+            //         ),
+            //       ),
+            //       child: FittedBox(
+            //         fit: BoxFit.scaleDown,
+            //         child: Text(
+            //           l10n.reportOneOfMyAnimals,
+            //           maxLines: 1,
+            //           style: AppTextStyles.button.copyWith(
+            //             color: AppColors.white,
+            //             fontSize: 20,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Positioned(
-              left: 24,
-              right: 92,
-              bottom: 20,
-              child: SizedBox(
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () => _openAnimalReportPicker(context, ref),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFBA4A22),
-                    foregroundColor: Colors.white,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      l10n.reportOneOfMyAnimals,
-                      maxLines: 1,
-                      style: AppTextStyles.button.copyWith(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 24,
-              bottom: 20,
+              right: 35,
+              bottom: 55,
               child: FloatingActionButton(
                 onPressed: () {
                   ref.read(reportFormProvider.notifier).reset();
                   context.push(RouteNames.reportCreateStep1);
                 },
-                backgroundColor: const Color(0xFFBA4A22),
-                child: const Icon(Icons.add, color: Colors.white, size: 30),
+                backgroundColor: AppColors.red,
+                child: const Icon(
+                  Icons.add_rounded,
+                  color: Colors.white,
+                  size: 50,
+                ),
               ),
             ),
           ],
@@ -368,8 +375,8 @@ class MyReportsScreen extends ConsumerWidget {
                 child: report.images.isNotEmpty
                     ? Image.network(
                         report.images[0].secureUrl,
-                        width: 80,
-                        height: 80,
+                        width: 90,
+                        height: 90,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             _reportImageFallback(),
@@ -387,10 +394,46 @@ class MyReportsScreen extends ConsumerWidget {
                         Text(
                           report.animalName.toUpperCase(),
                           style: AppTextStyles.condensedSectionTitle.copyWith(
-                            color: const Color(0xFFBA4A22),
-                            fontSize: 20,
+                            color: AppColors.red,
+                            fontSize: 24,
                           ),
                         ),
+                        if (report.status.toLowerCase() == 'found')
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFBA4A22),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.white,
+                                      size: 14,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      l10n.found,
+                                      style: AppTextStyles.button.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         GestureDetector(
                           onTap: () {
                             ref
@@ -398,20 +441,31 @@ class MyReportsScreen extends ConsumerWidget {
                                 .populate(report);
                             context.push(RouteNames.reportCreateStep1);
                           },
-                          child: Text(
-                            l10n.editMyReport,
-                            style: AppTextStyles.caption.copyWith(
-                              color: const Color(0xFFBA4A22),
-                              fontSize: 10,
-                              decoration: TextDecoration.underline,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.edit,
+                                color: AppColors.textPrimary,
+                                size: 10,
+                              ),
+                              const SizedBox(width: 1),
+                              Text(
+                                l10n.editMyReport,
+                                style: AppTextStyles.caption.copyWith(
+                                  color: AppColors.red,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${report.age} | . ${report.species} | . ${report.breed} | . ${report.status}',
+                      '${report.age} | ${report.species} | ${report.breed} | ${report.status}',
                       style: AppTextStyles.body.copyWith(
                         color: const Color(0xFFBA4A22),
                         fontSize: 12,
@@ -438,38 +492,6 @@ class MyReportsScreen extends ConsumerWidget {
               ),
             ],
           ),
-          if (report.status.toLowerCase() == 'found')
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 95),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFBA4A22),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.check, color: Colors.white, size: 14),
-                      const SizedBox(width: 4),
-                      Text(
-                        l10n.found,
-                        style: AppTextStyles.button.copyWith(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
     );
@@ -508,8 +530,7 @@ class MyReportsScreen extends ConsumerWidget {
           label,
           style: AppTextStyles.button.copyWith(
             color: Colors.white,
-            fontSize: 9,
-            fontWeight: FontWeight.w900,
+            fontSize: 12,
           ),
         ),
       ),

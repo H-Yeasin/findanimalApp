@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:hesteka_frontend/core/config/app_assets.dart';
@@ -360,12 +361,14 @@ class _AddAnimalScreenState extends ConsumerState<AddAnimalScreen> {
                       : Text(
                           widget.isEditMode ? 'UPDATE ANIMAL' : 'CREATE ANIMAL',
                           style: AppTextStyles.body.copyWith(
-                            fontFamily: 'EricaOne',
+                            color: AppColors.white,
                             fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                 ),
               ),
+              const SizedBox(height: 40),
             ],
           ),
         ),

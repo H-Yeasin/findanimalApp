@@ -332,7 +332,8 @@ class PartnerSectionHeading extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.sectionTitle.copyWith(
+            style: AppTextStyles.caption.copyWith(
+              fontWeight: FontWeight.bold,
               color: PartnerUiColors.brand,
               fontSize: 20,
             ),

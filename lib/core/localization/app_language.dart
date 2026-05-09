@@ -1,12 +1,11 @@
 enum AppLanguage {
-  french('fr', 'FRENCH', 'FRANCAIS'),
-  english('en', 'ENGLISH', 'ANGLAIS');
+  french('fr', 'FRANCAIS'),
+  english('en', 'ANGLAIS');
 
-  const AppLanguage(this.code, this.labelEn, this.labelFr);
+  const AppLanguage(this.code, this.label);
 
   final String code;
-  final String labelEn;
-  final String labelFr;
+  final String label;
 
   static AppLanguage fromCode(String code) {
     return AppLanguage.values.firstWhere(
@@ -15,5 +14,5 @@ enum AppLanguage {
     );
   }
 
-  String get flag => this == AppLanguage.french ? '🇫🇷' : '🇬🇧';
+  // String get flag => this == AppLanguage.french ? '🇫🇷' : '🇬🇧';
 }

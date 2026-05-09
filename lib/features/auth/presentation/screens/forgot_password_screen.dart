@@ -92,7 +92,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             AuthMainTitle(l10n.forgotPasswordTitle),
             const SizedBox(height: 12),
             Text(
-              'Enter your email address below and we\'ll send you a code to reset your password.',
+              l10n.enterYourEmailAddressToResetPassword,
               textAlign: TextAlign.center,
               style: AppTextStyles.body.copyWith(
                 color: AuthUiColors.brand.withValues(alpha: 0.75),

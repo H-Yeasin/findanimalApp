@@ -1,9 +1,15 @@
 const Map<String, String> appEn = {
   'appName': 'Hesteka',
+  'selectLanguage': 'Select Language',
   'settingsTitle': 'APPLICATION\nSETTINGS',
   'changePassword': 'Change my password',
+  'enterYourEmailAddressToResetPassword':
+      'Enter your email address below and we\'ll send you a code to reset your password.',
   'registeredPaymentMethods': 'Registered payment methods',
   'language': 'Language',
+  'partner': 'HESTEKA PARTNER',
+  'partnerTitle':
+      'Join the network of professionals\ndedicated to animal welfare.',
   'darkLightMode': 'Dark/Light Mode',
   'locationAuthorization': 'Location authorization',
   'privacyPolicy': 'Privacy Policy',
@@ -52,6 +58,7 @@ const Map<String, String> appEn = {
   'companyNameHint': 'Company name',
   'createMyAccount': 'Create my account',
   'registerAsPartner': 'Register as Partner',
+  'loginAsPartner': 'PARTNER LOGIN',
   'partnerRegisterTitle': 'Register as a Partner',
   'partnerRegisterSuccess':
       'Partner registration submitted. Please wait for admin approval.',
@@ -123,7 +130,7 @@ const Map<String, String> appEn = {
   'pleaseLoginToViewReports': 'Please log in to view your reports.',
   'goToLogin': 'Go to Login',
   'couldNotLoadReports': 'Could not load reports. Please try again.',
-  'editMyReport': 'Edit my report',
+  'editMyReport': 'Edit',
   'unknownAnimal': 'UNNAMED',
   'unknownValue': 'Unknown',
   'seeOnMap': 'SEE ON MAP',
@@ -657,4 +664,8 @@ const Map<String, String> appEn = {
       'For any questions regarding these legal notices or the application, you can contact us at:',
   'legalContactInfo':
       'Email: contact@hesteka.com\nTelephone: +33 6 41 45 83 60',
+
+  'a6DigitCodeHasBeenSentToYourEmail':
+      'A 6-digit code has been sent to your email. Enter it below to continue',
+  'resettingPasswordFor': 'Resetting password for',
 };

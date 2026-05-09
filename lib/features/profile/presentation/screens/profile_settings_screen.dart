@@ -106,6 +106,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       builder: (context) {
+        final l10n = AppLocalizations.of(context);
         return Container(
           padding: const EdgeInsets.fromLTRB(28, 20, 28, 40),
           child: Column(
@@ -121,7 +122,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
               ),
               const SizedBox(height: 24),
               Text(
-                'SELECT LANGUAGE',
+                l10n.selectLanguage,
                 style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontFamily: 'EricaOne',
@@ -149,10 +150,6 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                     ),
                     child: Row(
                       children: [
-                        Text(
-                          lang.flag,
-                          style: AppTextStyles.body.copyWith(fontSize: 24),
-                        ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
@@ -202,19 +199,9 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
           children: [
             PartnerSettingsRow(
               label: l10n.changePassword,
-              value: '************',
+              value: '*******',
               onTap: () {
                 final email = currentUser?.email.trim() ?? '';
-                if (email.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'Could not find account email. Please login again.',
-                      ),
-                    ),
-                  );
-                  return;
-                }
 
                 context.push(
                   '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
@@ -240,10 +227,6 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      currentLanguage.flag,
-                      style: AppTextStyles.body.copyWith(fontSize: 22),
-                    ),
                     const SizedBox(width: 8),
                     Text(
                       currentLanguage.name.toUpperCase(),
@@ -271,20 +254,20 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                 onChanged: _onLocationToggleChanged,
               ),
             ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.darkLightMode,
-              trailing: IconButton(
-                onPressed: () {
-                  // TODO: Implement theme toggle
-                },
-                icon: const Icon(
-                  Icons.wb_sunny_rounded,
-                  color: PartnerUiColors.brand,
-                  size: 28,
-                ),
-              ),
-            ),
+            // const Divider(color: PartnerUiColors.brand),
+            // PartnerSettingsRow(
+            //   label: l10n.darkLightMode,
+            //   trailing: IconButton(
+            //     onPressed: () {
+            //       // TODO: Implement theme toggle
+            //     },
+            //     icon: const Icon(
+            //       Icons.wb_sunny_rounded,
+            //       color: PartnerUiColors.brand,
+            //       size: 28,
+            //     ),
+            //   ),
+            // ),
             const Divider(color: PartnerUiColors.brand),
             PartnerSettingsRow(
               label: l10n.privacyPolicy,

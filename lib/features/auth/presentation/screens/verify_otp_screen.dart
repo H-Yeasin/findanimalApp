@@ -137,7 +137,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'A 6-digit code has been sent to your email. Enter it below to continue.',
+              l10n.a6DigitCodeHasBeenSentToYourEmail,
               textAlign: TextAlign.center,
               style: AppTextStyles.body.copyWith(
                 color: AuthUiColors.brand.withValues(alpha: 0.75),

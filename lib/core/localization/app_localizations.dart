@@ -80,10 +80,18 @@ class AppLocalizations {
       text('errorLoadingComments', params: {'error': error});
   String commentAs(String name) => text('commentAs', params: {'name': name});
 
+  String get selectLanguage => _text('selectLanguage');
+  String get enterYourEmailAddressToResetPassword =>
+      _text('enterYourEmailAddressToResetPassword');
+
   String get appName => _text('appName');
   String get settingsTitle => _text('settingsTitle');
   String get changePassword => _text('changePassword');
   String get registeredPaymentMethods => _text('registeredPaymentMethods');
+  String get partner => _text('partner');
+  String get partnerTitle => _text('partnerTitle');
+  String get loginAsPartner => _text('loginAsPartner');
+  String get registerAsPartner => _text('registerAsPartner');
   String get language => _text('language');
   String get darkLightMode => _text('darkLightMode');
   String get locationAuthorization => _text('locationAuthorization');
@@ -132,7 +140,6 @@ class AppLocalizations {
   String get companyNameLabel => _text('companyNameLabel');
   String get companyNameHint => _text('companyNameHint');
   String get createMyAccount => _text('createMyAccount');
-  String get registerAsPartner => _text('registerAsPartner');
   String get partnerRegisterTitle => _text('partnerRegisterTitle');
   String get partnerRegisterSuccess => _text('partnerRegisterSuccess');
   String get forgotPasswordTitle => _text('forgotPasswordTitle');
@@ -632,6 +639,10 @@ class AppLocalizations {
   String get legalContactTitle => _text('legalContactTitle');
   String get legalContactContent => _text('legalContactContent');
   String get legalContactInfo => _text('legalContactInfo');
+
+  String get a6DigitCodeHasBeenSentToYourEmail =>
+      _text('a6DigitCodeHasBeenSentToYourEmail');
+  String get resettingPasswordFor => _text('resettingPasswordFor');
 }
 
 class _AppLocalizationsDelegate

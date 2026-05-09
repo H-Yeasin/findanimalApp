@@ -89,7 +89,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
             const SizedBox(height: 12),
             if (widget.email != null && widget.email!.isNotEmpty) ...[
               Text(
-                'Resetting password for\n${widget.email}',
+                '${l10n.resettingPasswordFor}\n${widget.email}',
                 textAlign: TextAlign.center,
                 style: AppTextStyles.body.copyWith(
                   color: AuthUiColors.brand.withValues(alpha: 0.75),
