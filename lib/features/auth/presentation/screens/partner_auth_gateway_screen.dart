@@ -42,7 +42,7 @@ class PartnerAuthGatewayScreen extends StatelessWidget {
           Center(
             child: AuthOutlinePillButton(
               label: AppLocalizations.of(context).loginAsPartner,
-              width: 250,
+              width: 230,
               onPressed: () => context.push(RouteNames.partnerLogin),
             ),
           ),
@@ -51,6 +51,7 @@ class PartnerAuthGatewayScreen extends StatelessWidget {
           const SizedBox(height: 20),
           Center(
             child: AuthFilledPillButton(
+              width: 300,
               label: AppLocalizations.of(context).registerAsPartner,
               onPressed: () => context.push(RouteNames.partnerRegister),
               isLoading: false,

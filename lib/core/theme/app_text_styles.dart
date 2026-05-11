@@ -18,7 +18,7 @@ class AppTextStyles {
 
   static const TextStyle heading = TextStyle(
     fontFamily: titleFont,
-    fontSize: 30,
+    fontSize: 32,
     fontWeight: FontWeight.w400,
     height: 1,
     color: AppColors.brandPrimary,
@@ -26,11 +26,13 @@ class AppTextStyles {
 
   static const TextStyle sectionTitle = TextStyle(
     fontFamily: titleFont,
-    fontSize: 26,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
     height: 1,
     color: AppColors.brandPrimary,
   );
+
+  //Barlow Condensed
 
   static const TextStyle condensedSectionTitle = TextStyle(
     fontFamily: bodyFont,
@@ -58,7 +60,7 @@ class AppTextStyles {
     fontFamily: bodyFont,
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.textPrimary,
+    color: AppColors.surface,
   );
 
   static const TextStyle button = TextStyle(

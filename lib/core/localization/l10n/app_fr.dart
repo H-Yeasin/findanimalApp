@@ -59,7 +59,7 @@ const Map<String, String> appFr = {
   'companyNameLabel': 'Nom de l’entreprise *',
   'companyNameHint': 'Nom de l’entreprise',
   'createMyAccount': 'Créer mon compte',
-  'registerAsPartner': 'S’inscrire en tant que Partenaire',
+  'registerAsPartner': 'S’inscrire Partenaire',
   'loginAsPartner': 'PARTENAIRE LOGIN',
   'partnerRegisterTitle': 'S’inscrire en tant que Partenaire',
   'partnerRegisterSuccess':
