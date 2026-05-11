@@ -154,7 +154,7 @@ const Map<String, String> appFr = {
   'couldNotShareStory':
       'Impossible de partager l’histoire. Veuillez réessayer.',
   'storySharedSuccess': 'Histoire partagée avec succès',
-  'newStory': 'Nouvelle Histoire',
+  'newStory': 'Partager une story',
   'cancel': 'Annuler',
   'post': 'Publier',
   'couldNotLoadStories': 'Impossible de charger les histoires.',

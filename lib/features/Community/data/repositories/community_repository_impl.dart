@@ -51,17 +51,24 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<StoryModel> createStory({
     required String caption,
     required File media,
-    required double lat,
-    required double lng,
+    double? lat,
+    double? lng,
     String? address,
   }) async {
-    final formData = FormData.fromMap({
+    final data = <String, dynamic>{
       'caption': caption,
-      'lat': lat,
-      'lng': lng,
-      'address': address,
       'media': await MultipartFile.fromFile(media.path),
-    });
+    };
+
+    if (lat != null && lng != null) {
+      data['lat'] = lat;
+      data['lng'] = lng;
+    }
+    if (address != null && address.isNotEmpty) {
+      data['address'] = address;
+    }
+
+    final formData = FormData.fromMap(data);
 
     final response = await _apiClient.post(
       '/community/stories/',
@@ -74,18 +81,23 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<ChatModel> createChat({
     required String content,
     List<File>? media,
-    required double lat,
-    required double lng,
+    double? lat,
+    double? lng,
     String? address,
     String? replyTo,
   }) async {
-    final Map<String, dynamic> data = {
-      'content': content,
-      'lat': lat,
-      'lng': lng,
-      'address': address,
-      'replyTo': replyTo,
-    };
+    final data = <String, dynamic>{'content': content};
+
+    if (lat != null && lng != null) {
+      data['lat'] = lat;
+      data['lng'] = lng;
+    }
+    if (address != null && address.isNotEmpty) {
+      data['address'] = address;
+    }
+    if (replyTo != null && replyTo.isNotEmpty) {
+      data['replyTo'] = replyTo;
+    }
 
     if (media != null && media.isNotEmpty) {
       final List<MultipartFile> files = [];
