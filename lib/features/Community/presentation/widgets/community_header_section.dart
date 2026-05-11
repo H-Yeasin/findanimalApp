@@ -72,30 +72,6 @@ class CommunityHeaderSection extends StatelessWidget {
           isUnauthorizedError: isUnauthorizedError,
           onShareStory: onShareStory,
         ),
-        const SizedBox(height: 15),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 40),
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-          decoration: BoxDecoration(
-            color: _brandPrimary,
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.search, color: Colors.white, size: 18),
-              const SizedBox(width: 10),
-              Text(
-                l10n.findFriend,
-                style: AppTextStyles.body.copyWith(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ),
         const SizedBox(height: 20),
         const CommunityPostingIndicator(),
         Text(

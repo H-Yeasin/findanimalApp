@@ -7,13 +7,15 @@ class LocalMissionFilterBar extends StatelessWidget {
   const LocalMissionFilterBar({
     required this.sortText,
     required this.radiusText,
-    required this.onOpenFilters,
+    required this.onOpenSort,
+    required this.onOpenRadius,
     super.key,
   });
 
   final String sortText;
   final String radiusText;
-  final VoidCallback onOpenFilters;
+  final VoidCallback onOpenSort;
+  final VoidCallback onOpenRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,12 @@ class LocalMissionFilterBar extends StatelessWidget {
       children: [
         Expanded(
           flex: 3,
-          child: _FilterButton(text: sortText, onTap: onOpenFilters),
+          child: _FilterButton(text: sortText, onTap: onOpenSort),
         ),
         const SizedBox(width: 10),
         Expanded(
           flex: 3,
-          child: _FilterButton(text: radiusText, onTap: onOpenFilters),
+          child: _FilterButton(text: radiusText, onTap: onOpenRadius),
         ),
       ],
     );
@@ -57,10 +59,9 @@ class _FilterButton extends StatelessWidget {
               child: Text(
                 text,
                 overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.body.copyWith(
+                style: AppTextStyles.condensedSectionTitle.copyWith(
                   color: Colors.white,
-                  fontFamily: 'EricaOne',
-                  fontSize: 13,
+                  fontSize: 14,
                 ),
               ),
             ),

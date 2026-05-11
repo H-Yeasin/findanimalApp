@@ -13,12 +13,16 @@ class CommunityPostList extends StatelessWidget {
     required this.isUnauthorizedError,
     required this.onShowReactions,
     required this.onToggleLike,
+    this.maxPosts,
+    this.onSeeMore,
   });
 
   final AsyncValue<List<ChatModel>> chatsAsync;
   final bool Function(Object err) isUnauthorizedError;
   final void Function(BuildContext context, String chatId) onShowReactions;
   final ValueChanged<String> onToggleLike;
+  final int? maxPosts;
+  final VoidCallback? onSeeMore;
 
   static const _brandPrimary = Color(0xFFBA4A22);
   static const _boxBg = Color(0xFFFFF6E5);
@@ -55,13 +59,48 @@ class CommunityPostList extends StatelessWidget {
           );
         }
 
+        final visiblePosts =
+            maxPosts == null ? posts : posts.take(maxPosts!).toList();
+        final showSeeMore =
+            onSeeMore != null &&
+            maxPosts != null &&
+            posts.length > visiblePosts.length;
+
         return SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           sliver: SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              final chat = posts[index];
+              if (showSeeMore && index == visiblePosts.length) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Center(
+                    child: FilledButton(
+                      onPressed: onSeeMore,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: _brandPrimary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 28,
+                          vertical: 14,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                      ),
+                      child: Text(
+                        l10n.seeFullList.toUpperCase(),
+                        style: AppTextStyles.body.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              final chat = visiblePosts[index];
               final isFirst = index == 0;
-              final isLast = index == posts.length - 1;
+              final isLast = index == visiblePosts.length - 1;
 
               return Container(
                 padding: const EdgeInsets.all(15),
@@ -104,7 +143,7 @@ class CommunityPostList extends StatelessWidget {
                   ],
                 ),
               );
-            }, childCount: posts.length),
+            }, childCount: visiblePosts.length + (showSeeMore ? 1 : 0)),
           ),
         );
       },

@@ -92,7 +92,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     _mapController?.animateCamera(CameraUpdate.newLatLngZoom(location, zoom));
   }
 
-  void _showFiltersBottomSheet() {
+  void _showFiltersBottomSheet(MissionsFilterSection initialSection) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -100,7 +100,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (context) => const MissionsFiltersBottomSheet(),
+      builder: (context) =>
+          MissionsFiltersBottomSheet(initialSection: initialSection),
     );
   }
 
@@ -202,8 +203,14 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
                     ),
               sortText: filters['sortBy'] == null
                   ? l10n.sortBy
-                  : '${l10n.sortBy}: ${filters['sortBy']}',
-              onOpenFilters: _showFiltersBottomSheet,
+                  : ((filters['sort']?.toString() ?? 'descending') ==
+                          'ascending'
+                      ? l10n.sortByOldest
+                      : l10n.sortByNewest),
+              onOpenSort: () =>
+                  _showFiltersBottomSheet(MissionsFilterSection.sort),
+              onOpenRadius: () =>
+                  _showFiltersBottomSheet(MissionsFilterSection.radius),
             ),
             const SizedBox(height: 18),
             missionsAsync.when(

@@ -6,6 +6,7 @@ import 'package:hesteka_frontend/features/Community/presentation/widgets/communi
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
 import 'package:hesteka_frontend/features/home/presentation/providers/home_providers.dart';
 import '../mixins/community_screen_mixin.dart';
+import 'community_feed_screen.dart';
 import '../widgets/community_bottom_sections.dart';
 import '../widgets/community_header_section.dart';
 import '../widgets/community_post_list.dart';
@@ -72,6 +73,15 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                     isUnauthorizedError: isUnauthorizedError,
                     onShowReactions: (context, chatId) =>
                         CommunityReactionsDialog.show(context, ref, chatId),
+                    maxPosts: 3,
+                    onSeeMore: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CommunityFeedScreen(onShareStory: shareStory),
+                        ),
+                      );
+                    },
                     onToggleLike: (chatId) {
                       ref
                           .read(communityActionProvider.notifier)

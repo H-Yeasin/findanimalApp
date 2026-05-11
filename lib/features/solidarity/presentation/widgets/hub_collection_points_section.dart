@@ -165,11 +165,19 @@ class _HubCollectionPointsSectionState
           child: Text.rich(
             TextSpan(
               children: [
-                TextSpan(text: l10n.collectionPointsDescription),
+                TextSpan(
+                  text: l10n.collectionPointsDescription,
+                  style: AppTextStyles.condensedSectionTitle.copyWith(
+                    color: brandPrimary,
+                    fontSize: 13,
+                  ),
+                ),
                 TextSpan(
                   text: l10n.donatingNearYou,
-                  style: AppTextStyles.body.copyWith(
+                  style: AppTextStyles.condensedSectionTitle.copyWith(
+                    color: brandPrimary,
                     fontWeight: FontWeight.w900,
+                    fontSize: 14,
                   ),
                 ),
               ],

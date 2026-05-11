@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/localization/app_localizations.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
 import '../providers/missions_filters_provider.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class MissionsFiltersBottomSheet extends ConsumerStatefulWidget {
-  const MissionsFiltersBottomSheet({super.key});
+  const MissionsFiltersBottomSheet({
+    this.initialSection = MissionsFilterSection.sort,
+    super.key,
+  });
+
+  final MissionsFilterSection initialSection;
 
   @override
   ConsumerState<MissionsFiltersBottomSheet> createState() =>
@@ -15,40 +21,19 @@ class MissionsFiltersBottomSheet extends ConsumerStatefulWidget {
 
 class _MissionsFiltersBottomSheetState
     extends ConsumerState<MissionsFiltersBottomSheet> {
-  late TextEditingController _searchController;
-  late TextEditingController _companyController;
-  late TextEditingController _fromController;
-  late TextEditingController _toController;
-  late double _radius;
-  late String _status;
-  late String _sortBy;
+  static const _radiusOptions = [1, 5, 10, 25, 50];
+
+  late int _radius;
   late String _sort;
+  late MissionsFilterSection _activeSection;
 
   @override
   void initState() {
     super.initState();
     final currentFilters = ref.read(missionsFiltersProvider);
-    _searchController = TextEditingController(
-      text: currentFilters['search'] ?? '',
-    );
-    _companyController = TextEditingController(
-      text: currentFilters['company'] ?? '',
-    );
-    _fromController = TextEditingController(text: currentFilters['from'] ?? '');
-    _toController = TextEditingController(text: currentFilters['to'] ?? '');
-    _radius = (currentFilters['radius'] as num?)?.toDouble() ?? 50.0;
-    _status = currentFilters['status'] ?? 'all';
-    _sortBy = currentFilters['sortBy'] ?? 'date';
-    _sort = currentFilters['sort'] ?? 'descending';
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    _companyController.dispose();
-    _fromController.dispose();
-    _toController.dispose();
-    super.dispose();
+    _radius = (currentFilters['radius'] as num?)?.toInt() ?? 50;
+    _sort = currentFilters['sort']?.toString() ?? 'descending';
+    _activeSection = widget.initialSection;
   }
 
   @override
@@ -57,19 +42,26 @@ class _MissionsFiltersBottomSheetState
 
     return Padding(
       padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + 30,
-        left: 24,
-        right: 24,
-        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        left: 20,
+        right: 20,
+        top: 18,
       ),
-      child: SingleChildScrollView(
+      child: SafeArea(
+        top: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Expanded(child: PartnerPageTitle(l10n.adjustFilters)),
+                Expanded(
+                  child: PartnerPageTitle(
+                    _activeSection == MissionsFilterSection.sort
+                        ? l10n.sortBy
+                        : l10n.searchRadius,
+                  ),
+                ),
                 IconButton(
                   icon: const Icon(
                     Icons.close,
@@ -80,146 +72,51 @@ class _MissionsFiltersBottomSheetState
                 ),
               ],
             ),
-            const Divider(height: 28, color: PartnerUiColors.brand),
-            _SectionTitle(l10n.searchMissions),
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: l10n.searchByTitle,
-                hintStyle: AppTextStyles.body.copyWith(
-                  color: PartnerUiColors.brand.withValues(alpha: 0.5),
-                ),
-                prefixIcon: const Icon(
-                  Icons.search,
-                  color: PartnerUiColors.brand,
-                ),
-                filled: true,
-                fillColor: PartnerUiColors.panel,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: PartnerUiColors.brand),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: PartnerUiColors.brand),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: PartnerUiColors.brand,
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-            _SectionTitle(l10n.company),
-            _FilterTextField(
-              controller: _companyController,
-              hintText: l10n.companyNameHint,
-              icon: Icons.business_outlined,
-            ),
-            _SectionTitle(l10n.status),
-            Wrap(
-              spacing: 10,
-              runSpacing: 8,
-              children: ['all', 'active', 'inactive'].map((status) {
-                final isSelected = _status == status;
-                return ChoiceChip(
-                  label: Text(status.toUpperCase()),
-                  selected: isSelected,
-                  onSelected: (selected) {
-                    if (selected) setState(() => _status = status);
-                  },
-                  selectedColor: PartnerUiColors.brand,
-                  backgroundColor: PartnerUiColors.panel,
-                  labelStyle: AppTextStyles.body.copyWith(
-                    color: isSelected ? Colors.white : PartnerUiColors.brand,
-                    fontFamily: 'EricaOne',
-                    fontSize: 12,
-                  ),
-                  side: const BorderSide(color: PartnerUiColors.brand),
-                  showCheckmark: false,
-                );
-              }).toList(),
-            ),
-            _SectionTitle('Date range'),
+            const Divider(height: 24, color: PartnerUiColors.brand),
             Row(
               children: [
                 Expanded(
-                  child: _DateField(controller: _fromController, label: 'From'),
+                  child: _TopToggleButton(
+                    label: l10n.sortBy,
+                    isSelected: _activeSection == MissionsFilterSection.sort,
+                    onTap: () {
+                      setState(
+                        () => _activeSection = MissionsFilterSection.sort,
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: _DateField(controller: _toController, label: 'To'),
-                ),
-              ],
-            ),
-            _SectionTitle(l10n.searchRadius),
-            Row(
-              children: [
-                const Icon(Icons.location_on, color: PartnerUiColors.brand),
-                const SizedBox(width: 10),
-                Text(
-                  l10n.radiusKm.replaceAll(
-                    '{radius}',
-                    _radius.toInt().toString(),
-                  ),
-                  style: AppTextStyles.body.copyWith(
-                    color: PartnerUiColors.brand,
-                    fontFamily: 'EricaOne',
-                    fontSize: 14,
+                  child: _TopToggleButton(
+                    label: l10n.searchRadius,
+                    isSelected: _activeSection == MissionsFilterSection.radius,
+                    onTap: () {
+                      setState(
+                        () => _activeSection = MissionsFilterSection.radius,
+                      );
+                    },
                   ),
                 ),
               ],
             ),
-            Slider(
-              value: _radius,
-              min: 1,
-              max: 50,
-              activeColor: PartnerUiColors.brand,
-              inactiveColor: PartnerUiColors.grid,
-              onChanged: (value) => setState(() => _radius = value),
+            const SizedBox(height: 18),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 180),
+              child: _activeSection == MissionsFilterSection.sort
+                  ? _SortSection(
+                      key: const ValueKey('sort'),
+                      currentSort: _sort,
+                      onChanged: (value) => setState(() => _sort = value),
+                    )
+                  : _RadiusSection(
+                      key: const ValueKey('radius'),
+                      currentRadius: _radius,
+                      options: _radiusOptions,
+                      onChanged: (value) => setState(() => _radius = value),
+                    ),
             ),
-            _SectionTitle(l10n.sortBy),
-            DropdownButtonFormField<String>(
-              initialValue: _sortBy,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: PartnerUiColors.panel,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: PartnerUiColors.brand),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(color: PartnerUiColors.brand),
-                ),
-              ),
-              items: [
-                DropdownMenuItem(value: 'date', child: Text(l10n.dateLabel)),
-                DropdownMenuItem(value: 'title', child: Text(l10n.titleLabel)),
-                DropdownMenuItem(value: 'points', child: Text(l10n.myPoints)),
-              ],
-              onChanged: (value) {
-                if (value != null) setState(() => _sortBy = value);
-              },
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              initialValue: _sort,
-              decoration: _dropdownDecoration(),
-              items: const [
-                DropdownMenuItem(
-                  value: 'descending',
-                  child: Text('Descending'),
-                ),
-                DropdownMenuItem(value: 'ascending', child: Text('Ascending')),
-              ],
-              onChanged: (value) {
-                if (value != null) setState(() => _sort = value);
-              },
-            ),
-            const SizedBox(height: 28),
+            const SizedBox(height: 24),
             Center(
               child: PartnerPublishButton(
                 label: l10n.applyFilters.toUpperCase(),
@@ -232,151 +129,168 @@ class _MissionsFiltersBottomSheetState
     );
   }
 
-  Future<void> _applyFilters() async {
+  void _applyFilters() {
     final currentFilters = ref.read(missionsFiltersProvider);
-    final updatedFilters = <String, dynamic>{
+    ref.read(missionsFiltersProvider.notifier).state = {
       ...currentFilters,
       'page': 1,
       'limit': 10,
-      'sortBy': _sortBy,
+      'sortBy': 'date',
       'sort': _sort,
-      'radius': _radius.toInt(),
+      'radius': _radius,
     };
 
-    if (_status == 'all') {
-      updatedFilters.remove('status');
-    } else {
-      updatedFilters['status'] = _status;
-    }
-
-    _putOptionalText(updatedFilters, 'search', _searchController.text);
-    _putOptionalText(updatedFilters, 'company', _companyController.text);
-    _putOptionalText(updatedFilters, 'from', _fromController.text);
-    _putOptionalText(updatedFilters, 'to', _toController.text);
-
-    if (!mounted) return;
-    ref.read(missionsFiltersProvider.notifier).state = updatedFilters;
     Navigator.pop(context);
   }
-
-  void _putOptionalText(
-    Map<String, dynamic> filters,
-    String key,
-    String value,
-  ) {
-    final trimmed = value.trim();
-    if (trimmed.isEmpty) {
-      filters.remove(key);
-    } else {
-      filters[key] = trimmed;
-    }
-  }
-
-  InputDecoration _dropdownDecoration() {
-    return InputDecoration(
-      filled: true,
-      fillColor: PartnerUiColors.panel,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: PartnerUiColors.brand),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: PartnerUiColors.brand),
-      ),
-    );
-  }
 }
 
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.text);
+enum MissionsFilterSection { sort, radius }
 
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 10),
-      child: PartnerFieldLabel(text.toUpperCase()),
-    );
-  }
-}
-
-class _FilterTextField extends StatelessWidget {
-  const _FilterTextField({
-    required this.controller,
-    required this.hintText,
-    required this.icon,
+class _TopToggleButton extends StatelessWidget {
+  const _TopToggleButton({
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
   });
 
-  final TextEditingController controller;
-  final String hintText;
-  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: AppTextStyles.body.copyWith(
-          color: PartnerUiColors.brand.withValues(alpha: 0.5),
-        ),
-        prefixIcon: Icon(icon, color: PartnerUiColors.brand),
-        filled: true,
-        fillColor: PartnerUiColors.panel,
-        enabledBorder: OutlineInputBorder(
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        height: 44,
+        decoration: BoxDecoration(
+          color: isSelected ? PartnerUiColors.brand : PartnerUiColors.panel,
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: PartnerUiColors.brand),
+          border: Border.all(color: PartnerUiColors.brand),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: PartnerUiColors.brand, width: 2),
+        alignment: Alignment.center,
+        child: Text(
+          label.toUpperCase(),
+          style: AppTextStyles.condensedSectionTitle.copyWith(
+            fontSize: 14,
+            color: isSelected ? Colors.white : PartnerUiColors.brand,
+          ),
         ),
       ),
     );
   }
 }
 
-class _DateField extends StatelessWidget {
-  const _DateField({required this.controller, required this.label});
+class _SortSection extends StatelessWidget {
+  const _SortSection({
+    required this.currentSort,
+    required this.onChanged,
+    super.key,
+  });
 
-  final TextEditingController controller;
-  final String label;
+  final String currentSort;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      readOnly: true,
-      onTap: () async {
-        final initialDate =
-            DateTime.tryParse(controller.text) ?? DateTime.now();
-        final picked = await showDatePicker(
-          context: context,
-          initialDate: initialDate,
-          firstDate: DateTime(2020),
-          lastDate: DateTime(2035),
+    final l10n = AppLocalizations.of(context);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _OptionTile(
+          label: l10n.sortByNewest,
+          selected: currentSort == 'descending',
+          onTap: () => onChanged('descending'),
+        ),
+        const SizedBox(height: 10),
+        _OptionTile(
+          label: l10n.sortByOldest,
+          selected: currentSort == 'ascending',
+          onTap: () => onChanged('ascending'),
+        ),
+      ],
+    );
+  }
+}
+
+class _RadiusSection extends StatelessWidget {
+  const _RadiusSection({
+    required this.currentRadius,
+    required this.options,
+    required this.onChanged,
+    super.key,
+  });
+
+  final int currentRadius;
+  final List<int> options;
+  final ValueChanged<int> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: options.map((radius) {
+        final isSelected = currentRadius == radius;
+        return ChoiceChip(
+          label: Text('$radius km'),
+          selected: isSelected,
+          onSelected: (_) => onChanged(radius),
+          selectedColor: PartnerUiColors.brand,
+          backgroundColor: PartnerUiColors.panel,
+          labelStyle: AppTextStyles.condensedSectionTitle.copyWith(
+            fontSize: 12,
+            color: isSelected ? Colors.white : PartnerUiColors.brand,
+          ),
+          side: const BorderSide(color: PartnerUiColors.brand),
+          showCheckmark: false,
         );
-        if (picked == null) return;
-        controller.text = picked.toIso8601String().split('T').first;
-      },
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: AppTextStyles.body.copyWith(color: PartnerUiColors.brand),
-        suffixIcon: const Icon(
-          Icons.calendar_today_outlined,
-          color: PartnerUiColors.brand,
-        ),
-        filled: true,
-        fillColor: PartnerUiColors.panel,
-        enabledBorder: OutlineInputBorder(
+      }).toList(),
+    );
+  }
+}
+
+class _OptionTile extends StatelessWidget {
+  const _OptionTile({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: PartnerUiColors.panel,
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: PartnerUiColors.brand),
+          border: Border.all(color: PartnerUiColors.brand),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: PartnerUiColors.brand, width: 2),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.condensedSectionTitle.copyWith(
+                  fontSize: 12,
+                  color: PartnerUiColors.brand,
+                ),
+              ),
+            ),
+            Icon(
+              selected ? Icons.radio_button_checked : Icons.radio_button_off,
+              color: PartnerUiColors.brand,
+            ),
+          ],
         ),
       ),
     );
