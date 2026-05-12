@@ -1,6 +1,7 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../data/models/payment_method_model.dart';
@@ -21,10 +22,11 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
   @override
   Widget build(BuildContext context) {
     final paymentState = ref.watch(paymentProvider);
+    final l10n = AppLocalizations.of(context);
 
     return PartnerScreenScaffold(
-      header: const PartnerHeroHeader(
-        title: 'MY PAYMENT\nMEANS',
+      header: PartnerHeroHeader(
+        title: l10n.paymentMethodsHeroTitle,
         imageUrl: AppAssets.myPaymentsHeader,
       ),
       child: Padding(
@@ -32,7 +34,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         child: paymentState.when(
           data: (state) => _buildContent(context, ref, state),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, stack) => Center(child: Text('Error: $err')),
+          error: (err, stack) => Center(child: Text(l10n.errorLoadingFailed)),
         ),
       ),
     );
@@ -43,16 +45,22 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     WidgetRef ref,
     PaymentState state,
   ) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader(context, ref, 'Cards and accounts'),
+        _buildSectionHeader(
+          context,
+          ref,
+          l10n.paymentMethodsCardsAndAccounts,
+        ),
         const SizedBox(height: 15),
         if (state.paymentMethods.isEmpty)
           Padding(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             child: Text(
-              'No saved cards yet. Tap + Add new to store one.',
+              l10n.paymentMethodsNoSavedCards,
               style: AppTextStyles.body.copyWith(
                 color: PartnerUiColors.brand,
                 fontSize: 14,
@@ -64,7 +72,12 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           (method) => _buildPaymentMethodCard(context, ref, method),
         ),
         const SizedBox(height: 30),
-        _buildSectionHeader(context, ref, 'Sales & benefits', showAdd: false),
+        _buildSectionHeader(
+          context,
+          ref,
+          l10n.paymentMethodsSalesBenefits,
+          showAdd: false,
+        ),
         const SizedBox(height: 15),
         if (state.giftCard != null)
           _buildGiftCardTile(context, state.giftCard!),
@@ -78,6 +91,8 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     String title, {
     bool showAdd = true,
   }) {
+    final l10n = AppLocalizations.of(context);
+
     return Row(
       children: [
         Expanded(
@@ -105,7 +120,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
               : TextButton(
                   onPressed: _isLoading ? null : () => _openAddCardSheet(ref),
                   child: Text(
-                    '+ Add new',
+                    l10n.paymentMethodsAddNew,
                     style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontSize: 14,
@@ -119,7 +134,11 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
 
   Future<void> _openAddCardSheet(WidgetRef ref) async {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Payment system is currently disabled.')),
+      SnackBar(
+        content: Text(
+          AppLocalizations.of(context).paymentMethodsSystemDisabled,
+        ),
+      ),
     );
   }
 
@@ -128,6 +147,8 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     WidgetRef ref,
     PaymentMethodModel method,
   ) {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -162,19 +183,19 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
               ),
               Column(
                 children: [
-                  _buildActionButton('To modify', () {
+                  _buildActionButton(l10n.paymentMethodsModify, () {
                     // Stripe doesn't easily allow modifying card details once saved.
                     // Usually you delete and re-add.
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text(
-                          'To modify card details, please delete and add a new one.',
+                          l10n.paymentMethodsModifyHint,
                         ),
                       ),
                     );
                   }),
                   const SizedBox(height: 5),
-                  _buildActionButton('DELETE', () async {
+                  _buildActionButton(l10n.paymentMethodsDelete, () async {
                     try {
                       await ref
                           .read(paymentProvider.notifier)
@@ -183,7 +204,9 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Error deleting payment method: $e'),
+                            content: Text(
+                              l10n.paymentMethodsDeleteError('$e'),
+                            ),
                           ),
                         );
                       }
@@ -198,7 +221,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
             children: [
               Expanded(
                 child: Text(
-                  'Use as default payment method',
+                  l10n.paymentMethodsUseAsDefault,
                   style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontSize: 13,
@@ -222,6 +245,8 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
   }
 
   Widget _buildGiftCardTile(BuildContext context, dynamic giftCard) {
+    final l10n = AppLocalizations.of(context);
+
     return Row(
       children: [
         Container(
@@ -242,7 +267,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hesteka gift card',
+                l10n.paymentMethodsGiftCardTitle,
                 style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontWeight: FontWeight.bold,
@@ -250,7 +275,9 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                 ),
               ),
               Text(
-                '${giftCard.formattedBalance} available',
+                l10n.paymentMethodsBalanceAvailable(
+                  giftCard.formattedBalance.toString(),
+                ),
                 style: AppTextStyles.body.copyWith(
                   color: PartnerUiColors.brand,
                   fontSize: 14,
@@ -261,9 +288,9 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         ),
         Column(
           children: [
-            _buildActionButton('Top up balance', () {}),
+            _buildActionButton(l10n.paymentMethodsTopUpBalance, () {}),
             const SizedBox(height: 5),
-            _buildActionButton('Buy', () {}),
+            _buildActionButton(l10n.paymentMethodsBuy, () {}),
           ],
         ),
       ],

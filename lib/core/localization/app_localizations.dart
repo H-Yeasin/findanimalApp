@@ -713,6 +713,30 @@ class AppLocalizations {
   String get a6DigitCodeHasBeenSentToYourEmail =>
       _text('a6DigitCodeHasBeenSentToYourEmail');
   String get resettingPasswordFor => _text('resettingPasswordFor');
+  String get paymentMethodsHeroTitle => _text('paymentMethodsHeroTitle');
+  String get paymentMethodsCardsAndAccounts =>
+      _text('paymentMethodsCardsAndAccounts');
+  String get paymentMethodsNoSavedCards =>
+      _text('paymentMethodsNoSavedCards');
+  String get paymentMethodsSalesBenefits =>
+      _text('paymentMethodsSalesBenefits');
+  String get paymentMethodsAddNew => _text('paymentMethodsAddNew');
+  String get paymentMethodsSystemDisabled =>
+      _text('paymentMethodsSystemDisabled');
+  String get paymentMethodsModify => _text('paymentMethodsModify');
+  String get paymentMethodsModifyHint => _text('paymentMethodsModifyHint');
+  String get paymentMethodsDelete => _text('paymentMethodsDelete');
+  String paymentMethodsDeleteError(String error) =>
+      text('paymentMethodsDeleteError', params: {'error': error});
+  String get paymentMethodsUseAsDefault =>
+      _text('paymentMethodsUseAsDefault');
+  String get paymentMethodsGiftCardTitle =>
+      _text('paymentMethodsGiftCardTitle');
+  String paymentMethodsBalanceAvailable(String balance) =>
+      text('paymentMethodsBalanceAvailable', params: {'balance': balance});
+  String get paymentMethodsTopUpBalance =>
+      _text('paymentMethodsTopUpBalance');
+  String get paymentMethodsBuy => _text('paymentMethodsBuy');
 }
 
 class _AppLocalizationsDelegate

@@ -737,4 +737,24 @@ const Map<String, String> appFr = {
   'a6DigitCodeHasBeenSentToYourEmail':
       'Un code à 6 chiffres a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous pour continuer.',
   'resettingPasswordFor': 'Réinitialisation du mot de passe pour',
+  'paymentMethodsHeroTitle': 'MES MOYENS\nDE PAIEMENT',
+  'paymentMethodsCardsAndAccounts': 'Cartes et comptes',
+  'paymentMethodsNoSavedCards':
+      'Aucune carte enregistree pour le moment. Appuyez sur + Ajouter pour en enregistrer une.',
+  'paymentMethodsSalesBenefits': 'Ventes et avantages',
+  'paymentMethodsAddNew': '+ Ajouter',
+  'paymentMethodsSystemDisabled':
+      'Le systeme de paiement est actuellement desactive.',
+  'paymentMethodsModify': 'Modifier',
+  'paymentMethodsModifyHint':
+      'Pour modifier les details de la carte, veuillez la supprimer puis en ajouter une nouvelle.',
+  'paymentMethodsDelete': 'SUPPRIMER',
+  'paymentMethodsDeleteError':
+      'Erreur lors de la suppression du moyen de paiement : {error}',
+  'paymentMethodsUseAsDefault':
+      'Utiliser comme moyen de paiement par defaut',
+  'paymentMethodsGiftCardTitle': 'Carte cadeau Hesteka',
+  'paymentMethodsBalanceAvailable': '{balance} disponible',
+  'paymentMethodsTopUpBalance': 'Recharger le solde',
+  'paymentMethodsBuy': 'Acheter',
 };

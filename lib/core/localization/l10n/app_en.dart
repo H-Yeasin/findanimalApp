@@ -726,4 +726,21 @@ const Map<String, String> appEn = {
   'a6DigitCodeHasBeenSentToYourEmail':
       'A 6-digit code has been sent to your email. Enter it below to continue',
   'resettingPasswordFor': 'Resetting password for',
+  'paymentMethodsHeroTitle': 'MY PAYMENT\nMEANS',
+  'paymentMethodsCardsAndAccounts': 'Cards and accounts',
+  'paymentMethodsNoSavedCards':
+      'No saved cards yet. Tap + Add new to store one.',
+  'paymentMethodsSalesBenefits': 'Sales & benefits',
+  'paymentMethodsAddNew': '+ Add new',
+  'paymentMethodsSystemDisabled': 'Payment system is currently disabled.',
+  'paymentMethodsModify': 'To modify',
+  'paymentMethodsModifyHint':
+      'To modify card details, please delete and add a new one.',
+  'paymentMethodsDelete': 'DELETE',
+  'paymentMethodsDeleteError': 'Error deleting payment method: {error}',
+  'paymentMethodsUseAsDefault': 'Use as default payment method',
+  'paymentMethodsGiftCardTitle': 'Hesteka gift card',
+  'paymentMethodsBalanceAvailable': '{balance} available',
+  'paymentMethodsTopUpBalance': 'Top up balance',
+  'paymentMethodsBuy': 'Buy',
 };
