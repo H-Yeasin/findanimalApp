@@ -1,8 +1,9 @@
 import '../../data/models/redeemable_item_model.dart';
 import '../../data/models/redemption_model.dart';
+import '../../data/models/points_overview_model.dart';
 
 abstract class PointsRepository {
-  Future<void> getMyPoints();
+  Future<PointsOverviewModel> getMyPoints();
 
   Future<void> redeemPoints();
 

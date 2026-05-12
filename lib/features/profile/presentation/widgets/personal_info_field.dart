@@ -26,7 +26,7 @@ class PersonalInfoField extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final value = controller.text.trim().isEmpty ? '-' : controller.text.trim();
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
@@ -35,8 +35,9 @@ class PersonalInfoField extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: AppTextStyles.sectionTitle.copyWith(
-                fontSize: 17,
+              style: AppTextStyles.condensedSectionTitle.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
                 height: 1.2,
               ),
             ),
@@ -63,7 +64,7 @@ class PersonalInfoField extends StatelessWidget {
                         borderSide: BorderSide(color: PartnerUiColors.brand),
                       ),
                     ),
-                    style: AppTextStyles.heading.copyWith(
+                    style: AppTextStyles.subtitle.copyWith(
                       fontSize: 18,
                       height: 1.2,
                     ),

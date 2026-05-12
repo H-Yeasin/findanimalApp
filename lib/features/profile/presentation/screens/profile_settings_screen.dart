@@ -254,20 +254,6 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                 onChanged: _onLocationToggleChanged,
               ),
             ),
-            // const Divider(color: PartnerUiColors.brand),
-            // PartnerSettingsRow(
-            //   label: l10n.darkLightMode,
-            //   trailing: IconButton(
-            //     onPressed: () {
-            //       // TODO: Implement theme toggle
-            //     },
-            //     icon: const Icon(
-            //       Icons.wb_sunny_rounded,
-            //       color: PartnerUiColors.brand,
-            //       size: 28,
-            //     ),
-            //   ),
-            // ),
             const Divider(color: PartnerUiColors.brand),
             PartnerSettingsRow(
               label: l10n.privacyPolicy,

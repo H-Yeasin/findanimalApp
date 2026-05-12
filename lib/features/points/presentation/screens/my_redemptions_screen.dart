@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -14,6 +15,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final redemptionsState = ref.watch(myRedemptionsProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -33,7 +35,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
           ),
         ),
         title: Text(
-          'MY REDEMPTIONS',
+          l10n.pointsMyRedemptionsTitle,
           style: AppTextStyles.heading.copyWith(
             fontSize: 20,
             fontWeight: FontWeight.w900,
@@ -46,7 +48,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
         data: (redemptions) => redemptions.isEmpty
             ? Center(
                 child: Text(
-                  'No redemptions yet.',
+                  l10n.pointsNoRedemptionsYet,
                   style: AppTextStyles.body,
                 ),
               )
@@ -55,16 +57,22 @@ class MyRedemptionsScreen extends ConsumerWidget {
                 child: ListView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: redemptions.length,
-                  itemBuilder: (context, index) => _buildRedemptionCard(redemptions[index]),
+                  itemBuilder: (context, index) =>
+                      _buildRedemptionCard(context, redemptions[index]),
                 ),
               ),
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: $err')),
+        error: (err, stack) => Center(child: Text(l10n.errorLoadingFailed)),
       ),
     );
   }
 
-  Widget _buildRedemptionCard(RedemptionModel redemption) {
+  Widget _buildRedemptionCard(
+    BuildContext context,
+    RedemptionModel redemption,
+  ) {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(12),
@@ -117,7 +125,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Redeemed for ${redemption.pointsAtRedemption} pts',
+                  l10n.pointsRedeemedFor(redemption.pointsAtRedemption),
                   style: AppTextStyles.caption.copyWith(
                     fontSize: 12,
                     color: AppColors.brandPrimary.withValues(alpha: 0.6),
@@ -144,7 +152,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
               ),
             ),
             child: Text(
-              redemption.status.toUpperCase(),
+              _localizedStatus(context, redemption.status),
               style: AppTextStyles.caption.copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
@@ -155,6 +163,21 @@ class MyRedemptionsScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _localizedStatus(BuildContext context, String status) {
+    final l10n = AppLocalizations.of(context);
+
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return l10n.pointsStatusPending.toUpperCase();
+      case 'completed':
+        return l10n.pointsStatusCompleted.toUpperCase();
+      case 'cancelled':
+        return l10n.pointsStatusCancelled.toUpperCase();
+      default:
+        return status.toUpperCase();
+    }
   }
 
   Color _getStatusColor(String status) {

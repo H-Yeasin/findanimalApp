@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -241,8 +242,8 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                             _isEditing
                                 ? l10n.editMyInformation
                                 : l10n.myInformation,
-                            style: AppTextStyles.sectionTitle.copyWith(
-                              color: const Color(0xFFD8C89D),
+                            style: AppTextStyles.condensedSectionTitle.copyWith(
+                              color: AppColors.brandSecondary,
                               fontSize: 18,
                             ),
                           ),
@@ -308,25 +309,6 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                             ),
                           ],
                           const Divider(color: PartnerUiColors.brand),
-                          PersonalInfoField(
-                            label: l10n.profession,
-                            controller: _professionController,
-                            isEditing: _isEditing,
-                          ),
-                          const Divider(color: PartnerUiColors.brand),
-                          PersonalInfoField(
-                            label: l10n.selfIntro,
-                            controller: _selfIntroductionController,
-                            isEditing: _isEditing,
-                            maxLines: 3,
-                          ),
-                          const Divider(color: PartnerUiColors.brand),
-                          PersonalInfoField(
-                            label: l10n.locationAddress,
-                            controller: _locationAddressController,
-                            isEditing: _isEditing,
-                          ),
-                          const Divider(color: PartnerUiColors.brand),
                           const SizedBox(height: 24),
                           if (_isEditing)
                             SizedBox(
@@ -356,10 +338,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                                       )
                                     : Text(
                                         l10n.saveChanges,
-                                        style: AppTextStyles.button.copyWith(
-                                          fontFamily: AppTextStyles.titleFont,
-                                          fontSize: 18,
-                                        ),
+                                        style: AppTextStyles
+                                            .condensedSectionTitle
+                                            .copyWith(
+                                              color: AppColors.white,
+                                              fontSize: 18,
+                                            ),
                                       ),
                               ),
                             ),

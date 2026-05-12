@@ -648,6 +648,29 @@ class AppLocalizations {
   String get pointsInsufficientPoints => _text('pointsInsufficientPoints');
   String get pointsRedeemSuccess => _text('pointsRedeemSuccess');
   String get pointsPts => _text('pointsPts');
+  String get pointsEarned => _text('pointsEarned');
+  String get pointsUsed => _text('pointsUsed');
+  String get pointsNoEarnedHistory => _text('pointsNoEarnedHistory');
+  String get pointsNoUsedHistory => _text('pointsNoUsedHistory');
+  String get pointsMyRedemptionsTitle => _text('pointsMyRedemptionsTitle');
+  String get pointsNoRedemptionsYet => _text('pointsNoRedemptionsYet');
+  String pointsRedeemedFor(int points) =>
+      text('pointsRedeemedFor', params: {'points': '$points'});
+  String get pointsStatusPending => _text('pointsStatusPending');
+  String get pointsStatusCompleted => _text('pointsStatusCompleted');
+  String get pointsStatusCancelled => _text('pointsStatusCancelled');
+  String get pointsReasonLocalMission => _text('pointsReasonLocalMission');
+  String get pointsReasonPhysicalDonation =>
+      _text('pointsReasonPhysicalDonation');
+  String get pointsReasonAnimalReport => _text('pointsReasonAnimalReport');
+  String get pointsReasonRewardRedemption =>
+      _text('pointsReasonRewardRedemption');
+  String get pointsReasonUsed => _text('pointsReasonUsed');
+  String get pointsReasonActivity => _text('pointsReasonActivity');
+  String pointsReasonRedeemedReward(String title) =>
+      text('pointsReasonRedeemedReward', params: {'title': title});
+  String get pointsReasonRefundCancelled =>
+      _text('pointsReasonRefundCancelled');
 
   String get privacyPolicyTitle => _text('privacyPolicyTitle');
   String get privacyPolicyIntro => _text('privacyPolicyIntro');

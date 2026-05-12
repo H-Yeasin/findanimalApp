@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../data/models/points_history_item_model.dart';
 import '../../data/models/redeemable_item_model.dart';
 import '../../data/repositories/points_repository_impl.dart';
@@ -7,28 +6,32 @@ import '../../data/repositories/points_repository_impl.dart';
 class PointsState {
   const PointsState({
     required this.totalPoints,
-    required this.history,
+    required this.earnedHistory,
+    required this.usedHistory,
     required this.redeemableItems,
     this.currentCategory,
     this.currentType,
   });
 
   final int totalPoints;
-  final List<PointsHistoryItemModel> history;
+  final List<PointsHistoryItemModel> earnedHistory;
+  final List<PointsHistoryItemModel> usedHistory;
   final List<RedeemableItemModel> redeemableItems;
   final String? currentCategory;
   final String? currentType;
 
   PointsState copyWith({
     int? totalPoints,
-    List<PointsHistoryItemModel>? history,
+    List<PointsHistoryItemModel>? earnedHistory,
+    List<PointsHistoryItemModel>? usedHistory,
     List<RedeemableItemModel>? redeemableItems,
     String? currentCategory,
     String? currentType,
   }) {
     return PointsState(
       totalPoints: totalPoints ?? this.totalPoints,
-      history: history ?? this.history,
+      earnedHistory: earnedHistory ?? this.earnedHistory,
+      usedHistory: usedHistory ?? this.usedHistory,
       redeemableItems: redeemableItems ?? this.redeemableItems,
       currentCategory: currentCategory ?? this.currentCategory,
       currentType: currentType ?? this.currentType,
@@ -39,39 +42,25 @@ class PointsState {
 class PointsNotifier extends AsyncNotifier<PointsState> {
   @override
   Future<PointsState> build() async {
-    final profile = await ref.watch(myProfileProvider.future);
-    final pointsFromProfile = profile.pointsBalance ?? 0;
     final repository = ref.watch(pointsRepositoryProvider);
+    final overview = await repository.getMyPoints();
 
     final rewards = await repository.getAllRewards(
       category: state.valueOrNull?.currentCategory,
       type: state.valueOrNull?.currentType,
     );
 
-    // For history, we'll keep the mock data for now as the API endpoint wasn't provided,
-    // but we use the real points balance and rewards.
+    final earnedHistory = overview.transactions
+        .where((item) => item.points > 0)
+        .toList();
+    final usedHistory = overview.transactions
+        .where((item) => item.points < 0)
+        .toList();
+
     return PointsState(
-      totalPoints: pointsFromProfile,
-      history: [
-        PointsHistoryItemModel(
-          id: '1',
-          points: 10,
-          reason: 'Reporting',
-          createdAt: DateTime(2026, 12, 3),
-        ),
-        PointsHistoryItemModel(
-          id: '2',
-          points: 70,
-          reason: 'Local mission',
-          createdAt: DateTime(2026, 3, 2),
-        ),
-        PointsHistoryItemModel(
-          id: '3',
-          points: 10,
-          reason: 'Reporting',
-          createdAt: DateTime(2026, 3, 1),
-        ),
-      ],
+      totalPoints: overview.balance,
+      earnedHistory: earnedHistory,
+      usedHistory: usedHistory,
       redeemableItems: rewards,
       currentCategory: state.valueOrNull?.currentCategory,
       currentType: state.valueOrNull?.currentType,
@@ -79,44 +68,50 @@ class PointsNotifier extends AsyncNotifier<PointsState> {
   }
 
   Future<void> setCategory(String? category) async {
+    final previousState = state.valueOrNull;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final currentState = state.valueOrNull;
-      final profile = await ref.read(myProfileProvider.future);
       final repository = ref.read(pointsRepositoryProvider);
+      final overview = await repository.getMyPoints();
 
       final rewards = await repository.getAllRewards(
         category: category,
-        type: currentState?.currentType,
+        type: previousState?.currentType,
       );
 
       return PointsState(
-        totalPoints: profile.pointsBalance ?? 0,
-        history: currentState?.history ?? [],
+        totalPoints: overview.balance,
+        earnedHistory: previousState?.earnedHistory ??
+            overview.transactions.where((item) => item.points > 0).toList(),
+        usedHistory: previousState?.usedHistory ??
+            overview.transactions.where((item) => item.points < 0).toList(),
         redeemableItems: rewards,
         currentCategory: category,
-        currentType: currentState?.currentType,
+        currentType: previousState?.currentType,
       );
     });
   }
 
   Future<void> setType(String? type) async {
+    final previousState = state.valueOrNull;
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      final currentState = state.valueOrNull;
-      final profile = await ref.read(myProfileProvider.future);
       final repository = ref.read(pointsRepositoryProvider);
+      final overview = await repository.getMyPoints();
 
       final rewards = await repository.getAllRewards(
-        category: currentState?.currentCategory,
+        category: previousState?.currentCategory,
         type: type,
       );
 
       return PointsState(
-        totalPoints: profile.pointsBalance ?? 0,
-        history: currentState?.history ?? [],
+        totalPoints: overview.balance,
+        earnedHistory: previousState?.earnedHistory ??
+            overview.transactions.where((item) => item.points > 0).toList(),
+        usedHistory: previousState?.usedHistory ??
+            overview.transactions.where((item) => item.points < 0).toList(),
         redeemableItems: rewards,
-        currentCategory: currentState?.currentCategory,
+        currentCategory: previousState?.currentCategory,
         currentType: type,
       );
     });

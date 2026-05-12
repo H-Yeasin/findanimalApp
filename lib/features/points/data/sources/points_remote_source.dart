@@ -12,8 +12,9 @@ class PointsRemoteSource {
 
   final ApiClient _apiClient;
 
-  Future<void> getMyPoints() async {
-    await _apiClient.get('/points/get-my-points');
+  Future<Map<String, dynamic>> getMyPoints() async {
+    final response = await _apiClient.get('/points/get-my-points');
+    return response.data;
   }
 
   Future<Map<String, dynamic>> getAllRewards({

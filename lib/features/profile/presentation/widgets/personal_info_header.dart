@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -74,9 +75,9 @@ class PersonalInfoHeader extends StatelessWidget {
                       )
                     : Text(
                         isEditing ? l10n.save : l10n.edit,
-                        style: AppTextStyles.button.copyWith(
-                          fontFamily: AppTextStyles.titleFont,
-                          fontSize: 16,
+                        style: AppTextStyles.condensedSectionTitle.copyWith(
+                          color: AppColors.white,
+                          fontSize: 18,
                         ),
                       ),
               ),

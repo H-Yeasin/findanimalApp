@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../data/models/points_overview_model.dart';
 import '../../data/models/redeemable_item_model.dart';
 import '../../data/models/redemption_model.dart';
 import '../../domain/repositories/points_repository.dart';
@@ -14,8 +15,9 @@ class PointsRepositoryImpl implements PointsRepository {
   final PointsRemoteSource _remoteSource;
 
   @override
-  Future<void> getMyPoints() async {
-    await _remoteSource.getMyPoints();
+  Future<PointsOverviewModel> getMyPoints() async {
+    final response = await _remoteSource.getMyPoints();
+    return PointsOverviewModel.fromJson(response);
   }
 
   @override
