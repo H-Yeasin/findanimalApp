@@ -68,11 +68,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.body.copyWith(
+            style: AppTextStyles.condensedSectionTitle.copyWith(
               color: PartnerUiColors.brand,
-              fontFamily: 'EricaOne',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontSize: 28,
             ),
           ),
           const SizedBox(height: 10),

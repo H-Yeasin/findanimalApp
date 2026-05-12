@@ -158,6 +158,8 @@ class AppLocalizations {
   String get otpMust6Digits => _text('otpMust6Digits');
   String get emailsDoNotMatch => _text('emailsDoNotMatch');
   String get passwordsDoNotMatch => _text('passwordsDoNotMatch');
+  String get passwordValidationComplexity => _text('passwordValidationComplexity');
+  String get credentialIncorrect => _text('credentialIncorrect');
   String get emailRequired => _text('emailRequired');
   String get emailInvalid => _text('emailInvalid');
   String get fieldEmail => _text('fieldEmail');

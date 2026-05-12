@@ -35,6 +35,8 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
   final _confirmPasswordController = TextEditingController();
 
   XFile? _selectedLogo;
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   double? _latitude;
   double? _longitude;
   String? _locationAddress;
@@ -135,9 +137,10 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
         return;
       }
 
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
+      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
     }
   }
 
@@ -178,6 +181,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     String? Function(String?)? validator,
     TextInputType? keyboardType,
     bool obscureText = false,
+    Widget? suffix,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,6 +194,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
           readOnly: false,
           keyboardType: keyboardType,
           obscureText: obscureText,
+          suffix: suffix,
           validator: validator,
         ),
       ],
@@ -417,7 +422,15 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 label: l10n.passwordLabel,
                 controller: _passwordController,
                 hint: l10n.passwordHint,
-                obscureText: true,
+                obscureText: _obscurePassword,
+                suffix: AuthPasswordVisibilityToggle(
+                  obscureText: _obscurePassword,
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
                 validator: (value) => _required(value, l10n.fieldPassword),
               ),
               const SizedBox(height: 10),
@@ -425,7 +438,15 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 controller: _confirmPasswordController,
                 hintText: l10n.confirmPasswordHint,
                 readOnly: false,
-                obscureText: true,
+                obscureText: _obscureConfirmPassword,
+                suffix: AuthPasswordVisibilityToggle(
+                  obscureText: _obscureConfirmPassword,
+                  onPressed: () {
+                    setState(() {
+                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                    });
+                  },
+                ),
                 validator: (value) {
                   final base = _required(value, l10n.fieldConfirmPassword);
                   if (base != null) {

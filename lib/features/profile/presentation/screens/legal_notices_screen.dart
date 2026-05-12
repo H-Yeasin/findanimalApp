@@ -23,10 +23,9 @@ class LegalNoticesScreen extends StatelessWidget {
           children: [
             Text(
               l10n.legalNoticesFullTitle,
-              style: AppTextStyles.body.copyWith(
+              style: AppTextStyles.condensedSectionTitle.copyWith(
                 color: PartnerUiColors.brand,
-                fontFamily: 'EricaOne',
-                fontSize: 22,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -50,9 +49,8 @@ class LegalNoticesScreen extends StatelessWidget {
             _buildSection(l10n.legalContactTitle, l10n.legalContactContent),
             Text(
               l10n.legalContactInfo,
-              style: AppTextStyles.body.copyWith(
+              style: AppTextStyles.condensedSectionTitle.copyWith(
                 color: PartnerUiColors.brand,
-                fontWeight: FontWeight.bold,
                 height: 1.4,
               ),
             ),
@@ -70,11 +68,9 @@ class LegalNoticesScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: AppTextStyles.body.copyWith(
+            style: AppTextStyles.condensedSectionTitle.copyWith(
               color: PartnerUiColors.brand,
-              fontFamily: 'EricaOne',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontSize: 28,
             ),
           ),
           const SizedBox(height: 10),

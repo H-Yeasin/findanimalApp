@@ -76,7 +76,7 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(authErrorMessage(error)),
+          content: Text(authErrorMessage(error, l10n)),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
         ),

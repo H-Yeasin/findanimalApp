@@ -1,9 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'app.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'core/services/notification_service.dart';
 import 'package:timeago/timeago.dart' as timeago;

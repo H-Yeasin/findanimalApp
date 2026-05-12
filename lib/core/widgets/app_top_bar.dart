@@ -54,25 +54,19 @@ class AppTopBar extends ConsumerWidget {
             ],
           ),
           if (title != null)
-            Positioned.fill(
-              child: IgnorePointer(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 56),
-                    child: Text(
-                      title!,
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      maxLines: 3,
-                      overflow: TextOverflow.visible,
-                      style: AppTextStyles.heading.copyWith(
-                        color: brandColor,
-                        fontSize: _responsiveTitleFont(screenWidth),
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.2,
-                        height: 1,
-                      ),
-                    ),
+            IgnorePointer(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 56),
+                child: Text(
+                  title!,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  maxLines: 3,
+                  overflow: TextOverflow.visible,
+                  style: AppTextStyles.heading.copyWith(
+                    color: brandColor,
+                    fontSize: _responsiveTitleFont(screenWidth),
+                    height: 1.1,
                   ),
                 ),
               ),

@@ -47,6 +47,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
               child: Column(
                 children: [
                   // Header
+                  const SizedBox(height: 10),
                   AppTopBar(title: l10n.listShelters),
                   const SizedBox(height: 10),
                   Padding(

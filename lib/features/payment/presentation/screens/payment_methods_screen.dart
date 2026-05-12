@@ -50,11 +50,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionHeader(
-          context,
-          ref,
-          l10n.paymentMethodsCardsAndAccounts,
-        ),
+        _buildSectionHeader(context, ref, l10n.paymentMethodsCardsAndAccounts),
         const SizedBox(height: 15),
         if (state.paymentMethods.isEmpty)
           Padding(
@@ -187,11 +183,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                     // Stripe doesn't easily allow modifying card details once saved.
                     // Usually you delete and re-add.
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          l10n.paymentMethodsModifyHint,
-                        ),
-                      ),
+                      SnackBar(content: Text(l10n.paymentMethodsModifyHint)),
                     );
                   }),
                   const SizedBox(height: 5),
@@ -204,9 +196,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              l10n.paymentMethodsDeleteError('$e'),
-                            ),
+                            content: Text(l10n.paymentMethodsDeleteError('$e')),
                           ),
                         );
                       }

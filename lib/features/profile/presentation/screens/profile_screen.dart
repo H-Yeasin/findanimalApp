@@ -165,7 +165,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         InkWell(
                           onTap: () {
                             Share.share(
-                              'Join me on Hesteka! Download the app at https://www.hesteka.com',
+                              'Rejoignez-moi sur Hesteka ! Téléchargez l\'application sur https://www.hesteka.com',
                             );
                           },
                           child: Text(

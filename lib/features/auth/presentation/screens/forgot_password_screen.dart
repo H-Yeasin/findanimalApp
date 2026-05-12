@@ -64,7 +64,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
+      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
     }
   }
 

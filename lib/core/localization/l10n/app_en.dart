@@ -110,6 +110,10 @@ const Map<String, String> appEn = {
   'fieldPassword': 'Password',
   'fieldConfirmPassword': 'Confirm password',
   'fieldOtp': 'OTP',
+  'passwordValidationComplexity':
+      'Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character',
+  'credentialIncorrect':
+      'Credential incorrect. Try with correct credential or create an account.',
   'memberSince': 'Member since March 2026',
   'myProfileMyAnimals': 'My profile - My animals',
   'myReportsLabel': 'My reports',

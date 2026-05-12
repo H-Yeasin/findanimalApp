@@ -113,6 +113,10 @@ const Map<String, String> appFr = {
   'fieldPassword': 'Mot de passe',
   'fieldConfirmPassword': 'Confirmer le mot de passe',
   'fieldOtp': 'OTP',
+  'passwordValidationComplexity':
+      'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
+  'credentialIncorrect':
+      'Identifiant incorrect. Réessayez avec les bons identifiants ou créez un compte.',
   'memberSince': 'Membre depuis Mars 2026',
   'myProfileMyAnimals': 'Mon profil - Mes animaux',
   'myReportsLabel': 'Mes signalements',
@@ -271,8 +275,8 @@ const Map<String, String> appFr = {
   'seeLocalMissions': 'Missions Locales',
   'seeFullList': 'Voir la liste complète',
   'goToFaq': 'Aller à la FAQ',
-  'shareStory': 'Partager une histoire',
-  'shareStoryShort': 'Partager une\nhistoire',
+  'shareStory': 'Partager une Story',
+  'shareStoryShort': 'Partager une\nStory',
   'addCaptionHint': 'Ajouter une légende...',
   'noLocalMessages': 'Aucun message local pour le moment.',
   'imageUnavailable': 'Image non disponible',
@@ -751,8 +755,7 @@ const Map<String, String> appFr = {
   'paymentMethodsDelete': 'SUPPRIMER',
   'paymentMethodsDeleteError':
       'Erreur lors de la suppression du moyen de paiement : {error}',
-  'paymentMethodsUseAsDefault':
-      'Utiliser comme moyen de paiement par defaut',
+  'paymentMethodsUseAsDefault': 'Utiliser comme moyen de paiement par defaut',
   'paymentMethodsGiftCardTitle': 'Carte cadeau Hesteka',
   'paymentMethodsBalanceAvailable': '{balance} disponible',
   'paymentMethodsTopUpBalance': 'Recharger le solde',

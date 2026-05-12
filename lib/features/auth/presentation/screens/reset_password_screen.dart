@@ -60,7 +60,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
+      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
     }
   }
 

@@ -28,6 +28,9 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   void dispose() {
     _firstNameController.dispose();
@@ -76,7 +79,7 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
+      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
     }
   }
 
@@ -215,8 +218,16 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _passwordController,
                 hintText: l10n.passwordHint,
-                obscureText: true,
+                obscureText: _obscurePassword,
                 readOnly: false,
+                suffix: AuthPasswordVisibilityToggle(
+                  obscureText: _obscurePassword,
+                  onPressed: () {
+                    setState(() {
+                      _obscurePassword = !_obscurePassword;
+                    });
+                  },
+                ),
                 validator: (value) => Validators.required(
                   value,
                   requiredMessage: l10n.fieldRequired(l10n.fieldPassword),
@@ -226,8 +237,16 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
               AuthPillTextField(
                 controller: _confirmPasswordController,
                 hintText: l10n.confirmPasswordHint,
-                obscureText: true,
+                obscureText: _obscureConfirmPassword,
                 readOnly: false,
+                suffix: AuthPasswordVisibilityToggle(
+                  obscureText: _obscureConfirmPassword,
+                  onPressed: () {
+                    setState(() {
+                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                    });
+                  },
+                ),
                 validator: (value) {
                   final base = Validators.required(
                     value,

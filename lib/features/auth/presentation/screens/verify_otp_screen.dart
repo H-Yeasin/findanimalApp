@@ -102,7 +102,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error))));
+      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
     }
   }
 

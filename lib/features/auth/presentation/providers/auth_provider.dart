@@ -8,6 +8,7 @@ import '../../data/models/login_request_model.dart';
 import '../../data/models/register_partner_request_model.dart';
 import '../../data/models/register_request_model.dart';
 import '../../data/repositories/auth_repository_impl.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
@@ -243,11 +244,19 @@ final currentUserProvider = Provider<AuthUserModel?>((ref) {
   return ref.watch(authSessionProvider).valueOrNull?.user;
 });
 
-String authErrorMessage(Object error) {
+String authErrorMessage(Object error, [AppLocalizations? l10n]) {
   final raw = error.toString().toLowerCase();
 
   if (raw.contains('user not found') || raw.contains('incorrect password')) {
-    return 'Credential incorrect. Try with correct credential or create an account.';
+    return l10n?.credentialIncorrect ??
+        'Credential incorrect. Try with correct credential or create an account.';
+  }
+
+  if (raw.contains('uppercase') &&
+      raw.contains('lowercase') &&
+      raw.contains('number') &&
+      raw.contains('special character')) {
+    return l10n?.passwordValidationComplexity ?? error.toString();
   }
 
   final msg = error.toString();
