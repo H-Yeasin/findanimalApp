@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
@@ -10,8 +11,8 @@ class ReportMapCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    const cardWidth = 124.0;
-    const cardHeight = 74.0;
+    const cardWidth = 130.0;
+    const cardHeight = 78.0;
     final imageUrl = (report.images != null && report.images.isNotEmpty)
         ? report.images.first.secureUrl
         : null;
@@ -38,8 +39,8 @@ class ReportMapCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 35,
+                  height: 35,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 1),
@@ -62,8 +63,9 @@ class ReportMapCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.body.copyWith(
                           color: Colors.white,
-                          fontFamily: 'EricaOne',
-                          fontSize: 9,
+                          // fontFamily: 'BrowlCondenced',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
                           height: 1,
                         ),
                       ),
@@ -73,18 +75,16 @@ class ReportMapCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.body.copyWith(
                           color: Colors.white,
-                          fontSize: 6,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 10,
                         ),
                       ),
                       Text(
                         report.status ?? '',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.body.copyWith(
+                        style: AppTextStyles.caption.copyWith(
                           color: Colors.white,
-                          fontSize: 6,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 10,
                         ),
                       ),
                     ],
@@ -95,9 +95,7 @@ class ReportMapCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           GestureDetector(
-            onTap: () {
-              // Handle see report
-            },
+            onTap: () => context.push('/reports/${report.id}'),
             child: Container(
               height: 18,
               width: double.infinity,
@@ -107,11 +105,12 @@ class ReportMapCard extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                l10n.seeMission, // fallback if seeReport doesn't exist, we'll check it later
-                style: AppTextStyles.body.copyWith(
+                l10n.viewProfile(
+                  report.animalName,
+                ), // fallback if seeReport doesn't exist, we'll check it later
+                style: AppTextStyles.condensedSectionTitle.copyWith(
                   color: Color(0xFFBA4A22),
-                  fontSize: 7,
-                  fontWeight: FontWeight.w900,
+                  fontSize: 9,
                 ),
               ),
             ),

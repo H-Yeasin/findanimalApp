@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/routing/route_names.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/app_background.dart';
 import '../../../../core/widgets/app_top_bar.dart';
-import '../../../../core/routing/route_names.dart';
-import 'package:go_router/go_router.dart';
 
 class ReportBaseLayout extends ConsumerWidget {
   final int currentStep;
@@ -33,19 +33,19 @@ class ReportBaseLayout extends ConsumerWidget {
         child: SafeArea(
           child: Column(
             children: [
-              _buildHeader(context, ref, l10n),
+              _buildHeader(context, l10n),
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     children: [
                       const SizedBox(height: 10),
-                      _buildStepIndicator(),
+                      _buildStepIndicator(context),
                       const SizedBox(height: 30),
                       child,
                       const SizedBox(height: 40),
-                      _buildMainButton(l10n),
-                      const SizedBox(height: 20), // Reduced bottom space
+                      _buildMainButton(context, l10n),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -55,7 +55,7 @@ class ReportBaseLayout extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 1, // Active tab for reporting flow
+        currentIndex: 1,
         onTap: (index) {
           switch (index) {
             case 0:
@@ -79,11 +79,7 @@ class ReportBaseLayout extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeader(
-    BuildContext context,
-    WidgetRef ref,
-    AppLocalizations l10n,
-  ) {
+  Widget _buildHeader(BuildContext context, AppLocalizations l10n) {
     return Column(
       children: [
         const AppTopBar(showBackButton: true),
@@ -95,7 +91,10 @@ class ReportBaseLayout extends ConsumerWidget {
               Text(
                 l10n.reportPointsInfo,
                 textAlign: TextAlign.center,
-                style: AppTextStyles.caption,
+                softWrap: true,
+                style: AppTextStyles.caption.copyWith(
+                  fontSize: _responsiveFont(context, 12),
+                ),
               ),
             ],
           ),
@@ -104,97 +103,134 @@ class ReportBaseLayout extends ConsumerWidget {
     );
   }
 
-  Widget _buildStepIndicator() {
+  Widget _buildStepIndicator(BuildContext context) {
     const brandColor = Color(0xFFBA4A22);
-    const circleSize = 50.0;
 
-    return Column(
-      children: [
-        // Title row — perfectly aligned above each circle using spaceBetween
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List.generate(4, (index) {
-            final stepNum = index + 1;
-            final isActive = stepNum == currentStep;
-            return SizedBox(
-              width: 70,
-              child: isActive
-                  ? Text(
-                      stepTitle.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      style: AppTextStyles.caption.copyWith(
-                        fontWeight: FontWeight.w600,
-                        height: 1.0,
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            );
-          }),
-        ),
-        const SizedBox(height: 6),
-        // Circles with a background line connecting them
-        SizedBox(
-          height: circleSize,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Background connector line (from center of first to center of last circle)
-              Positioned(
-                left: circleSize / 2,
-                right: circleSize / 2,
-                child: Container(height: 2, color: brandColor),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final itemWidth = (constraints.maxWidth / 4).clamp(52.0, 82.0);
+        final circleSize = (constraints.maxWidth / 4).clamp(44.0, 50.0);
+
+        return Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: List.generate(4, (index) {
+                final stepNum = index + 1;
+                final isActive = stepNum == currentStep;
+                return SizedBox(
+                  width: itemWidth,
+                  child:
+                      isActive
+                          ? Text(
+                            stepTitle.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w600,
+                              fontSize: _responsiveFont(context, 12),
+                              height: 1,
+                            ),
+                          )
+                          : const SizedBox.shrink(),
+                );
+              }),
+            ),
+            const SizedBox(height: 6),
+            SizedBox(
+              height: circleSize,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    left: circleSize / 2,
+                    right: circleSize / 2,
+                    child: Container(height: 2, color: brandColor),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: List.generate(4, (index) {
+                      final stepNum = index + 1;
+                      final isActive = stepNum == currentStep;
+                      return Container(
+                        width: circleSize,
+                        height: circleSize,
+                        decoration: BoxDecoration(
+                          color: isActive ? brandColor : const Color(0xFFFBF4E9),
+                          shape: BoxShape.circle,
+                          border: Border.all(color: brandColor, width: 2),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          '$stepNum',
+                          style: AppTextStyles.body.copyWith(
+                            color: isActive ? Colors.white : brandColor,
+                            fontSize: _responsiveFont(context, 32),
+                            fontFamily: 'EricaOne',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                ],
               ),
-              // Circles evenly distributed
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: List.generate(4, (index) {
-                  final stepNum = index + 1;
-                  final isActive = stepNum == currentStep;
-                  return Container(
-                    width: circleSize,
-                    height: circleSize,
-                    decoration: BoxDecoration(
-                      color: isActive ? brandColor : const Color(0xFFFBF4E9),
-                      shape: BoxShape.circle,
-                      border: Border.all(color: brandColor, width: 2),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '$stepNum',
-                      style: AppTextStyles.body.copyWith(
-                        color: isActive ? Colors.white : brandColor,
-                        fontSize: 32,
-                        fontFamily: 'EricaOne',
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _buildMainButton(AppLocalizations l10n) {
+  Widget _buildMainButton(BuildContext context, AppLocalizations l10n) {
+    final textScaler = MediaQuery.textScalerOf(context);
+
     return GestureDetector(
       onTap: onButtonPressed,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
         decoration: BoxDecoration(
           color: const Color(0xFFBA4A22),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Center(
-          child: Text(
-            (buttonText ?? l10n.following).toUpperCase(),
-            style: AppTextStyles.button.copyWith(fontSize: 18),
-          ),
+          child:
+              textScaler.scale(1) > 1.15
+                  ? Text(
+                    (buttonText ?? l10n.following).toUpperCase(),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.button.copyWith(
+                      fontSize: _responsiveFont(context, 18),
+                      height: 1.1,
+                    ),
+                  )
+                  : FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      (buttonText ?? l10n.following).toUpperCase(),
+                      maxLines: 1,
+                      style: AppTextStyles.button.copyWith(
+                        fontSize: _responsiveFont(context, 18),
+                      ),
+                    ),
+                  ),
         ),
       ),
     );
+  }
+
+  double _responsiveFont(BuildContext context, double size) {
+    final width = MediaQuery.sizeOf(context).width;
+
+    if (width < 360) return size * 0.85;
+    if (width < 400) return size * 0.92;
+    return size;
   }
 }

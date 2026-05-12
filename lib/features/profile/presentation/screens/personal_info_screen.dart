@@ -37,6 +37,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
   final _locationAddressController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
+  final _postalCodeController = TextEditingController();
 
   bool _isEditing = false;
   bool _initialized = false;
@@ -58,6 +59,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     _locationAddressController.dispose();
     _latitudeController.dispose();
     _longitudeController.dispose();
+    _postalCodeController.dispose();
     super.dispose();
   }
 
@@ -68,10 +70,13 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     _emailController.text = profile.email;
     _phoneController.text = profile.phone;
     _addressController.text = profile.address;
+    _cityController.text = profile.city ?? '';
+    _countryController.text = profile.country ?? '';
     _companyController.text = profile.company ?? '';
     _professionController.text = profile.profession ?? '';
     _selfIntroductionController.text = profile.selfIntroduction ?? '';
     _locationAddressController.text = profile.location?.address ?? '';
+    _postalCodeController.text = profile.postalCode ?? '';
     final coordinates = profile.location?.coordinates;
     if (coordinates != null && coordinates.length >= 2) {
       _longitudeController.text = coordinates[0].toString();
@@ -96,6 +101,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
       'lastName': _lastNameController.text.trim(),
       'phone': _phoneController.text.trim(),
       'address': _addressController.text.trim(),
+      'postalCode': _postalCodeController.text.trim(),
       'city': _cityController.text.trim(),
       'country': _countryController.text.trim(),
       'company': _companyController.text.trim(),
@@ -160,6 +166,9 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
       _emailController.text = profile.email;
       _phoneController.text = profile.phone;
       _addressController.text = profile.address;
+      _cityController.text = profile.city ?? '';
+      _countryController.text = profile.country ?? '';
+      _postalCodeController.text = profile.postalCode ?? '';
       _companyController.text = profile.company ?? '';
       _professionController.text = profile.profession ?? '';
       _selfIntroductionController.text = profile.selfIntroduction ?? '';
@@ -185,6 +194,9 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final l10n = AppLocalizations.of(context);
     final profileAsync = ref.watch(myProfileProvider);
     final isSaving = ref.watch(updateProfileProvider).isLoading;
+    final profile = profileAsync.valueOrNull;
+    final headerImageUrl =
+        _currentImageUrl ?? profile?.profileImage?.secure_url;
 
     return AppBackgroundScaffold(
       body: AppBackground(
@@ -197,7 +209,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
               onEditTap: () => _setEditMode(!_isEditing),
               onSaveTap: _save,
               onCancelTap: _cancelEditing,
-              imageUrl: _currentImageUrl,
+              imageUrl: headerImageUrl,
               selectedImage: _selectedImage,
               onPickImage: _pickProfileImage,
             ),
@@ -264,6 +276,13 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                           PersonalInfoField(
                             label: l10n.address,
                             controller: _addressController,
+                            isEditing: _isEditing,
+                            maxLines: 2,
+                          ),
+                          const Divider(color: PartnerUiColors.brand),
+                          PersonalInfoField(
+                            label: l10n.postalCode,
+                            controller: _postalCodeController,
                             isEditing: _isEditing,
                             maxLines: 2,
                           ),

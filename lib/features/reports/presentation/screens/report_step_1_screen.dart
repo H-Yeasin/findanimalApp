@@ -144,7 +144,9 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
           ),
           const SizedBox(height: 20),
           _buildLabel(l10n.reportStep1GenderLabel),
-          Row(
+          Wrap(
+            spacing: 24,
+            runSpacing: 12,
             children: [
               _buildRadioButton(
                 l10n.reportStep1Male,
@@ -153,7 +155,6 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
                   setState(() => _selectedGender = 'Male');
                 },
               ),
-              const SizedBox(width: 30),
               _buildRadioButton(
                 l10n.reportStep1Female,
                 _selectedGender == 'Female',
@@ -256,6 +257,7 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
     return GestureDetector(
       onTap: onTap,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             width: 24,
@@ -279,12 +281,17 @@ class _ReportStep1ScreenState extends ConsumerState<ReportStep1Screen> {
                 : null,
           ),
           const SizedBox(width: 8),
-          Text(
-            label,
-            style: AppTextStyles.body.copyWith(
-              color: Color(0xFFBA4A22),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+          Flexible(
+            child: Text(
+              label,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.body.copyWith(
+                color: Color(0xFFBA4A22),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

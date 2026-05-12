@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/utils/formatters.dart';
@@ -23,6 +26,8 @@ class _AnimalProfileCommentsSectionState
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   String? _replyingToCommentId;
+  File? _selectedImage;
+  bool _isUploading = false;
 
   @override
   void dispose() {
@@ -31,23 +36,45 @@ class _AnimalProfileCommentsSectionState
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
   Future<void> _submitComment() async {
     final text = _commentController.text.trim();
-    if (text.isEmpty) return;
+    if (text.isEmpty && _selectedImage == null) return;
 
-    final notifier = ref.read(commentsProvider(widget.data.id).notifier);
-
-    if (_replyingToCommentId != null) {
-      await notifier.replyToComment(_replyingToCommentId!, text);
-    } else {
-      await notifier.addComment(text);
-    }
-
-    _commentController.clear();
     setState(() {
-      _replyingToCommentId = null;
+      _isUploading = true;
     });
-    _focusNode.unfocus();
+
+    try {
+      final notifier = ref.read(commentsProvider(widget.data.id).notifier);
+
+      if (_replyingToCommentId != null) {
+        await notifier.replyToComment(_replyingToCommentId!, text, image: _selectedImage);
+      } else {
+        await notifier.addComment(text, image: _selectedImage);
+      }
+
+      _commentController.clear();
+      setState(() {
+        _replyingToCommentId = null;
+        _selectedImage = null;
+        _isUploading = false;
+      });
+      _focusNode.unfocus();
+    } catch (e) {
+      setState(() {
+        _isUploading = false;
+      });
+    }
   }
 
   @override
@@ -157,56 +184,96 @@ class _AnimalProfileCommentsSectionState
               color: const Color(0xFFBA4A22),
               borderRadius: BorderRadius.circular(24),
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.camera_alt_outlined,
-                  color: Colors.white,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    controller: _commentController,
-                    focusNode: _focusNode,
-                    style: AppTextStyles.caption.copyWith(color: Colors.white),
-                    cursorColor: Colors.white,
-                    decoration: InputDecoration(
-                      hintText: l10n.commentAs(
-                        currentUser?.firstName ?? "User",
+                if (_selectedImage != null) ...[
+                  Stack(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            image: FileImage(_selectedImage!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      hintStyle: AppTextStyles.caption.copyWith(
-                        color: Colors.white70,
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedImage = null;
+                            });
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.black54,
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(2),
+                            child: const Icon(
+                              Icons.close,
+                              size: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                      border: InputBorder.none,
-                      isDense: true,
-                      contentPadding: EdgeInsets.zero,
+                    ],
+                  ),
+                ],
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: const Icon(
+                        Icons.camera_alt_outlined,
+                        color: Colors.white,
+                        size: 18,
+                      ),
                     ),
-                    onSubmitted: (_) => _submitComment(),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 1,
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 1.2),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: Text(
-                    l10n.gif,
-                    style: AppTextStyles.caption.copyWith(
-                      color: Colors.white,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextField(
+                        controller: _commentController,
+                        focusNode: _focusNode,
+                        style: AppTextStyles.caption.copyWith(color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: l10n.commentAs(
+                            currentUser?.firstName ?? "User",
+                          ),
+                          hintStyle: AppTextStyles.caption.copyWith(
+                            color: Colors.white70,
+                          ),
+                          border: InputBorder.none,
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                        ),
+                        onSubmitted: (_) => _submitComment(),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 5),
-                GestureDetector(
-                  onTap: _submitComment,
-                  child: const Icon(Icons.send, color: Colors.white, size: 18),
+                    const SizedBox(width: 5),
+                    _isUploading
+                        ? const SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : GestureDetector(
+                            onTap: _submitComment,
+                            child: const Icon(Icons.send, color: Colors.white, size: 18),
+                          ),
+                  ],
                 ),
               ],
             ),
@@ -311,14 +378,31 @@ class _CommentItem extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           // Comment text
-          Text(
-            '"${comment.content}"',
-            style: AppTextStyles.caption.copyWith(
-              fontSize: 11,
-              height: 1.5,
-              // fontWeight: FontWeight.w500,
+          if (comment.content.isNotEmpty)
+            Text(
+              '"${comment.content}"',
+              style: AppTextStyles.caption.copyWith(
+                fontSize: 11,
+                height: 1.5,
+                // fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
+          if (comment.image?.secureUrl != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  imageUrl: comment.image!.secureUrl,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  placeholder: (context, url) => Container(
+                    height: 100,
+                    color: Colors.grey[200],
+                  ),
+                ),
+              ),
+            ),
           const SizedBox(height: 10),
           // I like / Reply
           Row(
@@ -417,9 +501,31 @@ class _ReplyItem extends StatelessWidget {
               color: const Color(0xFFFDF6ED),
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Text(
-              reply.content,
-              style: AppTextStyles.caption.copyWith(fontSize: 11),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (reply.content.isNotEmpty)
+                  Text(
+                    reply.content,
+                    style: AppTextStyles.caption.copyWith(fontSize: 11),
+                  ),
+                if (reply.image?.secureUrl != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        imageUrl: reply.image!.secureUrl,
+                        fit: BoxFit.cover,
+                        height: 100,
+                        placeholder: (context, url) => Container(
+                          height: 100,
+                          color: Colors.grey[200],
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ),
         ),

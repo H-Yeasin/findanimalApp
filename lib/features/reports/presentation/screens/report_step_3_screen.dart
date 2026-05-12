@@ -112,31 +112,47 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
     Function(String) onChanged,
     AppLocalizations l10n,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildLabel(question),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final optionWidth = ((constraints.maxWidth - 24) / 3).clamp(88.0, 160.0);
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildRadioButton(
-              l10n.yes,
-              currentValue == 'Yes',
-              () => onChanged('Yes'),
-            ),
-            _buildRadioButton(
-              l10n.no,
-              currentValue == 'No',
-              () => onChanged('No'),
-            ),
-            _buildRadioButton(
-              l10n.dontKnow,
-              currentValue == 'Unknown',
-              () => onChanged('Unknown'),
+            _buildLabel(question),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                SizedBox(
+                  width: optionWidth,
+                  child: _buildRadioButton(
+                    l10n.yes,
+                    currentValue == 'Yes',
+                    () => onChanged('Yes'),
+                  ),
+                ),
+                SizedBox(
+                  width: optionWidth,
+                  child: _buildRadioButton(
+                    l10n.no,
+                    currentValue == 'No',
+                    () => onChanged('No'),
+                  ),
+                ),
+                SizedBox(
+                  width: optionWidth,
+                  child: _buildRadioButton(
+                    l10n.dontKnow,
+                    currentValue == 'Unknown',
+                    () => onChanged('Unknown'),
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -144,6 +160,7 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
     return GestureDetector(
       onTap: onTap,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 20,
@@ -167,12 +184,17 @@ class _ReportStep3ScreenState extends ConsumerState<ReportStep3Screen> {
                 : null,
           ),
           const SizedBox(width: 6),
-          Text(
-            label,
-            style: AppTextStyles.body.copyWith(
-              color: Color(0xFFBA4A22),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Text(
+              label,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.body.copyWith(
+                color: Color(0xFFBA4A22),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

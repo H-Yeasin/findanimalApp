@@ -19,18 +19,34 @@ class LocalMissionFilterBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: _FilterButton(text: sortText, onTap: onOpenSort),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          flex: 3,
-          child: _FilterButton(text: radiusText, onTap: onOpenRadius),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final stackButtons = constraints.maxWidth < 360;
+
+        if (stackButtons) {
+          return Column(
+            children: [
+              _FilterButton(text: sortText, onTap: onOpenSort),
+              const SizedBox(height: 10),
+              _FilterButton(text: radiusText, onTap: onOpenRadius),
+            ],
+          );
+        }
+
+        return Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: _FilterButton(text: sortText, onTap: onOpenSort),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 3,
+              child: _FilterButton(text: radiusText, onTap: onOpenRadius),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -47,17 +63,20 @@ class _FilterButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        height: 42,
+        constraints: const BoxConstraints(minHeight: 42),
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
           color: PartnerUiColors.brand,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Text(
                 text,
+                softWrap: true,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.condensedSectionTitle.copyWith(
                   color: Colors.white,

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/repositories/comments_repository.dart';
@@ -27,11 +28,13 @@ class CommentsRepositoryImpl implements CommentsRepository {
     required String content,
     required String reportId,
     String? parentId,
+    File? image,
   }) async {
     final response = await _remoteSource.createComment(
       content: content,
       reportId: reportId,
       parentId: parentId,
+      image: image,
     );
     return CommentModel.fromJson(response['data'] as Map<String, dynamic>);
   }

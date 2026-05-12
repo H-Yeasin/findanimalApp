@@ -9,7 +9,6 @@ import '../../core/localization/app_localizations.dart';
 import 'domain/faq_model.dart';
 import 'presentation/providers/faq_data_provider.dart';
 import 'presentation/widgets/faq_flip_card.dart';
-import 'presentation/widgets/scroll_appearance_wrapper.dart';
 import 'presentation/widgets/faq_search_bar.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
@@ -57,7 +56,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   Future<void> _fetchSupportEmail() async {
     try {
       final dio = ref.read(dioProvider);
-      final response = await dio.get('/api/v1/settings');
+      final response = await dio.get('/settings');
       if (response.statusCode == 200) {
         String? email;
         if (response.data is Map<String, dynamic>) {
@@ -112,6 +111,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
     const brandPrimary = Color(0xFFBA4A22);
     const surface = Color(0xFFFBF4E9);
     const cardBg = Color(0xFFFFF6E5);
@@ -149,8 +149,10 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
                 const SizedBox(height: 20),
                 Text(
                   l10n.faqSubtitle,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
                   style: AppTextStyles.body.copyWith(
-                    fontSize: 16,
+                    fontSize: _responsiveSubtitleFont(screenWidth),
                     fontWeight: FontWeight.w900,
                     color: brandPrimary,
                   ),
@@ -199,58 +201,61 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     );
   }
 
+  double _responsiveSubtitleFont(double width) {
+    if (width < 360) return 13;
+    if (width < 400) return 14;
+    return 16;
+  }
+
   Widget _buildContactSection(AppLocalizations l10n, Color brandPrimary) {
-    return ScrollAppearanceWrapper(
-      type: AnimationType.bounce,
-      child: Column(
-        children: [
-          Text(
-            l10n.faqContactText,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.body.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w900,
-              color: brandPrimary,
+    return Column(
+      children: [
+        Text(
+          l10n.faqContactText,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.body.copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.w900,
+            color: brandPrimary,
+          ),
+        ),
+        const SizedBox(height: 15),
+        ScaleTransition(
+          scale: Tween<double>(begin: 1.0, end: 1.05).animate(
+            CurvedAnimation(
+              parent: _pulseController,
+              curve: Curves.easeInOut,
             ),
           ),
-          const SizedBox(height: 15),
-          ScaleTransition(
-            scale: Tween<double>(begin: 1.0, end: 1.05).animate(
-              CurvedAnimation(
-                parent: _pulseController,
-                curve: Curves.easeInOut,
-              ),
-            ),
-            child: GestureDetector(
-              onTap: () => _contactSupport(l10n),
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 80),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: brandPrimary,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                      color: brandPrimary.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  _supportEmail ?? l10n.contactSupport,
-                  style: AppTextStyles.body.copyWith(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w900,
+          child: GestureDetector(
+            onTap: () => _contactSupport(l10n),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 80),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              decoration: BoxDecoration(
+                color: brandPrimary,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: brandPrimary.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    spreadRadius: 2,
                   ),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                _supportEmail ?? l10n.contactSupport,
+                style: AppTextStyles.body.copyWith(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -264,15 +269,11 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
       crossAxisSpacing: 15,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: List.generate(questions.length, (index) {
-        return ScrollAppearanceWrapper(
-          type: AnimationType.flip,
-          delay: Duration(milliseconds: index * 100),
-          child: FAQFlipCard(
-            question: questions[index].question,
-            answer: questions[index].answer,
-            cardBg: cardBg,
-            color: color,
-          ),
+        return FAQFlipCard(
+          question: questions[index].question,
+          answer: questions[index].answer,
+          cardBg: cardBg,
+          color: color,
         );
       }),
     );

@@ -190,6 +190,7 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
     return GestureDetector(
       onTap: () => onChanged(!isChecked),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: 24,
@@ -204,12 +205,17 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
                 : null,
           ),
           const SizedBox(width: 12),
-          Text(
-            label,
-            style: AppTextStyles.body.copyWith(
-              color: Color(0xFFBA4A22),
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Text(
+              label,
+              softWrap: true,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyles.body.copyWith(
+                color: Color(0xFFBA4A22),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],

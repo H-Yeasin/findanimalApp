@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../data/models/comment_model.dart';
 
 abstract class CommentsRepository {
@@ -7,6 +9,7 @@ abstract class CommentsRepository {
     required String content,
     required String reportId,
     String? parentId,
+    File? image,
   });
 
   Future<void> toggleLike(String commentId);

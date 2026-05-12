@@ -31,6 +31,7 @@ class AppTopBar extends ConsumerWidget {
     ref.watch(authStateProvider);
     final user = ref.watch(currentUserProvider);
     final imageUrl = userImageUrl ?? user?.profileImage;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -53,19 +54,38 @@ class AppTopBar extends ConsumerWidget {
             ],
           ),
           if (title != null)
-            Text(
-              title!.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: AppTextStyles.heading.copyWith(
-                color: brandColor,
-                fontSize: 28,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.2,
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 56),
+                    child: Text(
+                      title!,
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      maxLines: 3,
+                      overflow: TextOverflow.visible,
+                      style: AppTextStyles.heading.copyWith(
+                        color: brandColor,
+                        fontSize: _responsiveTitleFont(screenWidth),
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                        height: 1,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
         ],
       ),
     );
+  }
+
+  double _responsiveTitleFont(double width) {
+    if (width < 360) return 20;
+    if (width < 400) return 24;
+    return 28;
   }
 }
 

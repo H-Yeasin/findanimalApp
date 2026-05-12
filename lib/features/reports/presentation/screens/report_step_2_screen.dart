@@ -269,7 +269,6 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
           border: Border.all(color: const Color(0xFFBA4A22), width: 1),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: const EdgeInsets.all(8),
@@ -284,12 +283,17 @@ class _ReportStep2ScreenState extends ConsumerState<ReportStep2Screen> {
               ),
             ),
             const SizedBox(width: 15),
-            Text(
-              l10n.reportStep2UploadHint,
-              style: AppTextStyles.body.copyWith(
-                color: const Color(0xFFBA4A22).withValues(alpha: 0.6),
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+            Expanded(
+              child: Text(
+                l10n.reportStep2UploadHint,
+                softWrap: true,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.body.copyWith(
+                  color: const Color(0xFFBA4A22).withValues(alpha: 0.6),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/comment_model.dart';
 import '../../data/repositories/comments_repository_impl.dart';
@@ -13,21 +14,23 @@ class CommentsNotifier extends FamilyAsyncNotifier<List<CommentModel>, String> {
     return ref.watch(commentsRepositoryProvider).getCommentsByReport(reportId);
   }
 
-  Future<void> addComment(String content) async {
+  Future<void> addComment(String content, {File? image}) async {
     final repository = ref.read(commentsRepositoryProvider);
     final newComment = await repository.createComment(
       content: content,
       reportId: arg,
+      image: image,
     );
     state = state.whenData((comments) => [newComment, ...comments]);
   }
 
-  Future<void> replyToComment(String parentId, String content) async {
+  Future<void> replyToComment(String parentId, String content, {File? image}) async {
     final repository = ref.read(commentsRepositoryProvider);
     await repository.createComment(
       content: content,
       reportId: arg,
       parentId: parentId,
+      image: image,
     );
     // Refresh to get nested comments updated
     ref.invalidateSelf();

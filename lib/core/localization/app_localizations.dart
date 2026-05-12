@@ -483,6 +483,52 @@ class AppLocalizations {
       text('couldNotLoadAnimals', params: {'error': error});
   String get noAnimalsYet => _text('noAnimalsYet');
   String get personalInformationLabel => _text('personalInformationLabel');
+  String get addAnimalTitleAdd => _text('addAnimalTitleAdd');
+  String get addAnimalTitleEdit => _text('addAnimalTitleEdit');
+  String get addAnimalImageRequired => _text('addAnimalImageRequired');
+  String get addAnimalCreateSuccess => _text('addAnimalCreateSuccess');
+  String get addAnimalUpdateSuccess => _text('addAnimalUpdateSuccess');
+  String addAnimalSubmitError(String error) =>
+      text('addAnimalSubmitError', params: {'error': error});
+  String get addAnimalSectionTitle => _text('addAnimalSectionTitle');
+  String get addAnimalHintTitle => _text('addAnimalHintTitle');
+  String get addAnimalValidationTitle => _text('addAnimalValidationTitle');
+  String get addAnimalSectionDescription =>
+      _text('addAnimalSectionDescription');
+  String get addAnimalHintDescription => _text('addAnimalHintDescription');
+  String get addAnimalValidationDescription =>
+      _text('addAnimalValidationDescription');
+  String get addAnimalSectionSpecies => _text('addAnimalSectionSpecies');
+  String get addAnimalHintSpecies => _text('addAnimalHintSpecies');
+  String get addAnimalSectionBreed => _text('addAnimalSectionBreed');
+  String get addAnimalHintBreed => _text('addAnimalHintBreed');
+  String get addAnimalValidationBreed => _text('addAnimalValidationBreed');
+  String get addAnimalSectionGender => _text('addAnimalSectionGender');
+  String get addAnimalHintGender => _text('addAnimalHintGender');
+  String get addAnimalSectionAge => _text('addAnimalSectionAge');
+  String get addAnimalHintAge => _text('addAnimalHintAge');
+  String get addAnimalAgeJunior => _text('addAnimalAgeJunior');
+  String get addAnimalAgeAdult => _text('addAnimalAgeAdult');
+  String get addAnimalAgeSenior => _text('addAnimalAgeSenior');
+  String get addAnimalSectionMicrochip => _text('addAnimalSectionMicrochip');
+  String get addAnimalHintMicrochip => _text('addAnimalHintMicrochip');
+  String get addAnimalSectionTattoo => _text('addAnimalSectionTattoo');
+  String get addAnimalHintTattoo => _text('addAnimalHintTattoo');
+  String get addAnimalSectionCollarOrHarness =>
+      _text('addAnimalSectionCollarOrHarness');
+  String get addAnimalHintCollarOrHarness =>
+      _text('addAnimalHintCollarOrHarness');
+  String get addAnimalSectionPhoto => _text('addAnimalSectionPhoto');
+  String get addAnimalSelectedImagePreviewUnavailable =>
+      _text('addAnimalSelectedImagePreviewUnavailable');
+  String get addAnimalCurrentImageUnavailable =>
+      _text('addAnimalCurrentImageUnavailable');
+  String get addAnimalSelectNewImageOptional =>
+      _text('addAnimalSelectNewImageOptional');
+  String get addAnimalSelectImage => _text('addAnimalSelectImage');
+  String get addAnimalUpdateButton => _text('addAnimalUpdateButton');
+  String get addAnimalCreateButton => _text('addAnimalCreateButton');
+  String get addAnimalFieldRequired => _text('addAnimalFieldRequired');
 
   String get reportStep1Title => _text('reportStep1Title');
   String get reportStep1PostTypeRequired =>
@@ -639,6 +685,7 @@ class AppLocalizations {
   String get legalContactTitle => _text('legalContactTitle');
   String get legalContactContent => _text('legalContactContent');
   String get legalContactInfo => _text('legalContactInfo');
+  String get postalCode => _text('postalCode');
 
   String get a6DigitCodeHasBeenSentToYourEmail =>
       _text('a6DigitCodeHasBeenSentToYourEmail');

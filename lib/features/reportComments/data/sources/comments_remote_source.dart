@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/network/api_client.dart';
@@ -23,18 +25,26 @@ class CommentsRemoteSource {
     required String content,
     required String reportId,
     String? parentId,
+    File? image,
   }) async {
     final requestData = <String, dynamic>{
       'content': content,
       'reportId': reportId,
     };
+    
     if (parentId != null) {
       requestData['parentId'] = parentId;
     }
+    
+    if (image != null) {
+      requestData['image'] = await MultipartFile.fromFile(image.path);
+    }
+
+    final payload = image != null ? FormData.fromMap(requestData) : requestData;
 
     final response = await _apiClient.post(
       '/comments/create-comment',
-      data: requestData,
+      data: payload,
     );
     return response.data;
   }

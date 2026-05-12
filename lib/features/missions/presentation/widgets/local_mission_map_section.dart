@@ -51,7 +51,8 @@ class LocalMissionMapSection extends StatelessWidget {
             if (selectedMission != null)
               Positioned(
                 top: 77,
-                left: 39,
+                left: 16,
+                right: 16,
                 child: _MissionMapCard(
                   mission: selectedMission as MissionModel,
                 ),
@@ -89,116 +90,121 @@ class _MissionMapCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    const cardWidth = 124.0;
-    const cardHeight = 74.0;
 
-    return Container(
-      width: cardWidth,
-      height: cardHeight,
-      decoration: BoxDecoration(
-        color: PartnerUiColors.brand,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return Align(
+      alignment: Alignment.topLeft,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 180),
+        child: Container(
+          decoration: BoxDecoration(
+            color: PartnerUiColors.brand,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
-        ],
-      ),
-      padding: const EdgeInsets.all(6),
-      child: Column(
-        children: [
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
+          padding: const EdgeInsets.all(6),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1),
+                    ),
+                    child: ClipOval(
+                      child:
+                          mission.photo != null
+                              ? Image.network(
+                                mission.photo!.secureUrl,
+                                fit: BoxFit.cover,
+                              )
+                              : Container(color: Colors.grey),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          mission.title.toUpperCase(),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.body.copyWith(
+                            color: Colors.white,
+                            fontFamily: 'EricaOne',
+                            fontSize: 9,
+                            height: 1,
+                          ),
+                        ),
+                        Text(
+                          mission.partner?.company ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.body.copyWith(
+                            color: Colors.white,
+                            fontSize: 6,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          l10n.missionDuration.replaceAll(
+                            '{duration}',
+                            mission.duration,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.body.copyWith(
+                            color: Colors.white,
+                            fontSize: 6,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              GestureDetector(
+                onTap: () {
+                  // Handle see mission
+                },
+                child: Container(
+                  height: 20,
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 1),
+                    color: const Color(0xFFFBF4E9),
+                    borderRadius: BorderRadius.circular(9),
                   ),
-                  child: ClipOval(
-                    child: mission.photo != null
-                        ? Image.network(
-                            mission.photo!.secureUrl,
-                            fit: BoxFit.cover,
-                          )
-                        : Container(color: Colors.grey),
+                  alignment: Alignment.center,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      l10n.seeMission,
+                      maxLines: 1,
+                      style: AppTextStyles.body.copyWith(
+                        color: PartnerUiColors.brand,
+                        fontSize: 7,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        mission.title.toUpperCase(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.body.copyWith(
-                          color: Colors.white,
-                          fontFamily: 'EricaOne',
-                          fontSize: 9,
-                          height: 1,
-                        ),
-                      ),
-                      Text(
-                        mission.partner?.company ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.body.copyWith(
-                          color: Colors.white,
-                          fontSize: 6,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        l10n.missionDuration.replaceAll(
-                          '{duration}',
-                          mission.duration,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.body.copyWith(
-                          color: Colors.white,
-                          fontSize: 6,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 4),
-          GestureDetector(
-            onTap: () {
-              // Handle see mission
-            },
-            child: Container(
-              height: 18,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFFBF4E9),
-                borderRadius: BorderRadius.circular(9),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                l10n.seeMission,
-                style: AppTextStyles.body.copyWith(
-                  color: PartnerUiColors.brand,
-                  fontSize: 7,
-                  fontWeight: FontWeight.w900,
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

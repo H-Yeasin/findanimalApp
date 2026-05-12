@@ -71,11 +71,18 @@ class LocalMissionCard extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      timeAgo,
-                      style: AppTextStyles.body.copyWith(
-                        color: PartnerUiColors.brand.withValues(alpha: 0.6),
-                        fontSize: 10,
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          timeAgo,
+                          maxLines: 1,
+                          style: AppTextStyles.body.copyWith(
+                            color: PartnerUiColors.brand.withValues(alpha: 0.6),
+                            fontSize: 10,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -92,41 +99,71 @@ class LocalMissionCard extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: onSeeOnMap,
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: PartnerUiColors.brand,
-                          side: const BorderSide(color: PartnerUiColors.brand),
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final stackButtons = constraints.maxWidth < 280;
+
+                    final seeOnMapButton = OutlinedButton(
+                      onPressed: onSeeOnMap,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: PartnerUiColors.brand,
+                        side: const BorderSide(color: PartnerUiColors.brand),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
                         ),
-                        child: Text(l10n.seeOnMap),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: currentUser?.role == 'partners'
-                            ? null
-                            : () => _joinMission(context, ref, l10n),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: PartnerUiColors.brand,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Text(l10n.seeMission),
                       ),
-                    ),
-                  ],
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(l10n.seeOnMap, maxLines: 1),
+                      ),
+                    );
+
+                    final seeMissionButton = ElevatedButton(
+                      onPressed:
+                          currentUser?.role == 'partners'
+                              ? null
+                              : () => _joinMission(context, ref, l10n),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: PartnerUiColors.brand,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
+                        ),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(l10n.seeMission, maxLines: 1),
+                      ),
+                    );
+
+                    if (stackButtons) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          seeOnMapButton,
+                          const SizedBox(height: 8),
+                          seeMissionButton,
+                        ],
+                      );
+                    }
+
+                    return Row(
+                      children: [
+                        Expanded(child: seeOnMapButton),
+                        const SizedBox(width: 8),
+                        Expanded(child: seeMissionButton),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),

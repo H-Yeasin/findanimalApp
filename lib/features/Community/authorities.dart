@@ -90,10 +90,6 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   _buildSearchBar(cardBg, brandPrimary, l10n),
                   const SizedBox(height: 10),
 
-                  // Filter Dropdown
-                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                  const SizedBox(height: 20),
-
                   // List Section
                   authoritiesAsync.when(
                     data: (authorities) {
@@ -177,36 +173,6 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                 )
               : null,
         ),
-      ),
-    );
-  }
-
-  Widget _buildFilterDropdown(
-    Color cardBg,
-    Color color,
-    AppLocalizations l10n,
-  ) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: cardBg,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: color.withValues(alpha: 0.5)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            l10n.filterBySortBy,
-            style: AppTextStyles.caption.copyWith(
-              color: color,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
-          ),
-          Icon(Icons.keyboard_arrow_down, color: color),
-        ],
       ),
     );
   }

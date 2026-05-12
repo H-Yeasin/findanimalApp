@@ -467,21 +467,38 @@ class PartnerPublishButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 198,
-      height: 42,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: PartnerUiColors.brand,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(22),
+    final textScaler = MediaQuery.textScalerOf(context);
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 42, maxWidth: 280),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: PartnerUiColors.brand,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(22),
+            ),
+            textStyle: AppTextStyles.button.copyWith(fontSize: 28 / 2),
           ),
-          textStyle: AppTextStyles.button.copyWith(fontSize: 28 / 2),
+          onPressed: onTap,
+          child:
+              textScaler.scale(1) > 1.15
+                  ? Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                  : FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(label, maxLines: 1),
+                  ),
         ),
-        onPressed: onTap,
-        child: Text(label),
       ),
     );
   }

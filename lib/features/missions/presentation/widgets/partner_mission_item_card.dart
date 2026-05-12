@@ -47,6 +47,8 @@ class PartnerMissionItemCard extends StatelessWidget {
                 children: [
                   Text(
                     mission.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.body.copyWith(
                       color: PartnerUiColors.brand,
                       fontFamily: 'EricaOne',
