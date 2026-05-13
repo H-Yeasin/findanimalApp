@@ -15,7 +15,7 @@ class HubPartnersSection extends ConsumerWidget {
 
     return Column(
       children: [
-        const SizedBox(height: 40),
+        const SizedBox(height: 50),
         Text(
           l10n.thoseWhoAre,
           style: AppTextStyles.body.copyWith(
@@ -29,7 +29,9 @@ class HubPartnersSection extends ConsumerWidget {
           style: AppTextStyles.heading.copyWith(fontSize: 42),
         ),
         const SizedBox(height: 20),
-        ref.watch(partnersProvider).when(
+        ref
+            .watch(partnersProvider)
+            .when(
               data: (partners) {
                 final validPartners = partners
                     .where(
@@ -41,16 +43,12 @@ class HubPartnersSection extends ConsumerWidget {
 
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: validPartners
                         .map(
-                          (p) => _buildPartnerLogo(
-                            p.fullImageUrl!,
-                            brandPrimary,
-                          ),
+                          (p) =>
+                              _buildPartnerLogo(p.fullImageUrl!, brandPrimary),
                         )
                         .toList(),
                   ),
@@ -66,8 +64,8 @@ class HubPartnersSection extends ConsumerWidget {
   Widget _buildPartnerLogo(String imageUrl, Color color) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12),
-      width: 90,
-      height: 60,
+      width: 127,
+      height: 127,
       child: Image.network(
         imageUrl,
         fit: BoxFit.contain,

@@ -50,7 +50,7 @@ class ContactFilterPanel extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    isExpanded ? 'Filtrer par' : l10n.filterBySortBy,
+                    isExpanded ? l10n.filterBy : l10n.filterBySortBy,
                     style: AppTextStyles.caption.copyWith(
                       color: color,
                       fontWeight: FontWeight.w700,
@@ -75,13 +75,13 @@ class ContactFilterPanel extends StatelessWidget {
             Container(height: 1, color: color.withValues(alpha: 0.35)),
             const SizedBox(height: 16),
             _FilterOption(
-              label: 'Par departement',
+              label: l10n.filterByDepartment,
               value: filterByDepartment,
               color: color,
               onChanged: onDepartmentChanged,
             ),
             _FilterOption(
-              label: 'Par region',
+              label: l10n.filterByRegion,
               value: filterByRegion,
               color: color,
               onChanged: onRegionChanged,
@@ -99,7 +99,7 @@ class ContactFilterPanel extends StatelessWidget {
             Container(height: 1, color: color.withValues(alpha: 0.35)),
             const SizedBox(height: 16),
             _FilterOption(
-              label: 'Alphabetique, de A a Z',
+              label: l10n.sortAlphabeticalAZ,
               value: sortSelection == 'alpha_az',
               color: color,
               onChanged: (value) {
@@ -107,7 +107,7 @@ class ContactFilterPanel extends StatelessWidget {
               },
             ),
             _FilterOption(
-              label: 'Alphabetique, de Z a A',
+              label: l10n.sortAlphabeticalZA,
               value: sortSelection == 'alpha_za',
               color: color,
               onChanged: (value) {

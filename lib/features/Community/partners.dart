@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'presentation/providers/contact_providers.dart';
+import 'presentation/widgets/contact_filter_panel.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
@@ -16,6 +17,10 @@ class PartnersScreen extends ConsumerStatefulWidget {
 
 class _PartnersScreenState extends ConsumerState<PartnersScreen> {
   final TextEditingController _searchController = TextEditingController();
+  bool _isFilterExpanded = false;
+  bool _filterByDepartment = false;
+  bool _filterByRegion = false;
+  String _sortSelection = 'alpha_az';
 
   @override
   void dispose() {
@@ -77,6 +82,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
 
                   // Search Bar
                   _buildSearchBar(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 10),
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
                   const SizedBox(height: 30),
 
                   // List Section
@@ -143,7 +150,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(25),
@@ -151,28 +158,71 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
       ),
       child: TextField(
         controller: _searchController,
+        onChanged: (_) {
+          setState(() {});
+        },
         onSubmitted: (value) {
           ref.read(partnersProvider.notifier).setSearchQuery(value);
         },
         decoration: InputDecoration(
-          icon: Icon(Icons.search, color: color),
           hintText: l10n.searchByName,
           hintStyle: AppTextStyles.caption.copyWith(
             color: color.withValues(alpha: 0.5),
             fontSize: 12,
           ),
           border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 14,
+          ),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
-                  icon: const Icon(Icons.clear),
+                  icon: Icon(Icons.clear, color: color),
                   onPressed: () {
                     _searchController.clear();
                     ref.read(partnersProvider.notifier).setSearchQuery('');
+                    setState(() {});
                   },
                 )
               : null,
         ),
       ),
+    );
+  }
+
+  Widget _buildFilterDropdown(
+    Color cardBg,
+    Color color,
+    AppLocalizations l10n,
+  ) {
+    return ContactFilterPanel(
+      cardBg: cardBg,
+      color: color,
+      l10n: l10n,
+      isExpanded: _isFilterExpanded,
+      filterByDepartment: _filterByDepartment,
+      filterByRegion: _filterByRegion,
+      sortSelection: _sortSelection,
+      onToggleExpanded: () {
+        setState(() {
+          _isFilterExpanded = !_isFilterExpanded;
+        });
+      },
+      onDepartmentChanged: (value) {
+        setState(() {
+          _filterByDepartment = value;
+        });
+      },
+      onRegionChanged: (value) {
+        setState(() {
+          _filterByRegion = value;
+        });
+      },
+      onSortChanged: (value) {
+        setState(() {
+          _sortSelection = value;
+        });
+      },
     );
   }
 

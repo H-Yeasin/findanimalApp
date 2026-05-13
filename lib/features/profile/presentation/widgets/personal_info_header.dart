@@ -89,7 +89,7 @@ class PersonalInfoHeader extends StatelessWidget {
               l10n.personalInformation,
               textAlign: TextAlign.center,
               style: AppTextStyles.display.copyWith(
-                color: const Color(0xFFF8F0DC),
+                color: AppColors.orange,
                 fontSize: 56 / 2,
                 height: 1.05,
                 fontWeight: FontWeight.w700,

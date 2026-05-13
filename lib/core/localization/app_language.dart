@@ -1,6 +1,6 @@
 enum AppLanguage {
-  french('fr', 'FRANCAIS'),
-  english('en', 'ANGLAIS');
+  french('fr', 'FRANÇAIS'),
+  english('en', 'ENGLISH');
 
   const AppLanguage(this.code, this.label);
 
@@ -13,6 +13,4 @@ enum AppLanguage {
       orElse: () => AppLanguage.french,
     );
   }
-
-  // String get flag => this == AppLanguage.french ? '🇫🇷' : '🇬🇧';
 }

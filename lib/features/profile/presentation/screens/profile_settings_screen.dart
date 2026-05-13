@@ -153,7 +153,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                         const SizedBox(width: 16),
                         Expanded(
                           child: Text(
-                            lang.name.toUpperCase(),
+                            lang.label,
                             style: AppTextStyles.body.copyWith(
                               color: isSelected
                                   ? Colors.white
@@ -229,7 +229,7 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                   children: [
                     const SizedBox(width: 8),
                     Text(
-                      currentLanguage.name.toUpperCase(),
+                      currentLanguage.label,
                       style: AppTextStyles.body.copyWith(
                         color: PartnerUiColors.brand,
                         fontFamily: 'EricaOne',

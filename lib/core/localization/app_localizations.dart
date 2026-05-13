@@ -273,7 +273,12 @@ class AppLocalizations {
   String get listVeterinarians => _text('listVeterinarians');
   String get allVeterinarians => _text('allVeterinarians');
   String get searchByName => _text('searchByName');
+  String get filterBy => _text('filterBy');
   String get filterBySortBy => _text('filterBySortBy');
+  String get filterByDepartment => _text('filterByDepartment');
+  String get filterByRegion => _text('filterByRegion');
+  String get sortAlphabeticalAZ => _text('sortAlphabeticalAZ');
+  String get sortAlphabeticalZA => _text('sortAlphabeticalZA');
   String get ourPartners => _text('ourPartners');
   String get viewWebsite => _text('viewWebsite');
   String get addToCart => _text('addToCart');
