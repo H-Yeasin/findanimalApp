@@ -87,13 +87,12 @@ class _ReportStep4ScreenState extends ConsumerState<ReportStep4Screen> {
           }
         } else {
           if (mounted) {
-            final error =
-                ref
-                    .read(reportFormProvider)
-                    .submissionState
-                    .error
-                    ?.toString() ??
+            final rawError =
+                ref.read(reportFormProvider).submissionState.error?.toString() ??
                 '';
+            final error = rawError.startsWith('Exception: ')
+                ? rawError.substring('Exception: '.length)
+                : rawError;
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

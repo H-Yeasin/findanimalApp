@@ -35,7 +35,7 @@ class _AnimalProfileMapSectionState
     final marker = await BitmapDescriptor.asset(
       ImageConfiguration(
         devicePixelRatio: pixelRatio,
-        size: const Size(48, 48),
+        size: const Size(32, 38), // Updated height and width here
       ),
       AppAssets.animalMapPin,
     );
@@ -55,10 +55,9 @@ class _AnimalProfileMapSectionState
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final availableWidth =
-            constraints.maxWidth.isFinite
-                ? constraints.maxWidth
-                : screenWidth;
+        final availableWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : screenWidth;
         final buttonMaxWidth = (availableWidth - 32).clamp(180.0, 360.0);
         final shouldWrapButtonLabel = textScaler.scale(1) > 1.2;
 
@@ -134,13 +133,27 @@ class _AnimalProfileMapSectionState
                           width: 1.0,
                         ),
                       ),
-                      child:
-                          shouldWrapButtonLabel
-                              ? Text(
+                      child: shouldWrapButtonLabel
+                          ? Text(
+                              l10n.viewOnMapLastLocation,
+                              textAlign: TextAlign.center,
+                              softWrap: true,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.caption.copyWith(
+                                color: AppColors.brandPrimary,
+                                fontSize: _responsiveFont(context, 12),
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.5,
+                                height: 1.1,
+                              ),
+                            )
+                          : FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
                                 l10n.viewOnMapLastLocation,
                                 textAlign: TextAlign.center,
-                                softWrap: true,
-                                maxLines: 2,
+                                maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.caption.copyWith(
                                   color: AppColors.brandPrimary,
@@ -149,23 +162,8 @@ class _AnimalProfileMapSectionState
                                   letterSpacing: 0.5,
                                   height: 1.1,
                                 ),
-                              )
-                              : FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  l10n.viewOnMapLastLocation,
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: AppTextStyles.caption.copyWith(
-                                    color: AppColors.brandPrimary,
-                                    fontSize: _responsiveFont(context, 12),
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 0.5,
-                                    height: 1.1,
-                                  ),
-                                ),
                               ),
+                            ),
                     ),
                   ),
                 ),
@@ -219,17 +217,17 @@ class _StaticMapPlaceholder extends StatelessWidget {
         Image.asset(
           AppAssets.animalMapPin,
           width: double.infinity,
-          height: 190,
+          height: 200,
           fit: BoxFit.cover,
           color: Colors.white.withValues(alpha: 0.3),
           colorBlendMode: BlendMode.screen,
         ),
         const Positioned(left: 40, top: 30, child: _MapPin(icon: Icons.pets)),
-        const Positioned(
-          right: 50,
-          bottom: 45,
-          child: _MapPin(icon: Icons.add),
-        ),
+        // const Positioned(
+        //   right: 50,
+        //   bottom: 45,
+        //   child: _MapPin(icon: Icons.add),
+        // ),
       ],
     );
   }

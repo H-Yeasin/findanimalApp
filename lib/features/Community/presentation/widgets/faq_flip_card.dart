@@ -74,13 +74,13 @@ class _FAQFlipCardState extends State<FAQFlipCard>
 
   Widget _buildFront() {
     return Container(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: widget.cardBg,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: widget.color.withValues(alpha: 0.4),
-          width: 1.5,
+          width: 1.2,
         ),
         boxShadow: [
           BoxShadow(
@@ -95,7 +95,7 @@ class _FAQFlipCardState extends State<FAQFlipCard>
         widget.question,
         textAlign: TextAlign.center,
         style: AppTextStyles.body.copyWith(
-          fontSize: 14,
+          fontSize: 13,
           fontWeight: FontWeight.w900,
           color: widget.color,
         ),
@@ -108,11 +108,14 @@ class _FAQFlipCardState extends State<FAQFlipCard>
       transform: Matrix4.identity()..rotateY(pi),
       alignment: Alignment.center,
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: widget.color,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: widget.cardBg, width: 1.5),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: widget.color.withValues(alpha: 0.4),
+            width: 1.2,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.15),
@@ -129,7 +132,7 @@ class _FAQFlipCardState extends State<FAQFlipCard>
             style: AppTextStyles.body.copyWith(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: widget.cardBg,
+              color: widget.color,
             ),
           ),
         ),

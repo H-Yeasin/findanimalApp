@@ -1,6 +1,7 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
@@ -76,9 +77,9 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                   _buildSearchBar(cardBg, brandPrimary, l10n),
                   const SizedBox(height: 10),
 
-                  // // Filter Dropdown
-                  // _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                  // const SizedBox(height: 30),
+                  // Filter Dropdown
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 30),
 
                   // List Section
                   sheltersAsync.when(
@@ -90,6 +91,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                             child: Text(
                               l10n.noReportsFound,
                               style: AppTextStyles.body.copyWith(
+                                color: AppColors.brandPrimary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -192,34 +194,34 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
     );
   }
 
-  // Widget _buildFilterDropdown(
-  //   Color cardBg,
-  //   Color color,
-  //   AppLocalizations l10n,
-  // ) {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 20),
-  //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-  //     decoration: BoxDecoration(
-  //       color: cardBg,
-  //       borderRadius: BorderRadius.circular(25),
-  //       border: Border.all(color: color.withValues(alpha: 0.5)),
-  //     ),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         Text(
-  //           l10n.filterBySortBy,
-  //           style: AppTextStyles.caption.copyWith(
-  //             color: color,
-  //             fontWeight: FontWeight.w700,
-  //           ),
-  //         ),
-  //         Icon(Icons.keyboard_arrow_down, color: color),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildFilterDropdown(
+    Color cardBg,
+    Color color,
+    AppLocalizations l10n,
+  ) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      decoration: BoxDecoration(
+        color: cardBg,
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: color.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            l10n.filterBySortBy,
+            style: AppTextStyles.caption.copyWith(
+              color: color,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Icon(Icons.keyboard_arrow_down, color: color),
+        ],
+      ),
+    );
+  }
 
   Widget _buildShelterCard(
     ContactModel shelter,

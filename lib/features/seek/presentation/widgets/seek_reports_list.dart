@@ -151,7 +151,7 @@ class SeekAnimalCard extends StatelessWidget {
                 Transform.translate(
                   offset: const Offset(0, -2),
                   child: Text(
-                    data.details,
+                    _buildLocalizedDetails(l10n, data),
                     style: AppTextStyles.body.copyWith(
                       color: const Color(0xFFBA4A22),
                       fontSize: 20,
@@ -187,6 +187,65 @@ class SeekAnimalCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _buildLocalizedDetails(
+    AppLocalizations l10n,
+    AnimalProfileData data,
+  ) {
+    final details = [
+      _localizeAge(l10n, data.age),
+      _localizeSpecies(l10n, data.species),
+      data.breed.trim(),
+      _localizeStatus(l10n, data.status),
+    ].where((value) => value.isNotEmpty).toList();
+
+    return details.join(' | ');
+  }
+
+  String _localizeSpecies(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'dog':
+        return l10n.reportStep1Dog;
+      case 'cat':
+        return l10n.reportStep1Cat;
+      case 'bird':
+        return l10n.reportStep1Bird;
+      case 'rabbit':
+        return l10n.reportStep1Rabbit;
+      case 'other':
+        return l10n.reportStep1Other;
+      default:
+        return value;
+    }
+  }
+
+  String _localizeAge(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'junior':
+        return l10n.addAnimalAgeJunior;
+      case 'adult':
+        return l10n.addAnimalAgeAdult;
+      case 'senior':
+        return l10n.addAnimalAgeSenior;
+      default:
+        return value;
+    }
+  }
+
+  String _localizeStatus(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'lost':
+        return l10n.reportStep1Lost;
+      case 'found':
+        return l10n.reportStep1Found;
+      case 'spotted':
+        return l10n.reportStep1Spotted;
+      case 'injured':
+        return l10n.reportStep1Injured;
+      default:
+        return value;
+    }
   }
 }
 

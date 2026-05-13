@@ -108,34 +108,37 @@ class ReportBaseLayout extends ConsumerWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final itemWidth = (constraints.maxWidth / 4).clamp(52.0, 82.0);
         final circleSize = (constraints.maxWidth / 4).clamp(44.0, 50.0);
 
         return Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: List.generate(4, (index) {
                 final stepNum = index + 1;
                 final isActive = stepNum == currentStep;
-                return SizedBox(
-                  width: itemWidth,
-                  child:
-                      isActive
-                          ? Text(
-                            stepTitle.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            softWrap: true,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.caption.copyWith(
-                              fontWeight: FontWeight.w600,
-                              fontSize: _responsiveFont(context, 12),
-                              height: 1,
-                            ),
-                          )
-                          : const SizedBox.shrink(),
+                return Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child:
+                        isActive
+                            ? SizedBox(
+                              width: circleSize * 1.6,
+                              child: Text(
+                                stepTitle.toUpperCase(),
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.caption.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: _responsiveFont(context, 12),
+                                  height: 1,
+                                ),
+                              ),
+                            )
+                            : const SizedBox.shrink(),
+                  ),
                 );
               }),
             ),
@@ -151,26 +154,32 @@ class ReportBaseLayout extends ConsumerWidget {
                     child: Container(height: 2, color: brandColor),
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: List.generate(4, (index) {
                       final stepNum = index + 1;
                       final isActive = stepNum == currentStep;
-                      return Container(
-                        width: circleSize,
-                        height: circleSize,
-                        decoration: BoxDecoration(
-                          color: isActive ? brandColor : const Color(0xFFFBF4E9),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: brandColor, width: 2),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          '$stepNum',
-                          style: AppTextStyles.body.copyWith(
-                            color: isActive ? Colors.white : brandColor,
-                            fontSize: _responsiveFont(context, 32),
-                            fontFamily: 'EricaOne',
-                            fontWeight: FontWeight.w400,
+                      return Expanded(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: circleSize,
+                            height: circleSize,
+                            decoration: BoxDecoration(
+                              color: isActive
+                                  ? brandColor
+                                  : const Color(0xFFFBF4E9),
+                              shape: BoxShape.circle,
+                              border: Border.all(color: brandColor, width: 2),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '$stepNum',
+                              style: AppTextStyles.body.copyWith(
+                                color: isActive ? Colors.white : brandColor,
+                                fontSize: _responsiveFont(context, 32),
+                                fontFamily: 'EricaOne',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
                           ),
                         ),
                       );

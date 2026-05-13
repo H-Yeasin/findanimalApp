@@ -47,8 +47,6 @@ class AnimalProfileData {
   });
 
   factory AnimalProfileData.fromReport(ReportModel report) {
-    final isFound = report.status.toLowerCase() == 'found';
-    final actionVerb = isFound ? 'Found' : 'Lost';
     final hasImage = report.images.isNotEmpty;
     final author = report.author;
     final ownerName = author == null
@@ -62,7 +60,7 @@ class AnimalProfileData {
           ? report.animalName.toUpperCase()
           : report.species.toUpperCase(),
       details:
-          '${report.age} | ${report.species} | ${report.breed} | $actionVerb',
+          '${report.age} | ${report.species} | ${report.breed} | ${report.status}',
       time: Formatters.date(
         report.eventDate.toLocal(),
         pattern: 'MMM d, yyyy - h:mm a',

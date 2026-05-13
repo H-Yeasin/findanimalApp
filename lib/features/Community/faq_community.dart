@@ -222,10 +222,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
         const SizedBox(height: 15),
         ScaleTransition(
           scale: Tween<double>(begin: 1.0, end: 1.05).animate(
-            CurvedAnimation(
-              parent: _pulseController,
-              curve: Curves.easeInOut,
-            ),
+            CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
           ),
           child: GestureDetector(
             onTap: () => _contactSupport(l10n),
@@ -260,22 +257,25 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   }
 
   Widget _buildFAQGrid(List<FAQItem> questions, Color cardBg, Color color) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 2,
-      childAspectRatio: 0.85,
-      mainAxisSpacing: 15,
-      crossAxisSpacing: 15,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      children: List.generate(questions.length, (index) {
-        return FAQFlipCard(
-          question: questions[index].question,
-          answer: questions[index].answer,
-          cardBg: cardBg,
-          color: color,
-        );
-      }),
+    return SizedBox(
+      height: 160,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        itemCount: questions.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 15),
+        itemBuilder: (context, index) {
+          return SizedBox(
+            width: 126,
+            child: FAQFlipCard(
+              question: questions[index].question,
+              answer: questions[index].answer,
+              cardBg: cardBg,
+              color: color,
+            ),
+          );
+        },
+      ),
     );
   }
 

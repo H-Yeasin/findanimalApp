@@ -43,7 +43,7 @@ const Map<String, String> appFr = {
   'continue': 'Continuer',
   'continueWithApple': 'Continuer avec Apple',
   'continueWithGoogle': 'Continuer avec Google',
-  'or': 'Ou',
+  'or': 'or',
   'unauthorizedPartnerLogin':
       'Non autorisé. Cette connexion est réservée aux partenaires.',
   'registerSuccess': 'Inscription réussie.',
@@ -146,8 +146,8 @@ const Map<String, String> appFr = {
   'seeOnMap': 'VOIR SUR LA CARTE',
   'seeAnimalSheet': 'VOIR LA FICHE DE {animal}',
   'found': 'TROUVÉ',
-  'communityTitle': 'DISCUTEZ AVEC NOUS',
-  'mindHint': 'Qu’est-ce qui vous passe par la tête ?',
+  'communityTitle': 'DISCUTE AVEC NOUS',
+  'mindHint': 'Qu’est qui te passe par la tête et ?',
   'picture': 'Image',
   'video': 'Vidéo',
   'file': 'Fichier',
@@ -343,7 +343,7 @@ const Map<String, String> appFr = {
   'collectionPointDetailTemplate':
       'Venez déposer vos contributions au point de collecte {subtitle} ! Nourriture, accessoires ou tout ce que vous souhaitez offrir : chaque geste compte. Toutes les contributions seront ensuite reversées aux associations locales qui aident les animaux.',
   'missionsLocalesDescription':
-      'Inscris-toi dans une mission locale, accomplis des missions solidaires et gagne des points en faisant avancer de vraies causes !',
+      'Inscris-toi dans une mission locale, accomplis des missions solidaires et gagne des points en faisant avancer de vraies causes!',
   'noMissionsFound': 'Aucune mission trouvée pour le moment.',
   'seeMission': 'VOIR LA MISSION',
   'recently': 'Récemment',

@@ -68,7 +68,11 @@ class ReportsRepository {
       }
     }
 
-    await _apiClient.post(ApiEndpoints.createReport, data: formData);
+    await _apiClient.post(
+      ApiEndpoints.createReport,
+      data: formData,
+      options: Options(contentType: Headers.multipartFormDataContentType),
+    );
   }
 
   Future<void> updateReport(String id, ReportFormState state) async {
@@ -119,7 +123,11 @@ class ReportsRepository {
       }
     }
 
-    await _apiClient.patch(ApiEndpoints.updateReport(id), data: formData);
+    await _apiClient.patch(
+      ApiEndpoints.updateReport(id),
+      data: formData,
+      options: Options(contentType: Headers.multipartFormDataContentType),
+    );
   }
 
   String _mapStatus(String? postType) {

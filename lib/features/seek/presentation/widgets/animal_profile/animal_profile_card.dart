@@ -23,7 +23,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
     final l10n = AppLocalizations.of(context);
     final data = widget.data;
     String buttonText = l10n.contactOwner;
-    if (data.details.toLowerCase().contains('found')) {
+    if (data.status.toLowerCase() == 'found') {
       buttonText = l10n.knowOwner;
     }
     if (data.status.toLowerCase().contains('injured')) {
@@ -143,7 +143,7 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                       const SizedBox(height: 10),
                       // Details: Adult | Cat | Angora | Lost
                       Text(
-                        '${data.age} | ${data.species} | ${data.breed} | ${data.status.toLowerCase() == 'found' ? l10n.found : l10n.statusMissing}',
+                        _buildLocalizedDetails(l10n, data),
                         style: AppTextStyles.caption.copyWith(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
@@ -232,6 +232,65 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
         ],
       ),
     );
+  }
+
+  String _buildLocalizedDetails(
+    AppLocalizations l10n,
+    AnimalProfileData data,
+  ) {
+    final details = [
+      _localizeAge(l10n, data.age),
+      _localizeSpecies(l10n, data.species),
+      data.breed.trim(),
+      _localizeStatus(l10n, data.status),
+    ].where((value) => value.isNotEmpty).toList();
+
+    return details.join(' | ');
+  }
+
+  String _localizeSpecies(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'dog':
+        return l10n.reportStep1Dog;
+      case 'cat':
+        return l10n.reportStep1Cat;
+      case 'bird':
+        return l10n.reportStep1Bird;
+      case 'rabbit':
+        return l10n.reportStep1Rabbit;
+      case 'other':
+        return l10n.reportStep1Other;
+      default:
+        return value;
+    }
+  }
+
+  String _localizeAge(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'junior':
+        return l10n.addAnimalAgeJunior;
+      case 'adult':
+        return l10n.addAnimalAgeAdult;
+      case 'senior':
+        return l10n.addAnimalAgeSenior;
+      default:
+        return value;
+    }
+  }
+
+  String _localizeStatus(AppLocalizations l10n, String value) {
+    switch (value.trim().toLowerCase()) {
+      case 'lost':
+        return l10n.reportStep1Lost;
+      case 'found':
+        return l10n.reportStep1Found;
+      case 'spotted':
+        return l10n.reportStep1Spotted;
+      case 'injured':
+        return l10n.reportStep1Injured;
+      default:
+        return value;
+    }
   }
 }
 

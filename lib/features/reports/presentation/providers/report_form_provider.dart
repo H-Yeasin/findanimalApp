@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/features/profile/data/models/my_animal_model.dart';
 import 'package:hesteka_frontend/features/seek/data/models/report_model.dart';
+import '../../../../core/network/network_exceptions.dart';
 import '../../data/repositories/reports_repository.dart';
 import '../providers/my_reports_provider.dart';
 
@@ -269,6 +271,14 @@ class ReportFormNotifier extends Notifier<ReportFormState> {
       ref.invalidate(myReportsProvider);
       state = state.copyWith(submissionState: const AsyncValue.data(null));
       return true;
+    } on DioException catch (e, stack) {
+      state = state.copyWith(
+        submissionState: AsyncValue.error(
+          Exception(NetworkExceptions.fromDio(e)),
+          stack,
+        ),
+      );
+      return false;
     } catch (e, stack) {
       state = state.copyWith(submissionState: AsyncValue.error(e, stack));
       return false;
