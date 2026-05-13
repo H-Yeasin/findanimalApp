@@ -4,11 +4,18 @@ import 'package:dio/dio.dart';
 
 import '../storage/secure_storage_service.dart';
 
-class AuthInterceptor extends Interceptor {
-  AuthInterceptor(this._secureStorageService, {this.onUnauthorized});
+class AuthInterceptor extends QueuedInterceptor {
+  AuthInterceptor(
+    this._secureStorageService,
+    this._dio, {
+    this.onUnauthorized,
+    this.onRefreshToken,
+  });
 
   final SecureStorageService _secureStorageService;
+  final Dio _dio;
   final VoidCallback? onUnauthorized;
+  final Future<String?> Function()? onRefreshToken;
 
   @override
   Future<void> onRequest(
@@ -25,17 +32,38 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     if (err.response?.statusCode == 401) {
       final path = err.requestOptions.path;
       final hasToken = err.requestOptions.headers.containsKey('Authorization');
+      final alreadyRetried = err.requestOptions.extra['_retried'] == true;
 
-      // Only trigger logout if we sent a token and it was rejected.
-      // This prevents background 401s on public endpoints (or before login is fully processed)
-      // from kicking the user out.
       if (hasToken &&
           !path.contains('/auth/logout') &&
-          !path.contains('/auth/generate-access-token')) {
+          !path.contains('/auth/generate-access-token') &&
+          !alreadyRetried) {
+        final refreshedToken = await onRefreshToken?.call();
+
+        if (refreshedToken != null && refreshedToken.isNotEmpty) {
+          final requestOptions = err.requestOptions;
+          requestOptions.headers['Authorization'] = 'Bearer $refreshedToken';
+          requestOptions.extra['_retried'] = true;
+
+          try {
+            final response = await _dio.fetch(requestOptions);
+            handler.resolve(response);
+            return;
+          } on DioException catch (retryError) {
+            if (retryError.response?.statusCode != 401) {
+              handler.next(retryError);
+              return;
+            }
+          }
+        }
+
         onUnauthorized?.call();
       }
     }

@@ -113,6 +113,22 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSession> {
     }
   }
 
+  Future<void> updateAccessToken(String accessToken) async {
+    final currentSession = state.valueOrNull;
+    if (currentSession == null) {
+      return;
+    }
+
+    state = AsyncData(
+      AuthSession(
+        status: AuthStatus.authenticated,
+        accessToken: accessToken,
+        refreshToken: currentSession.refreshToken,
+        user: currentSession.user,
+      ),
+    );
+  }
+
   Future<void> logout() async {
     final session = state.valueOrNull;
     if (session == null || session.status == AuthStatus.unauthenticated) {
