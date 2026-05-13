@@ -82,9 +82,9 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                   _buildSearchBar(cardBg, brandPrimary, l10n),
                   const SizedBox(height: 10),
 
-                  // // Filter Dropdown
-                  // _buildFilterDropdown(cardBg, brandPrimary, l10n),
-                  // const SizedBox(height: 30),
+                  // Filter Dropdown
+                  _buildFilterDropdown(cardBg, brandPrimary, l10n),
+                  const SizedBox(height: 30),
 
                   // List Section
                   veterinariansAsync.when(

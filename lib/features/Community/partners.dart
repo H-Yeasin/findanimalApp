@@ -38,7 +38,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
         showGridFromTop: true,
         child: SafeArea(
           child: RefreshIndicator(
-            onRefresh: () => ref.read(partnersProvider.notifier).fetchContacts(),
+            onRefresh: () =>
+                ref.read(partnersProvider.notifier).fetchContacts(),
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(

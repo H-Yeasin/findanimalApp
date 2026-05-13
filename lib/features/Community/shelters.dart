@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'presentation/providers/contact_providers.dart';
+import 'presentation/widgets/contact_filter_panel.dart';
 import 'data/models/contact_model.dart';
 import 'presentation/details_shelter_veterinarians.dart';
 import '../../core/localization/app_localizations.dart';
@@ -19,6 +20,10 @@ class SheltersScreen extends ConsumerStatefulWidget {
 
 class _SheltersScreenState extends ConsumerState<SheltersScreen> {
   final TextEditingController _searchController = TextEditingController();
+  bool _isFilterExpanded = false;
+  bool _filterByDepartment = false;
+  bool _filterByRegion = false;
+  String _sortSelection = 'alpha_az';
 
   @override
   void dispose() {
@@ -162,7 +167,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
   Widget _buildSearchBar(Color cardBg, Color color, AppLocalizations l10n) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         color: cardBg,
         borderRadius: BorderRadius.circular(25),
@@ -170,22 +175,29 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
       ),
       child: TextField(
         controller: _searchController,
+        onChanged: (_) {
+          setState(() {});
+        },
         onSubmitted: (value) {
           ref.read(sheltersProvider.notifier).setSearchQuery(value);
         },
         decoration: InputDecoration(
-          icon: Icon(Icons.search, color: color),
           hintText: l10n.searchByName,
           hintStyle: AppTextStyles.caption.copyWith(
             color: color.withValues(alpha: 0.5),
           ),
           border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 14,
+          ),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
-                  icon: const Icon(Icons.clear),
+                  icon: Icon(Icons.clear, color: color),
                   onPressed: () {
                     _searchController.clear();
                     ref.read(sheltersProvider.notifier).setSearchQuery('');
+                    setState(() {});
                   },
                 )
               : null,
@@ -199,27 +211,34 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
     Color color,
     AppLocalizations l10n,
   ) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
-        color: cardBg,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: color.withValues(alpha: 0.5)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            l10n.filterBySortBy,
-            style: AppTextStyles.caption.copyWith(
-              color: color,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          Icon(Icons.keyboard_arrow_down, color: color),
-        ],
-      ),
+    return ContactFilterPanel(
+      cardBg: cardBg,
+      color: color,
+      l10n: l10n,
+      isExpanded: _isFilterExpanded,
+      filterByDepartment: _filterByDepartment,
+      filterByRegion: _filterByRegion,
+      sortSelection: _sortSelection,
+      onToggleExpanded: () {
+        setState(() {
+          _isFilterExpanded = !_isFilterExpanded;
+        });
+      },
+      onDepartmentChanged: (value) {
+        setState(() {
+          _filterByDepartment = value;
+        });
+      },
+      onRegionChanged: (value) {
+        setState(() {
+          _filterByRegion = value;
+        });
+      },
+      onSortChanged: (value) {
+        setState(() {
+          _sortSelection = value;
+        });
+      },
     );
   }
 
