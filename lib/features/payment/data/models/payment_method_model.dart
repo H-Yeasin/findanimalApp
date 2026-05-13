@@ -1,27 +1,44 @@
-enum AppPaymentMethodType { visa, mastercard, other }
-
 class PaymentMethodModel {
   const PaymentMethodModel({
     required this.id,
-    required this.type,
-    required this.lastFour,
-    required this.cardholderName,
-    required this.expiryDate,
+    required this.brand,
+    required this.last4,
+    required this.expMonth,
+    required this.expYear,
+    this.cardholderName,
     this.isDefault = false,
   });
 
   final String id;
-  final AppPaymentMethodType type;
-  final String lastFour;
-  final String cardholderName;
-  final String expiryDate;
+  final String brand;
+  final String last4;
+  final int expMonth;
+  final int expYear;
+  final String? cardholderName;
   final bool isDefault;
 
   String get brandName {
-    return switch (type) {
-      AppPaymentMethodType.visa => 'Visa',
-      AppPaymentMethodType.mastercard => 'MasterCard',
-      AppPaymentMethodType.other => 'Card',
+    if (brand.isEmpty) {
+      return 'Card';
+    }
+
+    final normalized = brand.toLowerCase();
+    return switch (normalized) {
+      'amex' => 'American Express',
+      'american_express' => 'American Express',
+      'mastercard' => 'Mastercard',
+      'cartes_bancaires' => 'Cartes Bancaires',
+      _ => normalized
+          .split('_')
+          .map(
+            (word) => word.isEmpty
+                ? word
+                : '${word[0].toUpperCase()}${word.substring(1)}',
+          )
+          .join(' '),
     };
   }
+
+  String get expiryDate =>
+      '${expMonth.toString().padLeft(2, '0')}/${expYear.toString().padLeft(2, '0')}';
 }

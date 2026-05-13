@@ -70,6 +70,8 @@
 	<string>This app needs access to location to show nearby collection points and missing animals.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location to show nearby collection points and missing animals.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app uses the camera to scan payment cards securely.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

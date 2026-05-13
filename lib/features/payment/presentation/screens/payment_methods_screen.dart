@@ -1,12 +1,13 @@
-import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
-
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
+
 import '../../data/models/payment_method_model.dart';
 import '../providers/payment_provider.dart';
-import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PaymentMethodsScreen extends ConsumerStatefulWidget {
   const PaymentMethodsScreen({super.key});
@@ -17,7 +18,16 @@ class PaymentMethodsScreen extends ConsumerStatefulWidget {
 }
 
 class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
-  final bool _isLoading = false;
+  bool _isAddingCard = false;
+  String? _deletingPaymentMethodId;
+  String? _defaultingPaymentMethodId;
+
+  void _showSnackBar(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +63,17 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         _buildSectionHeader(context, ref, l10n.paymentMethodsCardsAndAccounts),
         const SizedBox(height: 15),
         if (state.paymentMethods.isEmpty)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+          Container(
+            width: double.infinity,
+            margin: const EdgeInsets.only(bottom: 18),
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.75),
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: PartnerUiColors.brand.withValues(alpha: 0.16),
+              ),
+            ),
             child: Text(
               l10n.paymentMethodsNoSavedCards,
               style: AppTextStyles.body.copyWith(
@@ -65,9 +84,12 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
             ),
           ),
         ...state.paymentMethods.map(
-          (method) => _buildPaymentMethodCard(context, ref, method),
+          (method) => Padding(
+            padding: const EdgeInsets.only(bottom: 18),
+            child: _buildPaymentMethodCard(context, ref, method),
+          ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 24),
         _buildSectionHeader(
           context,
           ref,
@@ -75,8 +97,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           showAdd: false,
         ),
         const SizedBox(height: 15),
-        if (state.giftCard != null)
-          _buildGiftCardTile(context, state.giftCard!),
+        if (state.giftCard != null) _buildGiftCardTile(context, state.giftCard!),
       ],
     );
   }
@@ -102,7 +123,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           ),
         ),
         if (showAdd)
-          _isLoading
+          _isAddingCard
               ? const SizedBox(
                   width: 20,
                   height: 20,
@@ -114,7 +135,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
                   ),
                 )
               : TextButton(
-                  onPressed: _isLoading ? null : () => _openAddCardSheet(ref),
+                  onPressed: () => _openAddCardSheet(ref),
                   child: Text(
                     l10n.paymentMethodsAddNew,
                     style: AppTextStyles.body.copyWith(
@@ -129,13 +150,91 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
   }
 
   Future<void> _openAddCardSheet(WidgetRef ref) async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          AppLocalizations.of(context).paymentMethodsSystemDisabled,
+    if (_isAddingCard) return;
+
+    setState(() {
+      _isAddingCard = true;
+    });
+
+    try {
+      final setupIntent = await ref
+          .read(paymentProvider.notifier)
+          .createSetupIntent();
+
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          merchantDisplayName: 'Hesteka',
+          customerId: setupIntent['customerId'] as String,
+          customerEphemeralKeySecret:
+              setupIntent['customerEphemeralKeySecret'] as String,
+          setupIntentClientSecret: setupIntent['clientSecret'] as String,
+          allowsDelayedPaymentMethods: false,
         ),
-      ),
-    );
+      );
+
+      await Stripe.instance.presentPaymentSheet();
+      await ref.read(paymentProvider.notifier).refresh();
+      _showSnackBar('Card added successfully.');
+    } on StripeException catch (error) {
+      final message = error.error.localizedMessage;
+      if (message != null &&
+          message.isNotEmpty &&
+          error.error.code != FailureCode.Canceled) {
+        _showSnackBar(message);
+      }
+    } catch (_) {
+      _showSnackBar('Unable to add card right now. Please try again.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAddingCard = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _deletePaymentMethod(WidgetRef ref, PaymentMethodModel method) async {
+    if (_deletingPaymentMethodId != null) return;
+
+    setState(() {
+      _deletingPaymentMethodId = method.id;
+    });
+
+    try {
+      await ref.read(paymentProvider.notifier).deletePaymentMethod(method.id);
+      _showSnackBar('Payment method deleted.');
+    } catch (error) {
+      _showSnackBar(
+        AppLocalizations.of(context).paymentMethodsDeleteError('$error'),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _deletingPaymentMethodId = null;
+        });
+      }
+    }
+  }
+
+  Future<void> _setDefaultMethod(WidgetRef ref, PaymentMethodModel method) async {
+    if (_defaultingPaymentMethodId != null || method.isDefault) return;
+
+    setState(() {
+      _defaultingPaymentMethodId = method.id;
+    });
+
+    try {
+      await ref.read(paymentProvider.notifier).setDefault(method.id);
+      _showSnackBar('Default payment method updated.');
+    } catch (_) {
+      _showSnackBar('Unable to update default payment method.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _defaultingPaymentMethodId = null;
+        });
+      }
+    }
   }
 
   Widget _buildPaymentMethodCard(
@@ -144,181 +243,281 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     PaymentMethodModel method,
   ) {
     final l10n = AppLocalizations.of(context);
+    final isDeleting = _deletingPaymentMethodId == method.id;
+    final isSettingDefault = _defaultingPaymentMethodId == method.id;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildCardIcon(method.type),
-              const SizedBox(width: 15),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${method.brandName} ••••${method.lastFour}',
-                      style: AppTextStyles.body.copyWith(
-                        color: PartnerUiColors.brand,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      '${method.cardholderName} - ${method.expiryDate}',
-                      style: AppTextStyles.body.copyWith(
-                        color: PartnerUiColors.brand,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                children: [
-                  _buildActionButton(l10n.paymentMethodsModify, () {
-                    // Stripe doesn't easily allow modifying card details once saved.
-                    // Usually you delete and re-add.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.paymentMethodsModifyHint)),
-                    );
-                  }),
-                  const SizedBox(height: 5),
-                  _buildActionButton(l10n.paymentMethodsDelete, () async {
-                    try {
-                      await ref
-                          .read(paymentProvider.notifier)
-                          .deletePaymentMethod(method.id);
-                    } catch (e) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.paymentMethodsDeleteError('$e')),
-                          ),
-                        );
-                      }
-                    }
-                  }),
-                ],
-              ),
-            ],
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 180),
+      opacity: isDeleting ? 0.55 : 1,
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: 0.82),
+          borderRadius: BorderRadius.circular(22),
+          border: Border.all(
+            color: method.isDefault
+                ? PartnerUiColors.brand.withValues(alpha: 0.38)
+                : PartnerUiColors.brand.withValues(alpha: 0.14),
+            width: method.isDefault ? 1.6 : 1,
           ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  l10n.paymentMethodsUseAsDefault,
-                  style: AppTextStyles.body.copyWith(
-                    color: PartnerUiColors.brand,
-                    fontSize: 13,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCardIcon(method.brand),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            '${method.brandName} •••• ${method.last4}',
+                            style: AppTextStyles.body.copyWith(
+                              color: PartnerUiColors.brand,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          if (method.isDefault)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: PartnerUiColors.brand.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(999),
+                              ),
+                              child: Text(
+                                'Default',
+                                style: AppTextStyles.body.copyWith(
+                                  color: PartnerUiColors.brand,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        [
+                          if ((method.cardholderName ?? '').trim().isNotEmpty)
+                            method.cardholderName!.trim(),
+                          'Expires ${method.expiryDate}',
+                        ].join(' • '),
+                        style: AppTextStyles.body.copyWith(
+                          color: PartnerUiColors.brand.withValues(alpha: 0.78),
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              PartnerToggle(
-                value: method.isDefault,
-                onChanged: (val) {
-                  if (val) {
-                    ref.read(paymentProvider.notifier).setDefault(method.id);
-                  }
-                },
-              ),
-            ],
-          ),
-          const Divider(color: PartnerUiColors.brand, thickness: 0.5),
-        ],
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    l10n.paymentMethodsUseAsDefault,
+                    style: AppTextStyles.body.copyWith(
+                      color: PartnerUiColors.brand,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                if (isSettingDefault)
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        PartnerUiColors.brand,
+                      ),
+                    ),
+                  )
+                else
+                  PartnerToggle(
+                    value: method.isDefault,
+                    onChanged: (val) {
+                      if (val) {
+                        _setDefaultMethod(ref, method);
+                      }
+                    },
+                  ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(
+                    l10n.paymentMethodsModify,
+                    _showModifyHint,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _buildActionButton(
+                    isDeleting ? 'Deleting...' : l10n.paymentMethodsDelete,
+                    isDeleting ? null : () => _deletePaymentMethod(ref, method),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _showModifyHint() {
+    _showSnackBar(AppLocalizations.of(context).paymentMethodsModifyHint);
   }
 
   Widget _buildGiftCardTile(BuildContext context, dynamic giftCard) {
     final l10n = AppLocalizations.of(context);
 
-    return Row(
-      children: [
-        Container(
-          width: 80,
-          height: 50,
-          decoration: BoxDecoration(
-            color: PartnerUiColors.brand,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Icon(
-            Icons.volunteer_activism_outlined,
-            color: Colors.white,
-          ),
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.82),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: PartnerUiColors.brand.withValues(alpha: 0.14),
         ),
-        const SizedBox(width: 15),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 50,
+            decoration: BoxDecoration(
+              color: PartnerUiColors.brand,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(
+              Icons.volunteer_activism_outlined,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.paymentMethodsGiftCardTitle,
+                  style: AppTextStyles.body.copyWith(
+                    color: PartnerUiColors.brand,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  l10n.paymentMethodsBalanceAvailable(
+                    giftCard.formattedBalance.toString(),
+                  ),
+                  style: AppTextStyles.body.copyWith(
+                    color: PartnerUiColors.brand,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
             children: [
-              Text(
-                l10n.paymentMethodsGiftCardTitle,
-                style: AppTextStyles.body.copyWith(
-                  color: PartnerUiColors.brand,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                l10n.paymentMethodsBalanceAvailable(
-                  giftCard.formattedBalance.toString(),
-                ),
-                style: AppTextStyles.body.copyWith(
-                  color: PartnerUiColors.brand,
-                  fontSize: 14,
-                ),
-              ),
+              _buildActionButton(l10n.paymentMethodsTopUpBalance, null),
+              const SizedBox(height: 5),
+              _buildActionButton(l10n.paymentMethodsBuy, null),
             ],
           ),
-        ),
-        Column(
-          children: [
-            _buildActionButton(l10n.paymentMethodsTopUpBalance, () {}),
-            const SizedBox(height: 5),
-            _buildActionButton(l10n.paymentMethodsBuy, () {}),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buildCardIcon(AppPaymentMethodType type) {
+  Widget _buildCardIcon(String brand) {
+    final normalized = brand.toLowerCase();
+    final backgroundColor = switch (normalized) {
+      'visa' => const Color(0xFF1434CB),
+      'mastercard' => const Color(0xFFEB001B),
+      'amex' || 'american_express' => const Color(0xFF2E77BB),
+      'discover' => const Color(0xFFFF6F00),
+      'unionpay' => const Color(0xFF008561),
+      _ => PartnerUiColors.brand,
+    };
+    final label = switch (normalized) {
+      'visa' => 'VISA',
+      'mastercard' => 'MC',
+      'amex' || 'american_express' => 'AMEX',
+      'discover' => 'DISC',
+      'unionpay' => 'UP',
+      _ => 'CARD',
+    };
+
     return Container(
       width: 80,
       height: 50,
       decoration: BoxDecoration(
-        color: Colors.blue.shade800, // Replace with actual card images
-        borderRadius: BorderRadius.circular(8),
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Center(
-        child: Icon(
-          type == AppPaymentMethodType.visa ? Icons.credit_card : Icons.payment,
-          color: Colors.white,
+        child: Text(
+          label,
+          style: AppTextStyles.body.copyWith(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.8,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildActionButton(String label, VoidCallback onTap) {
+  Widget _buildActionButton(String label, VoidCallback? onTap) {
     return SizedBox(
-      width: 120,
-      height: 28,
+      height: 36,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: PartnerUiColors.brand,
+          disabledBackgroundColor: PartnerUiColors.brand.withValues(alpha: 0.5),
           foregroundColor: Colors.white,
+          disabledForegroundColor: Colors.white70,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+            borderRadius: BorderRadius.circular(18),
           ),
         ),
         onPressed: onTap,
-        child: Text(label, style: AppTextStyles.body.copyWith(fontSize: 12)),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: AppTextStyles.body.copyWith(fontSize: 12),
+        ),
       ),
     );
   }

@@ -19,12 +19,11 @@ class PaymentRepository {
     return data.map((json) {
       return PaymentMethodModel(
         id: json['id'],
-        type: json['type'] == 'visa'
-            ? AppPaymentMethodType.visa
-            : AppPaymentMethodType.mastercard,
-        lastFour: json['lastFour'],
-        cardholderName: json['cardholderName'],
-        expiryDate: json['expiryDate'],
+        brand: (json['brand'] ?? '').toString(),
+        last4: (json['last4'] ?? '').toString(),
+        expMonth: (json['expMonth'] as num?)?.toInt() ?? 0,
+        expYear: (json['expYear'] as num?)?.toInt() ?? 0,
+        cardholderName: json['cardholderName']?.toString(),
         isDefault: json['isDefault'] ?? false,
       );
     }).toList();
