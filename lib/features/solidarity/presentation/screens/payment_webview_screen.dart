@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../../../core/localization/app_localizations.dart';
 
 class PaymentWebviewScreen extends StatefulWidget {
   final String paymentMethod; // 'stripe' or 'paypal'
@@ -52,10 +53,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
           }
         },
       )
-      ..loadHtmlString(
-        htmlString,
-        baseUrl: 'https://hesteka.com',
-      );
+      ..loadHtmlString(htmlString, baseUrl: 'https://hesteka.com');
   }
 
   String _generateStripeHtml() {
@@ -121,7 +119,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   </head>
   <body>
     <div class="card">
-      <h2>Complete Donation</h2>
+      <h2>Assistance complète</h2>
       <div class="summary">
         Amount: <strong>${widget.amount}€</strong><br/>
       </div>
@@ -284,7 +282,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   </head>
   <body>
     <div class="card">
-      <h2>PayPal Donation</h2>
+      <h2>Assistance via PayPal</h2>
       <div class="summary">
         Amount: <strong>${widget.amount}€</strong><br/>
       </div>
@@ -381,10 +379,16 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
       appBar: AppBar(
-        title: Text(widget.paymentMethod == 'stripe' ? 'Credit Card Payment' : 'PayPal Payment'),
+        title: Text(
+          widget.paymentMethod == 'stripe'
+              ? l10n.paymentStripeCreditCardTitle
+              : l10n.paymentPaypalTitle,
+        ),
         backgroundColor: const Color(0xFFBA4A22),
         foregroundColor: Colors.white,
         elevation: 0,

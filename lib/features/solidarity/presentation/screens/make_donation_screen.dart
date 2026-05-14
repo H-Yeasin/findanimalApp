@@ -1,14 +1,9 @@
 import 'dart:async';
-
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
-import '../../../../core/routing/route_names.dart';
-import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
-
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import '../providers/donation_provider.dart';
 import 'make_donation/make_donation_styles.dart';
@@ -131,7 +126,7 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
         _awaitingPayPalReturn = false;
         _pendingPayPalOrderId = null;
         ref.invalidate(myDonationsProvider);
-        _showSnackBar('PayPal donation completed successfully.');
+        _showSnackBar('Assistance PayPal effectuée avec succès !');
         if (Navigator.of(context).canPop()) {
           Navigator.of(context).pop();
         }
@@ -242,7 +237,7 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
     if (!mounted) return;
     if (success == true) {
       ref.invalidate(myDonationsProvider);
-      _showSnackBar('PayPal donation completed successfully!');
+      _showSnackBar('Assistance PayPal effectuée avec succès.');
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
       }
@@ -364,28 +359,28 @@ class _MakeDonationScreenState extends ConsumerState<MakeDonationScreen>
           ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 4,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go(RouteNames.root);
-              break;
-            case 1:
-              context.go(RouteNames.mainReports);
-              break;
-            case 2:
-              context.go(RouteNames.root);
-              break;
-            case 3:
-              context.go(RouteNames.mainCommunity);
-              break;
-            case 4:
-              context.pop();
-              break;
-          }
-        },
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: 4,
+      //   onTap: (index) {
+      //     switch (index) {
+      //       case 0:
+      //         context.go(RouteNames.root);
+      //         break;
+      //       case 1:
+      //         context.go(RouteNames.mainReports);
+      //         break;
+      //       case 2:
+      //         context.go(RouteNames.root);
+      //         break;
+      //       case 3:
+      //         context.go(RouteNames.mainCommunity);
+      //         break;
+      //       case 4:
+      //         context.pop();
+      //         break;
+      //     }
+      //   },
+      // ),
     );
   }
 }

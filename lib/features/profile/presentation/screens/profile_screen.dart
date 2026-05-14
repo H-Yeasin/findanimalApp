@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/user_avatar.dart';
-import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
+// import '../../../home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../providers/profile_providers.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
@@ -188,27 +188,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text(l10n.unknownError)),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 2,
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go(RouteNames.root);
-              break;
-            case 1:
-              context.go(RouteNames.mainReports);
-              break;
-            case 3:
-              context.go(RouteNames.mainCommunity);
-              break;
-            case 4:
-              context.go(RouteNames.mainSolidarity);
-              break;
-            case 2:
-              break;
-          }
-        },
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: 2,
+      //   onTap: (index) {
+      //     switch (index) {
+      //       case 0:
+      //         context.go(RouteNames.root);
+      //         break;
+      //       case 1:
+      //         context.go(RouteNames.mainReports);
+      //         break;
+      //       case 3:
+      //         context.go(RouteNames.mainCommunity);
+      //         break;
+      //       case 4:
+      //         context.go(RouteNames.mainSolidarity);
+      //         break;
+      //       case 2:
+      //         break;
+      //     }
+      //   },
+      // ),
     );
   }
 

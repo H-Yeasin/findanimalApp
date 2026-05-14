@@ -765,4 +765,6 @@ const Map<String, String> appFr = {
   'paymentMethodsBalanceAvailable': '{balance} disponible',
   'paymentMethodsTopUpBalance': 'Recharger le solde',
   'paymentMethodsBuy': 'Acheter',
+  'paymentStripeCreditCardTitle': 'Paiement par carte de crédit',
+  'paymentPaypalTitle': 'Paiement PayPal',
 };

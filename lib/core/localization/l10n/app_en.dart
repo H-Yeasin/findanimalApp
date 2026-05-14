@@ -752,4 +752,6 @@ const Map<String, String> appEn = {
   'paymentMethodsBalanceAvailable': '{balance} available',
   'paymentMethodsTopUpBalance': 'Top up balance',
   'paymentMethodsBuy': 'Buy',
+  'paymentStripeCreditCardTitle': 'Credit Card Payment',
+  'paymentPaypalTitle': 'PayPal Payment',
 };

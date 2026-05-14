@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hesteka_frontend/core/routing/route_names.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
-import 'package:hesteka_frontend/features/home/presentation/widgets/custom_bottom_navigation_bar.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../providers/solidarity_providers.dart';
@@ -61,31 +58,31 @@ class SolidarityShopScreen extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 4, // Set to 4 for Solidarity
-        onTap: (index) {
-          // Handle navigation back to main tabs
-          switch (index) {
-            case 0:
-              context.go(
-                RouteNames.root,
-              ); // Usually switches to the tab via home logic
-              break;
-            case 1:
-              context.go(RouteNames.mainReports);
-              break;
-            case 2:
-              context.go(RouteNames.root);
-              break;
-            case 3:
-              context.go(RouteNames.mainCommunity);
-              break;
-            case 4:
-              context.pop(); // Since we are already in a sub-page of Solidarity
-              break;
-          }
-        },
-      ),
+      // bottomNavigationBar: CustomBottomNavigationBar(
+      //   currentIndex: 4, // Set to 4 for Solidarity
+      //   onTap: (index) {
+      //     // Handle navigation back to main tabs
+      //     switch (index) {
+      //       case 0:
+      //         context.go(
+      //           RouteNames.root,
+      //         ); // Usually switches to the tab via home logic
+      //         break;
+      //       case 1:
+      //         context.go(RouteNames.mainReports);
+      //         break;
+      //       case 2:
+      //         context.go(RouteNames.root);
+      //         break;
+      //       case 3:
+      //         context.go(RouteNames.mainCommunity);
+      //         break;
+      //       case 4:
+      //         context.pop(); // Since we are already in a sub-page of Solidarity
+      //         break;
+      //     }
+      //   },
+      // ),
     );
   }
 }

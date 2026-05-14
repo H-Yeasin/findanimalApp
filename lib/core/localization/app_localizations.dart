@@ -744,6 +744,8 @@ class AppLocalizations {
   String get paymentMethodsTopUpBalance =>
       _text('paymentMethodsTopUpBalance');
   String get paymentMethodsBuy => _text('paymentMethodsBuy');
+  String get paymentStripeCreditCardTitle => _text('paymentStripeCreditCardTitle');
+  String get paymentPaypalTitle => _text('paymentPaypalTitle');
 }
 
 class _AppLocalizationsDelegate

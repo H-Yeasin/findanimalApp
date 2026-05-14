@@ -8,6 +8,8 @@ import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_u
 
 import '../../data/models/payment_method_model.dart';
 import '../providers/payment_provider.dart';
+import '../widgets/gift_card_tile.dart';
+import '../widgets/payment_method_card.dart';
 
 class PaymentMethodsScreen extends ConsumerStatefulWidget {
   const PaymentMethodsScreen({super.key});
@@ -86,7 +88,16 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         ...state.paymentMethods.map(
           (method) => Padding(
             padding: const EdgeInsets.only(bottom: 18),
-            child: _buildPaymentMethodCard(context, ref, method),
+            child: PaymentMethodCard(
+              method: method,
+              isDeleting: _deletingPaymentMethodId == method.id,
+              isSettingDefault: _defaultingPaymentMethodId == method.id,
+              onSetDefault: () => _setDefaultMethod(ref, method),
+              onModify: _showModifyHint,
+              onDelete: _deletingPaymentMethodId == method.id
+                  ? null
+                  : () => _deletePaymentMethod(ref, method),
+            ),
           ),
         ),
         const SizedBox(height: 24),
@@ -97,7 +108,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
           showAdd: false,
         ),
         const SizedBox(height: 15),
-        if (state.giftCard != null) _buildGiftCardTile(context, state.giftCard!),
+        if (state.giftCard != null) GiftCardTile(giftCard: state.giftCard!),
       ],
     );
   }
@@ -115,9 +126,8 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
         Expanded(
           child: Text(
             title,
-            style: AppTextStyles.body.copyWith(
+            style: AppTextStyles.heading.copyWith(
               color: PartnerUiColors.brand,
-              fontFamily: 'EricaOne',
               fontSize: 24,
             ),
           ),
@@ -193,7 +203,10 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     }
   }
 
-  Future<void> _deletePaymentMethod(WidgetRef ref, PaymentMethodModel method) async {
+  Future<void> _deletePaymentMethod(
+    WidgetRef ref,
+    PaymentMethodModel method,
+  ) async {
     if (_deletingPaymentMethodId != null) return;
 
     setState(() {
@@ -216,7 +229,10 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     }
   }
 
-  Future<void> _setDefaultMethod(WidgetRef ref, PaymentMethodModel method) async {
+  Future<void> _setDefaultMethod(
+    WidgetRef ref,
+    PaymentMethodModel method,
+  ) async {
     if (_defaultingPaymentMethodId != null || method.isDefault) return;
 
     setState(() {
@@ -237,288 +253,7 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
     }
   }
 
-  Widget _buildPaymentMethodCard(
-    BuildContext context,
-    WidgetRef ref,
-    PaymentMethodModel method,
-  ) {
-    final l10n = AppLocalizations.of(context);
-    final isDeleting = _deletingPaymentMethodId == method.id;
-    final isSettingDefault = _defaultingPaymentMethodId == method.id;
-
-    return AnimatedOpacity(
-      duration: const Duration(milliseconds: 180),
-      opacity: isDeleting ? 0.55 : 1,
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.82),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: method.isDefault
-                ? PartnerUiColors.brand.withValues(alpha: 0.38)
-                : PartnerUiColors.brand.withValues(alpha: 0.14),
-            width: method.isDefault ? 1.6 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 18,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildCardIcon(method.brand),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(
-                            '${method.brandName} •••• ${method.last4}',
-                            style: AppTextStyles.body.copyWith(
-                              color: PartnerUiColors.brand,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          if (method.isDefault)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: PartnerUiColors.brand.withValues(
-                                  alpha: 0.12,
-                                ),
-                                borderRadius: BorderRadius.circular(999),
-                              ),
-                              child: Text(
-                                'Default',
-                                style: AppTextStyles.body.copyWith(
-                                  color: PartnerUiColors.brand,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        [
-                          if ((method.cardholderName ?? '').trim().isNotEmpty)
-                            method.cardholderName!.trim(),
-                          'Expires ${method.expiryDate}',
-                        ].join(' • '),
-                        style: AppTextStyles.body.copyWith(
-                          color: PartnerUiColors.brand.withValues(alpha: 0.78),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    l10n.paymentMethodsUseAsDefault,
-                    style: AppTextStyles.body.copyWith(
-                      color: PartnerUiColors.brand,
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                if (isSettingDefault)
-                  const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        PartnerUiColors.brand,
-                      ),
-                    ),
-                  )
-                else
-                  PartnerToggle(
-                    value: method.isDefault,
-                    onChanged: (val) {
-                      if (val) {
-                        _setDefaultMethod(ref, method);
-                      }
-                    },
-                  ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildActionButton(
-                    l10n.paymentMethodsModify,
-                    _showModifyHint,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _buildActionButton(
-                    isDeleting ? 'Deleting...' : l10n.paymentMethodsDelete,
-                    isDeleting ? null : () => _deletePaymentMethod(ref, method),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _showModifyHint() {
     _showSnackBar(AppLocalizations.of(context).paymentMethodsModifyHint);
-  }
-
-  Widget _buildGiftCardTile(BuildContext context, dynamic giftCard) {
-    final l10n = AppLocalizations.of(context);
-
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.82),
-        borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: PartnerUiColors.brand.withValues(alpha: 0.14),
-        ),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 50,
-            decoration: BoxDecoration(
-              color: PartnerUiColors.brand,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: const Icon(
-              Icons.volunteer_activism_outlined,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(width: 15),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.paymentMethodsGiftCardTitle,
-                  style: AppTextStyles.body.copyWith(
-                    color: PartnerUiColors.brand,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  l10n.paymentMethodsBalanceAvailable(
-                    giftCard.formattedBalance.toString(),
-                  ),
-                  style: AppTextStyles.body.copyWith(
-                    color: PartnerUiColors.brand,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Column(
-            children: [
-              _buildActionButton(l10n.paymentMethodsTopUpBalance, null),
-              const SizedBox(height: 5),
-              _buildActionButton(l10n.paymentMethodsBuy, null),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCardIcon(String brand) {
-    final normalized = brand.toLowerCase();
-    final backgroundColor = switch (normalized) {
-      'visa' => const Color(0xFF1434CB),
-      'mastercard' => const Color(0xFFEB001B),
-      'amex' || 'american_express' => const Color(0xFF2E77BB),
-      'discover' => const Color(0xFFFF6F00),
-      'unionpay' => const Color(0xFF008561),
-      _ => PartnerUiColors.brand,
-    };
-    final label = switch (normalized) {
-      'visa' => 'VISA',
-      'mastercard' => 'MC',
-      'amex' || 'american_express' => 'AMEX',
-      'discover' => 'DISC',
-      'unionpay' => 'UP',
-      _ => 'CARD',
-    };
-
-    return Container(
-      width: 80,
-      height: 50,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: AppTextStyles.body.copyWith(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.8,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionButton(String label, VoidCallback? onTap) {
-    return SizedBox(
-      height: 36,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: PartnerUiColors.brand,
-          disabledBackgroundColor: PartnerUiColors.brand.withValues(alpha: 0.5),
-          foregroundColor: Colors.white,
-          disabledForegroundColor: Colors.white70,
-          padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ),
-        ),
-        onPressed: onTap,
-        child: Text(
-          label,
-          textAlign: TextAlign.center,
-          style: AppTextStyles.body.copyWith(fontSize: 12),
-        ),
-      ),
-    );
   }
 }
