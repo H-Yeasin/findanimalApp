@@ -158,7 +158,8 @@ class AppLocalizations {
   String get otpMust6Digits => _text('otpMust6Digits');
   String get emailsDoNotMatch => _text('emailsDoNotMatch');
   String get passwordsDoNotMatch => _text('passwordsDoNotMatch');
-  String get passwordValidationComplexity => _text('passwordValidationComplexity');
+  String get passwordValidationComplexity =>
+      _text('passwordValidationComplexity');
   String get credentialIncorrect => _text('credentialIncorrect');
   String get emailRequired => _text('emailRequired');
   String get emailInvalid => _text('emailInvalid');
@@ -723,8 +724,7 @@ class AppLocalizations {
   String get paymentMethodsHeroTitle => _text('paymentMethodsHeroTitle');
   String get paymentMethodsCardsAndAccounts =>
       _text('paymentMethodsCardsAndAccounts');
-  String get paymentMethodsNoSavedCards =>
-      _text('paymentMethodsNoSavedCards');
+  String get paymentMethodsNoSavedCards => _text('paymentMethodsNoSavedCards');
   String get paymentMethodsSalesBenefits =>
       _text('paymentMethodsSalesBenefits');
   String get paymentMethodsAddNew => _text('paymentMethodsAddNew');
@@ -735,17 +735,33 @@ class AppLocalizations {
   String get paymentMethodsDelete => _text('paymentMethodsDelete');
   String paymentMethodsDeleteError(String error) =>
       text('paymentMethodsDeleteError', params: {'error': error});
-  String get paymentMethodsUseAsDefault =>
-      _text('paymentMethodsUseAsDefault');
+  String get paymentMethodsUseAsDefault => _text('paymentMethodsUseAsDefault');
   String get paymentMethodsGiftCardTitle =>
       _text('paymentMethodsGiftCardTitle');
   String paymentMethodsBalanceAvailable(String balance) =>
       text('paymentMethodsBalanceAvailable', params: {'balance': balance});
-  String get paymentMethodsTopUpBalance =>
-      _text('paymentMethodsTopUpBalance');
+  String get paymentMethodsTopUpBalance => _text('paymentMethodsTopUpBalance');
   String get paymentMethodsBuy => _text('paymentMethodsBuy');
-  String get paymentStripeCreditCardTitle => _text('paymentStripeCreditCardTitle');
+  String get paymentStripeCreditCardTitle =>
+      _text('paymentStripeCreditCardTitle');
   String get paymentPaypalTitle => _text('paymentPaypalTitle');
+
+  String localizeStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return _text('statusPending');
+      case 'completed':
+        return _text('statusCompleted');
+      case 'cancelled':
+        return _text('statusCancelled');
+      case 'active':
+        return _text('statusActive');
+      case 'inactive':
+        return _text('statusInactive');
+      default:
+        return status;
+    }
+  }
 }
 
 class _AppLocalizationsDelegate

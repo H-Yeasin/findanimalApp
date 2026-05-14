@@ -767,4 +767,9 @@ const Map<String, String> appFr = {
   'paymentMethodsBuy': 'Acheter',
   'paymentStripeCreditCardTitle': 'Paiement par carte de crédit',
   'paymentPaypalTitle': 'Paiement PayPal',
+  'statusPending': 'En attente',
+  'statusCompleted': 'Terminé',
+  'statusCancelled': 'Annulé',
+  'statusActive': 'Actif',
+  'statusInactive': 'Inactif',
 };

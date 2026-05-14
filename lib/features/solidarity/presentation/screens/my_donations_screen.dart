@@ -69,15 +69,6 @@ class MyDonationsScreen extends ConsumerWidget {
                                   color: AppColors.surface,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Text(
-                                l10n.helpingTomorrowSubtitle,
-                                style: AppTextStyles.body.copyWith(
-                                  color: AppColors.surface,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
                             ],
                           ),
                         ),
@@ -142,7 +133,7 @@ class MyDonationsScreen extends ConsumerWidget {
                                 subtitle: Text(
                                   l10n.donationMethodStatus(
                                     donation['method'].toString(),
-                                    donation['status'].toString(),
+                                    l10n.localizeStatus(donation['status'].toString()),
                                   ),
                                 ),
                                 trailing: Text(

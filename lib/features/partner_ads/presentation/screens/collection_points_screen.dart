@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
 import '../../data/models/partner_ad_model.dart';
@@ -121,6 +120,7 @@ class _CollectionPointCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -169,7 +169,7 @@ class _CollectionPointCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  point.status.toUpperCase(),
+                  l10n.localizeStatus(point.status),
                   style: AppTextStyles.body.copyWith(
                     color: PartnerUiColors.brand,
                     fontSize: 11,

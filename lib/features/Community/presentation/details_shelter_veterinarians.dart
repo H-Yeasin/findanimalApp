@@ -95,19 +95,6 @@ class DetailsShelterVeterinariansScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          contact.status.toUpperCase(),
-                          style: AppTextStyles.body.copyWith(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
                         ),
                       ),
                     ],

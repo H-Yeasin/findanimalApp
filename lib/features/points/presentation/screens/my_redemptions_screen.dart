@@ -152,7 +152,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
               ),
             ),
             child: Text(
-              _localizedStatus(context, redemption.status),
+              l10n.localizeStatus(redemption.status),
               style: AppTextStyles.caption.copyWith(
                 fontSize: 10,
                 fontWeight: FontWeight.w700,
@@ -165,20 +165,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
     );
   }
 
-  String _localizedStatus(BuildContext context, String status) {
-    final l10n = AppLocalizations.of(context);
 
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return l10n.pointsStatusPending.toUpperCase();
-      case 'completed':
-        return l10n.pointsStatusCompleted.toUpperCase();
-      case 'cancelled':
-        return l10n.pointsStatusCancelled.toUpperCase();
-      default:
-        return status.toUpperCase();
-    }
-  }
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {

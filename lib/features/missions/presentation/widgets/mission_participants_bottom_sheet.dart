@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../partner/presentation/widgets/partner_ui_kit.dart';
+import '../../../../core/localization/app_localizations.dart';
 import '../../data/repositories/missions_repository_impl.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
@@ -19,6 +20,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final participantsAsync = ref.watch(missionParticipantsProvider(missionId));
+    final l10n = AppLocalizations.of(context);
 
     return DraggableScrollableSheet(
       initialChildSize: 0.6,
@@ -143,7 +145,7 @@ class MissionParticipantsBottomSheet extends ConsumerWidget {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      status.toUpperCase(),
+                                      l10n.localizeStatus(status),
                                       style: AppTextStyles.body.copyWith(
                                         color: _getStatusColor(status),
                                         fontSize: 10,
