@@ -51,6 +51,7 @@ class LegalNoticesScreen extends StatelessWidget {
               l10n.legalContactInfo,
               style: AppTextStyles.condensedSectionTitle.copyWith(
                 color: PartnerUiColors.brand,
+                fontSize: 14,
                 height: 1.4,
               ),
             ),

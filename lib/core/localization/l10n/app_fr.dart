@@ -741,7 +741,7 @@ const Map<String, String> appFr = {
   'legalContactContent':
       'Pour toute question concernant ces mentions légales ou l\'application, vous pouvez nous contacter à :',
   'legalContactInfo':
-      'E-mail : contact@hesteka.com\nTéléphone : +33 6 41 45 83 60',
+      'E-mail : contact@hesteka.com\nTéléphone : +33 07 67 89 84 25',
 
   'a6DigitCodeHasBeenSentToYourEmail':
       'Un code à 6 chiffres a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous pour continuer.',
