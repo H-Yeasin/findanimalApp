@@ -61,9 +61,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     final otp = _otp;
 
     if (otp.length != 6) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.otpMust6Digits)));
+      showAuthSnackBar(context, l10n.otpMust6Digits);
       return;
     }
 
@@ -75,9 +73,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
 
         if (!mounted) return;
 
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.accountVerified)));
+        showAuthSnackBar(context, l10n.accountVerified, isError: false);
         context.go(RouteNames.login);
         return;
       }
@@ -89,9 +85,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
       if (!mounted) return;
 
       if (token.isEmpty) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.invalidOtpResponse)));
+        showAuthSnackBar(context, l10n.invalidOtpResponse);
         return;
       }
 
@@ -100,9 +94,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
       );
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
+      showAuthSnackBar(context, authErrorMessage(error, l10n));
     }
   }
 
@@ -113,6 +105,7 @@ class _VerifyOtpScreenState extends ConsumerState<VerifyOtpScreen> {
     final isAccountMode = widget.mode == VerifyOtpScreen.modeAccount;
 
     return AuthScreenScaffold(
+      isLoading: isLoading,
       onBack: () {
         if (context.canPop()) {
           context.pop();

@@ -154,7 +154,7 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSession> {
 
 class AuthActionNotifier extends AutoDisposeAsyncNotifier<void> {
   @override
-  Future<void> build() async {}
+  void build() {}
 
   Future<void> registerUser(RegisterRequestModel request) async {
     state = const AsyncLoading();
@@ -263,18 +263,46 @@ final currentUserProvider = Provider<AuthUserModel?>((ref) {
 String authErrorMessage(Object error, [AppLocalizations? l10n]) {
   final raw = error.toString().toLowerCase();
 
-  if (raw.contains('user not found') || raw.contains('incorrect password')) {
+  // Authentication specific errors
+  if (raw.contains('user not found') ||
+      raw.contains('incorrect password') ||
+      raw.contains('invalid credentials') ||
+      raw.contains('invalid email or password') ||
+      raw.contains('no user found')) {
     return l10n?.credentialIncorrect ??
         'Credential incorrect. Try with correct credential or create an account.';
   }
 
-  if (raw.contains('uppercase') &&
-      raw.contains('lowercase') &&
-      raw.contains('number') &&
-      raw.contains('special character')) {
-    return l10n?.passwordValidationComplexity ?? error.toString();
+  if (raw.contains('unauthorized') || raw.contains('401')) {
+    return l10n?.credentialIncorrect ??
+        'Unauthorized access. Please check your credentials.';
   }
 
+  if (raw.contains('inactive') ||
+      raw.contains('blocked') ||
+      raw.contains('disabled')) {
+    return l10n?.accountInactive ??
+        'Your account is inactive or blocked. Please contact support.';
+  }
+
+  // Password complexity errors
+  if (raw.contains('uppercase') ||
+      raw.contains('lowercase') ||
+      raw.contains('special character') ||
+      raw.contains('password is too weak')) {
+    return l10n?.passwordValidationComplexity ??
+        'Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.';
+  }
+
+  // Network errors
+  if (raw.contains('network') ||
+      raw.contains('connection') ||
+      raw.contains('timeout')) {
+    return l10n?.genericError ??
+        'Network error. Please check your internet connection.';
+  }
+
+  // Generic formatting
   final msg = error.toString();
   if (msg.startsWith('Exception: ')) {
     return msg.replaceFirst('Exception: ', '');

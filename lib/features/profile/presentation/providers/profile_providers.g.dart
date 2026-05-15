@@ -23,5 +23,21 @@ final myProfileProvider = AutoDisposeFutureProvider<ProfileModel>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MyProfileRef = AutoDisposeFutureProviderRef<ProfileModel>;
+String _$contactSupportHash() => r'08f922817360f9abc5d69f6323a3e6052b491dbf';
+
+/// See also [ContactSupport].
+@ProviderFor(ContactSupport)
+final contactSupportProvider =
+    AutoDisposeNotifierProvider<ContactSupport, AsyncValue<void>>.internal(
+      ContactSupport.new,
+      name: r'contactSupportProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$contactSupportHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$ContactSupport = AutoDisposeNotifier<AsyncValue<void>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

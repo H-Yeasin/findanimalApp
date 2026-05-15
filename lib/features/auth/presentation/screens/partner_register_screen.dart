@@ -127,9 +127,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
         return;
       }
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.partnerRegisterSuccess)));
+      showAuthSnackBar(context, l10n.partnerRegisterSuccess, isError: false);
 
       context.go(RouteNames.partnerLogin);
     } catch (error) {
@@ -138,9 +136,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
       }
 
       final l10n = AppLocalizations.of(context);
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
+      showAuthSnackBar(context, authErrorMessage(error, l10n));
     }
   }
 
@@ -308,6 +304,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     final l10n = AppLocalizations.of(context);
 
     return AuthScreenScaffold(
+      isLoading: isLoading,
       onBack: () {
         if (context.canPop()) {
           context.pop();

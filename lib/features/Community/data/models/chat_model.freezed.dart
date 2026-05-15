@@ -21,7 +21,6 @@ ChatModel _$ChatModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatModel {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   ChatUser get user => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
@@ -49,7 +48,7 @@ abstract class $ChatModelCopyWith<$Res> {
       _$ChatModelCopyWithImpl<$Res, ChatModel>;
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     ChatUser user,
     String content,
     List<ChatMedia>? media,
@@ -188,7 +187,7 @@ abstract class _$$ChatModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     ChatUser user,
     String content,
     List<ChatMedia>? media,
@@ -284,7 +283,7 @@ class __$$ChatModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatModelImpl implements _ChatModel {
   const _$ChatModelImpl({
-    @JsonKey(name: '_id') required this.id,
+    required this.id,
     required this.user,
     required this.content,
     final List<ChatMedia>? media,
@@ -300,7 +299,6 @@ class _$ChatModelImpl implements _ChatModel {
       _$$ChatModelImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
   final ChatUser user;
@@ -388,7 +386,7 @@ class _$ChatModelImpl implements _ChatModel {
 
 abstract class _ChatModel implements ChatModel {
   const factory _ChatModel({
-    @JsonKey(name: '_id') required final String id,
+    required final String id,
     required final ChatUser user,
     required final String content,
     final List<ChatMedia>? media,
@@ -404,7 +402,6 @@ abstract class _ChatModel implements ChatModel {
       _$ChatModelImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
   ChatUser get user;
@@ -439,7 +436,6 @@ ChatUser _$ChatUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatUser {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -461,7 +457,7 @@ abstract class $ChatUserCopyWith<$Res> {
       _$ChatUserCopyWithImpl<$Res, ChatUser>;
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     ChatProfileImage? profileImage,
@@ -538,7 +534,7 @@ abstract class _$$ChatUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     ChatProfileImage? profileImage,
@@ -594,7 +590,7 @@ class __$$ChatUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatUserImpl implements _ChatUser {
   const _$ChatUserImpl({
-    @JsonKey(name: '_id') required this.id,
+    required this.id,
     required this.firstName,
     required this.lastName,
     this.profileImage,
@@ -604,7 +600,6 @@ class _$ChatUserImpl implements _ChatUser {
       _$$ChatUserImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
   final String firstName;
@@ -653,7 +648,7 @@ class _$ChatUserImpl implements _ChatUser {
 
 abstract class _ChatUser implements ChatUser {
   const factory _ChatUser({
-    @JsonKey(name: '_id') required final String id,
+    required final String id,
     required final String firstName,
     required final String lastName,
     final ChatProfileImage? profileImage,
@@ -663,7 +658,6 @@ abstract class _ChatUser implements ChatUser {
       _$ChatUserImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
   String get firstName;
@@ -686,9 +680,7 @@ ChatProfileImage _$ChatProfileImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ChatProfileImage {
-  @JsonKey(name: 'public_id')
   String get publicId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'secure_url')
   String get secureUrl => throw _privateConstructorUsedError;
 
   /// Serializes this ChatProfileImage to a JSON map.
@@ -708,10 +700,7 @@ abstract class $ChatProfileImageCopyWith<$Res> {
     $Res Function(ChatProfileImage) then,
   ) = _$ChatProfileImageCopyWithImpl<$Res, ChatProfileImage>;
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -754,10 +743,7 @@ abstract class _$$ChatProfileImageImplCopyWith<$Res>
   ) = __$$ChatProfileImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -793,18 +779,16 @@ class __$$ChatProfileImageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ChatProfileImageImpl implements _ChatProfileImage {
   const _$ChatProfileImageImpl({
-    @JsonKey(name: 'public_id') required this.publicId,
-    @JsonKey(name: 'secure_url') required this.secureUrl,
+    required this.publicId,
+    required this.secureUrl,
   });
 
   factory _$ChatProfileImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChatProfileImageImplFromJson(json);
 
   @override
-  @JsonKey(name: 'public_id')
   final String publicId;
   @override
-  @JsonKey(name: 'secure_url')
   final String secureUrl;
 
   @override
@@ -846,18 +830,16 @@ class _$ChatProfileImageImpl implements _ChatProfileImage {
 
 abstract class _ChatProfileImage implements ChatProfileImage {
   const factory _ChatProfileImage({
-    @JsonKey(name: 'public_id') required final String publicId,
-    @JsonKey(name: 'secure_url') required final String secureUrl,
+    required final String publicId,
+    required final String secureUrl,
   }) = _$ChatProfileImageImpl;
 
   factory _ChatProfileImage.fromJson(Map<String, dynamic> json) =
       _$ChatProfileImageImpl.fromJson;
 
   @override
-  @JsonKey(name: 'public_id')
   String get publicId;
   @override
-  @JsonKey(name: 'secure_url')
   String get secureUrl;
 
   /// Create a copy of ChatProfileImage

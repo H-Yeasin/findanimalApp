@@ -15,6 +15,7 @@ class AuthScreenScaffold extends StatelessWidget {
     this.bottomNavIndex = 2,
     this.onBottomTap,
     this.contentPadding = const EdgeInsets.fromLTRB(34, 18, 34, 24),
+    this.isLoading = false,
     super.key,
   });
 
@@ -26,40 +27,56 @@ class AuthScreenScaffold extends StatelessWidget {
   final int bottomNavIndex;
   final ValueChanged<int>? onBottomTap;
   final EdgeInsetsGeometry contentPadding;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          _AuthHeroHeader(
-            showBackButton: showBackButton,
-            onBack: onBack,
-            headerAction: headerAction,
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            children: [
+              _AuthHeroHeader(
+                showBackButton: showBackButton,
+                onBack: onBack,
+                headerAction: headerAction,
+              ),
+              Expanded(
+                child: AppBackground(
+                  backgroundColor: AppBackgroundColors.paper,
+                  lineColor: AppBackgroundColors.grid,
+                  child: SafeArea(
+                    top: false,
+                    bottom: false,
+                    child: SingleChildScrollView(
+                      padding: contentPadding,
+                      child: child,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: AppBackground(
-              backgroundColor: AppBackgroundColors.paper,
-              lineColor: AppBackgroundColors.grid,
-              child: SafeArea(
-                top: false,
-                bottom: false,
-                child: SingleChildScrollView(
-                  padding: contentPadding,
-                  child: child,
+          bottomNavigationBar: showBottomNavigation
+              ? CustomBottomNavigationBar(
+                  currentIndex: bottomNavIndex,
+                  onTap: onBottomTap ?? (_) {},
+                )
+              : null,
+        ),
+        if (isLoading)
+          Positioned.fill(
+            child: Container(
+              color: Colors.black.withValues(alpha: 0.3),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFB84C24),
                 ),
               ),
             ),
           ),
-        ],
-      ),
-      bottomNavigationBar: showBottomNavigation
-          ? CustomBottomNavigationBar(
-              currentIndex: bottomNavIndex,
-              onTap: onBottomTap ?? (_) {},
-            )
-          : null,
+      ],
     );
   }
 }

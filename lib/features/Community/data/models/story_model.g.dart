@@ -8,7 +8,7 @@ part of 'story_model.dart';
 
 _$StoryModelImpl _$$StoryModelImplFromJson(Map<String, dynamic> json) =>
     _$StoryModelImpl(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       user: StoryUser.fromJson(json['user'] as Map<String, dynamic>),
       media: StoryMedia.fromJson(json['media'] as Map<String, dynamic>),
       caption: json['caption'] as String?,
@@ -23,7 +23,7 @@ _$StoryModelImpl _$$StoryModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$StoryModelImplToJson(_$StoryModelImpl instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      'id': instance.id,
       'user': instance.user,
       'media': instance.media,
       'caption': instance.caption,
@@ -36,7 +36,7 @@ Map<String, dynamic> _$$StoryModelImplToJson(_$StoryModelImpl instance) =>
 
 _$StoryUserImpl _$$StoryUserImplFromJson(Map<String, dynamic> json) =>
     _$StoryUserImpl(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: json['profileImage'] == null
@@ -48,7 +48,7 @@ _$StoryUserImpl _$$StoryUserImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$StoryUserImplToJson(_$StoryUserImpl instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'profileImage': instance.profileImage,
@@ -57,15 +57,15 @@ Map<String, dynamic> _$$StoryUserImplToJson(_$StoryUserImpl instance) =>
 _$StoryProfileImageImpl _$$StoryProfileImageImplFromJson(
   Map<String, dynamic> json,
 ) => _$StoryProfileImageImpl(
-  publicId: json['public_id'] as String,
-  secureUrl: json['secure_url'] as String,
+  publicId: json['publicId'] as String,
+  secureUrl: json['secureUrl'] as String,
 );
 
 Map<String, dynamic> _$$StoryProfileImageImplToJson(
   _$StoryProfileImageImpl instance,
 ) => <String, dynamic>{
-  'public_id': instance.publicId,
-  'secure_url': instance.secureUrl,
+  'publicId': instance.publicId,
+  'secureUrl': instance.secureUrl,
 };
 
 _$StoryMediaImpl _$$StoryMediaImplFromJson(Map<String, dynamic> json) =>

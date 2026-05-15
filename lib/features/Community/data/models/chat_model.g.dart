@@ -8,7 +8,7 @@ part of 'chat_model.dart';
 
 _$ChatModelImpl _$$ChatModelImplFromJson(Map<String, dynamic> json) =>
     _$ChatModelImpl(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       user: ChatUser.fromJson(json['user'] as Map<String, dynamic>),
       content: json['content'] as String,
       media: (json['media'] as List<dynamic>?)
@@ -32,7 +32,7 @@ _$ChatModelImpl _$$ChatModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      'id': instance.id,
       'user': instance.user,
       'content': instance.content,
       'media': instance.media,
@@ -46,7 +46,7 @@ Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
 
 _$ChatUserImpl _$$ChatUserImplFromJson(Map<String, dynamic> json) =>
     _$ChatUserImpl(
-      id: json['_id'] as String,
+      id: json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: json['profileImage'] == null
@@ -58,7 +58,7 @@ _$ChatUserImpl _$$ChatUserImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ChatUserImplToJson(_$ChatUserImpl instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      'id': instance.id,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'profileImage': instance.profileImage,
@@ -67,15 +67,15 @@ Map<String, dynamic> _$$ChatUserImplToJson(_$ChatUserImpl instance) =>
 _$ChatProfileImageImpl _$$ChatProfileImageImplFromJson(
   Map<String, dynamic> json,
 ) => _$ChatProfileImageImpl(
-  publicId: json['public_id'] as String,
-  secureUrl: json['secure_url'] as String,
+  publicId: json['publicId'] as String,
+  secureUrl: json['secureUrl'] as String,
 );
 
 Map<String, dynamic> _$$ChatProfileImageImplToJson(
   _$ChatProfileImageImpl instance,
 ) => <String, dynamic>{
-  'public_id': instance.publicId,
-  'secure_url': instance.secureUrl,
+  'publicId': instance.publicId,
+  'secureUrl': instance.secureUrl,
 };
 
 _$ChatMediaImpl _$$ChatMediaImplFromJson(Map<String, dynamic> json) =>

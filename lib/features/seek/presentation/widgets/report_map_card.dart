@@ -11,8 +11,8 @@ class ReportMapCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    const cardWidth = 130.0;
-    const cardHeight = 78.0;
+    const cardWidth = 145.0;
+    const cardHeight = 85.0;
     final imageUrl = (report.images != null && report.images.isNotEmpty)
         ? report.images.first.secureUrl
         : null;

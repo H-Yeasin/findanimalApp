@@ -6,7 +6,7 @@ part 'report_model.g.dart';
 @freezed
 class ReportModel with _$ReportModel {
   const factory ReportModel({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String animalName,
     String? title,
     required String species,
@@ -37,7 +37,7 @@ class ReportModel with _$ReportModel {
 @freezed
 class ReportAuthor with _$ReportAuthor {
   const factory ReportAuthor({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
     String? email,
@@ -50,9 +50,9 @@ class ReportAuthor with _$ReportAuthor {
 @freezed
 class ReportImage with _$ReportImage {
   const factory ReportImage({
-    required String publicId,
-    required String secureUrl,
-    String? id,
+    @JsonKey(name: 'public_id') required String publicId,
+    @JsonKey(name: 'secure_url') required String secureUrl,
+    @JsonKey(name: '_id') String? id,
   }) = _ReportImage;
 
   factory ReportImage.fromJson(Map<String, dynamic> json) =>

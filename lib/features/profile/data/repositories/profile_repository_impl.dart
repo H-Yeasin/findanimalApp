@@ -18,7 +18,13 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<ProfileModel> getMyProfile() async {
     final response = await _apiClient.get('/user/get-my-profile');
-    return ProfileModel.fromJson(response.data['data'] as Map<String, dynamic>);
+    try {
+      return ProfileModel.fromJson(response.data['data'] as Map<String, dynamic>);
+    } catch (e, stack) {
+      print('DEBUG: ProfileModel.fromJson error: $e');
+      print('DEBUG: Stack: $stack');
+      rethrow;
+    }
   }
 
   @override
@@ -38,5 +44,10 @@ class ProfileRepositoryImpl implements ProfileRepository {
   @override
   Future<void> updateFcmToken(String token) async {
     await _apiClient.patch('/user/update-fcm-token', data: {'fcmToken': token});
+  }
+
+  @override
+  Future<void> submitSupportMessage(Map<String, dynamic> data) async {
+    await _apiClient.post('/support-messages', data: data);
   }
 }

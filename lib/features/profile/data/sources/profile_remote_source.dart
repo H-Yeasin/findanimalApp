@@ -19,4 +19,8 @@ class ProfileRemoteSource {
   Future<void> updateProfile(Map<String, dynamic> payload) async {
     await _apiClient.put('/user/update-user', data: payload);
   }
+
+  Future<void> submitSupportMessage(Map<String, dynamic> payload) async {
+    await _apiClient.post('/support-messages', data: payload);
+  }
 }

@@ -161,8 +161,11 @@ class AppLocalizations {
   String get passwordValidationComplexity =>
       _text('passwordValidationComplexity');
   String get credentialIncorrect => _text('credentialIncorrect');
+  String get accountInactive => _text('accountInactive');
   String get emailRequired => _text('emailRequired');
   String get emailInvalid => _text('emailInvalid');
+  String get sfieldRequired => _text('fieldRequired');
+  String get messageSentSuccessfully => _text('messageSentSuccessfully');
   String get fieldEmail => _text('fieldEmail');
   String get fieldFirstName => _text('fieldFirstName');
   String get fieldLastName => _text('fieldLastName');

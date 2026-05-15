@@ -6,7 +6,7 @@ part 'profile_model.g.dart';
 @freezed
 class ProfileModel with _$ProfileModel {
   const factory ProfileModel({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
     required String email,

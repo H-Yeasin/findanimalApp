@@ -279,7 +279,7 @@ class __$$CommentModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CommentModelImpl implements _CommentModel {
+class _$CommentModelImpl with DiagnosticableTreeMixin implements _CommentModel {
   const _$CommentModelImpl({
     required this.id,
     required this.content,
@@ -334,8 +334,26 @@ class _$CommentModelImpl implements _CommentModel {
   }
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CommentModel(id: $id, content: $content, author: $author, report: $report, image: $image, parent: $parent, likes: $likes, isDeleted: $isDeleted, createdAt: $createdAt, updatedAt: $updatedAt, replies: $replies)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CommentModel'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('content', content))
+      ..add(DiagnosticsProperty('author', author))
+      ..add(DiagnosticsProperty('report', report))
+      ..add(DiagnosticsProperty('image', image))
+      ..add(DiagnosticsProperty('parent', parent))
+      ..add(DiagnosticsProperty('likes', likes))
+      ..add(DiagnosticsProperty('isDeleted', isDeleted))
+      ..add(DiagnosticsProperty('createdAt', createdAt))
+      ..add(DiagnosticsProperty('updatedAt', updatedAt))
+      ..add(DiagnosticsProperty('replies', replies));
   }
 
   @override
@@ -445,7 +463,6 @@ CommentAuthor _$CommentAuthorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentAuthor {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -470,7 +487,7 @@ abstract class $CommentAuthorCopyWith<$Res> {
   ) = _$CommentAuthorCopyWithImpl<$Res, CommentAuthor>;
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -531,7 +548,7 @@ abstract class _$$CommentAuthorImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -582,9 +599,11 @@ class __$$CommentAuthorImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CommentAuthorImpl implements _CommentAuthor {
+class _$CommentAuthorImpl
+    with DiagnosticableTreeMixin
+    implements _CommentAuthor {
   const _$CommentAuthorImpl({
-    @JsonKey(name: '_id') required this.id,
+    required this.id,
     required this.firstName,
     required this.lastName,
     @ProfileImageConverter() this.profileImage,
@@ -594,7 +613,6 @@ class _$CommentAuthorImpl implements _CommentAuthor {
       _$$CommentAuthorImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
   final String firstName;
@@ -605,8 +623,19 @@ class _$CommentAuthorImpl implements _CommentAuthor {
   final String? profileImage;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CommentAuthor(id: $id, firstName: $firstName, lastName: $lastName, profileImage: $profileImage)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CommentAuthor'))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('firstName', firstName))
+      ..add(DiagnosticsProperty('lastName', lastName))
+      ..add(DiagnosticsProperty('profileImage', profileImage));
   }
 
   @override
@@ -644,7 +673,7 @@ class _$CommentAuthorImpl implements _CommentAuthor {
 
 abstract class _CommentAuthor implements CommentAuthor {
   const factory _CommentAuthor({
-    @JsonKey(name: '_id') required final String id,
+    required final String id,
     required final String firstName,
     required final String lastName,
     @ProfileImageConverter() final String? profileImage,
@@ -654,7 +683,6 @@ abstract class _CommentAuthor implements CommentAuthor {
       _$CommentAuthorImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
   String get firstName;
@@ -678,9 +706,7 @@ CommentImage _$CommentImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentImage {
-  @JsonKey(name: 'public_id')
   String get publicId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'secure_url')
   String get secureUrl => throw _privateConstructorUsedError;
 
   /// Serializes this CommentImage to a JSON map.
@@ -700,10 +726,7 @@ abstract class $CommentImageCopyWith<$Res> {
     $Res Function(CommentImage) then,
   ) = _$CommentImageCopyWithImpl<$Res, CommentImage>;
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -746,10 +769,7 @@ abstract class _$$CommentImageImplCopyWith<$Res>
   ) = __$$CommentImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -783,25 +803,29 @@ class __$$CommentImageImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$CommentImageImpl implements _CommentImage {
-  const _$CommentImageImpl({
-    @JsonKey(name: 'public_id') required this.publicId,
-    @JsonKey(name: 'secure_url') required this.secureUrl,
-  });
+class _$CommentImageImpl with DiagnosticableTreeMixin implements _CommentImage {
+  const _$CommentImageImpl({required this.publicId, required this.secureUrl});
 
   factory _$CommentImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentImageImplFromJson(json);
 
   @override
-  @JsonKey(name: 'public_id')
   final String publicId;
   @override
-  @JsonKey(name: 'secure_url')
   final String secureUrl;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CommentImage(publicId: $publicId, secureUrl: $secureUrl)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CommentImage'))
+      ..add(DiagnosticsProperty('publicId', publicId))
+      ..add(DiagnosticsProperty('secureUrl', secureUrl));
   }
 
   @override
@@ -835,18 +859,16 @@ class _$CommentImageImpl implements _CommentImage {
 
 abstract class _CommentImage implements CommentImage {
   const factory _CommentImage({
-    @JsonKey(name: 'public_id') required final String publicId,
-    @JsonKey(name: 'secure_url') required final String secureUrl,
+    required final String publicId,
+    required final String secureUrl,
   }) = _$CommentImageImpl;
 
   factory _CommentImage.fromJson(Map<String, dynamic> json) =
       _$CommentImageImpl.fromJson;
 
   @override
-  @JsonKey(name: 'public_id')
   String get publicId;
   @override
-  @JsonKey(name: 'secure_url')
   String get secureUrl;
 
   /// Create a copy of CommentImage

@@ -11,6 +11,44 @@ class AuthUiColors {
   static const Color hint = Color(0xFFF8DFCB);
 }
 
+void showAuthSnackBar(
+  BuildContext context,
+  String message, {
+  bool isError = true,
+}) {
+  ScaffoldMessenger.of(context).clearSnackBars();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(
+            isError ? Icons.error_outline : Icons.check_circle_outline,
+            color: Colors.white,
+            size: 20,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              message,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: isError ? const Color(0xFFD32F2F) : AuthUiColors.brand,
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      elevation: 6,
+      duration: const Duration(seconds: 4),
+    ),
+  );
+}
+
 class AuthMainTitle extends StatelessWidget {
   const AuthMainTitle(this.text, {this.center = true, super.key});
 
@@ -166,12 +204,17 @@ class AuthOutlinePillButton extends StatelessWidget {
           ),
           textStyle: AppTextStyles.condensedSectionTitle.copyWith(fontSize: 20),
         ),
-        onPressed: onPressed,
+        onPressed: isLoading ? null : onPressed,
         child: isLoading
             ? const SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AuthUiColors.brandSoft,
+                  ),
+                ),
               )
             : Text(label),
       ),
@@ -183,14 +226,15 @@ class AuthFilledPillButton extends StatelessWidget {
   const AuthFilledPillButton({
     required this.label,
     required this.onPressed,
+    this.isLoading = false,
     this.width = 238,
     this.height = 40,
     super.key,
-    required bool isLoading,
   });
 
   final String label;
   final VoidCallback? onPressed;
+  final bool isLoading;
   final double width;
   final double height;
 
@@ -209,8 +253,17 @@ class AuthFilledPillButton extends StatelessWidget {
           ),
           textStyle: AppTextStyles.condensedSectionTitle.copyWith(fontSize: 18),
         ),
-        onPressed: onPressed,
-        child: Text(label),
+        onPressed: isLoading ? null : onPressed,
+        child: isLoading
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+              )
+            : Text(label),
       ),
     );
   }

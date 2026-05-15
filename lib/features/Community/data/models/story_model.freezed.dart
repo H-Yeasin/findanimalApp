@@ -21,7 +21,6 @@ StoryModel _$StoryModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$StoryModel {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   StoryUser get user => throw _privateConstructorUsedError;
   StoryMedia get media => throw _privateConstructorUsedError;
@@ -50,7 +49,7 @@ abstract class $StoryModelCopyWith<$Res> {
   ) = _$StoryModelCopyWithImpl<$Res, StoryModel>;
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     StoryUser user,
     StoryMedia media,
     String? caption,
@@ -175,7 +174,7 @@ abstract class _$$StoryModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     StoryUser user,
     StoryMedia media,
     String? caption,
@@ -265,7 +264,7 @@ class __$$StoryModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StoryModelImpl implements _StoryModel {
   const _$StoryModelImpl({
-    @JsonKey(name: '_id') required this.id,
+    required this.id,
     required this.user,
     required this.media,
     this.caption,
@@ -280,7 +279,6 @@ class _$StoryModelImpl implements _StoryModel {
       _$$StoryModelImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
   final StoryUser user;
@@ -356,7 +354,7 @@ class _$StoryModelImpl implements _StoryModel {
 
 abstract class _StoryModel implements StoryModel {
   const factory _StoryModel({
-    @JsonKey(name: '_id') required final String id,
+    required final String id,
     required final StoryUser user,
     required final StoryMedia media,
     final String? caption,
@@ -371,7 +369,6 @@ abstract class _StoryModel implements StoryModel {
       _$StoryModelImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
   StoryUser get user;
@@ -404,7 +401,6 @@ StoryUser _$StoryUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$StoryUser {
-  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -426,7 +422,7 @@ abstract class $StoryUserCopyWith<$Res> {
       _$StoryUserCopyWithImpl<$Res, StoryUser>;
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     StoryProfileImage? profileImage,
@@ -503,7 +499,7 @@ abstract class _$$StoryUserImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: '_id') String id,
+    String id,
     String firstName,
     String lastName,
     StoryProfileImage? profileImage,
@@ -559,7 +555,7 @@ class __$$StoryUserImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StoryUserImpl implements _StoryUser {
   const _$StoryUserImpl({
-    @JsonKey(name: '_id') required this.id,
+    required this.id,
     required this.firstName,
     required this.lastName,
     this.profileImage,
@@ -569,7 +565,6 @@ class _$StoryUserImpl implements _StoryUser {
       _$$StoryUserImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
   final String id;
   @override
   final String firstName;
@@ -618,7 +613,7 @@ class _$StoryUserImpl implements _StoryUser {
 
 abstract class _StoryUser implements StoryUser {
   const factory _StoryUser({
-    @JsonKey(name: '_id') required final String id,
+    required final String id,
     required final String firstName,
     required final String lastName,
     final StoryProfileImage? profileImage,
@@ -628,7 +623,6 @@ abstract class _StoryUser implements StoryUser {
       _$StoryUserImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
   String get id;
   @override
   String get firstName;
@@ -651,9 +645,7 @@ StoryProfileImage _$StoryProfileImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$StoryProfileImage {
-  @JsonKey(name: 'public_id')
   String get publicId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'secure_url')
   String get secureUrl => throw _privateConstructorUsedError;
 
   /// Serializes this StoryProfileImage to a JSON map.
@@ -673,10 +665,7 @@ abstract class $StoryProfileImageCopyWith<$Res> {
     $Res Function(StoryProfileImage) then,
   ) = _$StoryProfileImageCopyWithImpl<$Res, StoryProfileImage>;
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -719,10 +708,7 @@ abstract class _$$StoryProfileImageImplCopyWith<$Res>
   ) = __$$StoryProfileImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    @JsonKey(name: 'public_id') String publicId,
-    @JsonKey(name: 'secure_url') String secureUrl,
-  });
+  $Res call({String publicId, String secureUrl});
 }
 
 /// @nodoc
@@ -758,18 +744,16 @@ class __$$StoryProfileImageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$StoryProfileImageImpl implements _StoryProfileImage {
   const _$StoryProfileImageImpl({
-    @JsonKey(name: 'public_id') required this.publicId,
-    @JsonKey(name: 'secure_url') required this.secureUrl,
+    required this.publicId,
+    required this.secureUrl,
   });
 
   factory _$StoryProfileImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$StoryProfileImageImplFromJson(json);
 
   @override
-  @JsonKey(name: 'public_id')
   final String publicId;
   @override
-  @JsonKey(name: 'secure_url')
   final String secureUrl;
 
   @override
@@ -811,18 +795,16 @@ class _$StoryProfileImageImpl implements _StoryProfileImage {
 
 abstract class _StoryProfileImage implements StoryProfileImage {
   const factory _StoryProfileImage({
-    @JsonKey(name: 'public_id') required final String publicId,
-    @JsonKey(name: 'secure_url') required final String secureUrl,
+    required final String publicId,
+    required final String secureUrl,
   }) = _$StoryProfileImageImpl;
 
   factory _StoryProfileImage.fromJson(Map<String, dynamic> json) =
       _$StoryProfileImageImpl.fromJson;
 
   @override
-  @JsonKey(name: 'public_id')
   String get publicId;
   @override
-  @JsonKey(name: 'secure_url')
   String get secureUrl;
 
   /// Create a copy of StoryProfileImage

@@ -41,55 +41,52 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
     }
 
     try {
-      await ref
-          .read(authSessionProvider.notifier)
-          .login(
+      await ref.read(authSessionProvider.notifier).login(
             email: _emailController.text.trim(),
             password: _passwordController.text,
           );
+      // Navigation is now handled by ref.listen in the build method
+    } catch (error) {
+      if (!mounted) {
+        return;
+      }
+      showAuthSnackBar(context, authErrorMessage(error, l10n), isError: true);
+    }
+  }
 
-      if (mounted) {
-        final user = ref.read(currentUserProvider);
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(authSessionProvider, (previous, next) {
+      next.whenData((session) {
+        if (session.status == AuthStatus.authenticated && mounted) {
+          final l10n = AppLocalizations.of(context);
+          final user = session.user;
 
-        if (widget.isPartner && user?.role != 'partners') {
-          await ref.read(authSessionProvider.notifier).logout();
-          if (mounted) {
+          if (widget.isPartner && user?.role != 'partners') {
+            ref.read(authSessionProvider.notifier).logout();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(l10n.unauthorizedPartnerLogin),
                 backgroundColor: Colors.red,
               ),
             );
+            return;
           }
-          return;
-        }
 
-        if (user?.role == 'partners') {
-          context.go(RouteNames.partnerAccess);
-        } else {
-          context.go(RouteNames.myProfile);
+          if (user?.role == 'partners') {
+            context.go(RouteNames.partnerAccess);
+          } else {
+            context.go(RouteNames.myProfile);
+          }
         }
-      }
-    } catch (error) {
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(authErrorMessage(error, l10n)),
-          backgroundColor: Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    }
-  }
+      });
+    });
 
-  @override
-  Widget build(BuildContext context) {
     final isLoading = ref.watch(authSessionProvider).isLoading;
     final l10n = AppLocalizations.of(context);
 
     return AuthScreenScaffold(
+      isLoading: isLoading,
       onBack: () {
         if (context.canPop()) {
           context.pop();

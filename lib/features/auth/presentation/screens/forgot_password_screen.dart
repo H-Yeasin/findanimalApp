@@ -53,18 +53,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.otpSent)));
+      showAuthSnackBar(context, l10n.otpSent, isError: false);
 
       context.go(
         '${RouteNames.verifyOtp}?mode=reset&email=${Uri.encodeComponent(email)}',
       );
     } catch (error) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
+      showAuthSnackBar(context, authErrorMessage(error, l10n));
     }
   }
 
@@ -74,6 +70,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final l10n = AppLocalizations.of(context);
 
     return AuthScreenScaffold(
+      isLoading: isLoading,
       onBack: () {
         if (context.canPop()) {
           context.pop();

@@ -62,33 +62,28 @@ class _AuthRegisterScreenState extends ConsumerState<AuthRegisterScreen> {
 
     try {
       await ref.read(authActionProvider.notifier).registerUser(request);
-
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.registerSuccess)));
-
+      
+      if (!mounted) return;
+      
+      final l10nSuccess = AppLocalizations.of(context);
+      showAuthSnackBar(context, l10nSuccess.registerSuccess, isError: false);
       context.go(RouteNames.login);
     } catch (error) {
       if (!mounted) {
         return;
       }
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(authErrorMessage(error, l10n))));
+      showAuthSnackBar(context, authErrorMessage(error, l10n));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+
     final isLoading = ref.watch(authActionProvider).isLoading;
     final l10n = AppLocalizations.of(context);
 
     return AuthScreenScaffold(
+      isLoading: isLoading,
       onBack: () {
         if (context.canPop()) {
           context.pop();

@@ -6,7 +6,7 @@ part of 'community_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$localStoriesHash() => r'a3367e848d044ddcf48fd739ea18cff4ed82a974';
+String _$localStoriesHash() => r'5a8007d550c8b5a34548bcb7fabe39083eb91be4';
 
 /// See also [localStories].
 @ProviderFor(localStories)
@@ -24,7 +24,7 @@ final localStoriesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LocalStoriesRef = AutoDisposeFutureProviderRef<List<StoryModel>>;
-String _$localChatHash() => r'09f8c050a614aaeef4b0a350be7797d82046d695';
+String _$localChatHash() => r'361046a6be2a700d5e4772dd966e22d7748f7c98';
 
 /// See also [localChat].
 @ProviderFor(localChat)
@@ -41,7 +41,7 @@ final localChatProvider = AutoDisposeFutureProvider<List<ChatModel>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LocalChatRef = AutoDisposeFutureProviderRef<List<ChatModel>>;
-String _$communityActionHash() => r'129f3ac18dc83c1c5f259e6628be677e7ee2b390';
+String _$communityActionHash() => r'b92df9e72c182a3ee0aab37452b2ee3ffa40355f';
 
 /// See also [CommunityAction].
 @ProviderFor(CommunityAction)
