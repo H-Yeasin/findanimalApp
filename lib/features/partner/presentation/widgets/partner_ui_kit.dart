@@ -428,9 +428,9 @@ class PartnerInputField extends StatelessWidget {
       maxLines: maxLines,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: AppTextStyles.sectionTitle.copyWith(
+        hintStyle: AppTextStyles.body.copyWith(
           color: PartnerUiColors.brand.withValues(alpha: 0.5),
-          fontSize: 32 / 2,
+          fontSize: 16,
         ),
         filled: true,
         fillColor: PartnerUiColors.panel,
@@ -447,9 +447,9 @@ class PartnerInputField extends StatelessWidget {
           borderSide: const BorderSide(color: PartnerUiColors.brand, width: 2),
         ),
       ),
-      style: AppTextStyles.sectionTitle.copyWith(
+      style: AppTextStyles.body.copyWith(
         color: PartnerUiColors.brand,
-        fontSize: 32 / 2,
+        fontSize: 16,
       ),
     );
   }

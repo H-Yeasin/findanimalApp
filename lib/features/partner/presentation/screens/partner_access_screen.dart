@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 import '../../../../core/routing/route_names.dart';
@@ -29,7 +30,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
       builder: (sheetContext) {
         return SafeArea(
           child: Container(
-            margin: const EdgeInsets.fromLTRB(18, 0, 18, 20),
+            margin: const EdgeInsets.fromLTRB(18, 0, 18, 50),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: PartnerUiColors.panel,
@@ -41,14 +42,13 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
               children: [
                 Text(
                   l10n.myAdsTitle,
-                  style: AppTextStyles.body.copyWith(
+                  style: AppTextStyles.condensedSectionTitle.copyWith(
                     color: PartnerUiColors.brand,
-                    fontFamily: 'EricaOne',
                     fontSize: 22,
                   ),
                 ),
                 const SizedBox(height: 8),
-                PartnerCardActionRow(
+                _MyAdsDrawerActionCard(
                   icon: Icons.location_on_rounded,
                   label: l10n.collectionPoints,
                   onTap: () {
@@ -57,7 +57,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
                   },
                 ),
                 const Divider(color: PartnerUiColors.brand),
-                PartnerCardActionRow(
+                _MyAdsDrawerActionCard(
                   icon: Icons.flag_outlined,
                   label: l10n.categoryMissions,
                   onTap: () {
@@ -115,7 +115,7 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
           l10n.welcomeName(user.firstName),
           textAlign: TextAlign.center,
           style: AppTextStyles.body.copyWith(
-            color: Color(0xFF1F2D58),
+            color: AppColors.brandSecondary,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -182,6 +182,48 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _MyAdsDrawerActionCard extends StatelessWidget {
+  const _MyAdsDrawerActionCard({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: SizedBox(
+        height: 66,
+        child: Row(
+          children: [
+            Icon(icon, color: PartnerUiColors.brand, size: 28),
+            const SizedBox(width: 18),
+            Expanded(
+              child: Text(
+                label,
+                style: AppTextStyles.condensedSectionTitle.copyWith(
+                  color: PartnerUiColors.brand,
+                  fontSize: 38 / 2,
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: PartnerUiColors.brand,
+              size: 36,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -151,13 +151,15 @@ class _PartnerMissionsScreenState extends ConsumerState<PartnerMissionsScreen> {
 
     return PartnerScreenScaffold(
       bottomNavIndex: 0,
+      header: const SafeArea(
+        bottom: false,
+        child: AppTopBar(showUserAvatar: false),
+      ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(22, 20, 22, 26),
+        padding: const EdgeInsets.fromLTRB(22, 14, 22, 26),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AppTopBar(showUserAvatar: false),
-            const SizedBox(height: 14),
             PartnerPageTitle(l10n.myLocalMissions),
             const SizedBox(height: 16),
             PartnerMissionCreateCard(
