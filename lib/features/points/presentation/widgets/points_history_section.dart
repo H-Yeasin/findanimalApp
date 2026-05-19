@@ -35,27 +35,23 @@ class PointsHistorySection extends StatelessWidget {
                 ),
               ),
             ),
-            if (onTap != null)
-              IconButton(
-                onPressed: onTap,
-                icon: const Icon(
-                  Icons.open_in_new,
-                  color: AppColors.brandPrimary,
-                  size: 20,
-                ),
-                visualDensity: VisualDensity.compact,
-                splashRadius: 20,
+            IconButton(
+              onPressed: onTap,
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.brandPrimary,
+                size: 20,
               ),
+              visualDensity: VisualDensity.compact,
+              splashRadius: 20,
+            ),
           ],
         ),
         const SizedBox(height: 15),
         if (history.isEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: Text(
-              emptyMessage,
-              style: AppTextStyles.body,
-            ),
+            child: Text(emptyMessage, style: AppTextStyles.body),
           )
         else
           ...history.map((item) => PointsHistoryTile(item: item)),

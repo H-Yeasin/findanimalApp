@@ -14,15 +14,16 @@ class ShopHeroSection extends StatelessWidget {
         Text(
           l10n.shopHeroTitle,
           textAlign: TextAlign.center,
-          style: AppTextStyles.heading.copyWith(
-            fontSize: 36,
-          ),
+          style: AppTextStyles.heading.copyWith(fontSize: 32),
         ),
         const SizedBox(height: 12),
         Text(
           l10n.shopHeroSubtitle,
           textAlign: TextAlign.center,
-          style: AppTextStyles.sectionTitle,
+          style: AppTextStyles.caption.copyWith(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 8),
         Text(

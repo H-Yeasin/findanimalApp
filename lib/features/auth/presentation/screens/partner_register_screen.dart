@@ -37,9 +37,6 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
   XFile? _selectedLogo;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
-  double? _latitude;
-  double? _longitude;
-  String? _locationAddress;
 
   @override
   void dispose() {
@@ -67,20 +64,20 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     setState(() => _selectedLogo = image);
   }
 
-  Future<void> _pickLocation() async {
-    final result = await context.push<Map<String, dynamic>>(
-      RouteNames.partnerRegisterLocationPicker,
-    );
-    if (result == null || !mounted) return;
+  // Future<void> _pickLocation() async {
+  //   final result = await context.push<Map<String, dynamic>>(
+  //     RouteNames.partnerRegisterLocationPicker,
+  //   );
+  //   if (result == null || !mounted) return;
 
-    final lat = result['lat'];
-    final lng = result['lng'];
-    setState(() {
-      _latitude = lat is num ? lat.toDouble() : double.tryParse('$lat');
-      _longitude = lng is num ? lng.toDouble() : double.tryParse('$lng');
-      _locationAddress = result['address'] as String?;
-    });
-  }
+  //   final lat = result['lat'];
+  //   final lng = result['lng'];
+  //   setState(() {
+  //     _latitude = lat is num ? lat.toDouble() : double.tryParse('$lat');
+  //     _longitude = lng is num ? lng.toDouble() : double.tryParse('$lng');
+  //     _locationAddress = result['address'] as String?;
+  //   });
+  // }
 
   Future<void> _submit() async {
     final l10n = AppLocalizations.of(context);
@@ -96,13 +93,6 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
       return;
     }
 
-    if (_latitude == null || _longitude == null || _locationAddress == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.fieldRequired(l10n.text('fieldLocation')))),
-      );
-      return;
-    }
-
     final request = RegisterPartnerRequestModel(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
@@ -113,9 +103,6 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
       postalCode: _postalCodeController.text.trim(),
       country: _countryController.text.trim(),
       company: _companyController.text.trim(),
-      latitude: _latitude!,
-      longitude: _longitude!,
-      locationAddress: _locationAddress!,
       logoPath: _selectedLogo!.path,
       password: _passwordController.text,
     );
@@ -258,45 +245,45 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
     );
   }
 
-  Widget _locationPicker(AppLocalizations l10n) {
-    final hasLocation = _latitude != null && _longitude != null;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AuthFieldLabel(l10n.text('selectedLocationLabel')),
-        const SizedBox(height: 8),
-        InkWell(
-          borderRadius: BorderRadius.circular(22),
-          onTap: _pickLocation,
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 54),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: BoxDecoration(
-              color: AuthUiColors.brand,
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.location_on, color: Colors.white),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    hasLocation
-                        ? _locationAddress ?? l10n.text('selectedLocationLabel')
-                        : l10n.text('chooseCompanyLocation'),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.body.copyWith(color: Colors.white),
-                  ),
-                ),
-                const Icon(Icons.map_outlined, color: Colors.white),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _locationPicker(AppLocalizations l10n) {
+  //   final hasLocation = _latitude != null && _longitude != null;
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       AuthFieldLabel(l10n.text('selectedLocationLabel')),
+  //       const SizedBox(height: 8),
+  //       InkWell(
+  //         borderRadius: BorderRadius.circular(22),
+  //         onTap: _pickLocation,
+  //         child: Container(
+  //           constraints: const BoxConstraints(minHeight: 54),
+  //           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  //           decoration: BoxDecoration(
+  //             color: AuthUiColors.brand,
+  //             borderRadius: BorderRadius.circular(22),
+  //           ),
+  //           child: Row(
+  //             children: [
+  //               const Icon(Icons.location_on, color: Colors.white),
+  //               const SizedBox(width: 10),
+  //               Expanded(
+  //                 child: Text(
+  //                   hasLocation
+  //                       ? _locationAddress ?? l10n.text('selectedLocationLabel')
+  //                       : l10n.text('chooseCompanyLocation'),
+  //                   maxLines: 2,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: AppTextStyles.body.copyWith(color: Colors.white),
+  //                 ),
+  //               ),
+  //               const Icon(Icons.map_outlined, color: Colors.white),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -370,7 +357,7 @@ class _PartnerRegisterScreenState extends ConsumerState<PartnerRegisterScreen> {
                 validator: (v) => _required(v, l10n.country),
               ),
               const SizedBox(height: 16),
-              _locationPicker(l10n),
+              // _locationPicker(l10n),
               const SizedBox(height: 22),
               _sectionTitle(l10n.text('partnerContactDetails')),
               Row(

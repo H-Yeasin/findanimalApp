@@ -3,9 +3,9 @@ class Env {
 
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://api.hesteka.com/api/v1',
+    // defaultValue: 'https://api.hesteka.com/api/v1',
     // Android emulator uses 10.0.2.2 to reach the host machine.
-    // defaultValue: 'http://10.0.2.2:5000/api/v1',
+    defaultValue: 'http://10.0.2.2:5000/api/v1',
   );
 
   static const String googleMapsApiKey = String.fromEnvironment(

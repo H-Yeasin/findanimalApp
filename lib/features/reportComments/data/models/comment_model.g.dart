@@ -8,7 +8,7 @@ part of 'comment_model.dart';
 
 _$CommentModelImpl _$$CommentModelImplFromJson(Map<String, dynamic> json) =>
     _$CommentModelImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String? ?? json['id'] as String,
       content: json['content'] as String,
       author: CommentAuthor.fromJson(json['author'] as Map<String, dynamic>),
       report: json['report'] as String,
@@ -29,7 +29,7 @@ _$CommentModelImpl _$$CommentModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$CommentModelImplToJson(_$CommentModelImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'content': instance.content,
       'author': instance.author,
       'report': instance.report,
@@ -44,7 +44,7 @@ Map<String, dynamic> _$$CommentModelImplToJson(_$CommentModelImpl instance) =>
 
 _$CommentAuthorImpl _$$CommentAuthorImplFromJson(Map<String, dynamic> json) =>
     _$CommentAuthorImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String? ?? json['id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: const ProfileImageConverter().fromJson(
@@ -55,7 +55,7 @@ _$CommentAuthorImpl _$$CommentAuthorImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$CommentAuthorImplToJson(
   _$CommentAuthorImpl instance,
 ) => <String, dynamic>{
-  'id': instance.id,
+  '_id': instance.id,
   'firstName': instance.firstName,
   'lastName': instance.lastName,
   'profileImage': const ProfileImageConverter().toJson(instance.profileImage),
@@ -63,12 +63,12 @@ Map<String, dynamic> _$$CommentAuthorImplToJson(
 
 _$CommentImageImpl _$$CommentImageImplFromJson(Map<String, dynamic> json) =>
     _$CommentImageImpl(
-      publicId: json['publicId'] as String,
-      secureUrl: json['secureUrl'] as String,
+      publicId: json['public_id'] as String? ?? json['publicId'] as String,
+      secureUrl: json['secure_url'] as String? ?? json['secureUrl'] as String,
     );
 
 Map<String, dynamic> _$$CommentImageImplToJson(_$CommentImageImpl instance) =>
     <String, dynamic>{
-      'publicId': instance.publicId,
-      'secureUrl': instance.secureUrl,
+      'public_id': instance.publicId,
+      'secure_url': instance.secureUrl,
     };

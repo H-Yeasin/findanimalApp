@@ -117,7 +117,6 @@ const Map<String, String> appEn = {
       'Credential incorrect. Try with correct credential or create an account.',
   'accountInactive':
       'Your account is inactive or blocked. Please contact support.',
-  'memberSince': 'Member since March 2026',
   'myProfileMyAnimals': 'My profile - My animals',
   'myReportsLabel': 'My reports',
   'donationsMade': 'Support given',
@@ -682,6 +681,10 @@ const Map<String, String> appEn = {
   'pointsReasonActivity': 'Points activity',
   'pointsReasonRedeemedReward': 'Redeemed reward: {title}',
   'pointsReasonRefundCancelled': 'Refund for cancelled redemption',
+  'pointsHistory': 'History',
+  'pointsUtilized': 'Points Used',
+  'pointsEarnedHistoryTitle': 'Earned History',
+  'pointsTotalUtilized': 'Total points used',
   'privacyPolicyTitle': 'PRIVACY POLICY',
   'privacyPolicyIntro':
       'We attach great importance to the protection of your personal data. When you use our application, certain information may be collected in order to enable it to function properly and improve your experience.\n\nWe are committed to processing this data in a responsible, transparent and secure manner, in accordance with the laws in force, in particular the General Data Protection Regulation (GDPR) applicable in the European Union.',

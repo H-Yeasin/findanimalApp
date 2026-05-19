@@ -7,7 +7,8 @@ part 'comment_model.g.dart';
 @freezed
 class CommentModel with _$CommentModel {
   const factory CommentModel({
-    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: '_id')
+    required String id,
     required String content,
     required CommentAuthor author,
     required String report,
@@ -33,7 +34,7 @@ class ProfileImageConverter implements JsonConverter<String?, Object?> {
       if (json == null) return null;
       if (json is String) return json;
       if (json is Map) {
-        final secureUrl = json['secure_url'];
+        final secureUrl = json['secure_url'] ?? json['secureUrl'];
         if (secureUrl is String) return secureUrl;
       }
       return null;
@@ -54,7 +55,8 @@ class ProfileImageConverter implements JsonConverter<String?, Object?> {
 @freezed
 class CommentAuthor with _$CommentAuthor {
   const factory CommentAuthor({
-    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: '_id')
+    required String id,
     required String firstName,
     required String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -67,8 +69,10 @@ class CommentAuthor with _$CommentAuthor {
 @freezed
 class CommentImage with _$CommentImage {
   const factory CommentImage({
-    @JsonKey(name: 'public_id') required String publicId,
-    @JsonKey(name: 'secure_url') required String secureUrl,
+    @JsonKey(name: 'public_id')
+    required String publicId,
+    @JsonKey(name: 'secure_url')
+    required String secureUrl,
   }) = _CommentImage;
 
   factory CommentImage.fromJson(Map<String, dynamic> json) =>

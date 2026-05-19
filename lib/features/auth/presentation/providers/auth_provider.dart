@@ -129,6 +129,23 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSession> {
     );
   }
 
+  Future<void> updateCurrentUser(AuthUserModel user) async {
+    final currentSession = state.valueOrNull;
+    if (currentSession == null) {
+      return;
+    }
+
+    await ref.read(secureStorageProvider).writeCurrentUser(jsonEncode(user.toJson()));
+    state = AsyncData(
+      AuthSession(
+        status: currentSession.status,
+        accessToken: currentSession.accessToken,
+        refreshToken: currentSession.refreshToken,
+        user: user,
+      ),
+    );
+  }
+
   Future<void> logout() async {
     final session = state.valueOrNull;
     if (session == null || session.status == AuthStatus.unauthenticated) {

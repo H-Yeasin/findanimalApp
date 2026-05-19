@@ -1,6 +1,7 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'presentation/widgets/contact_filter_panel.dart';
 import '../../core/localization/app_localizations.dart';
@@ -53,7 +54,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                   AppTopBar(title: l10n.ourPartners),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       l10n.partnersBody,
                       textAlign: TextAlign.center,
@@ -96,6 +97,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                             child: Text(
                               l10n.noReportsFound,
                               style: AppTextStyles.body.copyWith(
+                                color: AppColors.brandSecondary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

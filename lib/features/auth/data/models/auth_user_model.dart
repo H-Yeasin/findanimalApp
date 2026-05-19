@@ -23,6 +23,30 @@ class AuthUserModel {
 
   String get fullName => '$firstName $lastName'.trim();
 
+  AuthUserModel copyWith({
+    String? id,
+    String? email,
+    String? firstName,
+    String? lastName,
+    String? role,
+    String? company,
+    String? profileImage,
+    String? phone,
+    String? address,
+  }) {
+    return AuthUserModel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      role: role ?? this.role,
+      company: company ?? this.company,
+      profileImage: profileImage ?? this.profileImage,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+    );
+  }
+
   factory AuthUserModel.fromJson(Map<String, dynamic> json) {
     String? imageUrl;
     if (json['profileImage'] != null && json['profileImage'] is Map) {

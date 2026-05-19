@@ -311,12 +311,9 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
             ),
             Text(
               title,
-              style: AppTextStyles.body.copyWith(
-                fontSize: 36,
-                fontWeight: FontWeight.w900,
+              style: AppTextStyles.heading.copyWith(
+                fontSize: 30,
                 color: Colors.white,
-                fontFamily: 'EricaOne',
-                letterSpacing: 2.0,
               ),
             ),
           ],

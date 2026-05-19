@@ -32,9 +32,10 @@ class ProfileModel with _$ProfileModel {
 
 @freezed
 class ProfileImage with _$ProfileImage {
-  // ignore: non_constant_identifier_names
-  const factory ProfileImage({String? public_id, String? secure_url}) =
-      _ProfileImage;
+  const factory ProfileImage({
+    @JsonKey(name: 'public_id') String? public_id,
+    @JsonKey(name: 'secure_url') String? secure_url,
+  }) = _ProfileImage;
 
   factory ProfileImage.fromJson(Map<String, dynamic> json) =>
       _$ProfileImageFromJson(json);

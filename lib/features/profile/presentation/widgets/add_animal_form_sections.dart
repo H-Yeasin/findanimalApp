@@ -217,11 +217,8 @@ class _AddAnimalTextField extends StatelessWidget {
       controller: controller,
       maxLines: maxLines,
       decoration: buildAddAnimalInputDecoration(hint),
-      validator:
-          (value) => Validators.required(
-            value,
-            requiredMessage: requiredMessage,
-          ),
+      validator: (value) =>
+          Validators.required(value, requiredMessage: requiredMessage),
     );
   }
 }
@@ -243,7 +240,8 @@ class _AddAnimalDropdownField extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       initialValue: value,
-      decoration: buildAddAnimalInputDecoration(hint),
+      decoration: buildAddAnimalInputDecoration(),
+      hint: Text(hint, style: _addAnimalHintStyle),
       dropdownColor: PartnerUiColors.panel,
       icon: const Icon(
         Icons.keyboard_arrow_down_rounded,
@@ -253,20 +251,18 @@ class _AddAnimalDropdownField extends StatelessWidget {
         color: PartnerUiColors.brand,
         fontWeight: FontWeight.w600,
       ),
-      items:
-          items
-              .map(
-                (item) => DropdownMenuItem<String>(
-                  value: item.value,
-                  child: Text(item.label),
-                ),
-              )
-              .toList(),
-      validator:
-          (selectedValue) => Validators.required(
-            selectedValue,
-            requiredMessage: AppLocalizations.of(context).addAnimalFieldRequired,
-          ),
+      items: items
+          .map(
+            (item) => DropdownMenuItem<String>(
+              value: item.value,
+              child: Text(item.label),
+            ),
+          )
+          .toList(),
+      validator: (selectedValue) => Validators.required(
+        selectedValue,
+        requiredMessage: AppLocalizations.of(context).addAnimalFieldRequired,
+      ),
       onChanged: onChanged,
     );
   }
@@ -299,28 +295,27 @@ class _AddAnimalPhotoPicker extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child:
-                  selectedImage != null
-                      ? Image.file(
-                        File(selectedImage!.path),
-                        height: 130,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) => _buildImageFallback(
-                              l10n.addAnimalSelectedImagePreviewUnavailable,
-                            ),
-                      )
-                      : Image.network(
-                        initialImageUrl!,
-                        height: 130,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) => _buildImageFallback(
-                              l10n.addAnimalCurrentImageUnavailable,
-                            ),
-                      ),
+              child: selectedImage != null
+                  ? Image.file(
+                      File(selectedImage!.path),
+                      height: 130,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          _buildImageFallback(
+                            l10n.addAnimalSelectedImagePreviewUnavailable,
+                          ),
+                    )
+                  : Image.network(
+                      initialImageUrl!,
+                      height: 130,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) =>
+                          _buildImageFallback(
+                            l10n.addAnimalCurrentImageUnavailable,
+                          ),
+                    ),
             ),
           ),
         InkWell(
@@ -339,8 +334,8 @@ class _AddAnimalPhotoPicker extends StatelessWidget {
                   child: Text(
                     selectedImage == null
                         ? isEditMode
-                            ? l10n.addAnimalSelectNewImageOptional
-                            : l10n.addAnimalSelectImage
+                              ? l10n.addAnimalSelectNewImageOptional
+                              : l10n.addAnimalSelectImage
                         : selectedImage!.name,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.body.copyWith(
@@ -395,26 +390,25 @@ class _AddAnimalSubmitButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(22),
           ),
         ),
-        child:
-            isSubmitting
-                ? const SizedBox(
-                  width: 18,
-                  height: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
-                )
-                : Text(
-                  isEditMode
-                      ? AppLocalizations.of(context).addAnimalUpdateButton
-                      : AppLocalizations.of(context).addAnimalCreateButton,
-                  style: AppTextStyles.body.copyWith(
-                    color: AppColors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+        child: isSubmitting
+            ? const SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
+              )
+            : Text(
+                isEditMode
+                    ? AppLocalizations.of(context).addAnimalUpdateButton
+                    : AppLocalizations.of(context).addAnimalCreateButton,
+                style: AppTextStyles.body.copyWith(
+                  color: AppColors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
       ),
     );
   }
@@ -427,11 +421,12 @@ class _AddAnimalDropdownOption {
   final String label;
 }
 
-InputDecoration buildAddAnimalInputDecoration(String hint) {
+InputDecoration buildAddAnimalInputDecoration([String? hint]) {
   return InputDecoration(
     hintText: hint,
+    hintStyle: _addAnimalHintStyle,
     filled: true,
-    fillColor: PartnerUiColors.panel,
+    fillColor: PartnerUiColors.lightText,
     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
@@ -447,3 +442,6 @@ InputDecoration buildAddAnimalInputDecoration(String hint) {
     ),
   );
 }
+
+TextStyle get _addAnimalHintStyle =>
+    AppTextStyles.body.copyWith(color: AppColors.red);

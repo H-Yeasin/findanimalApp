@@ -11,9 +11,9 @@ class RegisterPartnerRequestModel {
     required this.postalCode,
     required this.country,
     required this.company,
-    required this.latitude,
-    required this.longitude,
-    required this.locationAddress,
+    this.latitude,
+    this.longitude,
+    this.locationAddress,
     required this.logoPath,
     required this.password,
   });
@@ -27,14 +27,14 @@ class RegisterPartnerRequestModel {
   final String postalCode;
   final String country;
   final String company;
-  final double latitude;
-  final double longitude;
-  final String locationAddress;
+  final double? latitude;
+  final double? longitude;
+  final String? locationAddress;
   final String logoPath;
   final String password;
 
   Map<String, dynamic> toJson() {
-    return {
+    final data = <String, dynamic>{
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
@@ -44,11 +44,16 @@ class RegisterPartnerRequestModel {
       'postalCode': postalCode,
       'country': country,
       'company': company,
-      'latitude': latitude,
-      'longitude': longitude,
-      'locationAddress': locationAddress,
       'password': password,
     };
+
+    if (latitude != null) data['latitude'] = latitude;
+    if (longitude != null) data['longitude'] = longitude;
+    if (locationAddress != null && locationAddress!.trim().isNotEmpty) {
+      data['locationAddress'] = locationAddress;
+    }
+
+    return data;
   }
 
   Future<FormData> toFormData() async {

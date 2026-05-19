@@ -12,6 +12,7 @@ class ShopCommitmentsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      constraints: BoxConstraints(maxHeight: 400),
       color: const Color(0xFFBA4A22),
       padding: const EdgeInsets.symmetric(vertical: 30),
       child: Column(

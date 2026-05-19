@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/presentation/providers/auth_provider.dart';
@@ -5,6 +6,28 @@ import '../../data/models/profile_model.dart';
 import '../../data/repositories/profile_repository_impl.dart';
 
 part 'profile_providers.g.dart';
+
+final profileImageCacheBusterProvider = StateProvider<int>((ref) => 0);
+
+String? profileImageUrlWithCacheBuster(String? url, int cacheBuster) {
+  if (url == null || url.trim().isEmpty || cacheBuster == 0) {
+    return url;
+  }
+
+  final uri = Uri.tryParse(url);
+  if (uri == null) {
+    return url;
+  }
+
+  return uri
+      .replace(
+        queryParameters: {
+          ...uri.queryParameters,
+          'profileImageVersion': cacheBuster.toString(),
+        },
+      )
+      .toString();
+}
 
 @riverpod
 Future<ProfileModel> myProfile(MyProfileRef ref) async {

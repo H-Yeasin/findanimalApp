@@ -89,7 +89,9 @@ class PartnerProfileScreen extends ConsumerWidget {
                 const Divider(color: PartnerUiColors.brand),
                 PartnerInfoRow(
                   label: l10n.phone.toUpperCase(),
-                  value: profile.phone.isNotEmpty ? profile.phone : l10n.noPhone,
+                  value: profile.phone.isNotEmpty
+                      ? profile.phone
+                      : l10n.noPhone,
                 ),
                 const Divider(color: PartnerUiColors.brand),
                 PartnerInfoRow(

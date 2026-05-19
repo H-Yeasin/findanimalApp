@@ -12,7 +12,7 @@ class PartnerUiColors {
 
   static const Color brand = Color(0xFFBA4A22);
   static const Color background = Color(0xFFEDEDED);
-  static const Color panel = Color(0xFFEFE8D5);
+  static const Color panel = Color(0xFFFBF1D7);
   static const Color grid = Color(0xFFE7DCCB);
   static const Color lightText = Color(0xFFF8F0DC);
 }
@@ -485,19 +485,18 @@ class PartnerPublishButton extends StatelessWidget {
             textStyle: AppTextStyles.button.copyWith(fontSize: 28 / 2),
           ),
           onPressed: onTap,
-          child:
-              textScaler.scale(1) > 1.15
-                  ? Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  )
-                  : FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(label, maxLines: 1),
-                  ),
+          child: textScaler.scale(1) > 1.15
+              ? Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(label, maxLines: 1),
+                ),
         ),
       ),
     );

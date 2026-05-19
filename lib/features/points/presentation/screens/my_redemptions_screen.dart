@@ -36,11 +36,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
         ),
         title: Text(
           l10n.pointsMyRedemptionsTitle,
-          style: AppTextStyles.heading.copyWith(
-            fontSize: 20,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-          ),
+          style: AppTextStyles.heading.copyWith(fontSize: 32),
         ),
         centerTitle: true,
       ),
@@ -53,7 +49,8 @@ class MyRedemptionsScreen extends ConsumerWidget {
                 ),
               )
             : RefreshIndicator(
-                onRefresh: () => ref.read(myRedemptionsProvider.notifier).refresh(),
+                onRefresh: () =>
+                    ref.read(myRedemptionsProvider.notifier).refresh(),
                 child: ListView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: redemptions.length,
@@ -147,9 +144,7 @@ class MyRedemptionsScreen extends ConsumerWidget {
             decoration: BoxDecoration(
               color: _getStatusColor(redemption.status).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: _getStatusColor(redemption.status),
-              ),
+              border: Border.all(color: _getStatusColor(redemption.status)),
             ),
             child: Text(
               l10n.localizeStatus(redemption.status),
@@ -164,8 +159,6 @@ class MyRedemptionsScreen extends ConsumerWidget {
       ),
     );
   }
-
-
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {

@@ -27,6 +27,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(myProfileProvider);
+    final imageCacheBuster = ref.watch(profileImageCacheBusterProvider);
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
@@ -54,7 +55,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   const SizedBox(height: 10),
                   Center(
                     child: UserAvatar(
-                      imageUrl: profile.profileImage?.secure_url,
+                      imageUrl: profileImageUrlWithCacheBuster(
+                        profile.profileImage?.secure_url,
+                        imageCacheBuster,
+                      ),
+                      cacheKey:
+                          '${profile.profileImage?.secure_url ?? ''}:$imageCacheBuster',
                       radius: 68,
                       showBorder: true,
                       borderWidth: 5,
@@ -68,17 +74,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    l10n.memberSince,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.body.copyWith(
-                      color: Color(0xFFBA4A22),
-                      fontFamily: 'EricaOne',
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 38),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
@@ -161,7 +157,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             context.go(RouteNames.root);
                           },
                         ),
-                        const SizedBox(height: 22),
                         InkWell(
                           onTap: () {
                             Share.share(
@@ -170,16 +165,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           },
                           child: Text(
                             l10n.inviteContacts,
-                            style: AppTextStyles.body.copyWith(
+                            style: AppTextStyles.condensedSectionTitle.copyWith(
                               color: Color(0xFFBA4A22),
-                              fontFamily: 'EricaOne',
-                              fontSize: 14,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 15,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 70),
                 ],
               ),
             ),

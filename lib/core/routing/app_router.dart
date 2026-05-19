@@ -25,6 +25,7 @@ import '../../features/partner/presentation/screens/partner_profile_screen.dart'
 import '../../features/profile/presentation/screens/profile_settings_screen.dart';
 import '../../features/points/presentation/screens/points_screen.dart';
 import '../../features/points/presentation/screens/my_redemptions_screen.dart';
+import '../../features/points/presentation/screens/points_earned_history_screen.dart';
 import '../../features/profile/presentation/screens/myprofile_myanimals_screen.dart';
 import '../../features/profile/presentation/screens/add_animal_screen.dart';
 import '../../features/profile/data/models/my_animal_model.dart';
@@ -259,6 +260,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.profilePoints,
         builder: (context, state) => const PointsScreen(),
+      ),
+      GoRoute(
+        path: RouteNames.pointsEarnedHistory,
+        builder: (context, state) => const PointsEarnedHistoryScreen(),
       ),
       GoRoute(
         path: RouteNames.profileMyRedemptions,

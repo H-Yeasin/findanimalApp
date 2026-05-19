@@ -1,6 +1,7 @@
 import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'presentation/widgets/contact_filter_panel.dart';
 import 'data/models/contact_model.dart';
@@ -56,7 +57,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                   AppTopBar(title: l10n.listVeterinarians),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       l10n.veterinariansBody,
                       textAlign: TextAlign.center,
@@ -101,6 +102,7 @@ class _VeterinariansScreenState extends ConsumerState<VeterinariansScreen> {
                             child: Text(
                               l10n.noReportsFound,
                               style: AppTextStyles.body.copyWith(
+                                color: AppColors.brandSecondary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

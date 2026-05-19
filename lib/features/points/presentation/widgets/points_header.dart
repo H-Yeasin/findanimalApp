@@ -5,10 +5,7 @@ import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class PointsHeader extends StatelessWidget {
-  const PointsHeader({
-    required this.totalPoints,
-    super.key,
-  });
+  const PointsHeader({required this.totalPoints, super.key});
 
   final int totalPoints;
 
@@ -30,25 +27,22 @@ class PointsHeader extends StatelessWidget {
         const SizedBox(width: 15),
         Text(
           AppLocalizations.of(context).pointsMyPoints,
-          style: AppTextStyles.heading.copyWith(
-            fontSize: 28,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.2,
-          ),
+          style: AppTextStyles.heading.copyWith(fontSize: 32),
         ),
         const SizedBox(width: 15),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            color: AppColors.brandPrimary,
+            borderRadius: BorderRadius.circular(25),
             border: Border.all(color: AppColors.brandPrimary, width: 2),
           ),
           child: Text(
             '$totalPoints',
-            style: AppTextStyles.subtitle.copyWith(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+            style: AppTextStyles.condensedSectionTitle.copyWith(
+              fontSize: 28,
+              fontWeight: FontWeight.w600,
+              color: AppColors.white,
             ),
           ),
         ),

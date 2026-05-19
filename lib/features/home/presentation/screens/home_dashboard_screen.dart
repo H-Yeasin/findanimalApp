@@ -107,7 +107,10 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
       case _reportsTabIndex:
         return const SeekReportsScreen();
       case 1:
-        return const MyReportsScreen(showBottomNav: false);
+        return const MyReportsScreen(
+          showBottomNav: false,
+          showBackButton: false,
+        );
       case 3:
         return const CommunityScreen();
       case 4:

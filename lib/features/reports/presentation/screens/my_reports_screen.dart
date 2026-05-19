@@ -17,8 +17,15 @@ import '../providers/my_reports_provider.dart';
 
 class MyReportsScreen extends ConsumerWidget {
   final bool showBottomNav;
+  final bool showBackButton;
+  final bool showUserAvatar;
 
-  const MyReportsScreen({super.key, this.showBottomNav = true});
+  const MyReportsScreen({
+    super.key,
+    this.showBottomNav = true,
+    this.showBackButton = true,
+    this.showUserAvatar = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,7 +41,10 @@ class MyReportsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const AppTopBar(),
+                  AppTopBar(
+                    showBackButton: showBackButton,
+                    showUserAvatar: showUserAvatar,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -241,42 +251,6 @@ class MyReportsScreen extends ConsumerWidget {
                             fontSize: 24,
                           ),
                         ),
-                        // if (report.status.toLowerCase() == 'found')
-                        //   Align(
-                        //     alignment: Alignment.centerLeft,
-                        //     child: Padding(
-                        //       padding: const EdgeInsets.only(left: 30),
-                        //       child: Container(
-                        //         padding: const EdgeInsets.symmetric(
-                        //           horizontal: 12,
-                        //           vertical: 4,
-                        //         ),
-                        //         decoration: BoxDecoration(
-                        //           color: const Color(0xFFBA4A22),
-                        //           borderRadius: BorderRadius.circular(15),
-                        //         ),
-                        //         child: Row(
-                        //           mainAxisSize: MainAxisSize.min,
-                        //           children: [
-                        //             const Icon(
-                        //               Icons.check,
-                        //               color: Colors.white,
-                        //               size: 14,
-                        //             ),
-                        //             const SizedBox(width: 4),
-                        //             Text(
-                        //               l10n.found,
-                        //               style: AppTextStyles.button.copyWith(
-                        //                 color: Colors.white,
-                        //                 fontSize: 12,
-                        //                 fontWeight: FontWeight.w900,
-                        //               ),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ),
                         GestureDetector(
                           onTap: () {
                             ref

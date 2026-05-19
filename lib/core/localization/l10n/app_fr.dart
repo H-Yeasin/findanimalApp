@@ -59,7 +59,7 @@ const Map<String, String> appFr = {
   'companyNameLabel': 'Nom de l’entreprise *',
   'companyNameHint': 'Nom de l’entreprise',
   'createMyAccount': 'Créer mon compte',
-  'registerAsPartner': 'S’inscrire Partenaire',
+  'registerAsPartner': 'Devenir partenaire',
   'loginAsPartner': 'PARTENAIRE LOGIN',
   'partnerRegisterTitle': 'S’inscrire en tant que Partenaire',
   'partnerRegisterSuccess':
@@ -120,7 +120,6 @@ const Map<String, String> appFr = {
       'Identifiant incorrect. Réessayez avec les bons identifiants ou créez un compte.',
   'accountInactive':
       'Votre compte est inactif ou bloqué. Veuillez contacter le support.',
-  'memberSince': 'Membre depuis Mars 2026',
   'myProfileMyAnimals': 'Mon profil - Mes animaux',
   'myReportsLabel': 'Mes signalements',
   'donationsMade': 'Soutiens apportés',
@@ -693,6 +692,10 @@ const Map<String, String> appFr = {
   'pointsReasonActivity': 'Activité de points',
   'pointsReasonRedeemedReward': 'Récompense échangée : {title}',
   'pointsReasonRefundCancelled': 'Remboursement pour échange annulé',
+  'pointsHistory': 'Historique',
+  'pointsUtilized': 'Points utilisés',
+  'pointsEarnedHistoryTitle': 'Historique',
+  'pointsTotalUtilized': 'Total des points utilisés',
   'privacyPolicyTitle': 'POLITIQUE DE CONFIDENTIALITÉ',
   'privacyPolicyIntro':
       'Nous attachons une grande importance à la protection de vos données personnelles. Lorsque vous utilisez notre application, certaines informations peuvent être collectées afin de lui permettre de fonctionner correctement et d\'améliorer votre expérience.\n\nNous nous engageons à traiter ces données de manière responsable, transparente et sécurisée, conformément aux lois en vigueur, notamment le Règlement Général sur la Protection des Données (RGPD) applicable dans l\'Union Européenne.',

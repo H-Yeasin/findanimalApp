@@ -6,7 +6,8 @@ part 'report_model.g.dart';
 @freezed
 class ReportModel with _$ReportModel {
   const factory ReportModel({
-    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: '_id')
+    required String id,
     required String animalName,
     String? title,
     required String species,
@@ -37,7 +38,8 @@ class ReportModel with _$ReportModel {
 @freezed
 class ReportAuthor with _$ReportAuthor {
   const factory ReportAuthor({
-    @JsonKey(name: '_id') required String id,
+    @JsonKey(name: '_id')
+    required String id,
     required String firstName,
     required String lastName,
     String? email,

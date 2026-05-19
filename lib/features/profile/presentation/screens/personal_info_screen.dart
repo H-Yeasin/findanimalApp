@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -97,6 +98,9 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final previousImageUrl =
+        _currentImageUrl ??
+        ref.read(myProfileProvider).valueOrNull?.profileImage?.secure_url;
     final payload = <String, dynamic>{
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
@@ -127,9 +131,34 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     );
 
     try {
-      await ref.read(updateProfileProvider.notifier).submit(payload);
-      _selectedImage = null;
-      _initialized = false;
+      final updatedProfile = await ref
+          .read(updateProfileProvider.notifier)
+          .submit(payload);
+      final updatedImageUrl = updatedProfile.profileImage?.secure_url;
+      await _evictProfileImage(previousImageUrl);
+      if (updatedImageUrl != previousImageUrl) {
+        await _evictProfileImage(updatedImageUrl);
+      }
+      final currentUser = ref.read(currentUserProvider);
+      if (currentUser != null) {
+        await ref.read(authSessionProvider.notifier).updateCurrentUser(
+              currentUser.copyWith(
+                firstName: updatedProfile.firstName,
+                lastName: updatedProfile.lastName,
+                company: updatedProfile.company,
+                phone: updatedProfile.phone,
+                address: updatedProfile.address,
+                profileImage: updatedImageUrl,
+              ),
+            );
+      }
+      ref.read(profileImageCacheBusterProvider.notifier).state =
+          DateTime.now().millisecondsSinceEpoch;
+      setState(() {
+        _selectedImage = null;
+        _currentImageUrl = updatedImageUrl;
+        _initialized = false;
+      });
       ref.invalidate(myProfileProvider);
       ref.invalidate(currentUserProvider);
       _setEditMode(false);
@@ -145,6 +174,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
         SnackBar(content: Text(l10n.updateFailed(error.toString()))),
       );
     }
+  }
+
+  Future<void> _evictProfileImage(String? imageUrl) async {
+    if (imageUrl == null || imageUrl.trim().isEmpty) return;
+    await CachedNetworkImage.evictFromCache(imageUrl);
+    await NetworkImage(imageUrl).evict();
   }
 
   Future<void> _pickProfileImage() async {
@@ -196,8 +231,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final profileAsync = ref.watch(myProfileProvider);
     final isSaving = ref.watch(updateProfileProvider).isLoading;
     final profile = profileAsync.valueOrNull;
+    final cacheBuster = ref.watch(profileImageCacheBusterProvider);
     final headerImageUrl =
-        _currentImageUrl ?? profile?.profileImage?.secure_url;
+        profileImageUrlWithCacheBuster(
+          _currentImageUrl ?? profile?.profileImage?.secure_url,
+          cacheBuster,
+        );
 
     return AppBackgroundScaffold(
       body: AppBackground(

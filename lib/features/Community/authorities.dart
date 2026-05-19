@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/config/app_assets.dart';
+import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'presentation/widgets/contact_filter_panel.dart';
+import 'presentation/widgets/csfs_section.dart';
 import 'data/models/contact_model.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -55,7 +57,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                   AppTopBar(title: l10n.authoritiesTitle),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       l10n.authoritiesBody,
                       textAlign: TextAlign.center,
@@ -107,6 +109,7 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                             child: Text(
                               l10n.noReportsFound,
                               style: AppTextStyles.body.copyWith(
+                                color: AppColors.brandSecondary,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -138,6 +141,11 @@ class _AuthoritiesScreenState extends ConsumerState<AuthoritiesScreen> {
                     ),
                   ),
 
+                  CsfsSection(
+                    cardBg: cardBg,
+                    color: brandPrimary,
+                    l10n: l10n,
+                  ),
                   const SizedBox(height: 100),
                 ],
               ),

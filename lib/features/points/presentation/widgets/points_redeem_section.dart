@@ -24,76 +24,79 @@ class PointsRedeemSection extends StatelessWidget {
             Align(
               child: Text(
                 AppLocalizations.of(context).pointsRedeemMyPoints,
-                style: AppTextStyles.heading.copyWith(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                ),
+                style: AppTextStyles.heading.copyWith(fontSize: 24),
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsCategoryLimited,
-                isSelected: state.currentCategory == 'limited',
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setCategory('limited'),
-              ),
-              const SizedBox(width: 10),
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsCategoryFeatured,
-                isSelected: state.currentCategory == 'featured',
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setCategory('featured'),
-              ),
-              const SizedBox(width: 10),
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsCategorySolidarity,
-                isSelected: state.currentCategory == 'solidarity',
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setCategory('solidarity'),
-              ),
-              const SizedBox(width: 10),
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsCategoryAll,
-                isSelected: state.currentCategory == null,
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setCategory(null),
-              ),
-            ],
+        LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsCategoryLimited,
+                  isSelected: state.currentCategory == 'limited',
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setCategory('limited'),
+                ),
+
+                const SizedBox(width: 10),
+
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsCategoryFeatured,
+                  isSelected: state.currentCategory == 'featured',
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setCategory('featured'),
+                ),
+
+                const SizedBox(width: 10),
+
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsCategorySolidarity,
+                  isSelected: state.currentCategory == 'solidarity',
+                  onTap: (ref) => ref
+                      .read(pointsProvider.notifier)
+                      .setCategory('solidarity'),
+                ),
+                const SizedBox(width: 10),
+
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsCategoryAll,
+                  isSelected: state.currentCategory == null,
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setCategory(null),
+                ),
+                const SizedBox(width: 10),
+
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsTypeProduct,
+                  isSelected: state.currentType == 'product',
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setType('product'),
+                ),
+                const SizedBox(width: 10),
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsTypeGiftCard,
+                  isSelected: state.currentType == 'giftcard',
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setType('giftcard'),
+                ),
+                const SizedBox(width: 10),
+                _PointsFilterChip(
+                  label: AppLocalizations.of(context).pointsTypeAllTypes,
+                  isSelected: state.currentType == null,
+                  onTap: (ref) =>
+                      ref.read(pointsProvider.notifier).setType(null),
+                ),
+                const SizedBox(width: 10),
+              ],
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsTypeProduct,
-                isSelected: state.currentType == 'product',
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setType('product'),
-              ),
-              const SizedBox(width: 10),
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsTypeGiftCard,
-                isSelected: state.currentType == 'giftcard',
-                onTap: (ref) =>
-                    ref.read(pointsProvider.notifier).setType('giftcard'),
-              ),
-              const SizedBox(width: 10),
-              _PointsFilterChip(
-                label: AppLocalizations.of(context).pointsTypeAllTypes,
-                isSelected: state.currentType == null,
-                onTap: (ref) => ref.read(pointsProvider.notifier).setType(null),
-              ),
-            ],
           ),
         ),
         const SizedBox(height: 25),

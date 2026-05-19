@@ -57,7 +57,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                   AppTopBar(title: l10n.listShelters),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       l10n.sheltersBody,
                       textAlign: TextAlign.center,

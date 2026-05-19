@@ -4,6 +4,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 
 class UserAvatar extends StatelessWidget {
   final String? imageUrl;
+  final String? cacheKey;
   final double radius;
   final bool showBorder;
   final double borderWidth;
@@ -12,6 +13,7 @@ class UserAvatar extends StatelessWidget {
   const UserAvatar({
     super.key,
     this.imageUrl,
+    this.cacheKey,
     this.radius = 22,
     this.showBorder = true,
     this.borderWidth = 2,
@@ -30,7 +32,7 @@ class UserAvatar extends StatelessWidget {
         radius: radius,
         backgroundColor: borderColor,
         backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
-            ? CachedNetworkImageProvider(imageUrl!)
+            ? CachedNetworkImageProvider(imageUrl!, cacheKey: cacheKey)
             : null,
         child: imageUrl == null || imageUrl!.isEmpty
             ? Image.asset(

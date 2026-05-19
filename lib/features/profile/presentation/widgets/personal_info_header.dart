@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
@@ -31,15 +33,23 @@ class PersonalInfoHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final hasNetwork = imageUrl != null && imageUrl!.trim().isNotEmpty;
+    final hasSelectedImage = selectedImage != null;
     return SizedBox(
       height: 252,
       width: double.infinity,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (hasNetwork)
+          if (hasSelectedImage)
+            Image.file(
+              File(selectedImage!.path),
+              fit: BoxFit.cover,
+              alignment: const Alignment(0, -0.9),
+            )
+          else if (hasNetwork)
             Image.network(
               imageUrl!,
+              key: ValueKey(imageUrl),
               fit: BoxFit.cover,
               alignment: const Alignment(0, -0.9),
             )

@@ -189,10 +189,7 @@ class SeekAnimalCard extends StatelessWidget {
     );
   }
 
-  String _buildLocalizedDetails(
-    AppLocalizations l10n,
-    AnimalProfileData data,
-  ) {
+  String _buildLocalizedDetails(AppLocalizations l10n, AnimalProfileData data) {
     final details = [
       _localizeAge(l10n, data.age),
       _localizeSpecies(l10n, data.species),

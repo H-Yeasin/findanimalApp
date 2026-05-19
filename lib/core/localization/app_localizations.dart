@@ -175,7 +175,6 @@ class AppLocalizations {
   String get fieldPassword => _text('fieldPassword');
   String get fieldConfirmPassword => _text('fieldConfirmPassword');
   String get fieldOtp => _text('fieldOtp');
-  String get memberSince => _text('memberSince');
   String get myProfileMyAnimals => _text('myProfileMyAnimals');
   String get myReportsLabel => _text('myReportsLabel');
   String get donationsMade => _text('donationsMade');
@@ -682,6 +681,10 @@ class AppLocalizations {
       text('pointsReasonRedeemedReward', params: {'title': title});
   String get pointsReasonRefundCancelled =>
       _text('pointsReasonRefundCancelled');
+  String get pointsHistory => _text('pointsHistory');
+  String get pointsUtilized => _text('pointsUtilized');
+  String get pointsEarnedHistoryTitle => _text('pointsEarnedHistoryTitle');
+  String get pointsTotalUtilized => _text('pointsTotalUtilized');
 
   String get privacyPolicyTitle => _text('privacyPolicyTitle');
   String get privacyPolicyIntro => _text('privacyPolicyIntro');

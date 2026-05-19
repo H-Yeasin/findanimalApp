@@ -18,13 +18,14 @@ class ShopBestSellersSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const SizedBox(height: 8),
         Text(
           l10n.shopBestSellersLabel,
           textAlign: TextAlign.center,
-          style: AppTextStyles.heading.copyWith(
-            fontSize: 14,
-            height: 1.4,
-            color: const Color(0xFFBA4A22),
+          style: AppTextStyles.caption.copyWith(
+            height: 0.1,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 4),
