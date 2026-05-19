@@ -135,63 +135,63 @@ class ContactDetailsSection extends StatelessWidget {
               requiredMessage: l10n.fieldRequired(l10n.nameAndFirstName),
             ),
           ),
-          const SizedBox(height: 10),
-          GestureDetector(
-            onTap: onToggleCompanyDonation,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 2, right: 10),
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: state.isCompanyDonation
-                        ? primaryOrange
-                        : Colors.white,
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: primaryOrange),
-                  ),
-                  child: state.isCompanyDonation
-                      ? const Icon(Icons.check, size: 14, color: Colors.white)
-                      : null,
-                ),
-                Expanded(
-                  child: Text(
-                    l10n.onBehalfOfCompany,
-                    style: AppTextStyles.body.copyWith(
-                      color: primaryOrange,
-                      fontSize: 11,
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (state.isCompanyDonation) ...[
-            const SizedBox(height: 15),
-            _textField(
-              controller: companyNameController,
-              hint: l10n.companyNameHint,
-              onChanged: onCompanyNameChanged,
-              validator: (val) => Validators.required(
-                val,
-                field: l10n.fieldCompanyName,
-                requiredMessage: l10n.fieldRequired(l10n.fieldCompanyName),
-              ),
-            ),
-            _textField(
-              controller: companySirenController,
-              hint: 'SIREN',
-              onChanged: onCompanySirenChanged,
-            ),
-            _textField(
-              controller: companyLegalFormController,
-              hint: 'Legal form',
-              onChanged: onCompanyLegalFormChanged,
-            ),
-          ],
+          // const SizedBox(height: 10),
+          // GestureDetector(
+          //   onTap: onToggleCompanyDonation,
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Container(
+          //         margin: const EdgeInsets.only(top: 2, right: 10),
+          //         width: 18,
+          //         height: 18,
+          //         decoration: BoxDecoration(
+          //           color: state.isCompanyDonation
+          //               ? primaryOrange
+          //               : Colors.white,
+          //           borderRadius: BorderRadius.circular(4),
+          //           border: Border.all(color: primaryOrange),
+          //         ),
+          //         child: state.isCompanyDonation
+          //             ? const Icon(Icons.check, size: 14, color: Colors.white)
+          //             : null,
+          //       ),
+          //       // Expanded(
+          //       //   child: Text(
+          //       //     l10n.onBehalfOfCompany,
+          //       //     style: AppTextStyles.body.copyWith(
+          //       //       color: primaryOrange,
+          //       //       fontSize: 11,
+          //       //       height: 1.2,
+          //       //     ),
+          //       //   ),
+          //       // ),
+          //     ],
+          //   ),
+          // ),
+          // if (state.isCompanyDonation) ...[
+          //   const SizedBox(height: 15),
+          //   _textField(
+          //     controller: companyNameController,
+          //     hint: l10n.companyNameHint,
+          //     onChanged: onCompanyNameChanged,
+          //     validator: (val) => Validators.required(
+          //       val,
+          //       field: l10n.fieldCompanyName,
+          //       requiredMessage: l10n.fieldRequired(l10n.fieldCompanyName),
+          //     ),
+          //   ),
+          //   _textField(
+          //     controller: companySirenController,
+          //     hint: 'SIREN',
+          //     onChanged: onCompanySirenChanged,
+          //   ),
+          //   _textField(
+          //     controller: companyLegalFormController,
+          //     hint: 'Legal form',
+          //     onChanged: onCompanyLegalFormChanged,
+          //   ),
+          // ],
         ],
       ),
     );

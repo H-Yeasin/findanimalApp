@@ -43,7 +43,7 @@ const Map<String, String> appFr = {
   'continue': 'Continuer',
   'continueWithApple': 'Continuer avec Apple',
   'continueWithGoogle': 'Continuer avec Google',
-  'or': 'or',
+  'or': 'ou',
   'unauthorizedPartnerLogin':
       'Non autorisé. Cette connexion est réservée aux partenaires.',
   'registerSuccess': 'Inscription réussie.',
@@ -118,7 +118,8 @@ const Map<String, String> appFr = {
       'Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
   'credentialIncorrect':
       'Identifiant incorrect. Réessayez avec les bons identifiants ou créez un compte.',
-  'accountInactive': 'Votre compte est inactif ou bloqué. Veuillez contacter le support.',
+  'accountInactive':
+      'Votre compte est inactif ou bloqué. Veuillez contacter le support.',
   'memberSince': 'Membre depuis Mars 2026',
   'myProfileMyAnimals': 'Mon profil - Mes animaux',
   'myReportsLabel': 'Mes signalements',

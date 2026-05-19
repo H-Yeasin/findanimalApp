@@ -164,7 +164,9 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
                           ),
                         ),
                         child: Text(
-                          l10n.currentStatus(data.status),
+                          l10n.currentStatus(
+                            _localizeStatus(l10n, data.status),
+                          ),
                           style: AppTextStyles.caption.copyWith(
                             fontSize: 9,
                             fontWeight: FontWeight.w800,
@@ -280,14 +282,20 @@ class _AnimalProfileCardState extends State<AnimalProfileCard> {
 
   String _localizeStatus(AppLocalizations l10n, String value) {
     switch (value.trim().toLowerCase()) {
+      case 'all':
+        return l10n.statusAll;
       case 'lost':
+      case 'missing':
         return l10n.reportStep1Lost;
       case 'found':
         return l10n.reportStep1Found;
       case 'spotted':
+      case 'sighted':
         return l10n.reportStep1Spotted;
       case 'injured':
         return l10n.reportStep1Injured;
+      case 'rescued':
+        return l10n.statusRescued;
       default:
         return value;
     }

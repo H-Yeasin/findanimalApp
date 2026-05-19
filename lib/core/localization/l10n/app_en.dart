@@ -42,7 +42,7 @@ const Map<String, String> appEn = {
   'continue': 'Continue',
   'continueWithApple': 'Continue with Apple',
   'continueWithGoogle': 'Continue with Google',
-  'or': 'Or',
+  'or': 'or',
   'unauthorizedPartnerLogin': 'Unauthorized. This login is for partners only.',
   'registerSuccess': 'Registration successful.',
   'registerTitle': 'Create your Hesteka\naccount',
@@ -115,7 +115,8 @@ const Map<String, String> appEn = {
       'Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character',
   'credentialIncorrect':
       'Credential incorrect. Try with correct credential or create an account.',
-  'accountInactive': 'Your account is inactive or blocked. Please contact support.',
+  'accountInactive':
+      'Your account is inactive or blocked. Please contact support.',
   'memberSince': 'Member since March 2026',
   'myProfileMyAnimals': 'My profile - My animals',
   'myReportsLabel': 'My reports',

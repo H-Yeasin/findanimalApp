@@ -241,42 +241,42 @@ class MyReportsScreen extends ConsumerWidget {
                             fontSize: 24,
                           ),
                         ),
-                        if (report.status.toLowerCase() == 'found')
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 30),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFFBA4A22),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 14,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      l10n.found,
-                                      style: AppTextStyles.button.copyWith(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w900,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        // if (report.status.toLowerCase() == 'found')
+                        //   Align(
+                        //     alignment: Alignment.centerLeft,
+                        //     child: Padding(
+                        //       padding: const EdgeInsets.only(left: 30),
+                        //       child: Container(
+                        //         padding: const EdgeInsets.symmetric(
+                        //           horizontal: 12,
+                        //           vertical: 4,
+                        //         ),
+                        //         decoration: BoxDecoration(
+                        //           color: const Color(0xFFBA4A22),
+                        //           borderRadius: BorderRadius.circular(15),
+                        //         ),
+                        //         child: Row(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           children: [
+                        //             const Icon(
+                        //               Icons.check,
+                        //               color: Colors.white,
+                        //               size: 14,
+                        //             ),
+                        //             const SizedBox(width: 4),
+                        //             Text(
+                        //               l10n.found,
+                        //               style: AppTextStyles.button.copyWith(
+                        //                 color: Colors.white,
+                        //                 fontSize: 12,
+                        //                 fontWeight: FontWeight.w900,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
                         GestureDetector(
                           onTap: () {
                             ref
