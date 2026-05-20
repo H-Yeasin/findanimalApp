@@ -6,8 +6,10 @@ import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 import '../../../../core/routing/route_names.dart';
 import '../../../../core/widgets/app_top_bar.dart';
+import '../../../../core/widgets/user_avatar.dart';
 import '../../../auth/data/models/auth_user_model.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import '../../../../core/localization/app_localizations.dart';
 
@@ -77,6 +79,14 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final user = ref.watch(currentUserProvider);
+    final profile = ref.watch(myProfileProvider).valueOrNull;
+    final imageCacheBuster = ref.watch(profileImageCacheBusterProvider);
+    final userImageUrl = profileImageUrlWithCacheBuster(
+      profile?.profileImage?.secure_url ?? user?.profileImage,
+      imageCacheBuster,
+    );
+    final userImageCacheKey =
+        '${profile?.profileImage?.secure_url ?? user?.profileImage ?? ''}:$imageCacheBuster';
 
     return PartnerScreenScaffold(
       child: Padding(
@@ -87,7 +97,14 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             const SizedBox(height: 34),
             const AppTopBar(showUserAvatar: false),
             const SizedBox(height: 14),
-            if (user != null) _buildPartnerDashboard(context, user, l10n),
+            if (user != null)
+              _buildPartnerDashboard(
+                context,
+                user,
+                l10n,
+                userImageUrl,
+                userImageCacheKey,
+              ),
           ],
         ),
       ),
@@ -98,6 +115,8 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
     BuildContext context,
     AuthUserModel user,
     AppLocalizations l10n,
+    String? userImageUrl,
+    String userImageCacheKey,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +139,20 @@ class _PartnerAccessScreenState extends ConsumerState<PartnerAccessScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 16),
+        Center(
+          child: UserAvatar(
+            key: ValueKey(userImageCacheKey),
+            imageUrl: userImageUrl,
+            cacheKey: userImageCacheKey,
+            radius: 54,
+            showBorder: true,
+            borderWidth: 4,
+            borderColor: PartnerUiColors.brand,
+            boxShadow: const [],
+          ),
+        ),
+        const SizedBox(height: 26),
         Container(
           constraints: const BoxConstraints(minHeight: 390),
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),

@@ -123,7 +123,7 @@ const Map<String, String> appFr = {
   'myProfileMyAnimals': 'Mon profil - Mes animaux',
   'myReportsLabel': 'Mes signalements',
   'donationsMade': 'Soutiens apportés',
-  'myPoints': 'Mes points',
+  'myPoints': 'Points attribués',
   'settings': 'Paramètres',
   'notifications': 'Notifications',
   'logout': 'Se déconnecter',

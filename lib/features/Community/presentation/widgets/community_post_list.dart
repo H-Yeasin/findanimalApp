@@ -13,6 +13,7 @@ class CommunityPostList extends StatelessWidget {
     required this.isUnauthorizedError,
     required this.onShowReactions,
     required this.onToggleLike,
+    this.searchQuery = '',
     this.maxPosts,
     this.onSeeMore,
   });
@@ -21,6 +22,7 @@ class CommunityPostList extends StatelessWidget {
   final bool Function(Object err) isUnauthorizedError;
   final void Function(BuildContext context, String chatId) onShowReactions;
   final ValueChanged<String> onToggleLike;
+  final String searchQuery;
   final int? maxPosts;
   final VoidCallback? onSeeMore;
 
@@ -33,7 +35,15 @@ class CommunityPostList extends StatelessWidget {
 
     return chatsAsync.when(
       data: (chats) {
-        final posts = chats.where((chat) => chat.replyTo == null).toList();
+        final normalizedQuery = searchQuery.trim().toLowerCase();
+        final posts = chats
+            .where((chat) => chat.replyTo == null)
+            .where(
+              (chat) =>
+                  normalizedQuery.isEmpty ||
+                  _matchesUserSearch(chat.user, normalizedQuery),
+            )
+            .toList();
         if (posts.isEmpty) {
           return SliverToBoxAdapter(
             child: Container(
@@ -168,6 +178,20 @@ class CommunityPostList extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _matchesUserSearch(ChatUser user, String query) {
+    final firstName = user.firstName.toLowerCase();
+    final lastName = user.lastName.toLowerCase();
+    final fullName = '$firstName $lastName';
+    final handle = '${firstName}_$lastName';
+    final compactName = '$firstName$lastName';
+
+    return firstName.contains(query) ||
+        lastName.contains(query) ||
+        fullName.contains(query) ||
+        handle.contains(query) ||
+        compactName.contains(query);
   }
 
   String _formatTimeAgo(BuildContext context, DateTime? dateTime) {

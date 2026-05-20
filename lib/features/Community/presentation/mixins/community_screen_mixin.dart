@@ -17,11 +17,14 @@ import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
   final TextEditingController contentController = TextEditingController();
+  final TextEditingController communitySearchController =
+      TextEditingController();
   final List<File> selectedMedia = [];
   final ImagePicker picker = ImagePicker();
 
   GoogleMapController? mapController;
   LatLng currentPosition = const LatLng(0, 0);
+  String communitySearchQuery = '';
 
   Future<void> initializeLocation() async {
     try {
@@ -107,6 +110,12 @@ mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
   void removeSelectedMedia(int index) {
     setState(() {
       selectedMedia.removeAt(index);
+    });
+  }
+
+  void updateCommunitySearchQuery(String value) {
+    setState(() {
+      communitySearchQuery = value.trim();
     });
   }
 
@@ -311,6 +320,7 @@ mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
 
   void disposeLogic() {
     contentController.dispose();
+    communitySearchController.dispose();
     mapController?.dispose();
   }
 }

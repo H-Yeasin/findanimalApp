@@ -4,27 +4,47 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
+import '../../../profile/data/models/profile_model.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
 import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
-class PartnerProfileScreen extends ConsumerWidget {
+class PartnerProfileScreen extends ConsumerStatefulWidget {
   const PartnerProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PartnerProfileScreen> createState() =>
+      _PartnerProfileScreenState();
+}
+
+class _PartnerProfileScreenState extends ConsumerState<PartnerProfileScreen> {
+  String? _currentHeroImageUrl;
+
+  void _syncHeroImage(ProfileModel profile) {
+    final imageUrl = profile.profileImage?.secure_url;
+    if (_currentHeroImageUrl == imageUrl) return;
+    _currentHeroImageUrl = imageUrl;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final profileAsync = ref.watch(myProfileProvider);
+    final imageCacheBuster = ref.watch(profileImageCacheBusterProvider);
+    final profile = profileAsync.valueOrNull;
+    if (profile != null) {
+      _syncHeroImage(profile);
+    }
 
-    final heroImage = profileAsync.maybeWhen(
-      data: (profile) => profile.profileImage?.secure_url ?? '',
-      orElse: () => '',
+    final heroImage = profileImageUrlWithCacheBuster(
+      _currentHeroImageUrl ?? profile?.profileImage?.secure_url,
+      imageCacheBuster,
     );
 
     return PartnerScreenScaffold(
       header: PartnerHeroHeader(
         title: l10n.personalInformation,
-        imageUrl: heroImage,
+        imageUrl: heroImage ?? '',
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(38, 18, 38, 28),

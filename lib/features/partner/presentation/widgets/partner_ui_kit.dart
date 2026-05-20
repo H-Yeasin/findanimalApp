@@ -354,9 +354,10 @@ class PartnerFieldLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: AppTextStyles.sectionTitle.copyWith(
-        color: PartnerUiColors.brand,
-        fontSize: 32 / 2,
+      style: AppTextStyles.condensedSectionTitle.copyWith(
+ color: PartnerUiColors.brand,
+                fontSize: 32 / 2,
+                height: 1.2,
       ),
     );
   }
@@ -395,7 +396,7 @@ class PartnerOutlinedField extends StatelessWidget {
           Expanded(
             child: Text(
               hint,
-              style: AppTextStyles.sectionTitle.copyWith(
+              style: AppTextStyles.condensedSectionTitle.copyWith(
                 color: PartnerUiColors.brand,
                 fontSize: 32 / 2,
                 height: 1.2,

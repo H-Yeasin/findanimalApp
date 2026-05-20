@@ -23,10 +23,12 @@ class CollectionPointsScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AppTopBar(showBackButton: false),
+            const SizedBox(height: 14),
+            const AppTopBar(showUserAvatar: false),
             const SizedBox(height: 14),
             PartnerPageTitle(l10n.myCollectionPoints),
             const SizedBox(height: 14),
+            
             Align(
               alignment: Alignment.centerRight,
               child: FilledButton.icon(

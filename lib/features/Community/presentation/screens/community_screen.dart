@@ -66,11 +66,14 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                       onRemoveMedia: removeSelectedMedia,
                       onSubmitPost: submitPost,
                       onShareStory: shareStory,
+                      searchController: communitySearchController,
+                      onSearchChanged: updateCommunitySearchQuery,
                     ),
                   ),
                   CommunityPostList(
                     chatsAsync: chatAsync,
                     isUnauthorizedError: isUnauthorizedError,
+                    searchQuery: communitySearchQuery,
                     onShowReactions: (context, chatId) =>
                         CommunityReactionsDialog.show(context, ref, chatId),
                     maxPosts: 3,
