@@ -355,9 +355,9 @@ class PartnerFieldLabel extends StatelessWidget {
     return Text(
       text,
       style: AppTextStyles.condensedSectionTitle.copyWith(
- color: PartnerUiColors.brand,
-                fontSize: 32 / 2,
-                height: 1.2,
+        color: PartnerUiColors.brand,
+        fontSize: 32 / 2,
+        height: 1.2,
       ),
     );
   }

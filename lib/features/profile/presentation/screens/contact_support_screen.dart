@@ -116,7 +116,7 @@ class _ContactSupportScreenState extends ConsumerState<ContactSupportScreen> {
                 l10n.enterMyFirstAndLastName,
                 controller: _nameController,
                 validator: (value) => (value == null || value.isEmpty)
-                    ? l10n.sfieldRequired
+                    ? l10n.fieldRequired(l10n.nameAndFirstName)
                     : null,
               ),
               const SizedBox(height: 20),
@@ -125,7 +125,7 @@ class _ContactSupportScreenState extends ConsumerState<ContactSupportScreen> {
                 l10n.contactSubjectHint,
                 controller: _subjectController,
                 validator: (value) => (value == null || value.isEmpty)
-                    ? l10n.sfieldRequired
+                    ? l10n.fieldRequired(l10n.subject)
                     : null,
               ),
               const SizedBox(height: 20),
@@ -135,7 +135,7 @@ class _ContactSupportScreenState extends ConsumerState<ContactSupportScreen> {
                 controller: _messageController,
                 maxLines: 5,
                 validator: (value) => (value == null || value.isEmpty)
-                    ? l10n.sfieldRequired
+                    ? l10n.fieldRequired(l10n.message)
                     : null,
               ),
               const SizedBox(height: 40),

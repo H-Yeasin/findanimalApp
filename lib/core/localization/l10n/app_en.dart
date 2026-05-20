@@ -98,7 +98,7 @@ const Map<String, String> appEn = {
   'otpMust6Digits': 'OTP must be 6 digits',
   'emailsDoNotMatch': 'Emails do not match',
   'passwordsDoNotMatch': 'Passwords do not match',
-  'sfieldRequired': 'This field is required',
+  'fieldRequired': 'This field is required',
   'emailRequired': 'Email is required',
   'emailInvalid': 'Enter a valid email',
   'messageSentSuccessfully': 'Message sent successfully',
@@ -713,10 +713,10 @@ const Map<String, String> appEn = {
   'legalNoticesFullTitle': 'LEGAL NOTICES - HESTEKA',
   'legalEditorTitle': 'APPLICATION EDITOR',
   'legalEditorContent':
-      'The Hesteka application is published by: Hesteka SAS. Address: 58 rue Denise Vernay, Pélissanne, 13330. SIRET: 123 456 789 00001. Email: contact@hesteka.com. Telephone: +33 6 41 45 83 60.\n\nThe director of the publication is Emma Fauveau, as legal representative of Hesteka SAS.',
+      'The Hesteka application is published by: Hesteka. Legal form: Sole proprietorship. Legal representative: Emma Fauveau. Address: 58 rue Denise Vernay, 13330 Pélissanne, France. SIREN: 925 231 979. SIRET: 925 231 979 000 38. Intra-community VAT number: FR15925231979. Email: contact@hesteka.com. Telephone: 07.67.89.84.25.\n\nThe activity carried out by Hesteka is a digital service and networking activity around animal reporting, solidarity and community.\n\nThe director of publication and publication manager is Emma Fauveau.',
   'legalHostingTitle': 'HOSTING OF THE APPLICATION',
   'legalHostingContent':
-      'The Hesteka application is hosted by: OVH Cloud. Address: 2 rue Kellermann, 59100 Roubaix, France. Website: www.ovh.com. Telephone: +33 9 72 10 10 07.\n\nThe host ensures secure storage of all data collected by the application.',
+      'The Hesteka application is hosted by: OVH Cloud SAS. Address: 2 rue Kellermann, 59100 Roubaix, France. Website: https://www.ovhcloud.com/fr/.\n\nThe host ensures secure storage of all data collected by the application.',
   'legalIPTitle': 'INTELLECTUAL PROPERTY',
   'legalIPContent':
       'All content present in the Hesteka application (texts, images, logos, icons, design, videos) are the exclusive property of Hesteka SAS, unless otherwise stated.\n\nAny reproduction, representation, modification, distribution or use, partial or total, of the contents of the application without prior written authorization is strictly prohibited and constitutes an infringement punishable by law.',

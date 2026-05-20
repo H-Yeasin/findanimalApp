@@ -101,7 +101,7 @@ const Map<String, String> appFr = {
   'otpMust6Digits': 'L’OTP doit contenir 6 chiffres',
   'emailsDoNotMatch': 'Les adresses email ne correspondent pas',
   'passwordsDoNotMatch': 'Les mots de passe ne correspondent pas',
-  'sfieldRequired': 'Ce champ est requis',
+  'fieldRequired': 'Ce champ est requis',
   'emailRequired': 'L’email est requis',
   'emailInvalid': 'Entrez un email valide',
   'messageSentSuccessfully': 'Message envoyé avec succès',
@@ -724,10 +724,10 @@ const Map<String, String> appFr = {
   'legalNoticesFullTitle': 'MENTIONS LÉGALES - HESTEKA',
   'legalEditorTitle': 'ÉDITEUR DE L\'APPLICATION',
   'legalEditorContent':
-      'L\'application Hesteka est éditée par : Hesteka SAS. Adresse : 58 rue Denise Vernay, Pélissanne, 13330. SIRET : 123 456 789 00001. E-mail : contact@hesteka.com. Téléphone : +33 6 41 45 83 60.\n\nLa directrice de la publication est Emma Fauveau, en qualité de représentante légale de Hesteka SAS.',
+      'L’application Hesteka est éditée par : Hesteka. Forme juridique : Entreprise individuelle. Représentante légale : Emma Fauveau. Adresse du siège / établissement : 58 rue Denise Vernay, 13330 Pélissanne, France. SIREN : 925 231 979. SIRET : 925 231 979 000 38. Numéro de TVA intracommunautaire : FR15925231979. Email : contact@hesteka.com. Téléphone : 07.67.89.84.25.\n\nL’activité exercée par Hesteka est une activité de service numérique et de mise en relation autour du signalement animalier, de la solidarité et de la communauté.\n\nLa directrice de la publication et responsable de la publication est Emma Fauveau.',
   'legalHostingTitle': 'HÉBERGEMENT DE L\'APPLICATION',
   'legalHostingContent':
-      'L\'application Hesteka est hébergée par : OVH Cloud. Adresse : 2 rue Kellermann, 59100 Roubaix, France. Site web : www.ovh.com. Téléphone : +33 9 72 10 10 07.\n\nL\'hébergeur assure le stockage sécurisé de l\'ensemble des données collectées par l\'application.',
+      'L’application Hesteka est hébergée par : OVH Cloud SAS. Adresse : 2 rue Kellermann, 59100 Roubaix, France. Site web : https://www.ovhcloud.com/fr/.\n\nL’hébergeur assure le stockage sécurisé de toutes les données collectées par l’application.',
   'legalIPTitle': 'PROPRIÉTÉ INTELLECTUELLE',
   'legalIPContent':
       'Tous les contenus présents dans l\'application Hesteka (textes, images, logos, icônes, design, vidéos) sont la propriété exclusive de Hesteka SAS, sauf mention contraire.\n\nToute reproduction, représentation, modification, distribution ou utilisation, partielle ou totale, des contenus de l\'application sans autorisation écrite préalable est strictement interdite et constitue une contrefaçon sanctionnée par la loi.',

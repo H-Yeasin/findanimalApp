@@ -27,6 +27,8 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
   late AnimationController _floatController;
   String _searchQuery = '';
 
+  static const String _defaultSupportEmail = 'contact@hesteka.com';
+
   String? _supportEmail;
 
   @override
@@ -87,25 +89,38 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
     super.dispose();
   }
 
-  Future<void> _contactSupport(dynamic l10n) async {
-    final email = _supportEmail ?? 'support@emmafve.com';
+  Future<void> _contactSupport(AppLocalizations l10n) async {
+    const email = _defaultSupportEmail;
 
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: email,
-      query:
-          'subject=${Uri.encodeComponent(AppLocalizations.of(context).faqSupportRequestSubject)}',
+      queryParameters: {'subject': l10n.faqSupportRequestSubject},
     );
 
-    if (await canLaunchUrl(emailUri)) {
-      await launchUrl(emailUri);
-    } else {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(l10n.unknownError)));
-      }
+    try {
+      final opened = await launchUrl(
+        emailUri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (opened) return;
+    } catch (e) {
+      debugPrint('Failed to open support email app: $e');
     }
+
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.unknownError)));
+    }
+  }
+
+  String get _contactButtonLabel {
+    final fetchedEmail = _supportEmail;
+    if (fetchedEmail != null && fetchedEmail.isNotEmpty) {
+      return fetchedEmail;
+    }
+    return _defaultSupportEmail;
   }
 
   @override
@@ -242,7 +257,7 @@ class _FAQCommunityScreenState extends ConsumerState<FAQCommunityScreen>
               ),
               alignment: Alignment.center,
               child: Text(
-                _supportEmail ?? l10n.contactSupport,
+                _contactButtonLabel,
                 style: AppTextStyles.body.copyWith(
                   color: Colors.white,
                   fontSize: 16,

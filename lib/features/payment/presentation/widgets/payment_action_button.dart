@@ -15,11 +15,12 @@ class PaymentActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 36,
+      height: 26,
+      width: 100,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: PartnerUiColors.brand,
-          disabledBackgroundColor: PartnerUiColors.brand.withValues(alpha: 0.5),
+          disabledBackgroundColor: PartnerUiColors.brand.withValues(alpha: 0.9),
           foregroundColor: Colors.white,
           disabledForegroundColor: Colors.white70,
           padding: EdgeInsets.zero,
