@@ -423,7 +423,7 @@ const Map<String, String> appFr = {
   'expiryDate': 'Date d’expiration',
   'validateMySupport': 'VALIDER MON SOUTIEN',
   'onBehalfOfCompany':
-      'Je fais un don au nom d’une entreprise, d’une profession\nlibérale ou d’une association',
+      'Je soutiens au nom d’une entreprise, d’une profession\nlibérale ou d’une association',
   'profileUpdated': 'Profil mis à jour avec succès',
   'updateFailed': 'Échec de la mise à jour : {error}',
   'errorParam': 'Erreur : {error}',
@@ -616,10 +616,10 @@ const Map<String, String> appFr = {
       'Oui, en cas de besoin. Tu peux signaler un utilisateur ou même le bloquer.',
   'faqMessagingStartQuestion': 'Comment démarrer une conversation ?',
   'faqMessagingStartAnswer': 'Depuis un profil ou une annonce.',
-  'faqDonationsDestinationQuestion': 'À qui vont les dons ?',
+  'faqDonationsDestinationQuestion': 'À quoi sert le soutien ?',
   'faqDonationsDestinationAnswer':
       'Une partie est pour soutenir l\'application mais aussi aux refuges/associations.',
-  'faqDonationsSecureQuestion': 'Les dons sont-ils sécurisés ?',
+  'faqDonationsSecureQuestion': 'Les paiements de soutien sont-ils sécurisés ?',
   'faqDonationsSecureAnswer': 'Oui, via des systèmes de paiement sécurisés.',
   'faqDonationsOtherHelpQuestion': 'Puis-je aider autrement ?',
   'faqDonationsOtherHelpAnswer':
@@ -685,7 +685,7 @@ const Map<String, String> appFr = {
   'pointsStatusCompleted': 'Terminé',
   'pointsStatusCancelled': 'Annulé',
   'pointsReasonLocalMission': 'Mission locale',
-  'pointsReasonPhysicalDonation': 'Don physique',
+  'pointsReasonPhysicalDonation': 'Soutien physique',
   'pointsReasonAnimalReport': 'Signalement animal',
   'pointsReasonRewardRedemption': 'Échange de récompense',
   'pointsReasonUsed': 'Points utilisés',
@@ -701,7 +701,7 @@ const Map<String, String> appFr = {
       'Nous attachons une grande importance à la protection de vos données personnelles. Lorsque vous utilisez notre application, certaines informations peuvent être collectées afin de lui permettre de fonctionner correctement et d\'améliorer votre expérience.\n\nNous nous engageons à traiter ces données de manière responsable, transparente et sécurisée, conformément aux lois en vigueur, notamment le Règlement Général sur la Protection des Données (RGPD) applicable dans l\'Union Européenne.',
   'privacyDataCollectTitle': 'DONNÉES QUE NOUS COLLECTONS',
   'privacyDataCollectContent':
-      'Lorsque vous utilisez l\'application, nous pouvons collecter certaines informations personnelles que vous nous fournissez directement ou qui sont nécessaires au fonctionnement du service. Cela peut inclure votre nom, prénom, adresse e-mail, numéro de téléphone, adresse postale, ainsi que des informations associées à votre compte utilisateur.\n\nDans le cadre de dons effectués via l\'application, certaines données relatives au paiement peuvent également être utilisées pour traiter la transaction en toute sécurité. Ces informations sont généralement traitées par des services de paiement sécurisés.\n\nSelon les fonctionnalités utilisées, nous pouvons également collecter certaines données de localisation afin d\'améliorer certaines fonctionnalités de l\'application, par exemple pour afficher des informations ou des sections proches de vous.\n\nEnfin, certaines données techniques peuvent être collectées automatiquement, telles que le type d\'appareil utilisé, la version de l\'application ou certaines informations liées à la connexion, afin d\'assurer la sécurité et la stabilité du service.',
+      'Lorsque vous utilisez l\'application, nous pouvons collecter certaines informations personnelles que vous nous fournissez directement ou qui sont nécessaires au fonctionnement du service. Cela peut inclure votre nom, prénom, adresse e-mail, numéro de téléphone, adresse postale, ainsi que des informations associées à votre compte utilisateur.\n\nDans le cadre des paiements de soutien effectués via l\'application, certaines données relatives au paiement peuvent également être utilisées pour traiter la transaction en toute sécurité. Ces informations sont généralement traitées par des services de paiement sécurisés.\n\nSelon les fonctionnalités utilisées, nous pouvons également collecter certaines données de localisation afin d\'améliorer certaines fonctionnalités de l\'application, par exemple pour afficher des informations ou des sections proches de vous.\n\nEnfin, certaines données techniques peuvent être collectées automatiquement, telles que le type d\'appareil utilisé, la version de l\'application ou certaines informations liées à la connexion, afin d\'assurer la sécurité et la stabilité du service.',
   'privacyUseDataTitle': 'UTILISATION DES DONNÉES',
   'privacyUseDataContent':
       'Les données collectées sont utilisées pour permettre le fonctionnement de l\'application et améliorer les services proposés. Cela inclut notamment la gestion de votre compte, le traitement de vos demandes et la fourniture d\'une expérience personnalisée.',

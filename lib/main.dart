@@ -11,6 +11,10 @@ import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  if (kReleaseMode) {
+    Env.validateReleaseConfig();
+  }
+
   Stripe.publishableKey = Env.stripePublishableKey;
   await Stripe.instance.applySettings();
 

@@ -421,7 +421,7 @@ const Map<String, String> appEn = {
   'expiryDate': 'Expiry date',
   'validateMySupport': 'VALIDATE MY SUPPORT',
   'onBehalfOfCompany':
-      'I am making a donation on behalf of a company, a liberal\nprofession, or an association',
+      'I am supporting on behalf of a company, a liberal\nprofession, or an association',
   'profileUpdated': 'Profile updated successfully',
   'updateFailed': 'Update failed: {error}',
   'errorParam': 'Error: {error}',
@@ -606,10 +606,10 @@ const Map<String, String> appEn = {
       'Yes, if needed. You can report a user or even block them.',
   'faqMessagingStartQuestion': 'How do I start a conversation?',
   'faqMessagingStartAnswer': 'From a profile or a listing.',
-  'faqDonationsDestinationQuestion': 'Who do the donations go to?',
+  'faqDonationsDestinationQuestion': 'Where does support go?',
   'faqDonationsDestinationAnswer':
       'Part of it supports the app, and also shelters/associations.',
-  'faqDonationsSecureQuestion': 'Are donations secure?',
+  'faqDonationsSecureQuestion': 'Are support payments secure?',
   'faqDonationsSecureAnswer': 'Yes, through secure payment systems.',
   'faqDonationsOtherHelpQuestion': 'Can I help in another way?',
   'faqDonationsOtherHelpAnswer':
@@ -674,7 +674,7 @@ const Map<String, String> appEn = {
   'pointsStatusCompleted': 'Completed',
   'pointsStatusCancelled': 'Cancelled',
   'pointsReasonLocalMission': 'Local mission',
-  'pointsReasonPhysicalDonation': 'Physical donation',
+  'pointsReasonPhysicalDonation': 'Physical support',
   'pointsReasonAnimalReport': 'Animal report',
   'pointsReasonRewardRedemption': 'Reward redemption',
   'pointsReasonUsed': 'Points used',
@@ -690,7 +690,7 @@ const Map<String, String> appEn = {
       'We attach great importance to the protection of your personal data. When you use our application, certain information may be collected in order to enable it to function properly and improve your experience.\n\nWe are committed to processing this data in a responsible, transparent and secure manner, in accordance with the laws in force, in particular the General Data Protection Regulation (GDPR) applicable in the European Union.',
   'privacyDataCollectTitle': 'DATA WE COLLECT',
   'privacyDataCollectContent':
-      'When you use the application, we may collect certain personal information that you provide to us directly or that is necessary for the operation of the service. This may include your last name, first name, email address, telephone number, postal address, as well as information associated with your user account.\n\nAs part of donations made via the application, certain payment-related data may also be used to process the transaction securely. This information is generally processed by secure payment services.\n\nDepending on the functionalities used, we may also collect certain location data in order to improve certain functionalities of the application, for example to display information or sections close to you.\n\nFinally, certain technical data may be collected automatically, such as the type of device used, the version of the application or certain information related to the connection, in order to ensure the security and stability of the service.',
+      'When you use the application, we may collect certain personal information that you provide to us directly or that is necessary for the operation of the service. This may include your last name, first name, email address, telephone number, postal address, as well as information associated with your user account.\n\nAs part of support payments made via the application, certain payment-related data may also be used to process the transaction securely. This information is generally processed by secure payment services.\n\nDepending on the functionalities used, we may also collect certain location data in order to improve certain functionalities of the application, for example to display information or sections close to you.\n\nFinally, certain technical data may be collected automatically, such as the type of device used, the version of the application or certain information related to the connection, in order to ensure the security and stability of the service.',
   'privacyUseDataTitle': 'USE OF DATA',
   'privacyUseDataContent':
       'The data collected is used to enable the operation of the application and to improve the services offered. This includes in particular to manage your account, process your requests and provide you with a personalized experience.',

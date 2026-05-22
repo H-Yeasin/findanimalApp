@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import '../../../../core/config/env.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/network/api_endpoints.dart';
 
 class PaymentWebviewScreen extends StatefulWidget {
   final String paymentMethod; // 'stripe' or 'paypal'
@@ -57,6 +61,14 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   }
 
   String _generateStripeHtml() {
+    final stripeKey = jsonEncode(Env.stripePublishableKey);
+    final stripeInitiateUrl = jsonEncode(
+      '${Env.apiBaseUrl}${ApiEndpoints.stripeInitiate}',
+    );
+    final donorName = jsonEncode(widget.donorName);
+    final donorEmail = jsonEncode(widget.donorEmail);
+    final amount = widget.amount.toStringAsFixed(2);
+
     return """
 <!doctype html>
 <html lang="en">
@@ -137,8 +149,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
           const log = (msg) => { if(window.PaymentChannel) PaymentChannel.postMessage('log:' + msg); console.log(msg); };
           const error = (msg) => { if(window.PaymentChannel) PaymentChannel.postMessage('error:' + msg); console.error(msg); };
 
-          const BACKEND_URL = "https://api.hesteka.com";
-          const stripe = Stripe("pk_test_51ShzG65v6xjmDo05UhGMIsToDUCvN1B0ZrJlTjiYYNuwQ2xrc4ZnHAhPP3mbMQkGHo5gJqlrlQuobgQpSvLSbZOj00U9EPKZMw");
+          const stripe = Stripe($stripeKey);
           const elements = stripe.elements();
           
           const style = {
@@ -172,16 +183,16 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
 
             try {
               const payload = {
-                amount: ${widget.amount},
+                amount: $amount,
                 currency: "eur",
-                donorEmail: "${widget.donorEmail}",
-                donorName: "${widget.donorName}",
+                donorEmail: $donorEmail,
+                donorName: $donorName,
                 type: "one-time",
                 isCompanyDonation: ${widget.isCompanyDonation},
               };
               log("Initiating payment with: " + JSON.stringify(payload));
 
-              const res = await fetch(`\${BACKEND_URL}/api/v1/donations/stripe/initiate`, {
+              const res = await fetch($stripeInitiateUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
@@ -202,8 +213,8 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
                 payment_method: {
                   card,
                   billing_details: {
-                    name: "${widget.donorName}",
-                    email: "${widget.donorEmail}",
+                    name: $donorName,
+                    email: $donorEmail,
                   },
                 },
               });
@@ -243,6 +254,20 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
   }
 
   String _generatePayPalHtml() {
+    final paypalSdkUrl = Uri.https('www.paypal.com', '/sdk/js', {
+      'client-id': Env.paypalClientId,
+      'currency': 'EUR',
+    }).toString();
+    final paypalInitiateUrl = jsonEncode(
+      '${Env.apiBaseUrl}${ApiEndpoints.paypalInitiate}',
+    );
+    final paypalCaptureUrl = jsonEncode(
+      '${Env.apiBaseUrl}${ApiEndpoints.paypalCapture}',
+    );
+    final donorName = jsonEncode(widget.donorName);
+    final donorEmail = jsonEncode(widget.donorEmail);
+    final amount = widget.amount.toStringAsFixed(2);
+
     return """
 <!doctype html>
 <html lang="en">
@@ -290,7 +315,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
       <div id="message"></div>
     </div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=AfLVJRUUAehybaJ2Xy9dyBJNqWYOxGfHHf0ZMc2RtEdX2067Y1LA5X42Qwp_oxL7inGdEAr1E7uMTvxG&currency=EUR"></script>
+    <script src="$paypalSdkUrl"></script>
     <script>
       (function() {
         try {
@@ -309,13 +334,13 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
               log("PayPal createOrder initiated");
               show("loading", "Initiating secure connection...");
               try {
-                const res = await fetch("https://api.hesteka.com/api/v1/donations/paypal/initiate", {
+                const res = await fetch($paypalInitiateUrl, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
-                    amount: ${widget.amount},
-                    donorEmail: "${widget.donorEmail}",
-                    donorName: "${widget.donorName}",
+                    amount: $amount,
+                    donorEmail: $donorEmail,
+                    donorName: $donorName,
                     type: "one-time",
                     currency: "eur",
                     isCompanyDonation: ${widget.isCompanyDonation}
@@ -339,7 +364,7 @@ class _PaymentWebviewScreenState extends State<PaymentWebviewScreen> {
               log("PayPal payment approved, capturing...");
               show("loading", "Processing payment...");
               try {
-                const res = await fetch("https://api.hesteka.com/api/v1/donations/paypal/capture", {
+                const res = await fetch($paypalCaptureUrl, {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
