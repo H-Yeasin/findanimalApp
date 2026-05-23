@@ -8,7 +8,6 @@ import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_u
 
 import '../../data/models/payment_method_model.dart';
 import '../providers/payment_provider.dart';
-import '../widgets/gift_card_tile.dart';
 import '../widgets/payment_method_card.dart';
 
 class PaymentMethodsScreen extends ConsumerStatefulWidget {
@@ -100,15 +99,15 @@ class _PaymentMethodsScreenState extends ConsumerState<PaymentMethodsScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 24),
-        _buildSectionHeader(
-          context,
-          ref,
-          l10n.paymentMethodsSalesBenefits,
-          showAdd: false,
-        ),
-        const SizedBox(height: 15),
-        if (state.giftCard != null) GiftCardTile(giftCard: state.giftCard!),
+        // const SizedBox(height: 24),
+        // _buildSectionHeader(
+        //   context,
+        //   ref,
+        //   l10n.paymentMethodsSalesBenefits,
+        //   showAdd: false,
+        // ),
+        // const SizedBox(height: 15),
+        // if (state.giftCard != null) GiftCardTile(giftCard: state.giftCard!),
       ],
     );
   }

@@ -16,6 +16,18 @@ const Map<String, String> appEn = {
   'legalNotices': 'Legal notices',
   'contactSupport': 'Contact support',
   'deleteMyAccount': 'Delete my account',
+  'deleteAccountTitle': 'Delete account',
+  'deleteAccountWarning':
+      'This action is immediate and permanent. Your profile, reports, stories, comments, messages, points, rewards, and notifications will be deleted. Financial records are kept only in anonymized form for legal compliance.',
+  'deleteAccountConfirm': 'DELETE ACCOUNT',
+  'deleteAccountPasswordTitle': 'Confirm your password',
+  'deleteAccountPasswordBody':
+      'Enter your password to permanently delete your account.',
+  'deleteAccountPasswordHint': 'Password',
+  'deleteAccountPasswordRequired': 'Password is required',
+  'deleteAccountDeleting': 'Deleting...',
+  'deleteAccountSuccess': 'Your account has been deleted.',
+  'deleteAccountError': 'Could not delete account: {error}',
   'navSeek': 'SEEK',
   'navReport': 'REPORT',
   'navCommunity': 'COMMUNITY',

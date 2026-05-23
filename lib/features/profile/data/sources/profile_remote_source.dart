@@ -20,6 +20,10 @@ class ProfileRemoteSource {
     await _apiClient.put('/user/update-user', data: payload);
   }
 
+  Future<void> deleteAccount(String password) async {
+    await _apiClient.delete('/user/delete-account', data: {'password': password});
+  }
+
   Future<void> submitSupportMessage(Map<String, dynamic> payload) async {
     await _apiClient.post('/support-messages', data: payload);
   }

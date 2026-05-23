@@ -47,6 +47,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
+  Future<void> deleteAccount(String password) async {
+    await _apiClient.delete('/user/delete-account', data: {'password': password});
+  }
+
+  @override
   Future<void> submitSupportMessage(Map<String, dynamic> data) async {
     await _apiClient.post('/support-messages', data: data);
   }
