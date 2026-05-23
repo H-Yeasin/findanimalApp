@@ -16,6 +16,18 @@ const Map<String, String> appFr = {
   'legalNotices': 'Mentions légales',
   'contactSupport': 'Contacter le support',
   'deleteMyAccount': 'Supprimer mon compte',
+  'deleteAccountTitle': 'Supprimer le compte',
+  'deleteAccountWarning':
+      'Cette action est immediate et definitive. Votre profil, vos signalements, stories, commentaires, messages, points, recompenses et notifications seront supprimes. Les enregistrements financiers sont conserves uniquement sous forme anonymisee pour les obligations legales.',
+  'deleteAccountConfirm': 'SUPPRIMER LE COMPTE',
+  'deleteAccountPasswordTitle': 'Confirmez votre mot de passe',
+  'deleteAccountPasswordBody':
+      'Saisissez votre mot de passe pour supprimer definitivement votre compte.',
+  'deleteAccountPasswordHint': 'Mot de passe',
+  'deleteAccountPasswordRequired': 'Le mot de passe est requis',
+  'deleteAccountDeleting': 'Suppression...',
+  'deleteAccountSuccess': 'Votre compte a ete supprime.',
+  'deleteAccountError': 'Impossible de supprimer le compte : {error}',
   'navSeek': 'CHERCHER',
   'navReport': 'SIGNALER',
   'navCommunity': 'COMMUNAUTÉ',

@@ -99,6 +99,18 @@ class AppLocalizations {
   String get legalNotices => _text('legalNotices');
   String get contactSupport => _text('contactSupport');
   String get deleteMyAccount => _text('deleteMyAccount');
+  String get deleteAccountTitle => _text('deleteAccountTitle');
+  String get deleteAccountWarning => _text('deleteAccountWarning');
+  String get deleteAccountConfirm => _text('deleteAccountConfirm');
+  String get deleteAccountPasswordTitle => _text('deleteAccountPasswordTitle');
+  String get deleteAccountPasswordBody => _text('deleteAccountPasswordBody');
+  String get deleteAccountPasswordHint => _text('deleteAccountPasswordHint');
+  String get deleteAccountPasswordRequired =>
+      _text('deleteAccountPasswordRequired');
+  String get deleteAccountDeleting => _text('deleteAccountDeleting');
+  String get deleteAccountSuccess => _text('deleteAccountSuccess');
+  String deleteAccountError(String error) =>
+      text('deleteAccountError', params: {'error': error});
   String get navSeek => _text('navSeek');
   String get navReport => _text('navReport');
   String get navCommunity => _text('navCommunity');

@@ -62,3 +62,24 @@ class ContactSupport extends _$ContactSupport {
     });
   }
 }
+
+class DeleteAccountNotifier extends AutoDisposeAsyncNotifier<void> {
+  @override
+  void build() {}
+
+  Future<void> deleteAccount(String password) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(profileRepositoryProvider).deleteAccount(password);
+    });
+
+    if (state.hasError) {
+      throw state.error!;
+    }
+  }
+}
+
+final deleteAccountProvider =
+    AutoDisposeAsyncNotifierProvider<DeleteAccountNotifier, void>(
+      DeleteAccountNotifier.new,
+    );
