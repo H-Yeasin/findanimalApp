@@ -63,10 +63,15 @@ final dioProvider = Provider<Dio>((ref) {
             return null;
           }
 
-          final token =
-              Map<String, dynamic>.from(data)['accessToken'] as String? ?? '';
+          final dataMap = Map<String, dynamic>.from(data);
+          final token = dataMap['accessToken'] as String? ?? '';
           if (token.isEmpty) {
             return null;
+          }
+
+          final newRefreshToken = dataMap['refreshToken'] as String? ?? '';
+          if (newRefreshToken.isNotEmpty) {
+            await secureStorage.writeRefreshToken(newRefreshToken);
           }
 
           await secureStorage.writeAccessToken(token);

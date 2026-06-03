@@ -26,7 +26,18 @@ final userLocationProvider = FutureProvider<LatLng?>((ref) async {
     );
     if (!hasPermission) return null;
 
-    final position = await Geolocator.getCurrentPosition();
+    // Try last known position first (fastest, helps with approximate location)
+    Position? position = await Geolocator.getLastKnownPosition();
+
+    // If null, get current position with timeout and medium accuracy using modern LocationSettings
+    position ??= await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.medium,
+        distanceFilter:
+            10, // Optional: minimum distance (in meters) before an update is triggered
+      ),
+    ).timeout(const Duration(seconds: 15));
+
     return LatLng(position.latitude, position.longitude);
   } catch (e) {
     return null;
