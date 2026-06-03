@@ -5,6 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/profile/data/repositories/profile_repository_impl.dart';
+import '../routing/app_router.dart';
+import '../routing/route_names.dart';
 
 final notificationServiceProvider = Provider<NotificationService>((ref) {
   return NotificationService(ref);
@@ -44,9 +46,17 @@ class NotificationService {
       _showLocalNotification(message);
     });
 
-    // 4. Handle background/terminated state when app is opened via notification
+    // Check if app was launched from terminated state via a notification tap
+    final initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        _handleNotificationTap(initialMessage);
+      });
+    }
+
+    // 4. Handle background state when app is opened via notification
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      // Navigate to specific screen based on message data
+      _handleNotificationTap(message);
     });
 
     // 5. Sync token when authenticated
@@ -63,6 +73,19 @@ class NotificationService {
         _ref.read(profileRepositoryProvider).updateFcmToken(newToken);
       }
     });
+  }
+
+  void _handleNotificationTap(RemoteMessage message) {
+    final type = message.data['type'];
+    final router = _ref.read(appRouterProvider);
+
+    if (type == 'report' || type == 'new_report') {
+      router.push(RouteNames.reports);
+    } else if (type == 'comment' || type == 'like') {
+      router.push(RouteNames.mainCommunity);
+    } else {
+      router.push(RouteNames.mainNotifications);
+    }
   }
 
   Future<void> syncToken() async {

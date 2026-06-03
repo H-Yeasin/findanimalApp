@@ -213,7 +213,7 @@ class NotificationScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      notification.description,
+                      _getNotificationBody(notification),
                       style: AppTextStyles.body.copyWith(
                         fontSize: 14,
                         color: Colors.black54,
@@ -240,19 +240,79 @@ class NotificationScreen extends ConsumerWidget {
     );
   }
 
+  /// Returns a proper French body text for each notification type.
+  /// Falls back to the server-provided description if it is not empty.
+  String _getNotificationBody(NotificationModel notification) {
+    // If the server already sent a meaningful description, use it.
+    if (notification.description.isNotEmpty) {
+      return notification.description;
+    }
+
+    // Fallback French body per type
+    switch (notification.type) {
+      case 'new_report':
+        return 'Un nouveau signalement d\'animal a été créé près de chez vous. Consultez-le pour aider !';
+      case 'new_mission':
+        return 'Une nouvelle mission locale est disponible à proximité. Inscrivez-vous pour participer !';
+      case 'points_earned':
+        return 'Félicitations ! Vous avez gagné des points sur votre compte Hesteka.';
+      case 'mission_cancelled':
+        return 'Une mission locale à laquelle vous étiez inscrit(e) a été annulée.';
+      case 'chat_reply':
+        return 'Vous avez reçu une nouvelle réponse dans la communauté.';
+      case 'reward_update':
+        return 'Le statut de votre échange de récompense a été mis à jour.';
+      case 'new_payment':
+        return 'Un nouveau paiement a été enregistré. Merci pour votre soutien !';
+      case 'new_donation':
+        return 'Votre preuve de soutien a été soumise avec succès.';
+      case 'new_partner':
+        return 'Un nouveau partenaire a rejoint la communauté Hesteka.';
+      case 'account_update':
+        return 'Votre compte a été mis à jour avec succès.';
+      case 'system':
+        return 'Vous avez une nouvelle notification du système Hesteka.';
+      // Legacy types from old frontend
+      case 'comment':
+        return 'Quelqu\'un a commenté votre publication.';
+      case 'like':
+        return 'Quelqu\'un a aimé votre publication.';
+      case 'story':
+        return 'Une nouvelle story a été partagée dans la communauté.';
+      default:
+        return 'Vous avez une nouvelle notification.';
+    }
+  }
+
   IconData _getNotificationIcon(String type) {
     switch (type) {
+      case 'new_report':
+        return Icons.pets_outlined;
+      case 'new_mission':
+        return Icons.assignment_outlined;
+      case 'points_earned':
+        return Icons.stars_outlined;
+      case 'mission_cancelled':
+        return Icons.event_busy_outlined;
+      case 'chat_reply':
       case 'comment':
-        return Icons.comment_outlined;
+        return Icons.chat_bubble_outline;
+      case 'reward_update':
+        return Icons.card_giftcard_outlined;
+      case 'new_payment':
+        return Icons.payment_outlined;
+      case 'new_donation':
+        return Icons.volunteer_activism_outlined;
+      case 'new_partner':
+        return Icons.handshake_outlined;
+      case 'account_update':
+        return Icons.person_outline;
       case 'like':
         return Icons.favorite_border;
       case 'story':
-        return Icons.history_toggle_off;
-      case 'report':
-      case 'new_report':
-        return Icons.report_problem_outlined;
-      case 'donation':
-        return Icons.volunteer_activism_outlined;
+        return Icons.auto_stories_outlined;
+      case 'system':
+        return Icons.info_outline;
       default:
         return Icons.notifications_none;
     }
@@ -260,17 +320,35 @@ class NotificationScreen extends ConsumerWidget {
 
   Color _getNotificationColor(String type) {
     switch (type) {
-      case 'comment':
-        return Colors.blue;
-      case 'like':
-        return Colors.pink;
-      case 'report':
       case 'new_report':
-        return Colors.red;
-      case 'donation':
-        return Colors.green;
+        return const Color(0xFFE65100); // deep orange
+      case 'new_mission':
+        return const Color(0xFF1565C0); // blue
+      case 'points_earned':
+        return const Color(0xFFF9A825); // amber
+      case 'mission_cancelled':
+        return const Color(0xFFC62828); // red
+      case 'chat_reply':
+      case 'comment':
+        return const Color(0xFF1976D2); // blue
+      case 'reward_update':
+        return const Color(0xFF7B1FA2); // purple
+      case 'new_payment':
+        return const Color(0xFF00838F); // teal
+      case 'new_donation':
+        return const Color(0xFF2E7D32); // green
+      case 'new_partner':
+        return const Color(0xFF4527A0); // deep purple
+      case 'account_update':
+        return const Color(0xFF455A64); // blue-grey
+      case 'like':
+        return const Color(0xFFD81B60); // pink
+      case 'story':
+        return const Color(0xFFFF6F00); // amber dark
+      case 'system':
+        return const Color(0xFF546E7A); // blue-grey
       default:
-        return const Color(0xFFBA4A22);
+        return const Color(0xFFBA4A22); // brand primary
     }
   }
 

@@ -7,7 +7,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'core/config/env.dart';
 import 'core/services/notification_service.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  debugPrint("Handling a background message: ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +28,7 @@ void main() async {
   // Initialize Firebase
   try {
     await Firebase.initializeApp();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     debugPrint("Firebase initialized successfully");
   } catch (e) {
     if (kDebugMode) {
