@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/providers/location_provider.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../Collection_Point/collection_point.dart';
 import '../../../Collection_Point/collections_points_details.dart';
@@ -60,6 +61,8 @@ class _HubCollectionPointsSectionState
   Widget build(BuildContext context) {
     const brandPrimary = Color(0xFFBA4A22);
     final l10n = widget.l10n;
+    final myLocationEnabled =
+        ref.watch(locationPermissionProvider).valueOrNull ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,6 +92,7 @@ class _HubCollectionPointsSectionState
                       filters: PartnerAdsFilters(),
                       currentLocation: null,
                       selectedPoint: _selectedPoint,
+                      myLocationEnabled: myLocationEnabled,
                       onMapCreated: (controller) {
                         _mapController = controller;
                       },

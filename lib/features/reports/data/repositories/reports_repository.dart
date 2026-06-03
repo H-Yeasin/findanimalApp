@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
@@ -13,9 +14,11 @@ class ReportsRepository {
   final ApiClient _apiClient;
 
   Future<List<ReportModel>> getMyReports() async {
-    final response = await _apiClient.get(ApiEndpoints.getMyReports);
-    final List<dynamic> data = response.data['data'];
-    return data.map((json) => ReportModel.fromJson(json)).toList();
+    final response = await _apiClient.get(
+      ApiEndpoints.getMyReports,
+      options: Options(responseType: ResponseType.plain),
+    );
+    return compute(parseMyReportsResponse, response.data as String? ?? '');
   }
 
   Future<void> createReport(ReportFormState state) async {
@@ -160,3 +163,17 @@ class ReportsRepository {
 final reportsRepositoryProvider = Provider<ReportsRepository>((ref) {
   return ReportsRepository(ref.watch(apiClientProvider));
 });
+
+List<ReportModel> parseMyReportsResponse(String responseBody) {
+  final decoded = jsonDecode(responseBody);
+  if (decoded is! Map) return [];
+
+  final envelope = Map<String, dynamic>.from(decoded);
+  final data = envelope['data'];
+  if (data is! List) return [];
+
+  return data
+      .whereType<Map>()
+      .map((json) => ReportModel.fromJson(Map<String, dynamic>.from(json)))
+      .toList();
+}

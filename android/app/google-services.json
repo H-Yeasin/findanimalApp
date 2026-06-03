@@ -12,7 +12,20 @@
           "package_name": "com.emmafve.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "80505260740-9av3vam2d9g335j6at3blkubdvoddnkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.emmafve.app",
+            "certificate_hash": "e82d3020f37201574f5e5865fc774b863629f7ed"
+          }
+        },
+        {
+          "client_id": "80505260740-l6nj94d60lokkif28jc5stpv0rava8hm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD8miibRdch8CZEcmKA5CB4254ZHmcNYgM"
@@ -20,7 +33,20 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "80505260740-l6nj94d60lokkif28jc5stpv0rava8hm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "80505260740-n8tldlo12cm62ma3i0p7dcrm408fdvj2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.emmafve.ios",
+                "app_store_id": "94402941"
+              }
+            }
+          ]
         }
       }
     }

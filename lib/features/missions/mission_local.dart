@@ -159,6 +159,8 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
     final missionsForMap = missionsAsync.valueOrNull?.data ?? const [];
     final filters = ref.watch(missionsFiltersProvider);
     final l10n = AppLocalizations.of(context);
+    final myLocationEnabled =
+        ref.watch(locationPermissionProvider).valueOrNull ?? false;
 
     final center = (filters['lat'] != null && filters['lng'] != null)
         ? LatLng(filters['lat'] as double, filters['lng'] as double)
@@ -180,6 +182,7 @@ class _MissionLocalScreenState extends ConsumerState<MissionLocalScreen> {
             LocalMissionMapSection(
               currentPosition: center,
               markers: _buildMarkers(missionsForMap),
+              myLocationEnabled: myLocationEnabled,
               onMapCreated: (controller) => _mapController = controller,
               onLocateMe: _handleLocateMe,
               onTapMap: () {

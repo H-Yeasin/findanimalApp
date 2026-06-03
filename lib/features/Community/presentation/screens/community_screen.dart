@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/features/Community/presentation/providers/community_providers.dart';
+import 'package:hesteka_frontend/core/providers/location_provider.dart';
 import 'package:hesteka_frontend/features/Community/presentation/widgets/community_reactions_dialog.dart';
 import 'package:hesteka_frontend/features/Community/presentation/widgets/community_top_bar.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
@@ -39,6 +40,8 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
     final chatAsync = ref.watch(localChatProvider);
     final profileImage = ref.watch(currentUserProvider)?.profileImage;
     final reportsAsync = ref.watch(homeReportsProvider);
+    final myLocationEnabled =
+        ref.watch(locationPermissionProvider).valueOrNull ?? false;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFBF4E9),
@@ -96,6 +99,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen>
                       currentPosition: currentPosition,
                       markers: buildReportMarkers(),
                       hasReportsError: reportsAsync.hasError,
+                      myLocationEnabled: myLocationEnabled,
                       onMapCreated: (controller) => mapController = controller,
                       onCameraMove: (position) {
                         currentPosition = position.target;

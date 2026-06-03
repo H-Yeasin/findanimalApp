@@ -9,6 +9,7 @@ class LocalMissionMapSection extends StatelessWidget {
   const LocalMissionMapSection({
     required this.currentPosition,
     required this.markers,
+    required this.myLocationEnabled,
     required this.onMapCreated,
     required this.onLocateMe,
     this.onTapMap,
@@ -19,6 +20,7 @@ class LocalMissionMapSection extends StatelessWidget {
 
   final LatLng currentPosition;
   final Set<Marker> markers;
+  final bool myLocationEnabled;
   final ValueChanged<GoogleMapController> onMapCreated;
   final VoidCallback onLocateMe;
   final VoidCallback? onTapMap;
@@ -43,7 +45,7 @@ class LocalMissionMapSection extends StatelessWidget {
               onTap: (_) => onTapMap?.call(),
               markers: markers,
               circles: circles,
-              myLocationEnabled: true,
+              myLocationEnabled: myLocationEnabled,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,

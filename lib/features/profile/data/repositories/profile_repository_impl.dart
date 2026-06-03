@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_provider.dart';
 import '../models/profile_model.dart';
 import '../../domain/repositories/profile_repository.dart';
@@ -17,9 +21,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<ProfileModel> getMyProfile() async {
-    final response = await _apiClient.get('/user/get-my-profile');
+    final response = await _apiClient.get(
+      ApiEndpoints.myProfile,
+      options: Options(responseType: ResponseType.plain),
+    );
     try {
-      return ProfileModel.fromJson(response.data['data'] as Map<String, dynamic>);
+      return compute(parseProfileResponse, response.data as String? ?? '');
     } catch (e, stack) {
       print('DEBUG: ProfileModel.fromJson error: $e');
       print('DEBUG: Stack: $stack');
@@ -55,4 +62,19 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<void> submitSupportMessage(Map<String, dynamic> data) async {
     await _apiClient.post('/support-messages', data: data);
   }
+}
+
+ProfileModel parseProfileResponse(String responseBody) {
+  final decoded = jsonDecode(responseBody);
+  if (decoded is! Map) {
+    throw const FormatException('Profile response must be a JSON object.');
+  }
+
+  final envelope = Map<String, dynamic>.from(decoded);
+  final data = envelope['data'];
+  if (data is! Map) {
+    throw const FormatException('Profile response is missing data.');
+  }
+
+  return ProfileModel.fromJson(Map<String, dynamic>.from(data));
 }

@@ -19,6 +19,7 @@ class CollectionPointsMap extends StatefulWidget {
     required this.filters,
     required this.currentLocation,
     required this.selectedPoint,
+    required this.myLocationEnabled,
     required this.onMapCreated,
     required this.onMoveCamera,
     required this.onPointSelected,
@@ -29,6 +30,7 @@ class CollectionPointsMap extends StatefulWidget {
   final PartnerAdsFilters filters;
   final LatLng? currentLocation;
   final PartnerAdModel? selectedPoint;
+  final bool myLocationEnabled;
   final ValueChanged<GoogleMapController> onMapCreated;
   final MoveCameraCallback onMoveCamera;
   final ValueChanged<PartnerAdModel?> onPointSelected;
@@ -102,7 +104,7 @@ class _CollectionPointsMapState extends State<CollectionPointsMap> {
                 zoom: 13,
               ),
               markers: markers,
-              myLocationEnabled: true,
+              myLocationEnabled: widget.myLocationEnabled,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
             ),

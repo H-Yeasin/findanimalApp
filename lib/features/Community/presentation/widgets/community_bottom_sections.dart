@@ -17,6 +17,7 @@ class CommunityBottomSections extends StatelessWidget {
     required this.currentPosition,
     required this.markers,
     required this.hasReportsError,
+    required this.myLocationEnabled,
     required this.onMapCreated,
     required this.onCameraMove,
     required this.onLocateMe,
@@ -25,6 +26,7 @@ class CommunityBottomSections extends StatelessWidget {
   final LatLng currentPosition;
   final Set<Marker> markers;
   final bool hasReportsError;
+  final bool myLocationEnabled;
   final ValueChanged<GoogleMapController> onMapCreated;
   final ValueChanged<CameraPosition> onCameraMove;
   final VoidCallback onLocateMe;
@@ -53,6 +55,7 @@ class CommunityBottomSections extends StatelessWidget {
           currentPosition: currentPosition,
           markers: markers,
           hasReportsError: hasReportsError,
+          myLocationEnabled: myLocationEnabled,
           onMapCreated: onMapCreated,
           onCameraMove: onCameraMove,
           onLocateMe: onLocateMe,
@@ -72,6 +75,7 @@ class _CommunityMapSection extends StatelessWidget {
     required this.currentPosition,
     required this.markers,
     required this.hasReportsError,
+    required this.myLocationEnabled,
     required this.onMapCreated,
     required this.onCameraMove,
     required this.onLocateMe,
@@ -80,6 +84,7 @@ class _CommunityMapSection extends StatelessWidget {
   final LatLng currentPosition;
   final Set<Marker> markers;
   final bool hasReportsError;
+  final bool myLocationEnabled;
   final ValueChanged<GoogleMapController> onMapCreated;
   final ValueChanged<CameraPosition> onCameraMove;
   final VoidCallback onLocateMe;
@@ -110,7 +115,7 @@ class _CommunityMapSection extends StatelessWidget {
                 ),
                 onMapCreated: onMapCreated,
                 markers: markers,
-                myLocationEnabled: true,
+                myLocationEnabled: myLocationEnabled,
                 myLocationButtonEnabled: false,
                 zoomControlsEnabled: false,
                 mapToolbarEnabled: false,

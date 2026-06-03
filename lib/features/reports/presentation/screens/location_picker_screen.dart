@@ -20,6 +20,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
   GoogleMapController? _mapController;
   LatLng _selectedLocation = const LatLng(48.8566, 2.3522); // Default to Paris
   bool _isMoving = false;
+  bool _myLocationEnabled = false;
   String _addressLine = 'Locating...';
 
   @override
@@ -44,8 +45,10 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
     if (permission == LocationPermission.deniedForever) return;
 
     final position = await Geolocator.getCurrentPosition();
+    if (!mounted) return;
     setState(() {
       _selectedLocation = LatLng(position.latitude, position.longitude);
+      _myLocationEnabled = true;
     });
     _mapController?.animateCamera(
       CameraUpdate.newLatLngZoom(_selectedLocation, 15),
@@ -104,7 +107,7 @@ class _LocationPickerScreenState extends ConsumerState<LocationPickerScreen> {
               setState(() => _isMoving = false);
               _reverseGeocode(_selectedLocation);
             },
-            myLocationEnabled: true,
+            myLocationEnabled: _myLocationEnabled,
             myLocationButtonEnabled: false,
             zoomControlsEnabled: false,
           ),

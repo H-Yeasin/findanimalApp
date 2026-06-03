@@ -117,6 +117,8 @@ class _CollectionPointScreenState extends ConsumerState<CollectionPointScreen> {
     final pointsAsync = ref.watch(allCollectionPointsProvider);
     final filters = ref.watch(partnerAdsFiltersProvider);
     final filterNotifier = ref.read(partnerAdsFiltersProvider.notifier);
+    final myLocationEnabled =
+        ref.watch(locationPermissionProvider).valueOrNull ?? false;
 
     ref.listen<PartnerAdsFilters>(partnerAdsFiltersProvider, (_, next) {
       if (next.lat != null && next.lng != null) {
@@ -155,6 +157,7 @@ class _CollectionPointScreenState extends ConsumerState<CollectionPointScreen> {
                         filters: filters,
                         currentLocation: _currentLocation,
                         selectedPoint: _selectedPoint,
+                        myLocationEnabled: myLocationEnabled,
                         onMapCreated: (controller) {
                           _mapController = controller;
                         },
