@@ -227,7 +227,7 @@ class AuthFilledPillButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.isLoading = false,
-    this.width = 238,
+    this.width = 250,
     this.height = 40,
     super.key,
   });
