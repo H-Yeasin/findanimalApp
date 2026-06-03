@@ -43,7 +43,7 @@ class ShopCommitmentsSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 220,
+                  width: 240,
                   height: 150,
                   child: _CommitmentCard(
                     title: l10n.shopCommitment1Title,
@@ -54,7 +54,7 @@ class ShopCommitmentsSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 SizedBox(
-                  width: 200,
+                  width: 240,
                   height: 150,
                   child: _CommitmentCard(
                     title: l10n.shopCommitment2Title,
@@ -65,7 +65,7 @@ class ShopCommitmentsSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 SizedBox(
-                  width: 200,
+                  width: 240,
                   height: 150,
                   child: _CommitmentCard(
                     title: l10n.shopCommitment3Title,

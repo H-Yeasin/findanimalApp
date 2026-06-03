@@ -179,13 +179,13 @@ class _AuthLoginScreenState extends ConsumerState<AuthLoginScreen> {
               AuthSocialPillButton(
                 leading: const Icon(Icons.apple, color: Colors.white, size: 20),
                 label: l10n.continueWithApple,
-                onPressed: () {},
+                onPressed: isLoading ? null : () { ref.read(authSessionProvider.notifier).loginWithApple(); },
               ),
               const SizedBox(height: 10),
               AuthSocialPillButton(
                 leading: const AuthGoogleGlyph(),
                 label: l10n.continueWithGoogle,
-                onPressed: () {},
+                onPressed: isLoading ? null : () { ref.read(authSessionProvider.notifier).loginWithGoogle(); },
               ),
             ],
           ],

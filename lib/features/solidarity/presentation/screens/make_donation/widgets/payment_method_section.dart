@@ -33,85 +33,27 @@ class PaymentMethodSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
-          _inputLabel(l10n.cardNumber),
-          _textField(
-            hint: '1234 1234 1234 1234',
-            keyboardType: TextInputType.number,
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _inputLabel(l10n.expiryDate),
-                    _textField(
-                      hint: 'MM / AA',
-                      keyboardType: TextInputType.datetime,
-                    ),
-                  ],
-                ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              'You will be securely redirected to Stripe to enter your card details.',
+              style: AppTextStyles.body.copyWith(
+                color: primaryOrange.withValues(alpha: 0.8),
+                fontSize: 14,
+                fontStyle: FontStyle.italic,
               ),
-              const SizedBox(width: 15),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _inputLabel('CCV'),
-                    _textField(hint: 'CCV', keyboardType: TextInputType.number),
-                  ],
-                ),
-              ),
-            ],
+              textAlign: TextAlign.center,
+            ),
           ),
           if (state.error != null) ...[
             const SizedBox(height: 10),
             Text(
               state.error!,
               style: AppTextStyles.body.copyWith(color: Colors.red, fontSize: 12),
+              textAlign: TextAlign.center,
             ),
           ],
         ],
-      ),
-    );
-  }
-
-  Widget _inputLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0, top: 4.0, left: 4.0),
-      child: Text(
-        text,
-        style: AppTextStyles.body.copyWith(
-          color: primaryOrange,
-          fontWeight: FontWeight.bold,
-          fontSize: 14,
-        ),
-      ),
-    );
-  }
-
-  Widget _textField({required String hint, TextInputType? keyboardType}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextFormField(
-        keyboardType: keyboardType,
-        style: AppTextStyles.body.copyWith(color: Colors.white, fontSize: 14),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: AppTextStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.6)),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 14,
-          ),
-          filled: true,
-          fillColor: primaryOrange,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide.none,
-          ),
-        ),
       ),
     );
   }

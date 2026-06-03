@@ -130,6 +130,15 @@ class _PartnerProfileScreenState extends ConsumerState<PartnerProfileScreen> {
                     compact: true,
                   ),
                 ],
+                if (profile.website != null &&
+                    profile.website!.trim().isNotEmpty) ...[
+                  const Divider(color: PartnerUiColors.brand),
+                  PartnerInfoRow(
+                    label: 'WEBSITE',
+                    value: profile.website!,
+                    compact: true,
+                  ),
+                ],
                 const SizedBox(height: 20),
                 SizedBox(
                   width: 280,

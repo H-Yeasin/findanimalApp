@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../core/localization/app_localizations.dart';
+import '../../../../core/network/paginated_response.dart';
 import '../../data/models/report_model.dart';
 import '../providers/seek_report_filters_provider.dart';
 import '../providers/seek_reports_provider.dart';
@@ -17,12 +18,16 @@ import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 class SeekReportsMapSection extends ConsumerStatefulWidget {
   const SeekReportsMapSection({
     required this.currentLocation,
+    required this.isMapReady,
+    required this.onMapReady,
     required this.onLocateMe,
     required this.onShowFilters,
     super.key,
   });
 
   final LatLng? currentLocation;
+  final bool isMapReady;
+  final VoidCallback onMapReady;
   final VoidCallback onLocateMe;
   final ValueChanged<String> onShowFilters;
 
@@ -72,7 +77,8 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     final radius = filters['radius'] ?? 5;
     final sort = filters['sort']?.toString() ?? 'descending';
     final hasLocation = filters.containsKey('lat');
-    final reportsAsync = ref.watch(seekReportsProvider);
+    final AsyncValue<PaginatedResponse<ReportModel>>? reportsAsync =
+        widget.isMapReady ? ref.watch(seekReportsProvider) : null;
     final mapTarget =
         _locationFromFilters(filters) ??
         widget.currentLocation ??
@@ -106,8 +112,8 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
     final selectedReport = ref.watch(selectedSeekReportProvider);
 
     final markers = <Marker>{};
-    if (reportsAsync.hasValue) {
-      for (final report in reportsAsync.value!.data) {
+    if (widget.isMapReady && reportsAsync?.hasValue == true) {
+      for (final report in reportsAsync!.value!.data) {
         if (report.location.coordinates.length >= 2) {
           markers.add(
             Marker(
@@ -189,6 +195,7 @@ class _SeekReportsMapSectionState extends ConsumerState<SeekReportsMapSection> {
                 },
                 onMapCreated: (controller) {
                   _mapController = controller;
+                  widget.onMapReady();
                   final currentTarget =
                       _locationFromFilters(
                         ref.read(seekReportFiltersProvider),

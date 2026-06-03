@@ -28,6 +28,32 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<AuthSessionModel> googleLogin(String idToken) async {
+    try {
+      return await _remoteSource.googleLogin(idToken);
+    } on DioException catch (error) {
+      throw Exception(NetworkExceptions.fromDio(error));
+    }
+  }
+
+  @override
+  Future<AuthSessionModel> appleLogin({
+    required String idToken,
+    String? firstName,
+    String? lastName,
+  }) async {
+    try {
+      return await _remoteSource.appleLogin(
+        idToken: idToken,
+        firstName: firstName,
+        lastName: lastName,
+      );
+    } on DioException catch (error) {
+      throw Exception(NetworkExceptions.fromDio(error));
+    }
+  }
+
+  @override
   Future<void> registerUser(RegisterRequestModel request) async {
     try {
       await _remoteSource.registerUser(request);

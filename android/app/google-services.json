@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "734272506471",
-    "project_id": "enna-698ff",
-    "storage_bucket": "enna-698ff.firebasestorage.app"
+    "project_number": "80505260740",
+    "project_id": "hesteka-d22bb",
+    "storage_bucket": "hesteka-d22bb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:734272506471:android:e9baa04108e90ed49762c2",
+        "mobilesdk_app_id": "1:80505260740:android:f0d6c4755b90e409829791",
         "android_client_info": {
           "package_name": "com.emmafve.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyApOyJacz_J9qmgaQPIkLZBz7v_hJMeJv8"
+          "current_key": "AIzaSyD8miibRdch8CZEcmKA5CB4254ZHmcNYgM"
         }
       ],
       "services": {

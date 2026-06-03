@@ -32,6 +32,7 @@ mixin _$ProfileModel {
   String? get postalCode => throw _privateConstructorUsedError;
   String? get country => throw _privateConstructorUsedError;
   String? get company => throw _privateConstructorUsedError;
+  String? get website => throw _privateConstructorUsedError;
   int? get pointsBalance => throw _privateConstructorUsedError;
   String? get selfIntroduction => throw _privateConstructorUsedError;
   String? get profession => throw _privateConstructorUsedError;
@@ -69,6 +70,7 @@ abstract class $ProfileModelCopyWith<$Res> {
     String? postalCode,
     String? country,
     String? company,
+    String? website,
     int? pointsBalance,
     String? selfIntroduction,
     String? profession,
@@ -108,6 +110,7 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
     Object? postalCode = freezed,
     Object? country = freezed,
     Object? company = freezed,
+    Object? website = freezed,
     Object? pointsBalance = freezed,
     Object? selfIntroduction = freezed,
     Object? profession = freezed,
@@ -158,6 +161,10 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
             company: freezed == company
                 ? _value.company
                 : company // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            website: freezed == website
+                ? _value.website
+                : website // ignore: cast_nullable_to_non_nullable
                       as String?,
             pointsBalance: freezed == pointsBalance
                 ? _value.pointsBalance
@@ -245,6 +252,7 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
     String? postalCode,
     String? country,
     String? company,
+    String? website,
     int? pointsBalance,
     String? selfIntroduction,
     String? profession,
@@ -285,6 +293,7 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
     Object? postalCode = freezed,
     Object? country = freezed,
     Object? company = freezed,
+    Object? website = freezed,
     Object? pointsBalance = freezed,
     Object? selfIntroduction = freezed,
     Object? profession = freezed,
@@ -335,6 +344,10 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
         company: freezed == company
             ? _value.company
             : company // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        website: freezed == website
+            ? _value.website
+            : website // ignore: cast_nullable_to_non_nullable
                   as String?,
         pointsBalance: freezed == pointsBalance
             ? _value.pointsBalance
@@ -387,6 +400,7 @@ class _$ProfileModelImpl implements _ProfileModel {
     this.postalCode,
     this.country,
     this.company,
+    this.website,
     this.pointsBalance,
     this.selfIntroduction,
     this.profession,
@@ -422,6 +436,8 @@ class _$ProfileModelImpl implements _ProfileModel {
   @override
   final String? company;
   @override
+  final String? website;
+  @override
   final int? pointsBalance;
   @override
   final String? selfIntroduction;
@@ -440,7 +456,7 @@ class _$ProfileModelImpl implements _ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, address: $address, city: $city, postalCode: $postalCode, country: $country, company: $company, pointsBalance: $pointsBalance, selfIntroduction: $selfIntroduction, profession: $profession, role: $role, status: $status, isVerified: $isVerified, profileImage: $profileImage, location: $location)';
+    return 'ProfileModel(id: $id, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, address: $address, city: $city, postalCode: $postalCode, country: $country, company: $company, website: $website, pointsBalance: $pointsBalance, selfIntroduction: $selfIntroduction, profession: $profession, role: $role, status: $status, isVerified: $isVerified, profileImage: $profileImage, location: $location)';
   }
 
   @override
@@ -461,6 +477,7 @@ class _$ProfileModelImpl implements _ProfileModel {
                 other.postalCode == postalCode) &&
             (identical(other.country, country) || other.country == country) &&
             (identical(other.company, company) || other.company == company) &&
+            (identical(other.website, website) || other.website == website) &&
             (identical(other.pointsBalance, pointsBalance) ||
                 other.pointsBalance == pointsBalance) &&
             (identical(other.selfIntroduction, selfIntroduction) ||
@@ -479,7 +496,7 @@ class _$ProfileModelImpl implements _ProfileModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     id,
     firstName,
@@ -491,6 +508,7 @@ class _$ProfileModelImpl implements _ProfileModel {
     postalCode,
     country,
     company,
+    website,
     pointsBalance,
     selfIntroduction,
     profession,
@@ -499,7 +517,7 @@ class _$ProfileModelImpl implements _ProfileModel {
     isVerified,
     profileImage,
     location,
-  );
+  ]);
 
   /// Create a copy of ProfileModel
   /// with the given fields replaced by the non-null parameter values.
@@ -527,6 +545,7 @@ abstract class _ProfileModel implements ProfileModel {
     final String? postalCode,
     final String? country,
     final String? company,
+    final String? website,
     final int? pointsBalance,
     final String? selfIntroduction,
     final String? profession,
@@ -562,6 +581,8 @@ abstract class _ProfileModel implements ProfileModel {
   @override
   String? get company;
   @override
+  String? get website;
+  @override
   int? get pointsBalance;
   @override
   String? get selfIntroduction;
@@ -592,7 +613,9 @@ ProfileImage _$ProfileImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ProfileImage {
+  @JsonKey(name: 'public_id')
   String? get public_id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'secure_url')
   String? get secure_url => throw _privateConstructorUsedError;
 
   /// Serializes this ProfileImage to a JSON map.
@@ -612,7 +635,10 @@ abstract class $ProfileImageCopyWith<$Res> {
     $Res Function(ProfileImage) then,
   ) = _$ProfileImageCopyWithImpl<$Res, ProfileImage>;
   @useResult
-  $Res call({String? public_id, String? secure_url});
+  $Res call({
+    @JsonKey(name: 'public_id') String? public_id,
+    @JsonKey(name: 'secure_url') String? secure_url,
+  });
 }
 
 /// @nodoc
@@ -655,7 +681,10 @@ abstract class _$$ProfileImageImplCopyWith<$Res>
   ) = __$$ProfileImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? public_id, String? secure_url});
+  $Res call({
+    @JsonKey(name: 'public_id') String? public_id,
+    @JsonKey(name: 'secure_url') String? secure_url,
+  });
 }
 
 /// @nodoc
@@ -690,14 +719,19 @@ class __$$ProfileImageImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ProfileImageImpl implements _ProfileImage {
-  const _$ProfileImageImpl({this.public_id, this.secure_url});
+  const _$ProfileImageImpl({
+    @JsonKey(name: 'public_id') this.public_id,
+    @JsonKey(name: 'secure_url') this.secure_url,
+  });
 
   factory _$ProfileImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$ProfileImageImplFromJson(json);
 
   @override
+  @JsonKey(name: 'public_id')
   final String? public_id;
   @override
+  @JsonKey(name: 'secure_url')
   final String? secure_url;
 
   @override
@@ -736,16 +770,18 @@ class _$ProfileImageImpl implements _ProfileImage {
 
 abstract class _ProfileImage implements ProfileImage {
   const factory _ProfileImage({
-    final String? public_id,
-    final String? secure_url,
+    @JsonKey(name: 'public_id') final String? public_id,
+    @JsonKey(name: 'secure_url') final String? secure_url,
   }) = _$ProfileImageImpl;
 
   factory _ProfileImage.fromJson(Map<String, dynamic> json) =
       _$ProfileImageImpl.fromJson;
 
   @override
+  @JsonKey(name: 'public_id')
   String? get public_id;
   @override
+  @JsonKey(name: 'secure_url')
   String? get secure_url;
 
   /// Create a copy of ProfileImage

@@ -9,11 +9,22 @@ import '../providers/seek_reports_provider.dart';
 import 'animal_profile/animal_profile_data.dart';
 
 class SeekReportsList extends ConsumerWidget {
-  const SeekReportsList({super.key});
+  const SeekReportsList({required this.isEnabled, super.key});
+
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    if (!isEnabled) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 40),
+        child: Center(
+          child: CircularProgressIndicator(color: Color(0xFFBA4A22)),
+        ),
+      );
+    }
+
     final reportsAsync = ref.watch(seekReportsProvider);
 
     return Padding(

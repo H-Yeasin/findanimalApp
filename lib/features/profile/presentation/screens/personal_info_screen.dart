@@ -40,6 +40,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
   final _postalCodeController = TextEditingController();
+  final _websiteController = TextEditingController();
 
   bool _isEditing = false;
   bool _initialized = false;
@@ -62,6 +63,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     _latitudeController.dispose();
     _longitudeController.dispose();
     _postalCodeController.dispose();
+    _websiteController.dispose();
     super.dispose();
   }
 
@@ -79,6 +81,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     _selfIntroductionController.text = profile.selfIntroduction ?? '';
     _locationAddressController.text = profile.location?.address ?? '';
     _postalCodeController.text = profile.postalCode ?? '';
+    _websiteController.text = profile.website ?? '';
     final coordinates = profile.location?.coordinates;
     if (coordinates != null && coordinates.length >= 2) {
       _longitudeController.text = coordinates[0].toString();
@@ -101,6 +104,17 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final previousImageUrl =
         _currentImageUrl ??
         ref.read(myProfileProvider).valueOrNull?.profileImage?.secure_url;
+
+    // Auto-prepend https:// if user typed a URL without a scheme.
+    String? websiteValue;
+    final rawWebsite = _websiteController.text.trim();
+    if (rawWebsite.isNotEmpty) {
+      websiteValue = (rawWebsite.startsWith('http://') ||
+              rawWebsite.startsWith('https://'))
+          ? rawWebsite
+          : 'https://$rawWebsite';
+    }
+
     final payload = <String, dynamic>{
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
@@ -112,6 +126,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
       'company': _companyController.text.trim(),
       'profession': _professionController.text.trim(),
       'selfIntroduction': _selfIntroductionController.text.trim(),
+      if (websiteValue != null) 'website': websiteValue,
       'locationAddress': _locationAddressController.text.trim(),
     };
 
@@ -209,6 +224,7 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
       _professionController.text = profile.profession ?? '';
       _selfIntroductionController.text = profile.selfIntroduction ?? '';
       _locationAddressController.text = profile.location?.address ?? '';
+      _websiteController.text = profile.website ?? '';
       final coordinates = profile.location?.coordinates;
       if (coordinates != null && coordinates.length >= 2) {
         _longitudeController.text = coordinates[0].toString();
@@ -232,11 +248,10 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
     final isSaving = ref.watch(updateProfileProvider).isLoading;
     final profile = profileAsync.valueOrNull;
     final cacheBuster = ref.watch(profileImageCacheBusterProvider);
-    final headerImageUrl =
-        profileImageUrlWithCacheBuster(
-          _currentImageUrl ?? profile?.profileImage?.secure_url,
-          cacheBuster,
-        );
+    final headerImageUrl = profileImageUrlWithCacheBuster(
+      _currentImageUrl ?? profile?.profileImage?.secure_url,
+      cacheBuster,
+    );
 
     return AppBackgroundScaffold(
       body: AppBackground(
@@ -324,7 +339,6 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                             label: l10n.postalCode,
                             controller: _postalCodeController,
                             isEditing: _isEditing,
-                            maxLines: 2,
                           ),
                           const Divider(color: PartnerUiColors.brand),
                           PersonalInfoField(
@@ -345,6 +359,16 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
                               label: l10n.company,
                               controller: _companyController,
                               isEditing: _isEditing,
+                            ),
+                          ],
+                          if (isPartner ||
+                              _websiteController.text.trim().isNotEmpty) ...[
+                            const Divider(color: PartnerUiColors.brand),
+                            PersonalInfoField(
+                              label: 'Website',
+                              controller: _websiteController,
+                              isEditing: _isEditing,
+                              keyboardType: TextInputType.url,
                             ),
                           ],
                           const Divider(color: PartnerUiColors.brand),

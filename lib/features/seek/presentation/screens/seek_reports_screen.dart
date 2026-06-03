@@ -21,6 +21,7 @@ class SeekReportsScreen extends ConsumerStatefulWidget {
 
 class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
   LatLng? _currentLocation;
+  bool _isMapReady = false;
 
   @override
   void initState() {
@@ -84,6 +85,13 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
     );
   }
 
+  void _handleMapReady() {
+    if (_isMapReady || !mounted) return;
+    setState(() {
+      _isMapReady = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,10 +104,12 @@ class _SeekReportsScreenState extends ConsumerState<SeekReportsScreen> {
               children: [
                 SeekReportsMapSection(
                   currentLocation: _currentLocation,
+                  isMapReady: _isMapReady,
+                  onMapReady: _handleMapReady,
                   onLocateMe: _handleLocateMe,
                   onShowFilters: _showFiltersBottomSheet,
                 ),
-                const SeekReportsList(),
+                SeekReportsList(isEnabled: _isMapReady),
                 const SeekReportsPagination(),
                 const SizedBox(height: 100),
               ],

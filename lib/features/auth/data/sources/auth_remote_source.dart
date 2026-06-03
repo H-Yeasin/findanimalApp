@@ -13,6 +13,7 @@ final authRemoteSourceProvider = Provider<AuthRemoteSource>((ref) {
   return AuthRemoteSource(ref.watch(apiClientProvider));
 });
 
+
 class AuthRemoteSource {
   const AuthRemoteSource(this._apiClient);
 
@@ -29,6 +30,46 @@ class AuthRemoteSource {
     if (session.accessToken.isEmpty) {
       throw Exception(
         _message(response.data, fallback: 'Invalid login response'),
+      );
+    }
+    return session;
+  }
+
+  Future<AuthSessionModel> googleLogin(String idToken) async {
+    final response = await _apiClient.post(
+      ApiEndpoints.googleLogin,
+      data: {'idToken': idToken},
+    );
+
+    final data = _dataMap(response.data);
+    final session = AuthSessionModel.fromApiData(data);
+    if (session.accessToken.isEmpty) {
+      throw Exception(
+        _message(response.data, fallback: 'Invalid Google login response'),
+      );
+    }
+    return session;
+  }
+
+  Future<AuthSessionModel> appleLogin({
+    required String idToken,
+    String? firstName,
+    String? lastName,
+  }) async {
+    final response = await _apiClient.post(
+      ApiEndpoints.appleLogin,
+      data: {
+        'idToken': idToken,
+        if (firstName != null) 'firstName': firstName,
+        if (lastName != null) 'lastName': lastName,
+      },
+    );
+
+    final data = _dataMap(response.data);
+    final session = AuthSessionModel.fromApiData(data);
+    if (session.accessToken.isEmpty) {
+      throw Exception(
+        _message(response.data, fallback: 'Invalid Apple login response'),
       );
     }
     return session;

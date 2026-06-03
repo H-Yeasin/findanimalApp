@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hesteka_frontend/core/localization/app_localizations.dart';
 import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import '../../../providers/donation_provider.dart';
@@ -24,6 +25,7 @@ class DonationOptionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final hasCustomAmount = amountController.text.trim().isNotEmpty;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
@@ -78,24 +80,83 @@ class DonationOptionsSection extends StatelessWidget {
                     Expanded(child: _amountButton(20.0)),
                     const SizedBox(width: 15),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // Trigger custom amount entry logic if needed
-                          // For now, we just let the user type in the field
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: primaryOrange),
+                      child: SizedBox(
+                        height: 45,
+                        child: TextFormField(
+                          controller: amountController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
                           ),
-                          child: Center(
-                            child: Text(
-                              l10n.enterAmount,
-                              style: AppTextStyles.body.copyWith(
+                          textAlign: TextAlign.center,
+                          inputFormatters: [
+                            TextInputFormatter.withFunction((
+                              oldValue,
+                              newValue,
+                            ) {
+                              final normalized = newValue.text.replaceAll(
+                                ',',
+                                '.',
+                              );
+                              final isValid =
+                                  normalized.isEmpty ||
+                                  RegExp(
+                                    r'^\d*\.?\d{0,2}$',
+                                  ).hasMatch(normalized);
+
+                              return isValid ? newValue : oldValue;
+                            }),
+                          ],
+                          onChanged: (value) => onCustomAmountChanged(
+                            value.replaceAll(',', '.'),
+                          ),
+                          style: AppTextStyles.body.copyWith(
+                            color: hasCustomAmount
+                                ? Colors.white
+                                : primaryOrange,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: l10n.enterAmount,
+                            hintStyle: AppTextStyles.body.copyWith(
+                              color: primaryOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                            suffixText: hasCustomAmount ? '€' : null,
+                            suffixStyle: AppTextStyles.body.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 14,
+                            ),
+                            filled: true,
+                            fillColor: hasCustomAmount
+                                ? primaryOrange
+                                : Colors.transparent,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 12,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(color: primaryOrange),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
                                 color: primaryOrange,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
+                                width: 2,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(color: primaryOrange),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(
+                                color: primaryOrange,
+                                width: 2,
                               ),
                             ),
                           ),

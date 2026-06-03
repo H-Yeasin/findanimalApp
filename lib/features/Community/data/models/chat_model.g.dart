@@ -8,7 +8,7 @@ part of 'chat_model.dart';
 
 _$ChatModelImpl _$$ChatModelImplFromJson(Map<String, dynamic> json) =>
     _$ChatModelImpl(
-      id: json['_id'] as String? ?? json['id'] as String,
+      id: json['_id'] as String,
       user: ChatUser.fromJson(json['user'] as Map<String, dynamic>),
       content: json['content'] as String,
       media: (json['media'] as List<dynamic>?)
@@ -46,7 +46,7 @@ Map<String, dynamic> _$$ChatModelImplToJson(_$ChatModelImpl instance) =>
 
 _$ChatUserImpl _$$ChatUserImplFromJson(Map<String, dynamic> json) =>
     _$ChatUserImpl(
-      id: json['_id'] as String? ?? json['id'] as String,
+      id: json['_id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: json['profileImage'] == null
@@ -67,8 +67,8 @@ Map<String, dynamic> _$$ChatUserImplToJson(_$ChatUserImpl instance) =>
 _$ChatProfileImageImpl _$$ChatProfileImageImplFromJson(
   Map<String, dynamic> json,
 ) => _$ChatProfileImageImpl(
-  publicId: json['public_id'] as String? ?? json['publicId'] as String,
-  secureUrl: json['secure_url'] as String? ?? json['secureUrl'] as String,
+  publicId: json['public_id'] as String,
+  secureUrl: json['secure_url'] as String,
 );
 
 Map<String, dynamic> _$$ChatProfileImageImplToJson(
@@ -81,7 +81,7 @@ Map<String, dynamic> _$$ChatProfileImageImplToJson(
 _$ChatMediaImpl _$$ChatMediaImplFromJson(Map<String, dynamic> json) =>
     _$ChatMediaImpl(
       url: json['url'] as String,
-      publicId: json['public_id'] as String? ?? json['publicId'] as String,
+      publicId: json['public_id'] as String,
       type: json['type'] as String,
     );
 

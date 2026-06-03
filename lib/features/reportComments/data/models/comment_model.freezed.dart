@@ -21,6 +21,7 @@ CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentModel {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   CommentAuthor get author => throw _privateConstructorUsedError;
@@ -51,7 +52,7 @@ abstract class $CommentModelCopyWith<$Res> {
   ) = _$CommentModelCopyWithImpl<$Res, CommentModel>;
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String content,
     CommentAuthor author,
     String report,
@@ -181,7 +182,7 @@ abstract class _$$CommentModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String content,
     CommentAuthor author,
     String report,
@@ -281,7 +282,7 @@ class __$$CommentModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CommentModelImpl with DiagnosticableTreeMixin implements _CommentModel {
   const _$CommentModelImpl({
-    required this.id,
+    @JsonKey(name: '_id') required this.id,
     required this.content,
     required this.author,
     required this.report,
@@ -299,6 +300,7 @@ class _$CommentModelImpl with DiagnosticableTreeMixin implements _CommentModel {
       _$$CommentModelImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final String content;
@@ -410,7 +412,7 @@ class _$CommentModelImpl with DiagnosticableTreeMixin implements _CommentModel {
 
 abstract class _CommentModel implements CommentModel {
   const factory _CommentModel({
-    required final String id,
+    @JsonKey(name: '_id') required final String id,
     required final String content,
     required final CommentAuthor author,
     required final String report,
@@ -427,6 +429,7 @@ abstract class _CommentModel implements CommentModel {
       _$CommentModelImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   String get content;
@@ -463,6 +466,7 @@ CommentAuthor _$CommentAuthorFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentAuthor {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
@@ -487,7 +491,7 @@ abstract class $CommentAuthorCopyWith<$Res> {
   ) = _$CommentAuthorCopyWithImpl<$Res, CommentAuthor>;
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -548,7 +552,7 @@ abstract class _$$CommentAuthorImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    String id,
+    @JsonKey(name: '_id') String id,
     String firstName,
     String lastName,
     @ProfileImageConverter() String? profileImage,
@@ -603,7 +607,7 @@ class _$CommentAuthorImpl
     with DiagnosticableTreeMixin
     implements _CommentAuthor {
   const _$CommentAuthorImpl({
-    required this.id,
+    @JsonKey(name: '_id') required this.id,
     required this.firstName,
     required this.lastName,
     @ProfileImageConverter() this.profileImage,
@@ -613,6 +617,7 @@ class _$CommentAuthorImpl
       _$$CommentAuthorImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final String firstName;
@@ -673,7 +678,7 @@ class _$CommentAuthorImpl
 
 abstract class _CommentAuthor implements CommentAuthor {
   const factory _CommentAuthor({
-    required final String id,
+    @JsonKey(name: '_id') required final String id,
     required final String firstName,
     required final String lastName,
     @ProfileImageConverter() final String? profileImage,
@@ -683,6 +688,7 @@ abstract class _CommentAuthor implements CommentAuthor {
       _$CommentAuthorImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   String get firstName;
@@ -706,7 +712,9 @@ CommentImage _$CommentImageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CommentImage {
+  @JsonKey(name: 'public_id')
   String get publicId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'secure_url')
   String get secureUrl => throw _privateConstructorUsedError;
 
   /// Serializes this CommentImage to a JSON map.
@@ -726,7 +734,10 @@ abstract class $CommentImageCopyWith<$Res> {
     $Res Function(CommentImage) then,
   ) = _$CommentImageCopyWithImpl<$Res, CommentImage>;
   @useResult
-  $Res call({String publicId, String secureUrl});
+  $Res call({
+    @JsonKey(name: 'public_id') String publicId,
+    @JsonKey(name: 'secure_url') String secureUrl,
+  });
 }
 
 /// @nodoc
@@ -769,7 +780,10 @@ abstract class _$$CommentImageImplCopyWith<$Res>
   ) = __$$CommentImageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String publicId, String secureUrl});
+  $Res call({
+    @JsonKey(name: 'public_id') String publicId,
+    @JsonKey(name: 'secure_url') String secureUrl,
+  });
 }
 
 /// @nodoc
@@ -804,14 +818,19 @@ class __$$CommentImageImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$CommentImageImpl with DiagnosticableTreeMixin implements _CommentImage {
-  const _$CommentImageImpl({required this.publicId, required this.secureUrl});
+  const _$CommentImageImpl({
+    @JsonKey(name: 'public_id') required this.publicId,
+    @JsonKey(name: 'secure_url') required this.secureUrl,
+  });
 
   factory _$CommentImageImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommentImageImplFromJson(json);
 
   @override
+  @JsonKey(name: 'public_id')
   final String publicId;
   @override
+  @JsonKey(name: 'secure_url')
   final String secureUrl;
 
   @override
@@ -859,16 +878,18 @@ class _$CommentImageImpl with DiagnosticableTreeMixin implements _CommentImage {
 
 abstract class _CommentImage implements CommentImage {
   const factory _CommentImage({
-    required final String publicId,
-    required final String secureUrl,
+    @JsonKey(name: 'public_id') required final String publicId,
+    @JsonKey(name: 'secure_url') required final String secureUrl,
   }) = _$CommentImageImpl;
 
   factory _CommentImage.fromJson(Map<String, dynamic> json) =
       _$CommentImageImpl.fromJson;
 
   @override
+  @JsonKey(name: 'public_id')
   String get publicId;
   @override
+  @JsonKey(name: 'secure_url')
   String get secureUrl;
 
   /// Create a copy of CommentImage

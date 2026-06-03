@@ -331,6 +331,7 @@ class AppLocalizations {
   String get toCall => _text('toCall');
   String get unknown => _text('unknown');
   String get noPhone => _text('noPhone');
+  String get noWebsiteAvailable => _text('noWebsiteAvailable');
   String get faqTitleLabel => _text('faqTitleLabel');
   String get howCanIHelp => _text('howCanIHelp');
   String get faqSubtitle => _text('faqSubtitle');

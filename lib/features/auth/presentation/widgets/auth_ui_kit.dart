@@ -279,7 +279,7 @@ class AuthSocialPillButton extends StatelessWidget {
 
   final String label;
   final Widget leading;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

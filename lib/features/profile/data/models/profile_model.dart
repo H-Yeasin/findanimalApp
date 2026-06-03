@@ -16,6 +16,7 @@ class ProfileModel with _$ProfileModel {
     String? postalCode,
     String? country,
     String? company,
+    String? website,
     int? pointsBalance,
     String? selfIntroduction,
     String? profession,

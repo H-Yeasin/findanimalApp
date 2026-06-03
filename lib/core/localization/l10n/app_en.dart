@@ -283,6 +283,7 @@ const Map<String, String> appEn = {
   'toCall': 'TO CALL',
   'unknown': 'Unknown',
   'noPhone': 'No Phone',
+  'noWebsiteAvailable': 'No website available for this partner.',
   'faqTitleLabel': 'F.A.Q',
   'howCanIHelp': 'How can I help you?',
   'faqSubtitle': 'Frequently asked questions',

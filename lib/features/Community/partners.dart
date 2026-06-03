@@ -2,6 +2,7 @@ import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'presentation/providers/contact_providers.dart';
 import 'presentation/widgets/contact_filter_panel.dart';
 import '../../core/localization/app_localizations.dart';
@@ -114,6 +115,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                             partner.name,
                             partner.type,
                             partner.fullImageUrl,
+                            partner.website,
                             cardBg,
                             brandPrimary,
                             l10n,
@@ -232,10 +234,38 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
     String name,
     String type,
     String? imageUrl,
+    String? website,
     Color cardBg,
     Color color,
     AppLocalizations l10n,
   ) {
+    Future<void> handleWebsiteTap() async {
+      if (website == null || website.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.noWebsiteAvailable),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return;
+      }
+      final raw = website.trim();
+      final urlString = (raw.startsWith('http://') || raw.startsWith('https://'))
+          ? raw
+          : 'https://$raw';
+      final uri = Uri.tryParse(urlString);
+      if (uri == null || !await canLaunchUrl(uri)) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.noWebsiteAvailable),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        return;
+      }
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       padding: const EdgeInsets.all(15),
@@ -295,15 +325,20 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                     vertical: 8,
                   ),
                   decoration: BoxDecoration(
-                    color: color,
+                    color: (website != null && website.trim().isNotEmpty)
+                        ? color
+                        : color.withValues(alpha: 0.4),
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Text(
-                    l10n.viewWebsite.toUpperCase(),
-                    style: AppTextStyles.button.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 10,
+                  child: GestureDetector(
+                    onTap: handleWebsiteTap,
+                    child: Text(
+                      l10n.viewWebsite.toUpperCase(),
+                      style: AppTextStyles.button.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 10,
+                      ),
                     ),
                   ),
                 ),

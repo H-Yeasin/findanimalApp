@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/network/api_client.dart';
@@ -13,18 +14,20 @@ class ReportsRemoteSource {
 
   final ApiClient _apiClient;
 
-  Future<dynamic> getAllReports({Map<String, dynamic>? query}) async {
+  Future<String> getAllReports({Map<String, dynamic>? query}) async {
     final response = await _apiClient.get(
       ApiEndpoints.getAllReports,
       queryParameters: query,
+      options: Options(responseType: ResponseType.plain),
     );
-    return response.data;
+    return response.data as String? ?? '';
   }
 
-  Future<dynamic> getReportById(String id) async {
+  Future<String> getReportById(String id) async {
     final response = await _apiClient.get(
       ApiEndpoints.getReportById(id),
+      options: Options(responseType: ResponseType.plain),
     );
-    return response.data;
+    return response.data as String? ?? '';
   }
 }

@@ -8,6 +8,7 @@ import '../../data/models/login_request_model.dart';
 import '../../data/models/register_partner_request_model.dart';
 import '../../data/models/register_request_model.dart';
 import '../../data/repositories/auth_repository_impl.dart';
+import '../../data/sources/social_auth_source.dart';
 import '../../../../core/localization/app_localizations.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
@@ -107,6 +108,88 @@ class AuthSessionNotifier extends AsyncNotifier<AuthSession> {
       );
 
       state = AsyncData(authSession);
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    state = const AsyncLoading();
+
+    try {
+      final socialSource = ref.read(socialAuthSourceProvider);
+      final idToken = await socialSource.signInWithGoogle();
+      
+      if (idToken == null) {
+        // User cancelled, reset state to previous unauthenticated
+        state = const AsyncData(AuthSession(status: AuthStatus.unauthenticated));
+        return;
+      }
+
+      final repository = ref.read(authRepositoryProvider);
+      final secureStorage = ref.read(secureStorageProvider);
+
+      final session = await repository.googleLogin(idToken);
+
+      if (session.accessToken.isNotEmpty) {
+        await secureStorage.writeAccessToken(session.accessToken);
+      }
+      if (session.refreshToken.isNotEmpty) {
+        await secureStorage.writeRefreshToken(session.refreshToken);
+      }
+
+      await secureStorage.writeCurrentUser(jsonEncode(session.user.toJson()));
+
+      state = AsyncData(AuthSession(
+        status: AuthStatus.authenticated,
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
+        user: session.user,
+      ));
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+      rethrow;
+    }
+  }
+
+  Future<void> loginWithApple() async {
+    state = const AsyncLoading();
+
+    try {
+      final socialSource = ref.read(socialAuthSourceProvider);
+      final result = await socialSource.signInWithApple();
+      
+      if (result == null) {
+        // User cancelled, reset state to previous unauthenticated
+        state = const AsyncData(AuthSession(status: AuthStatus.unauthenticated));
+        return;
+      }
+
+      final repository = ref.read(authRepositoryProvider);
+      final secureStorage = ref.read(secureStorageProvider);
+
+      final session = await repository.appleLogin(
+        idToken: result.idToken,
+        firstName: result.firstName,
+        lastName: result.lastName,
+      );
+
+      if (session.accessToken.isNotEmpty) {
+        await secureStorage.writeAccessToken(session.accessToken);
+      }
+      if (session.refreshToken.isNotEmpty) {
+        await secureStorage.writeRefreshToken(session.refreshToken);
+      }
+
+      await secureStorage.writeCurrentUser(jsonEncode(session.user.toJson()));
+
+      state = AsyncData(AuthSession(
+        status: AuthStatus.authenticated,
+        accessToken: session.accessToken,
+        refreshToken: session.refreshToken,
+        user: session.user,
+      ));
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);
       rethrow;

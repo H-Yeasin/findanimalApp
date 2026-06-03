@@ -329,6 +329,7 @@ const Map<String, String> appFr = {
   'toCall': 'APPELER',
   'unknown': 'Inconnu',
   'noPhone': 'Pas de téléphone',
+  'noWebsiteAvailable': 'Aucun site web disponible pour ce partenaire.',
   'faqTitleLabel': 'F.A.Q',
   'howCanIHelp': 'Comment puis-je vous aider ?',
   'faqSubtitle': 'Questions fréquemment posées',

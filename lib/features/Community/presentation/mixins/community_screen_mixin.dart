@@ -99,7 +99,10 @@ mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
   }
 
   Future<void> pickFile() async {
-    final FilePickerResult? result = await FilePicker.platform.pickFiles();
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'mp4', 'mov', 'avi', 'mkv'],
+    );
     if (result != null && result.files.single.path != null) {
       setState(() {
         selectedMedia.add(File(result.files.single.path!));
@@ -138,11 +141,13 @@ mixin CommunityScreenMixin on ConsumerState<CommunityScreen> {
 
     final content =
         contentController.text.trim().isEmpty && selectedMedia.isNotEmpty
-            ? '.'
-            : contentController.text;
+        ? '.'
+        : contentController.text;
 
     try {
-      await ref.read(communityActionProvider.notifier).createChat(
+      await ref
+          .read(communityActionProvider.notifier)
+          .createChat(
             content: content,
             media: selectedMedia.isEmpty ? null : selectedMedia,
           );

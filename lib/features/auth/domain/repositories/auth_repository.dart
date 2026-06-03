@@ -6,6 +6,14 @@ import '../../data/models/register_request_model.dart';
 abstract class AuthRepository {
   Future<AuthSessionModel> login(LoginRequestModel request);
 
+  Future<AuthSessionModel> googleLogin(String idToken);
+
+  Future<AuthSessionModel> appleLogin({
+    required String idToken,
+    String? firstName,
+    String? lastName,
+  });
+
   Future<void> registerUser(RegisterRequestModel request);
 
   Future<void> registerPartner(RegisterPartnerRequestModel request);

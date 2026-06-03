@@ -8,7 +8,7 @@ part of 'comment_model.dart';
 
 _$CommentModelImpl _$$CommentModelImplFromJson(Map<String, dynamic> json) =>
     _$CommentModelImpl(
-      id: json['_id'] as String? ?? json['id'] as String,
+      id: json['_id'] as String,
       content: json['content'] as String,
       author: CommentAuthor.fromJson(json['author'] as Map<String, dynamic>),
       report: json['report'] as String,
@@ -44,7 +44,7 @@ Map<String, dynamic> _$$CommentModelImplToJson(_$CommentModelImpl instance) =>
 
 _$CommentAuthorImpl _$$CommentAuthorImplFromJson(Map<String, dynamic> json) =>
     _$CommentAuthorImpl(
-      id: json['_id'] as String? ?? json['id'] as String,
+      id: json['_id'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       profileImage: const ProfileImageConverter().fromJson(
@@ -63,8 +63,8 @@ Map<String, dynamic> _$$CommentAuthorImplToJson(
 
 _$CommentImageImpl _$$CommentImageImplFromJson(Map<String, dynamic> json) =>
     _$CommentImageImpl(
-      publicId: json['public_id'] as String? ?? json['publicId'] as String,
-      secureUrl: json['secure_url'] as String? ?? json['secureUrl'] as String,
+      publicId: json['public_id'] as String,
+      secureUrl: json['secure_url'] as String,
     );
 
 Map<String, dynamic> _$$CommentImageImplToJson(_$CommentImageImpl instance) =>

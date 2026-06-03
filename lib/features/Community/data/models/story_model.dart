@@ -6,7 +6,7 @@ part 'story_model.g.dart';
 @freezed
 class StoryModel with _$StoryModel {
   const factory StoryModel({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required StoryUser user,
     required StoryMedia media,
     String? caption,
@@ -24,7 +24,7 @@ class StoryModel with _$StoryModel {
 @freezed
 class StoryUser with _$StoryUser {
   const factory StoryUser({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String firstName,
     required String lastName,
     StoryProfileImage? profileImage,
@@ -37,8 +37,8 @@ class StoryUser with _$StoryUser {
 @freezed
 class StoryProfileImage with _$StoryProfileImage {
   const factory StoryProfileImage({
-    required String publicId,
-    required String secureUrl,
+    @JsonKey(name: 'public_id') required String publicId,
+    @JsonKey(name: 'secure_url') required String secureUrl,
   }) = _StoryProfileImage;
 
   factory StoryProfileImage.fromJson(Map<String, dynamic> json) =>
