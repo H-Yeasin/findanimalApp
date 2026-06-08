@@ -1,9 +1,11 @@
 import Flutter
 import UIKit
 import GoogleMaps
+import FirebaseMessaging
+import UserNotifications
 
 @main
-@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate, MessagingDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -17,7 +19,28 @@ import GoogleMaps
       NSLog("GOOGLE_MAPS_API_KEY is missing. Google Maps will not render correctly.")
       #endif
     }
+
+    // Firebase is initialized from Dart side via Firebase.initializeApp()
+    UNUserNotificationCenter.current().delegate = self
+    Messaging.messaging().delegate = self
+
+    UNUserNotificationCenter.current().requestAuthorization(
+      options: [.alert, .badge, .sound]
+    ) { granted, _ in
+      DispatchQueue.main.async {
+        application.registerForRemoteNotifications()
+      }
+    }
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  override func application(
+    _ application: UIApplication,
+    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+  ) {
+    Messaging.messaging().apnsToken = deviceToken
+    super.application(application, didRegisterForRemoteNotificationsWithDeviceToken: deviceToken)
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {

@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>80505260740-n8tldlo12cm62ma3i0p7dcrm408fdvj2.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.80505260740-n8tldlo12cm62ma3i0p7dcrm408fdvj2</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>80505260740-9av3vam2d9g335j6at3blkubdvoddnkk.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +11,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.emmafve.ios</string>
+	<string>com.emmafve.hesteka</string>
 	<key>PROJECT_ID</key>
 	<string>hesteka-d22bb</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +27,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:80505260740:ios:71e8108fab56b66a829791</string>
+	<string>1:80505260740:ios:118999a120237954829791</string>
 </dict>
 </plist>
