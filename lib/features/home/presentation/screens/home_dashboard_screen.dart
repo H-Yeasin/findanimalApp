@@ -8,7 +8,6 @@ import '../../../Community/presentation/screens/community_screen.dart';
 import '../../../missions/mission_local.dart';
 import '../../../reports/presentation/screens/my_reports_screen.dart';
 import '../../../seek/presentation/screens/seek_reports_screen.dart';
-import '../../../solidarity/presentation/screens/make_donation_screen.dart';
 import '../../../solidarity/presentation/screens/solidarity_shop_screen.dart';
 import '../../../../core/providers/location_provider.dart';
 import '../providers/home_providers.dart';
@@ -125,7 +124,6 @@ class _HomeDashboardState extends ConsumerState<HomeDashboard> {
                 return HomeFeed(
                   onLocateMe: _handleLocateMe,
                   onOpenReports: _openReportsTab,
-                  onOpenDonation: () => _pushRoot(const MakeDonationScreen()),
                   onOpenShop: () => _pushRoot(const SolidarityShopScreen()),
                   onOpenMission: () => _pushRoot(const MissionLocalScreen()),
                 );

@@ -41,7 +41,6 @@ import '../../features/reports/presentation/screens/my_reports_screen.dart';
 import '../../features/seek/presentation/screens/seek_reports_screen.dart';
 import '../../features/solidarity/presentation/screens/solidarity_hub_screen.dart';
 import '../../features/solidarity/presentation/screens/solidarity_shop_screen.dart';
-import '../../features/solidarity/presentation/screens/my_donations_screen.dart';
 import '../../features/payment/presentation/screens/payment_methods_screen.dart';
 import '../../features/profile/presentation/screens/privacy_policy_screen.dart';
 import '../../features/profile/presentation/screens/legal_notices_screen.dart';
@@ -154,10 +153,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.mainNotifications,
         builder: (context, state) => const NotificationScreen(),
-      ),
-      GoRoute(
-        path: RouteNames.myDonations,
-        builder: (context, state) => const MyDonationsScreen(),
       ),
       GoRoute(
         path: RouteNames.solidarityShop,

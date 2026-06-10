@@ -103,12 +103,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           onTap: () => context.push(RouteNames.myReports),
                         ),
                         const Divider(color: Color(0xFFBA4A22)),
-                        _menuRow(
-                          icon: Icons.volunteer_activism_outlined,
-                          label: l10n.donationsMade,
-                          onTap: () => context.push(RouteNames.myDonations),
-                        ),
-                        const Divider(color: Color(0xFFBA4A22)),
+
                         _menuRow(
                           icon: Icons.check_circle_outline_rounded,
                           label: l10n.myPoints,
@@ -159,8 +154,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         ),
                         InkWell(
                           onTap: () {
+                            final box = context.findRenderObject() as RenderBox?;
                             Share.share(
                               'Rejoignez-moi sur Hesteka ! Téléchargez l\'application sur https://www.hesteka.com',
+                              sharePositionOrigin: box != null
+                                  ? box.localToGlobal(Offset.zero) & box.size
+                                  : null,
                             );
                           },
                           child: Text(

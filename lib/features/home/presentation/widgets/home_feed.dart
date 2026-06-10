@@ -13,14 +13,12 @@ class HomeFeed extends StatelessWidget {
     super.key,
     required this.onLocateMe,
     required this.onOpenReports,
-    required this.onOpenDonation,
     required this.onOpenShop,
     required this.onOpenMission,
   });
 
   final VoidCallback onLocateMe;
   final VoidCallback onOpenReports;
-  final VoidCallback onOpenDonation;
   final VoidCallback onOpenShop;
   final VoidCallback onOpenMission;
 
@@ -41,7 +39,6 @@ class HomeFeed extends StatelessWidget {
               HomeReportedRecentlySection(onOpenReports: onOpenReports),
               const HomeCommunityHelpedSection(),
               HomeSupportSection(
-                onOpenDonation: onOpenDonation,
                 onOpenShop: onOpenShop,
                 onOpenMission: onOpenMission,
               ),

@@ -27,7 +27,6 @@ class RouteNames {
 
   static const String reports = '/seek-reports';
   static const String myReports = '/my-reports';
-  static const String myDonations = '/my-donations';
   static const String reportDetail = '/reports/:id';
   static const String reportCreateStep1 = '/reports/create/step-1';
   static const String reportCreateStep2 = '/reports/create/step-2';

@@ -6,12 +6,10 @@ import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 class HomeSupportSection extends StatelessWidget {
   const HomeSupportSection({
     super.key,
-    required this.onOpenDonation,
     required this.onOpenShop,
     required this.onOpenMission,
   });
 
-  final VoidCallback onOpenDonation;
   final VoidCallback onOpenShop;
   final VoidCallback onOpenMission;
 
@@ -41,11 +39,6 @@ class HomeSupportSection extends StatelessWidget {
                 flex: 4,
                 child: Column(
                   children: [
-                    _SupportButton(
-                      text: l10n.homeMakeDonation,
-                      onTap: onOpenDonation,
-                    ),
-                    const SizedBox(height: 16),
                     _SupportButton(
                       text: l10n.homeSolidarityShop,
                       onTap: onOpenShop,

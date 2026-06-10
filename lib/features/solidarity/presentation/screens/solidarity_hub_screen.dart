@@ -4,7 +4,6 @@ import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../widgets/hub_hero_section.dart';
-import '../widgets/hub_donation_cta_section.dart';
 import '../widgets/hub_collection_points_section.dart';
 import '../widgets/hub_partners_section.dart';
 import '../widgets/hub_shop_cta_section.dart';
@@ -26,7 +25,6 @@ class SolidarityHubScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   HubHeroSection(l10n: l10n),
-                  HubDonationCTASection(l10n: l10n),
                   HubCollectionPointsSection(l10n: l10n),
                   HubPartnersSection(l10n: l10n),
                   HubShopCTASection(l10n: l10n),
