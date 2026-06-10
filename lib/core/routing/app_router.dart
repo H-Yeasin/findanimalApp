@@ -21,7 +21,6 @@ import '../../features/partner_ads/presentation/screens/collection_points_screen
 import '../../features/partner_ads/presentation/screens/partner_create_collection_point_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_location_picker_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_publish_ad_screen.dart';
-import '../../features/payment/presentation/screens/payment_methods_screen.dart';
 import '../../features/points/presentation/screens/my_redemptions_screen.dart';
 import '../../features/points/presentation/screens/points_earned_history_screen.dart';
 import '../../features/points/presentation/screens/points_screen.dart';
