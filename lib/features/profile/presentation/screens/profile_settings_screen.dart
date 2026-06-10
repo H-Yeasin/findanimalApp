@@ -1,18 +1,19 @@
-import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:hesteka_frontend/core/network/network_exceptions.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/features/auth/presentation/providers/auth_provider.dart';
+import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
 import 'package:hesteka_frontend/features/profile/presentation/providers/profile_providers.dart';
+
 import '../../../../core/localization/app_language.dart';
 import '../../../../core/localization/app_locale_provider.dart';
 import '../../../../core/localization/app_localizations.dart';
 import '../../../../core/routing/route_names.dart';
-import 'package:hesteka_frontend/features/partner/presentation/widgets/partner_ui_kit.dart';
-import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class ProfileSettingsScreen extends ConsumerStatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -218,18 +219,18 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
       await ref.read(authSessionProvider.notifier).logout();
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.deleteAccountSuccess)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.deleteAccountSuccess)));
       context.go(RouteNames.login);
     } catch (error) {
       if (!mounted) return;
       final message = error is DioException
           ? NetworkExceptions.fromDio(error)
           : authErrorMessage(error, l10n);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.deleteAccountError(message))),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.deleteAccountError(message))));
     } finally {
       if (mounted) setState(() => _deletingAccount = false);
     }
@@ -266,9 +267,8 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                             ? Icons.visibility_off_outlined
                             : Icons.visibility_outlined,
                       ),
-                      onPressed: () => setDialogState(
-                        () => obscureText = !obscureText,
-                      ),
+                      onPressed: () =>
+                          setDialogState(() => obscureText = !obscureText),
                     ),
                   ),
                 ),
@@ -290,7 +290,9 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                   }
                   Navigator.pop(context, value);
                 },
-                style: TextButton.styleFrom(foregroundColor: Colors.red.shade700),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.red.shade700,
+                ),
                 child: Text(l10n.deleteAccountConfirm),
               ),
             ],
@@ -330,16 +332,6 @@ class _ProfileSettingsScreenState extends ConsumerState<ProfileSettingsScreen> {
                   '${RouteNames.forgotPassword}?email=${Uri.encodeComponent(email)}&lockEmail=1',
                 );
               },
-            ),
-            const Divider(color: PartnerUiColors.brand),
-            PartnerSettingsRow(
-              label: l10n.registeredPaymentMethods,
-              onTap: () => context.push(RouteNames.profilePaymentMethods),
-              trailing: const Icon(
-                Icons.chevron_right_rounded,
-                color: PartnerUiColors.brand,
-                size: 36,
-              ),
             ),
             const Divider(color: PartnerUiColors.brand),
             PartnerSettingsRow(

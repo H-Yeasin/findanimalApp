@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/Community/presentation/screens/community_screen.dart';
+import '../../features/Community/presentation/screens/notification.dart';
 import '../../features/auth/presentation/providers/auth_provider.dart';
 import '../../features/auth/presentation/screens/account_screen.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
@@ -11,40 +13,37 @@ import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/auth/presentation/screens/reset_password_screen.dart';
 import '../../features/auth/presentation/screens/verify_otp_screen.dart';
 import '../../features/home/presentation/screens/home_dashboard_screen.dart';
-import '../../features/Community/presentation/screens/community_screen.dart';
-import '../../features/Community/presentation/screens/notification.dart';
 import '../../features/missions/presentation/screens/partner_missions_screen.dart';
-
+import '../../features/partner/presentation/screens/partner_access_screen.dart';
+import '../../features/partner/presentation/screens/partner_profile_screen.dart';
 import '../../features/partner_ads/presentation/screens/collection_point_detail_screen.dart';
 import '../../features/partner_ads/presentation/screens/collection_points_screen.dart';
-import '../../features/partner/presentation/screens/partner_access_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_create_collection_point_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_location_picker_screen.dart';
 import '../../features/partner_ads/presentation/screens/partner_publish_ad_screen.dart';
-import '../../features/partner/presentation/screens/partner_profile_screen.dart';
-import '../../features/profile/presentation/screens/profile_settings_screen.dart';
-import '../../features/points/presentation/screens/points_screen.dart';
+import '../../features/payment/presentation/screens/payment_methods_screen.dart';
 import '../../features/points/presentation/screens/my_redemptions_screen.dart';
 import '../../features/points/presentation/screens/points_earned_history_screen.dart';
-import '../../features/profile/presentation/screens/myprofile_myanimals_screen.dart';
-import '../../features/profile/presentation/screens/add_animal_screen.dart';
+import '../../features/points/presentation/screens/points_screen.dart';
 import '../../features/profile/data/models/my_animal_model.dart';
+import '../../features/profile/presentation/screens/add_animal_screen.dart';
+import '../../features/profile/presentation/screens/contact_support_screen.dart';
+import '../../features/profile/presentation/screens/legal_notices_screen.dart';
+import '../../features/profile/presentation/screens/myprofile_myanimals_screen.dart';
 import '../../features/profile/presentation/screens/personal_info_screen.dart';
+import '../../features/profile/presentation/screens/privacy_policy_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../features/seek/presentation/screens/seek_report_detail_screen.dart';
+import '../../features/profile/presentation/screens/profile_settings_screen.dart';
+import '../../features/reports/presentation/screens/location_picker_screen.dart';
+import '../../features/reports/presentation/screens/my_reports_screen.dart';
 import '../../features/reports/presentation/screens/report_step_1_screen.dart';
 import '../../features/reports/presentation/screens/report_step_2_screen.dart';
 import '../../features/reports/presentation/screens/report_step_3_screen.dart';
 import '../../features/reports/presentation/screens/report_step_4_screen.dart';
-import '../../features/reports/presentation/screens/location_picker_screen.dart';
-import '../../features/reports/presentation/screens/my_reports_screen.dart';
+import '../../features/seek/presentation/screens/seek_report_detail_screen.dart';
 import '../../features/seek/presentation/screens/seek_reports_screen.dart';
 import '../../features/solidarity/presentation/screens/solidarity_hub_screen.dart';
 import '../../features/solidarity/presentation/screens/solidarity_shop_screen.dart';
-import '../../features/payment/presentation/screens/payment_methods_screen.dart';
-import '../../features/profile/presentation/screens/privacy_policy_screen.dart';
-import '../../features/profile/presentation/screens/legal_notices_screen.dart';
-import '../../features/profile/presentation/screens/contact_support_screen.dart';
 import 'route_guards.dart';
 import 'route_names.dart';
 
@@ -263,10 +262,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RouteNames.profileMyRedemptions,
         builder: (context, state) => const MyRedemptionsScreen(),
-      ),
-      GoRoute(
-        path: RouteNames.profilePaymentMethods,
-        builder: (context, state) => const PaymentMethodsScreen(),
       ),
       GoRoute(
         path: RouteNames.privacyPolicy,

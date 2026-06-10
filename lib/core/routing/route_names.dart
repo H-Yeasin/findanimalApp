@@ -54,7 +54,6 @@ class RouteNames {
   static const String profilePoints = '/profile/points';
   static const String pointsEarnedHistory = '/profile/points/earned-history';
   static const String profileMyRedemptions = '/profile/my-redemptions';
-  static const String profilePaymentMethods = '/profile/payment-methods';
   static const String privacyPolicy = '/profile/privacy-policy';
   static const String legalNotices = '/profile/legal-notices';
   static const String contactSupport = '/profile/contact-support';
