@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'app.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,9 +20,6 @@ void main() async {
   if (kReleaseMode) {
     Env.validateReleaseConfig();
   }
-
-  Stripe.publishableKey = Env.stripePublishableKey;
-  await Stripe.instance.applySettings();
 
   // Initialize Firebase
   try {
