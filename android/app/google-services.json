@@ -3,10 +3,14 @@
     "project_number": "80505260740",
     "project_id": "hesteka-d22bb",
     "storage_bucket": "hesteka-d22bb.firebasestorage.app"
+    "project_number": "80505260740",
+    "project_id": "hesteka-d22bb",
+    "storage_bucket": "hesteka-d22bb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:80505260740:android:f0d6c4755b90e409829791",
         "mobilesdk_app_id": "1:80505260740:android:f0d6c4755b90e409829791",
         "android_client_info": {
           "package_name": "com.emmafve.app"
@@ -42,7 +46,7 @@
               "client_id": "80505260740-n8tldlo12cm62ma3i0p7dcrm408fdvj2.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.emmafve.hesteka",
+                "bundle_id": "com.emmafve.ios",
                 "app_store_id": "94402941"
               }
             }
