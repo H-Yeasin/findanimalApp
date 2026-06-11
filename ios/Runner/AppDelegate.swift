@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import GoogleMaps
+import FirebaseCore
 import FirebaseMessaging
 import UserNotifications
 
@@ -10,17 +11,8 @@ import UserNotifications
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    if let apiKey = dartDefineValue("GOOGLE_MAPS_API_KEY"), !apiKey.isEmpty {
-      GMSServices.provideAPIKey(apiKey)
-    } else {
-      #if DEBUG
-      fatalError("GOOGLE_MAPS_API_KEY is required for iOS Google Maps. Run Flutter with --dart-define-from-file=env/local.json or pass --dart-define=GOOGLE_MAPS_API_KEY=...")
-      #else
-      NSLog("GOOGLE_MAPS_API_KEY is missing. Google Maps will not render correctly.")
-      #endif
-    }
+    FirebaseApp.configure()
 
-    // Firebase is initialized from Dart side via Firebase.initializeApp()
     UNUserNotificationCenter.current().delegate = self
     Messaging.messaging().delegate = self
 
