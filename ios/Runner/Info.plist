@@ -37,6 +37,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>DART_DEFINES</key>
 	<string>$(DART_DEFINES)</string>
+	<key>GOOGLE_MAPS_API_KEY</key>
+	<string>$(GOOGLE_MAPS_API_KEY)</string>
 	<key>GIDClientID</key>
 	<string>80505260740-n8tldlo12cm62ma3i0p7dcrm408fdvj2.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
