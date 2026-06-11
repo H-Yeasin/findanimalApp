@@ -44,6 +44,12 @@ import UserNotifications
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    // Google Maps SDK must be initialized BEFORE any plugin that uses it is registered.
+    // This method is called before application(_:didFinishLaunchingWithOptions:), so
+    // we must set the API key here to avoid the GMSServicesException crash.
+    if let apiKey = dartDefineValue("GOOGLE_MAPS_API_KEY"), !apiKey.isEmpty {
+      GMSServices.provideAPIKey(apiKey)
+    }
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
   }
 

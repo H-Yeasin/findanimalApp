@@ -2,5 +2,8 @@
   "API_BASE_URL": "https://api.hesteka.com/api/v1",
   "GOOGLE_MAPS_API_KEY": "",
   "STRIPE_PUBLISHABLE_KEY": "",
-  "PAYPAL_CLIENT_ID": "your_paypal_live_client_id"
+  "PAYPAL_CLIENT_ID": "your_paypal_live_client_id",
+  "GOOGLE_SERVER_CLIENT_ID": "your_google_web_client_id.apps.googleusercontent.com",
+  "APPLE_CLIENT_ID": "com.emmafve.hesteka",
+  "APPLE_REDIRECT_URI": "https://api.hesteka.com/api/v1/auth/apple-callback"
 }
