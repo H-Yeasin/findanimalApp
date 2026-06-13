@@ -34,19 +34,6 @@ class ApiEndpoints {
   static String updateReport(String id) => '/reports/update-report/$id';
   static String getReportById(String id) => '/reports/get-single-report/$id';
 
-  // Donations
-  static const String stripeInitiate = '/donations/stripe/initiate';
-  static const String paypalInitiate = '/donations/paypal/initiate';
-  static const String paypalCapture = '/donations/paypal/capture';
-  static const String myDonations = '/donations/my-donations';
-
-  // Payments
-  static const String paymentMethods = '/payments';
-  static const String stripeCreateSetupIntent =
-      '/payments/stripe/create-setup-intent';
-  static String deletePaymentMethod(String id) => '/payments/$id';
-  static String setDefaultPaymentMethod(String id) => '/payments/$id/default';
-
   // Partner Ads / Collection Points
   static const String getAllPartnerAds = '/partner-ads/get-all-partner-ads';
   static const String getMyPartnerAds = '/partner-ads/get-my-partner-ads';
@@ -82,7 +69,8 @@ class ApiEndpoints {
   // Contacts
   static const String getAllContacts = '/contacts/get-all-contacts';
   static const String createContact = '/contacts/create-contact';
-  static String getSingleContact(String id) => '/contacts/get-single-contact/$id';
+  static String getSingleContact(String id) =>
+      '/contacts/get-single-contact/$id';
   static String updateContact(String id) => '/contacts/update-contact/$id';
   static String deleteContact(String id) => '/contacts/delete-contact/$id';
   static String getContactsByType(String type) => '/contacts/get-by-type/$type';

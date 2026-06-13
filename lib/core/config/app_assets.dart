@@ -26,7 +26,6 @@ class AppAssets {
   static const String legalNotice = 'assets/images/profile/LegalNotice.png';
   static const String contactUs = 'assets/images/profile/contactUs.png';
   static const String privacyPolicy = 'assets/images/profile/PrivecyPolicy.png';
-  static const String paypalLogo = 'assets/images/payment/paypal_logo.png';
 
   static const String veterinarians = 'assets/images/veterenaries.png';
   static const String shelterHeader = 'assets/images/shelter_header.png';
