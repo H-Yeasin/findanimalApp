@@ -2,6 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Flutter (local env)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define-from-file=env/local.json"
+      ]
+    },
+    {
       "name": "Debug SST",
       "type": "node",
       "request": "launch",
