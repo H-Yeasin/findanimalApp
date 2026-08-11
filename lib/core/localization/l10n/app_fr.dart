@@ -189,7 +189,7 @@ const Map<String, String> appFr = {
   'filters': 'FILTRES',
   'nearbyKm': 'À PROXIMITÉ - {radius}KM',
   'globalSearch': 'RECHERCHE GLOBALE',
-  'noReportsFound': 'Aucun signalement trouvé.',
+  'noReportsFound': 'Aucun des contacts trouvé.',
   'errorLoadingReports': 'Erreur lors du chargement des signalements.',
   'viewOnMap': 'VOIR SUR LA CARTE',
   'viewProfile': 'VOIR LE PROFIL DE {name}',

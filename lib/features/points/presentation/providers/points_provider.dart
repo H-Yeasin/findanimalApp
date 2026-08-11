@@ -1,4 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/localization/app_locale_provider.dart';
+import '../../../../core/localization/l10n/app_en.dart';
+import '../../../../core/localization/l10n/app_fr.dart';
 import '../../data/models/points_category_summary_model.dart';
 import '../../data/models/points_history_item_model.dart';
 import '../../data/models/redeemable_item_model.dart';
@@ -66,29 +70,43 @@ class PointsNotifier extends AsyncNotifier<PointsState> {
         .where((item) => item.points < 0)
         .toList();
 
+    final locale = ref.read(appLocaleProvider);
+
     return PointsState(
       totalPoints: overview.balance,
       earnedHistory: earnedHistory,
       usedHistory: usedHistory,
       redeemableItems: rewards,
-      earnedByCategory: _buildCategoryBreakdown(earnedHistory),
-      totalPointsUtilized: usedHistory.fold(0, (sum, t) => sum + t.points.abs()),
+      earnedByCategory: _buildCategoryBreakdown(
+        earnedHistory,
+        locale.languageCode,
+      ),
+      totalPointsUtilized: usedHistory.fold(
+        0,
+        (sum, t) => sum + t.points.abs(),
+      ),
       currentCategory: state.valueOrNull?.currentCategory,
       currentType: state.valueOrNull?.currentType,
     );
   }
 
-  /// Fixed ordered list of earning categories derived from the `source` field.
-  static const List<({String sourceKey, String label})> _categories = [
-    (sourceKey: 'animal_report',     label: 'Animal Report'),
-    (sourceKey: 'local_mission',     label: 'Local Mission'),
-    (sourceKey: 'physical_donation', label: 'Physical Donation'),
-  ];
+  List<({String sourceKey, String label})> _categories(String languageCode) {
+    final strings = languageCode == 'fr' ? appFr : appEn;
+    return [
+      (sourceKey: 'animal_report', label: strings['pointsReasonAnimalReport']!),
+      (sourceKey: 'local_mission', label: strings['pointsReasonLocalMission']!),
+      (
+        sourceKey: 'physical_donation',
+        label: strings['pointsReasonPhysicalDonation']!,
+      ),
+    ];
+  }
 
   List<PointsCategorySummaryModel> _buildCategoryBreakdown(
     List<PointsHistoryItemModel> earned,
+    String languageCode,
   ) {
-    return _categories.map((cat) {
+    return _categories(languageCode).map((cat) {
       final total = earned
           .where((t) => t.source == cat.sourceKey)
           .fold(0, (sum, t) => sum + t.points);
@@ -115,12 +133,14 @@ class PointsNotifier extends AsyncNotifier<PointsState> {
       final earned = overview.transactions.where((t) => t.points > 0).toList();
       final used = overview.transactions.where((t) => t.points < 0).toList();
 
+      final locale = ref.read(appLocaleProvider);
+
       return PointsState(
         totalPoints: overview.balance,
         earnedHistory: earned,
         usedHistory: used,
         redeemableItems: rewards,
-        earnedByCategory: _buildCategoryBreakdown(earned),
+        earnedByCategory: _buildCategoryBreakdown(earned, locale.languageCode),
         totalPointsUtilized: used.fold(0, (sum, t) => sum + t.points.abs()),
         currentCategory: category,
         currentType: previousState?.currentType,
@@ -143,12 +163,14 @@ class PointsNotifier extends AsyncNotifier<PointsState> {
       final earned = overview.transactions.where((t) => t.points > 0).toList();
       final used = overview.transactions.where((t) => t.points < 0).toList();
 
+      final locale = ref.read(appLocaleProvider);
+
       return PointsState(
         totalPoints: overview.balance,
         earnedHistory: earned,
         usedHistory: used,
         redeemableItems: rewards,
-        earnedByCategory: _buildCategoryBreakdown(earned),
+        earnedByCategory: _buildCategoryBreakdown(earned, locale.languageCode),
         totalPointsUtilized: used.fold(0, (sum, t) => sum + t.points.abs()),
         currentCategory: previousState?.currentCategory,
         currentType: type,

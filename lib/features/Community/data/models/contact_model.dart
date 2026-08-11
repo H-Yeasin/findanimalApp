@@ -15,6 +15,7 @@ class ContactModel {
   final String? email;
   final String? website;
   final String? description;
+  final String? company;
 
   ContactModel({
     required this.id,
@@ -31,6 +32,7 @@ class ContactModel {
     this.email,
     this.website,
     this.description,
+    this.company,
   });
 
   factory ContactModel.fromJson(Map<String, dynamic> json) {
@@ -77,6 +79,7 @@ class ContactModel {
       email: json['email'],
       website: json['website'],
       description: json['description'],
+      company: json['company'],
     );
   }
 

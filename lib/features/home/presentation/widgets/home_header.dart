@@ -1,9 +1,9 @@
-import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
+import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 import '../../../../core/localization/app_localizations.dart';
-import 'package:hesteka_frontend/core/theme/app_text_styles.dart';
 
 class HomeTopHeader extends StatelessWidget {
   const HomeTopHeader({super.key});
@@ -14,6 +14,7 @@ class HomeTopHeader extends StatelessWidget {
     final heroHeight = screenWidth * 271 / 402;
     final logoWidth = (screenWidth - 34).clamp(280.0, 340.0);
     final logoHeight = logoWidth / (1150 / 431);
+    final leftOffset = (screenWidth - logoWidth) / 2;
 
     return Stack(
       children: [
@@ -34,7 +35,7 @@ class HomeTopHeader extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 17,
+          left: leftOffset,
           bottom: 34,
           child: SizedBox(
             width: logoWidth,

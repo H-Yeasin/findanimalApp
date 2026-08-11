@@ -1,14 +1,15 @@
-import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hesteka_frontend/core/config/app_assets.dart';
 import 'package:hesteka_frontend/core/theme/app_colors.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'presentation/providers/contact_providers.dart';
-import 'presentation/widgets/contact_filter_panel.dart';
-import '../../core/localization/app_localizations.dart';
-import '../../core/theme/app_text_styles.dart';
 import 'package:hesteka_frontend/core/widgets/app_background.dart';
 import 'package:hesteka_frontend/core/widgets/app_top_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../core/localization/app_localizations.dart';
+import '../../core/theme/app_text_styles.dart';
+import 'presentation/providers/contact_providers.dart';
+import 'presentation/widgets/contact_filter_panel.dart';
 
 class PartnersScreen extends ConsumerStatefulWidget {
   const PartnersScreen({super.key});
@@ -105,22 +106,36 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
                           ),
                         );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: partners.length,
-                        itemBuilder: (context, index) {
-                          final partner = partners[index];
-                          return _buildPartnerCard(
-                            partner.name,
-                            partner.type,
-                            partner.fullImageUrl,
-                            partner.website,
-                            cardBg,
-                            brandPrimary,
-                            l10n,
-                          );
-                        },
+                      final notifier = ref.read(partnersProvider.notifier);
+                      return Column(
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: partners.length,
+                            itemBuilder: (context, index) {
+                              final partner = partners[index];
+                              return _buildPartnerCard(
+                                partner.company ?? partner.name,
+                                partner.type,
+                                partner.fullImageUrl,
+                                partner.website,
+                                cardBg,
+                                brandPrimary,
+                                l10n,
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 24),
+                          _buildPagination(
+                            currentPage: notifier.currentPage,
+                            totalPages: notifier.totalPages,
+                            color: brandPrimary,
+                            onPageSelected: (page) => notifier.goToPage(page),
+                            onPrevious: () => notifier.previousPage(),
+                            onNext: () => notifier.nextPage(),
+                          ),
+                        ],
                       );
                     },
                     loading: () => const Center(
@@ -250,7 +265,8 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
         return;
       }
       final raw = website.trim();
-      final urlString = (raw.startsWith('http://') || raw.startsWith('https://'))
+      final urlString =
+          (raw.startsWith('http://') || raw.startsWith('https://'))
           ? raw
           : 'https://$raw';
       final uri = Uri.tryParse(urlString);
@@ -266,6 +282,7 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
       }
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       padding: const EdgeInsets.all(15),
@@ -347,6 +364,91 @@ class _PartnersScreenState extends ConsumerState<PartnersScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPagination({
+    required int currentPage,
+    required int totalPages,
+    required Color color,
+    required ValueChanged<int> onPageSelected,
+    required VoidCallback onPrevious,
+    required VoidCallback onNext,
+  }) {
+    if (totalPages <= 1) return const SizedBox.shrink();
+
+    final canGoPrevious = currentPage > 1;
+    final canGoNext = currentPage < totalPages;
+
+    // Determine which page numbers to show
+    final pageNumbers = <int>[];
+    if (totalPages <= 5) {
+      for (var i = 1; i <= totalPages; i++) {
+        pageNumbers.add(i);
+      }
+    } else {
+      pageNumbers.add(1);
+      if (currentPage > 3) pageNumbers.add(-1); // ellipsis
+      for (var i = currentPage - 1; i <= currentPage + 1; i++) {
+        if (i > 1 && i < totalPages) pageNumbers.add(i);
+      }
+      if (currentPage < totalPages - 2) pageNumbers.add(-1); // ellipsis
+      pageNumbers.add(totalPages);
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: canGoPrevious ? onPrevious : null,
+          child: Icon(
+            Icons.chevron_left,
+            color: canGoPrevious ? color : color.withValues(alpha: 0.3),
+            size: 28,
+          ),
+        ),
+        const SizedBox(width: 8),
+        ...pageNumbers.map((pageNum) {
+          if (pageNum == -1) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                '...',
+                style: AppTextStyles.caption.copyWith(
+                  color: color,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+          return GestureDetector(
+            onTap: () => onPageSelected(pageNum),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                '$pageNum',
+                style: AppTextStyles.caption.copyWith(
+                  color: color,
+                  fontSize: 18,
+                  fontWeight: pageNum == currentPage
+                      ? FontWeight.w800
+                      : FontWeight.w500,
+                ),
+              ),
+            ),
+          );
+        }),
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: canGoNext ? onNext : null,
+          child: Icon(
+            Icons.chevron_right,
+            color: canGoNext ? color : color.withValues(alpha: 0.3),
+            size: 28,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -103,6 +103,7 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                           ),
                         );
                       }
+                      final notifier = ref.read(sheltersProvider.notifier);
                       return Column(
                         children: [
                           Padding(
@@ -132,6 +133,15 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
                                 l10n,
                               );
                             },
+                          ),
+                          const SizedBox(height: 24),
+                          _buildPagination(
+                            currentPage: notifier.currentPage,
+                            totalPages: notifier.totalPages,
+                            color: brandPrimary,
+                            onPageSelected: (page) => notifier.goToPage(page),
+                            onPrevious: () => notifier.previousPage(),
+                            onNext: () => notifier.nextPage(),
                           ),
                         ],
                       );
@@ -371,6 +381,94 @@ class _SheltersScreenState extends ConsumerState<SheltersScreen> {
         color: color.withValues(alpha: 0.1),
         child: Icon(Icons.business, color: color),
       ),
+    );
+  }
+
+  Widget _buildPagination({
+    required int currentPage,
+    required int totalPages,
+    required Color color,
+    required ValueChanged<int> onPageSelected,
+    required VoidCallback onPrevious,
+    required VoidCallback onNext,
+  }) {
+    if (totalPages <= 1) return const SizedBox.shrink();
+
+    final canGoPrevious = currentPage > 1;
+    final canGoNext = currentPage < totalPages;
+
+    // Determine which page numbers to show
+    final pageNumbers = <int>[];
+    if (totalPages <= 5) {
+      for (var i = 1; i <= totalPages; i++) {
+        pageNumbers.add(i);
+      }
+    } else {
+      pageNumbers.add(1);
+      if (currentPage > 3) pageNumbers.add(-1); // ellipsis
+      for (var i = currentPage - 1;
+          i <= currentPage + 1;
+          i++) {
+        if (i > 1 && i < totalPages) pageNumbers.add(i);
+      }
+      if (currentPage < totalPages - 2) pageNumbers.add(-1); // ellipsis
+      pageNumbers.add(totalPages);
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: canGoPrevious ? onPrevious : null,
+          child: Icon(
+            Icons.chevron_left,
+            color: canGoPrevious ? color : color.withValues(alpha: 0.3),
+            size: 28,
+          ),
+        ),
+        const SizedBox(width: 8),
+        ...pageNumbers.map((pageNum) {
+          if (pageNum == -1) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                '...',
+                style: AppTextStyles.caption.copyWith(
+                  color: color,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+          return GestureDetector(
+            onTap: () => onPageSelected(pageNum),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                '$pageNum',
+                style: AppTextStyles.caption.copyWith(
+                  color: color,
+                  fontSize: 18,
+                  fontWeight:
+                      pageNum == currentPage
+                          ? FontWeight.w800
+                          : FontWeight.w500,
+                ),
+              ),
+            ),
+          );
+        }),
+        const SizedBox(width: 8),
+        GestureDetector(
+          onTap: canGoNext ? onNext : null,
+          child: Icon(
+            Icons.chevron_right,
+            color: canGoNext ? color : color.withValues(alpha: 0.3),
+            size: 28,
+          ),
+        ),
+      ],
     );
   }
 }

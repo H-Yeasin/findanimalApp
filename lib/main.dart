@@ -1,13 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 import 'app.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'core/config/env.dart';
 import 'core/services/notification_service.dart';
 import 'features/auth/presentation/providers/auth_provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
